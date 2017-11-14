@@ -1,0 +1,53 @@
+﻿<section class='content-header'>
+	<h1><i class='fa fa-th-list'></i> [Str#web_tarz_yonetimi#Str]</h1>
+	<ol class='breadcrumb'>
+		<li>[Str#web_yonetim_sayfalari#Str]</li>
+		<li><i class='fa fa-dashboard'></i> [Str#web_genel#Str]</li>
+		<li><a href='#'><i class='fa fa-th-list'></i> [Str#web_tarz_yonetimi#Str]</a></li>
+	</ol>
+</section>
+<section class='content'>
+	<div class='row'>
+		<div class='col-lg-12'>
+			<div class='box box-primary'>
+				<div class='box-header with-border'><h3 class='box-title'>[Str#web_tarz_yonetimi#Str]</h3></div>
+				<div class='box-body box-yazi'>[Str#web_tarz_yonetimi_sayfa_yazisi#Str]</div>
+			</div>
+		</div>
+	</div>
+	<div class='row'>
+		<div class='col-lg-12'>
+			<div class='box box-primary'>
+				<div class='box-header with-border' style="padding: 18px">
+					<h3 class='box-title'>[Str#web_tarz_listesi#Str]</h3>
+					<div class="box-tools">
+						<div class="input-group" style="padding-top: 5px">
+							<input type="text" name="table_search" class="form-control pull-right" style="width: 150px;" placeholder="[Str#web_ara#Str]">
+							<div class="input-group-btn"><button class="btn btn-default"><i class="fa fa-search"></i></button></div>
+							<div class="input-group-btn"><button id="BtnTarzEkleUst" class="btn btn-primary" style="margin-left: 5px"><span class="glyphicon glyphicon-plus"></span> [Str#web_tarz_ekle#Str]</button></div>
+						</div>
+					</div>
+				</div>
+				<div class='box-body box-yazi table-responsive no-padding'>
+					<table id="tblTarzListesi" class="table table-striped">
+                        <thead>
+                            <tr>
+                                <th style="width: 40px">[Str#web_id#Str]</th>
+                                <th>[Str#web_tarz_adi#Str]</th>
+                                <th style="width: 50px">[Str#web_duzenle#Str]</th>
+                                <th style="width: 50px">[Str#web_sil#Str]</th>
+                            </tr>
+                        </thead>
+                        <tbody></tbody>
+                    </table>
+				</div>
+				<div class="box-footer">
+					<div class="row">
+						<div class="col-xs-9 col-lg-10"><ul id="pagination-demo" class="pagination-md" style="display: table-cell"></ul></div>
+						<div class="col-xs-3 col-lg-2" style="text-align: right"><button id="BtnTarzEkleAlt" class="btn btn-primary" ><span class="glyphicon glyphicon-plus"></span> [Str#web_tarz_ekle#Str]</button></div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</section>

@@ -1,0 +1,19 @@
+<resources>
+    <!-- Default screen margins, per the Android Design guidelines. -->
+    <dimen name="activity_horizontal_margin">16dp</dimen>
+    <dimen name="activity_vertical_margin">16dp</dimen>
+    <dimen name="yazi_boyutu22">22sp</dimen>
+    <dimen name="yazi_boyutu20">20sp</dimen>
+    <dimen name="yazi_boyutu18">18sp</dimen>
+    <dimen name="yazi_boyutu16">16sp</dimen>
+    <dimen name="yazi_boyutu14">14sp</dimen>
+    <dimen name="button_yazi_boyutu16">16sp</dimen>
+    <dimen name="transparan_panel_margin">10dp</dimen>
+    <dimen name="transparan_panel_padding">10dp</dimen>
+    <dimen name="profil_resim_width_height">120dp</dimen>
+    <dimen name="profil_resim_border_width">2dp</dimen>
+    <dimen name="sosyal_hesabim_logo_icon_width_height">40dp</dimen>
+    <dimen name="sosyal_hesabim_logo_icon_border_width">2dp</dimen>
+    <item name="visible" type="id"/>
+    <item name="masked" type="id"/>
+</resources>

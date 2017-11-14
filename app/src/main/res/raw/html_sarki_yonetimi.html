@@ -1,0 +1,77 @@
+﻿<section class='content-header'>
+	<h1><i class='fa fa-music'></i> [Str#web_sarki_yonetimi#Str]</h1>
+	<ol class='breadcrumb'>
+		<li>[Str#web_yonetim_sayfalari#Str]</li>
+		<li><i class='fa fa-dashboard'></i> [Str#web_genel#Str]</li>
+		<li><a href='#'><i class='fa fa-music'></i> [Str#web_sarki_yonetimi#Str]</a></li>
+	</ol>
+</section>
+<section class='content'>
+	<div class='row'>
+		<div class='col-lg-12'>
+			<div class='box box-primary'>
+				<div class='box-header with-border'><h3 class='box-title'>[Str#web_sarki_yonetimi#Str]</h3></div>
+				<div class='box-body box-yazi'>[Str#web_sarki_yonetimi_sayfa_yazisi#Str]</div>
+			</div>
+		</div>
+	</div>
+	<div class='row'>
+		<div class='col-lg-12'>
+			<div class='box box-primary'>
+				<div class='box-header with-border' style="padding: 18px">
+					<h3 class='box-title'>[Str#web_sarkilar#Str]</h3>
+					<div class="box-tools">
+						<div class="input-group" style="padding-top: 5px">
+							<input id="TxtSarkiArama" type="text" name="table_search" class="form-control pull-right" style="width: 150px;" placeholder="[Str#web_ara#Str]">
+							<div class="input-group-btn"><button class="btn btn-default"><i class="fa fa-search"></i></button></div>
+							<div class="input-group-btn" style="margin-left: 5px">
+								<button id="BtnSarkiSiralamaTipi" type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-expanded="false" style="margin-left: 5px">[Str#web_sirala#Str]: <strong>[Str#web_sanatciadi_a_z#Str]</strong> <span class="caret"></span></button>
+								<ul id="DDSarkiSiralamaTipi" class="dropdown-menu" role="menu" data-container="body" data-toggle="popover" data-placement="top" data-content="" data-original-title="" style="margin-left: 5px">
+									<li><a href="#" data-sarkisiralamatipi="tblSarkilar.id ASC">[Str#web_no_artan#Str]</a></li>
+									<li><a href="#" data-sarkisiralamatipi="tblSarkilar.id DESC">[Str#web_no_azalan#Str]</a></li>
+									<li><a href="#" data-sarkisiralamatipi="tblSarkilar.SanatciAdi ASC">[Str#web_sanatciadi_a_z#Str]</a></li>
+									<li><a href="#" data-sarkisiralamatipi="tblSarkilar.SanatciAdi DESC">[Str#web_sanatciadi_z_a#Str]</a></li>
+									<li><a href="#" data-sarkisiralamatipi="tblSarkilar.SarkiAdi ASC">[Str#web_sarkiadi_a_z#Str]</a></li>
+									<li><a href="#" data-sarkisiralamatipi="tblSarkilar.SarkiAdi DESC">[Str#web_sarkiadi_z_a#Str]</a></li>
+									<li><a href="#" data-sarkisiralamatipi="tblListeler.ListeAdi ASC">[Str#web_listeadi_a_z#Str]</a></li>
+									<li><a href="#" data-sarkisiralamatipi="tblListeler.ListeAdi DESC">[Str#web_listeadi_z_a#Str]</a></li>
+									<li><a href="#" data-sarkisiralamatipi="tblKategoriler.KategoriAdi ASC">[Str#web_kategoriadi_a_z#Str]</a></li>
+									<li><a href="#" data-sarkisiralamatipi="tblKategoriler.KategoriAdi DESC">[Str#web_kategoriadi_z_a#Str]</a></li>
+									<li><a href="#" data-sarkisiralamatipi="tblTarzlar.TarzAdi ASC">[Str#web_tarzadi_a_z#Str]</a></li>
+									<li><a href="#" data-sarkisiralamatipi="tblTarzlar.TarzAdi DESC">[Str#web_tarzadi_z_a#Str]</a></li>
+									<li><a href="#" data-sarkisiralamatipi="tblSarkilar.DuzenlenmeTarihi ASC">[Str#web_duzenlenmetarihi_artan#Str]</a></li>
+									<li><a href="#" data-sarkisiralamatipi="tblSarkilar.DuzenlenmeTarihi DESC">[Str#web_duzenlenmetarihi_azalan#Str]</a></li>
+								</ul>
+							</div>
+							<div class="input-group-btn"><button id="BtnSarkiEkleUst" class="btn btn-primary" style="margin-left: 5px"><span class="glyphicon glyphicon-plus"></span> [Str#web_sarkilar_ekle#Str]</button></div>
+						</div>
+					</div>
+				</div>
+				<div class='box-body box-yazi table-responsive no-padding'>
+					<table id="tblSarkiListesi" class="table table-striped">
+                        <thead>
+                            <tr>
+                                <th style="width: 40px">[Str#web_id#Str]</th>
+                                <th>[Str#web_sarkilar_sanatci_adi#Str]</th>
+								<th>[Str#web_sarkilar_sarki_adi#Str]</th>
+								<th>[Str#web_sarkilar_liste_adi#Str]</th>
+								<th>[Str#web_sarkilar_kategori_adi#Str]</th>
+								<th>[Str#web_sarkilar_tarz_adi#Str]</th>
+								<th>[Str#web_sarkilar_duzenlenme_tarihi#Str]</th>
+                                <th style="width: 50px">[Str#web_duzenle#Str]</th>
+                                <th style="width: 50px">[Str#web_sil#Str]</th>
+                            </tr>
+                        </thead>
+                        <tbody></tbody>
+                    </table>
+				</div>
+				<div class="box-footer">
+					<div class="row">
+						<div class="col-xs-9 col-lg-10"><ul id="pagination-demo" class="pagination-md" style="display: table-cell"></ul></div>
+						<div class="col-xs-3 col-lg-2" style="text-align: right"><button id="BtnSarkiEkleAlt" class="btn btn-primary" ><span class="glyphicon glyphicon-plus"></span> [Str#web_sarkilar_ekle#Str]</button></div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</section>

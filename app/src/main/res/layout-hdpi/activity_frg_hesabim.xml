@@ -1,0 +1,384 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+	xmlns:ripple="http://schemas.android.com/apk/res-auto"
+	xmlns:circle="http://schemas.android.com/apk/res-auto"
+	android:layout_width="match_parent"
+	android:layout_height="match_parent"
+	android:background="#000000">
+
+	<LinearLayout
+		android:layout_width="fill_parent"
+		android:layout_height="fill_parent"
+		android:orientation="vertical">
+
+		<ImageView
+			android:layout_width="fill_parent"
+			android:layout_height="fill_parent"
+			android:contentDescription="@string/imageDesc"
+			android:scaleType="centerCrop"
+			android:src="@drawable/bg" />
+	</LinearLayout>
+
+	<ScrollView
+		android:layout_width="fill_parent"
+		android:layout_height="fill_parent"
+		android:orientation="vertical"
+		android:layout_alignParentTop="true"
+		android:layout_alignParentLeft="true"
+		android:layout_alignParentStart="true">
+
+		<RelativeLayout
+			android:layout_width="fill_parent"
+			android:layout_height="fill_parent" >
+
+			<ImageView
+				android:id="@+id/ImgBuyukProfilResim"
+				android:layout_width="fill_parent"
+				android:layout_height="150dp"
+				android:src="@drawable/bos_profil"
+				android:contentDescription="@string/imageDesc"
+				android:scaleType="centerCrop" />
+
+			<LinearLayout
+				android:id="@+id/LLBuyukProfilResim"
+				android:layout_width="fill_parent"
+				android:layout_height="150dp"
+				android:background="#094c67"
+				android:alpha="0.6"
+				android:orientation="vertical" >
+			</LinearLayout>
+
+			<RelativeLayout
+				android:layout_width="fill_parent"
+				android:layout_height="150dp" >
+
+				<RelativeLayout
+					android:layout_width="wrap_content"
+					android:layout_height="wrap_content"
+					android:layout_centerVertical="true"
+					android:layout_centerHorizontal="true">
+
+					<com.andexert.library.RippleView
+						android:id="@+id/RVCImgKucukProfilResim"
+						android:layout_width="wrap_content"
+						android:layout_height="wrap_content"
+						ripple:rv_alpha="@integer/Ripple_Alpha"
+						ripple:rv_rippleDuration="@integer/Ripple_Duration"
+						ripple:rv_color="@color/RippleEffectColor">
+
+						<com.cnbcyln.app.akordefterim.util.CircleImageView
+							android:id="@+id/CImgKucukProfilResim"
+							android:layout_width="120dp"
+							android:layout_height="120dp"
+							android:src="@drawable/bos_profil"
+							android:layout_centerHorizontal="true"
+							circle:civ_border_color="#eaebeb"
+							circle:civ_border_width="2dp" />
+					</com.andexert.library.RippleView>
+
+					<com.andexert.library.RippleView
+						android:layout_width="wrap_content"
+						android:layout_height="wrap_content"
+						android:layout_alignTop="@+id/RVCImgKucukProfilResim"
+						android:layout_alignRight="@+id/RVCImgKucukProfilResim"
+						android:layout_alignEnd="@+id/RVCImgKucukProfilResim"
+						ripple:rv_alpha="@integer/Ripple_Alpha"
+						ripple:rv_rippleDuration="@integer/Ripple_Duration"
+						ripple:rv_color="@color/RippleEffectColor">
+
+						<ImageView
+							android:id="@+id/ImgKameraIcon"
+							android:layout_width="38dp"
+							android:layout_height="38dp"
+							android:contentDescription="@string/imageDesc"
+							android:src="@drawable/ic_kamera_icon" />
+					</com.andexert.library.RippleView>
+				</RelativeLayout>
+			</RelativeLayout>
+
+			<com.cnbcyln.app.akordefterim.LLTransparanPanel
+				android:id="@+id/TransparanPanel"
+				android:layout_width="match_parent"
+				android:layout_height="wrap_content"
+				android:focusable="true"
+				android:focusableInTouchMode="true"
+				android:padding="10dp"
+				android:layout_margin="@dimen/transparan_panel_margin"
+				android:orientation="vertical"
+				android:layout_below="@+id/LLBuyukProfilResim"
+				android:layout_centerHorizontal="true" >
+
+				<LinearLayout
+					android:layout_width="wrap_content"
+					android:layout_height="wrap_content"
+					android:layout_marginBottom="5dp"
+					android:orientation="vertical" >
+
+					<TextView
+						android:id="@+id/lblHesapBilgileriBaslik"
+						android:layout_width="wrap_content"
+						android:layout_height="wrap_content"
+						android:text="@string/hesap_bilgileri"
+						android:textSize="@dimen/yazi_boyutu16"
+						android:textColor="@color/TuruncuYazi"
+						android:textStyle="bold" />
+				</LinearLayout>
+
+				<View
+					android:layout_width="fill_parent"
+					android:layout_height="1dp"
+					android:layout_marginBottom="10dp"
+					android:background="@drawable/line" />
+
+				<LinearLayout
+					android:layout_width="fill_parent"
+					android:layout_height="wrap_content"
+					android:layout_marginBottom="10dp"
+					android:orientation="vertical" >
+
+					<TextView
+						android:id="@+id/lblAdSoyad"
+						android:layout_width="wrap_content"
+						android:layout_height="wrap_content"
+						android:layout_marginBottom="5dp"
+						android:text="@string/ad_soyad"
+
+						android:textColor="@color/Beyaz"
+						android:textStyle="bold" />
+
+					<com.andexert.library.RippleView
+						android:layout_width="wrap_content"
+						android:layout_height="wrap_content"
+						android:layout_marginBottom="10dp"
+						ripple:rv_alpha="@integer/Ripple_Alpha"
+						ripple:rv_rippleDuration="@integer/Ripple_Duration"
+						ripple:rv_color="@color/RippleEffectColor">
+
+						<EditText
+							android:id="@+id/EtxtAdSoyad"
+							android:layout_width="fill_parent"
+							android:layout_height="30dp"
+							android:background="@drawable/custom_edittext"
+							android:inputType="textCapSentences"
+							android:padding="5dp"
+							android:maxLines="1"
+							android:textColor="@color/Siyah"
+							android:textCursorDrawable="@drawable/edittext_siyah_cursor"
+							 />
+					</com.andexert.library.RippleView>
+
+					<TextView
+						android:id="@+id/lblDogumTarihi"
+						android:layout_width="wrap_content"
+						android:layout_height="wrap_content"
+						android:layout_marginBottom="5dp"
+						android:text="@string/dogumtarihi"
+
+						android:textColor="@color/Beyaz"
+						android:textStyle="bold" />
+
+					<com.andexert.library.RippleView
+						android:layout_width="wrap_content"
+						android:layout_height="wrap_content"
+						android:layout_marginBottom="10dp"
+						ripple:rv_alpha="@integer/Ripple_Alpha"
+						ripple:rv_rippleDuration="@integer/Ripple_Duration"
+						ripple:rv_color="@color/RippleEffectColor">
+
+						<EditText
+							android:id="@+id/EtxtDogumTarih"
+							android:layout_width="fill_parent"
+							android:layout_height="30dp"
+							android:background="@drawable/custom_edittext"
+							android:inputType="date"
+							android:padding="5dp"
+							android:maxLines="1"
+							android:textColor="@color/Siyah"
+							android:textCursorDrawable="@drawable/edittext_siyah_cursor"
+							 />
+					</com.andexert.library.RippleView>
+
+					<TextView
+						android:id="@+id/lblKullaniciAdi"
+						android:layout_width="wrap_content"
+						android:layout_height="wrap_content"
+						android:layout_marginBottom="5dp"
+						android:text="@string/kullaniciadi"
+
+						android:textColor="@color/Beyaz"
+						android:textStyle="bold" />
+
+					<com.andexert.library.RippleView
+						android:id="@+id/RVKullaniciAdi"
+						android:layout_width="wrap_content"
+						android:layout_height="wrap_content"
+						android:layout_marginBottom="10dp"
+						ripple:rv_alpha="@integer/Ripple_Alpha"
+						ripple:rv_rippleDuration="@integer/Ripple_Duration"
+						ripple:rv_color="@color/RippleEffectColor">
+
+						<EditText
+							android:id="@+id/EtxtKullaniciAdi"
+							android:layout_width="fill_parent"
+							android:layout_height="30dp"
+							android:background="@drawable/custom_edittext"
+							android:inputType="text"
+							android:padding="5dp"
+							android:maxLines="1"
+							android:textColor="@color/Siyah"
+							android:textCursorDrawable="@drawable/edittext_siyah_cursor"
+							 />
+					</com.andexert.library.RippleView>
+
+					<LinearLayout
+						android:layout_width="fill_parent"
+						android:layout_height="wrap_content"
+						android:layout_marginBottom="5dp"
+						android:orientation="horizontal">
+
+						<LinearLayout
+							android:layout_width="wrap_content"
+							android:layout_height="wrap_content"
+							android:layout_marginRight="5dp"
+							android:layout_marginEnd="5dp"
+							android:orientation="vertical">
+
+							<TextView
+								android:id="@+id/lblCepTelefon"
+								android:layout_width="wrap_content"
+								android:layout_height="wrap_content"
+								android:text="@string/ceptelefon"
+
+								android:textColor="@color/Beyaz"
+								android:textStyle="bold" />
+						</LinearLayout>
+
+						<LinearLayout
+							android:layout_width="wrap_content"
+							android:layout_height="wrap_content"
+							android:orientation="vertical">
+
+							<ImageView
+								android:id="@+id/ImgCepTelefonWarningIcon"
+								android:layout_width="20dp"
+								android:layout_height="20dp"
+								android:contentDescription="@string/imageDesc" />
+						</LinearLayout>
+					</LinearLayout>
+
+					<com.andexert.library.RippleView
+						android:layout_width="wrap_content"
+						android:layout_height="wrap_content"
+						android:layout_marginBottom="10dp"
+						ripple:rv_alpha="@integer/Ripple_Alpha"
+						ripple:rv_rippleDuration="@integer/Ripple_Duration"
+						ripple:rv_color="@color/RippleEffectColor">
+
+						<EditText
+							android:id="@+id/EtxtCepTelefon"
+							android:layout_width="fill_parent"
+							android:layout_height="30dp"
+							android:background="@drawable/custom_edittext"
+							android:inputType="phone"
+							android:padding="5dp"
+							android:maxLines="1"
+							android:textColor="@color/Siyah"
+							android:textCursorDrawable="@drawable/edittext_siyah_cursor"
+
+							android:layout_alignParentTop="true"
+							android:layout_alignParentLeft="true"
+							android:layout_alignParentStart="true" />
+					</com.andexert.library.RippleView>
+
+					<LinearLayout
+						android:layout_width="fill_parent"
+						android:layout_height="wrap_content"
+						android:layout_marginBottom="5dp"
+						android:orientation="horizontal">
+
+						<LinearLayout
+							android:layout_width="wrap_content"
+							android:layout_height="wrap_content"
+							android:layout_marginRight="5dp"
+							android:layout_marginEnd="5dp"
+							android:orientation="vertical">
+
+							<TextView
+								android:id="@+id/lblEmail"
+								android:layout_width="wrap_content"
+								android:layout_height="wrap_content"
+								android:text="@string/eposta"
+
+								android:textColor="@color/Beyaz"
+								android:textStyle="bold" />
+						</LinearLayout>
+
+						<LinearLayout
+							android:layout_width="wrap_content"
+							android:layout_height="wrap_content"
+							android:orientation="vertical">
+
+							<com.andexert.library.RippleView
+								android:layout_width="wrap_content"
+								android:layout_height="wrap_content"
+								ripple:rv_alpha="@integer/Ripple_Alpha"
+								ripple:rv_rippleDuration="@integer/Ripple_Duration"
+								ripple:rv_color="@color/RippleEffectColor">
+
+								<ImageView
+									android:id="@+id/ImgEmailWarningIcon"
+									android:layout_width="20dp"
+									android:layout_height="20dp"
+									android:contentDescription="@string/imageDesc" />
+							</com.andexert.library.RippleView>
+						</LinearLayout>
+					</LinearLayout>
+
+					<com.andexert.library.RippleView
+						android:layout_width="wrap_content"
+						android:layout_height="wrap_content"
+						ripple:rv_alpha="@integer/Ripple_Alpha"
+						ripple:rv_rippleDuration="@integer/Ripple_Duration"
+						ripple:rv_color="@color/RippleEffectColor">
+
+						<EditText
+							android:id="@+id/EtxtEmail"
+							android:layout_width="fill_parent"
+							android:layout_height="30dp"
+							android:background="@drawable/custom_edittext"
+							android:inputType="textEmailAddress"
+							android:padding="5dp"
+							android:singleLine="true"
+							android:textColor="@color/Siyah"
+							android:textCursorDrawable="@drawable/edittext_siyah_cursor"
+							 />
+					</com.andexert.library.RippleView>
+				</LinearLayout>
+
+				<LinearLayout
+					android:layout_width="fill_parent"
+					android:layout_height="wrap_content"
+					android:gravity="end"
+					android:orientation="horizontal">
+
+					<com.andexert.library.RippleView
+						android:layout_width="wrap_content"
+						android:layout_height="wrap_content"
+						ripple:rv_alpha="@integer/Ripple_Alpha"
+						ripple:rv_rippleDuration="@integer/Ripple_Duration"
+						ripple:rv_color="@color/RippleEffectColor">
+
+						<Button
+							android:id="@+id/btnKaydet"
+							android:layout_width="wrap_content"
+							android:layout_height="wrap_content"
+							android:textColor="@color/KoyuYazi"
+							android:background="@drawable/custom_button"
+							android:text="@string/kaydet"
+							/>
+					</com.andexert.library.RippleView>
+				</LinearLayout>
+			</com.cnbcyln.app.akordefterim.LLTransparanPanel>
+		</RelativeLayout>
+	</ScrollView>
+</RelativeLayout>

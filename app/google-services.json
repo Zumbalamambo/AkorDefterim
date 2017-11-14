@@ -1,0 +1,59 @@
+{
+  "project_info": {
+    "project_number": "114820829715",
+    "firebase_url": "https://fir-akor-defterim.firebaseio.com",
+    "project_id": "firebase-akor-defterim",
+    "storage_bucket": "firebase-akor-defterim.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:114820829715:android:f843bbc120341f14",
+        "android_client_info": {
+          "package_name": "com.cnbcyln.app.akordefterim"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "114820829715-cell7d4fjt30auv35u6h7f8ie48idfpa.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.cnbcyln.app.akordefterim",
+            "certificate_hash": "9BBF7C94E09000158BCC74DE76D383CF3CDF6C6B"
+          }
+        },
+        {
+          "client_id": "114820829715-9vn0a2l3grt1tp04paa7vusa35fi04ge.apps.googleusercontent.com",
+          "client_type": 3
+        },
+        {
+          "client_id": "114820829715-nrnrnvgqsh5vubtddsfs97slbc499ueu.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCH2PQjunYzWHe__qzsnDVIs3w4uulxsfQ"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "114820829715-9vn0a2l3grt1tp04paa7vusa35fi04ge.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

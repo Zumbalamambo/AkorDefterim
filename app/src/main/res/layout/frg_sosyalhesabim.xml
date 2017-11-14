@@ -1,0 +1,294 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+	xmlns:tools="http://schemas.android.com/apk/res-auto"
+	xmlns:circle="http://schemas.android.com/apk/res-auto"
+	android:layout_width="match_parent"
+	android:layout_height="match_parent"
+	android:background="#000000">
+
+	<ImageView
+		android:layout_width="match_parent"
+		android:layout_height="match_parent"
+		android:contentDescription="@string/imageDesc"
+		android:scaleType="centerCrop"
+		android:src="@drawable/bg" />
+
+	<android.support.v4.widget.SwipeRefreshLayout
+		xmlns:android="http://schemas.android.com/apk/res/android"
+		android:id="@+id/SRLSosyalHesabim"
+		android:layout_width="match_parent"
+		android:layout_height="match_parent">
+
+		<ScrollView
+			android:layout_width="match_parent"
+			android:layout_height="match_parent"
+			android:orientation="vertical">
+
+			<RelativeLayout
+				android:layout_width="match_parent"
+				android:layout_height="wrap_content" >
+
+				<ImageView
+					android:id="@+id/ImgBuyukProfilResim"
+					android:layout_width="match_parent"
+					android:layout_height="150dp"
+					android:src="@drawable/bos_profil"
+					android:contentDescription="@string/imageDesc"
+					android:scaleType="centerCrop" />
+
+				<LinearLayout
+					android:id="@+id/LLBuyukProfilResim"
+					android:layout_width="match_parent"
+					android:layout_height="150dp"
+					android:background="#094c67"
+					android:alpha="0.6"
+					android:orientation="vertical" >
+				</LinearLayout>
+
+				<RelativeLayout
+					android:layout_width="match_parent"
+					android:layout_height="150dp" >
+
+					<RelativeLayout
+						android:layout_width="@dimen/profil_resim_width_height"
+						android:layout_height="@dimen/profil_resim_width_height"
+						android:layout_centerVertical="true"
+						android:layout_centerHorizontal="true">
+
+						<com.cnbcyln.app.akordefterim.util.CircleImageView
+							android:id="@+id/CImgKucukProfilResim"
+							android:layout_width="@dimen/profil_resim_width_height"
+							android:layout_height="@dimen/profil_resim_width_height"
+							android:src="@drawable/bos_profil"
+							circle:civ_border_color="@color/profil_resim_border_color"
+							circle:civ_border_width="@dimen/profil_resim_border_width" />
+
+						<com.cnbcyln.app.akordefterim.util.CircleImageView
+							android:id="@+id/CImgSosyalAgIcon"
+							android:layout_width="@dimen/sosyal_hesabim_logo_icon_width_height"
+							android:layout_height="@dimen/sosyal_hesabim_logo_icon_width_height"
+							android:src="@drawable/ic_google_icon"
+							circle:civ_border_color="@color/sosyal_hesabim_logo_icon_border_color"
+							circle:civ_border_width="@dimen/sosyal_hesabim_logo_icon_border_width"
+							android:layout_alignParentBottom="true"
+							android:layout_alignParentRight="true"
+							android:layout_alignParentEnd="true"/>
+					</RelativeLayout>
+				</RelativeLayout>
+
+				<com.cnbcyln.app.akordefterim.LLTransparanPanel
+					android:id="@+id/TransparanPanel"
+					android:layout_width="match_parent"
+					android:layout_height="wrap_content"
+					android:focusable="true"
+					android:focusableInTouchMode="true"
+					android:padding="10dp"
+					android:layout_margin="@dimen/transparan_panel_margin"
+					android:orientation="vertical"
+					android:layout_below="@+id/LLBuyukProfilResim"
+					android:layout_centerHorizontal="true" >
+
+					<LinearLayout
+						android:layout_width="match_parent"
+						android:layout_height="wrap_content"
+						android:layout_marginBottom="5dp"
+						android:orientation="vertical">
+
+						<TextView
+							android:id="@+id/lblHesapBilgileriBaslik"
+							android:layout_width="wrap_content"
+							android:layout_height="wrap_content"
+							android:text="@string/hesap_bilgileri"
+							android:textColor="@color/TuruncuYazi"
+							android:textSize="@dimen/yazi_boyutu16"
+							android:textStyle="bold" />
+					</LinearLayout>
+
+					<View
+						android:layout_width="match_parent"
+						android:layout_height="1dp"
+						android:layout_marginBottom="10dp"
+						android:background="@drawable/line" />
+
+					<LinearLayout
+						android:layout_width="match_parent"
+						android:layout_height="wrap_content"
+						android:layout_marginBottom="15dp"
+						android:orientation="horizontal">
+
+						<TextView
+							android:id="@+id/lblAdSoyad"
+							android:layout_width="wrap_content"
+							android:layout_height="wrap_content"
+							android:layout_marginLeft="4dp"
+							android:text="@string/ad_soyad2"
+							android:textColor="@color/Beyaz"
+							android:textSize="@dimen/yazi_boyutu16" />
+
+						<TextView
+							android:id="@+id/lblAdSoyad2"
+							android:layout_width="wrap_content"
+							android:layout_height="wrap_content"
+							android:layout_marginLeft="5dp"
+							android:layout_marginStart="5dp"
+							android:text="@string/labeltire"
+							android:textColor="@color/TuruncuYazi"
+							android:textSize="@dimen/yazi_boyutu16"
+							android:textStyle="bold" />
+					</LinearLayout>
+
+					<android.support.design.widget.TextInputLayout
+						android:id="@+id/txtILDogumTarih"
+						android:layout_width="match_parent"
+						android:layout_height="wrap_content"
+						android:layout_marginBottom="10dp"
+						android:textColorHint="@color/Beyaz"
+						tools:hintTextAppearance="@style/TextAppearance1">
+
+						<EditText
+							android:id="@+id/txtDogumTarih"
+							android:layout_width="match_parent"
+							android:layout_height="match_parent"
+							android:backgroundTint="@color/TuruncuYazi"
+							android:hint="@string/dogumtarihi"
+							android:inputType="date"
+							android:maxLines="1"
+							android:textColor="@color/TuruncuYazi"
+							android:textSize="@dimen/yazi_boyutu16" />
+					</android.support.design.widget.TextInputLayout>
+
+					<android.support.design.widget.TextInputLayout
+						android:id="@+id/txtILKullaniciAdi"
+						android:layout_width="match_parent"
+						android:layout_height="wrap_content"
+						android:layout_marginBottom="15dp"
+						android:textColorHint="@color/Beyaz"
+						tools:hintTextAppearance="@style/TextAppearance1">
+
+						<EditText
+							android:id="@+id/txtKullaniciAdi"
+							android:layout_width="match_parent"
+							android:layout_height="match_parent"
+							android:backgroundTint="@color/TuruncuYazi"
+							android:hint="@string/kullaniciadi"
+							android:inputType="text"
+							android:maxLines="1"
+							android:textColor="@color/TuruncuYazi"
+							android:textSize="@dimen/yazi_boyutu16" />
+					</android.support.design.widget.TextInputLayout>
+
+					<android.support.constraint.ConstraintLayout
+						android:layout_width="match_parent"
+						android:layout_height="wrap_content"
+						android:layout_marginBottom="15dp"
+						android:orientation="horizontal">
+
+						<android.support.constraint.Guideline
+							android:id="@+id/guideline4"
+							android:layout_width="match_parent"
+							android:layout_height="wrap_content"
+							android:orientation="vertical"
+							tools:layout_constraintGuide_percent="0.3" />
+
+						<LinearLayout
+							android:id="@+id/LLUlkeKodu"
+							android:layout_width="0dp"
+							android:layout_height="wrap_content"
+							android:layout_marginLeft="4dp"
+							android:layout_marginStart="4dp"
+							android:layout_marginBottom="9dp"
+							android:orientation="vertical"
+							tools:layout_constraintBottom_toBottomOf="parent"
+							tools:layout_constraintEnd_toStartOf="@+id/guideline4"
+							tools:layout_constraintStart_toStartOf="parent"
+							tools:layout_constraintTop_toTopOf="parent">
+
+							<TextView
+								android:id="@+id/lblUlkeKodlari"
+								android:layout_width="wrap_content"
+								android:layout_height="wrap_content"
+								android:layout_marginBottom="8dp"
+								android:text="Ülke Kodu"
+								android:textColor="@color/Beyaz"
+								android:textSize="@dimen/yazi_boyutu16" />
+
+							<Spinner
+								android:id="@+id/spnUlkeKodlari"
+								android:layout_width="match_parent"
+								android:layout_height="wrap_content"
+								android:layout_gravity="top|center_horizontal"
+								android:background="@drawable/custom_spinner" />
+						</LinearLayout>
+
+						<android.support.design.widget.TextInputLayout
+							android:id="@+id/txtILCepTelefon"
+							android:layout_width="0dp"
+							android:layout_height="55dp"
+							android:layout_marginLeft="8dp"
+							android:layout_marginStart="8dp"
+							android:textColorHint="@color/Beyaz"
+							tools:hintTextAppearance="@style/TextAppearance1"
+							tools:layout_constraintBottom_toBottomOf="parent"
+							tools:layout_constraintEnd_toEndOf="parent"
+							tools:layout_constraintStart_toStartOf="@+id/guideline4"
+							tools:layout_constraintTop_toTopOf="parent">
+
+							<EditText
+								android:id="@+id/txtCepTelefon"
+								android:layout_width="match_parent"
+								android:layout_height="match_parent"
+								android:backgroundTint="@color/TuruncuYazi"
+								android:hint="@string/ceptelefon"
+								android:inputType="phone"
+								android:maxLines="1"
+								android:textColor="@color/TuruncuYazi"
+								android:textSize="@dimen/yazi_boyutu16" />
+						</android.support.design.widget.TextInputLayout>
+					</android.support.constraint.ConstraintLayout>
+
+					<LinearLayout
+						android:layout_width="match_parent"
+						android:layout_height="wrap_content"
+						android:layout_marginBottom="30dp"
+						android:orientation="horizontal">
+
+						<TextView
+							android:id="@+id/lblEPosta"
+							android:layout_width="wrap_content"
+							android:layout_height="wrap_content"
+							android:layout_marginLeft="4dp"
+							android:text="@string/eposta2"
+							android:textColor="@color/Beyaz"
+							android:textSize="@dimen/yazi_boyutu16" />
+
+						<TextView
+							android:id="@+id/lblEPosta2"
+							android:layout_width="wrap_content"
+							android:layout_height="wrap_content"
+							android:layout_marginLeft="5dp"
+							android:layout_marginStart="5dp"
+							android:text="@string/labeltire"
+							android:textColor="@color/TuruncuYazi"
+							android:textSize="@dimen/yazi_boyutu16"
+							android:textStyle="bold" />
+					</LinearLayout>
+
+					<LinearLayout
+						android:layout_width="match_parent"
+						android:layout_height="wrap_content"
+						android:gravity="end"
+						android:orientation="horizontal">
+
+						<Button
+							android:id="@+id/btnKaydet"
+							android:layout_width="wrap_content"
+							android:layout_height="wrap_content"
+							android:background="@drawable/custom_button_gri"
+							android:text="@string/kaydet"
+							android:textColor="@color/KoyuYazi" />
+					</LinearLayout>
+				</com.cnbcyln.app.akordefterim.LLTransparanPanel>
+			</RelativeLayout>
+		</ScrollView>
+	</android.support.v4.widget.SwipeRefreshLayout>
+</RelativeLayout>

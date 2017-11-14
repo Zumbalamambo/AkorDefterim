@@ -1,0 +1,3054 @@
+﻿<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title>[Str#web_uygulama_adi#Str]</title>
+		<link href="[Eklenti#img_favicon.ico#Eklenti]" rel="icon" type="image/x-icon" />
+		<meta content='width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no' name='viewport'>
+		
+		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+
+		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+		<!--<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css" integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp" crossorigin="anonymous">-->
+		<style>[Eklenti#css_bootstrap_dialog_min.css#Eklenti]</style>
+		<link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" type="text/css" />
+		<link href="https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css" rel="stylesheet" type="text/css" />
+		
+		<style>[Eklenti#css_bootstrap3_wysihtml5_min.css#Eklenti]</style>
+		<style>[Eklenti#css_admin_lte.css#Eklenti]</style>
+		<style>[Eklenti#css_all_skins_min.css#Eklenti]</style>
+		<style>[Eklenti#css_easy_autocomplete_min.css#Eklenti]</style>
+		<style>[Eklenti#css_easy_autocomplete_themes_min.css#Eklenti]</style>
+		
+		<!--
+		<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js"></script>
+		<script src="../plugins/chartjs/Chart.min.js"></script>
+		<script src="../plugins/fastclick/fastclick.min.js"></script>
+		<script src="../dist/js/app.min.js"></script>
+		<script src="../dist/js/demo.js"></script>
+		
+		<link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css" rel="stylesheet" type="text/css" />
+		<link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet" type="text/css" />
+		<link href="https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css" rel="stylesheet" type="text/css" />
+		<link href="../dist/css/AdminLTE.css" rel="stylesheet" type="text/css" />
+		<link href="../dist/css/skins/_all-skins.min.css" rel="stylesheet" type="text/css" />-->
+	</head>
+	<body class="skin-blue sidebar-mini">
+		<div class="wrapper">
+			<header class="main-header">
+				<!-- Logo -->
+				<a href="#" class="logo">
+					<span class="logo-mini"><img src="[Eklenti#img_logo.png#Eklenti]" class="img-responsive" style="width: 100%" alt="" /></span>
+					<span class="logo-lg" style="padding-top: 3px"><div style="float: left; margin-right: 10px"><img src="[Eklenti#img_logo.png#Eklenti]" class="img-responsive" style="width: 45px" alt="" /></div><div style="float: left"><b>[Str#web_uygulama_adi#Str]</b></div></span>
+				</a>
+				<nav class="navbar navbar-static-top" role="navigation">
+					<a href="#" class="sidebar-toggle" data-toggle="offcanvas" role="button">
+						<span class="sr-only">Toggle navigation</span>
+						<span class="icon-bar"></span>
+						<span class="icon-bar"></span>
+						<span class="icon-bar"></span>
+					</a>
+					<div class="navbar-custom-menu">
+						<ul class="nav navbar-nav"></ul>
+					</div>
+				</nav>
+			</header>
+			<!-- Left side column. contains the logo and sidebar -->
+			<aside class="main-sidebar">
+				<!-- sidebar: style can be found in sidebar.less -->
+				<section class="sidebar">
+					<!-- sidebar menu: : style can be found in sidebar.less -->
+					<ul class="sidebar-menu">
+						<li class="header"><b>[Str#web_yonetim_sayfalari_caps#Str]</b></li>
+						<li class="treeview active"><a href="#"><i class="fa fa-dashboard"></i> <span>[Str#web_genel#Str]</span> <i class="fa fa-angle-left pull-right"></i></a>
+							<ul class="treeview-menu">
+								<li data-sayfa="anasayfa"><a href="#"><i class="fa fa-home"></i> [Str#web_anasayfa#Str]</a></li>
+								<li data-sayfa="istatistikler"><a href="#"><i class="fa fa-pie-chart"></i> [Str#web_istatistikler#Str]</a></li>
+								<li data-sayfa="liste_yonetimi"><a href="#"><i class="fa fa-th-list"></i> [Str#web_liste_yonetimi#Str]</a></li>
+								<li data-sayfa="kategori_yonetimi"><a href="#"><i class="fa fa-th-list"></i> [Str#web_kategori_yonetimi#Str]</a></li>
+								<li data-sayfa="tarz_yonetimi"><a href="#"><i class="fa fa-th-list"></i> [Str#web_tarz_yonetimi#Str]</a></li>
+								<li data-sayfa="sarki_yonetimi"><a href="#"><i class="fa fa-music"></i> [Str#web_sarki_yonetimi#Str]</a></li>
+							</ul>
+						</li>
+						<li class="nontreeview" data-sayfa="hakkinda"><a href="#"><i class="fa fa-info"></i> <span>[Str#web_hakkinda#Str]</span></a></li>
+						<li class="nontreeview" data-sayfa="yardim"><a href="#"><i class="fa fa-question"></i> <span>[Str#web_yardim#Str]</span></a></li>
+					</ul>
+				</section>
+				<!-- /.sidebar -->
+			</aside>
+			<!-- Content Wrapper. Contains page content -->
+			<div class="content-wrapper">
+				
+			</div>
+			<footer class="main-footer">
+				<div class="pull-right hidden-xs"><strong>[Str#web_surum#Str]</strong> [Data#data_surum#Data]</div>
+				<strong>[Str#web_uygulama_copyright#Str]</strong> - [Str#web_uygulama_telif_hakki_yazisi1#Str] <strong><a href="[Str#web_uygulama_yapimci_site#Str]">[Str#web_uygulama_yapimci_adi#Str]</a></strong> [Str#web_uygulama_telif_hakki_yazisi2#Str]
+			</footer>
+		</div>
+		
+		<script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-json/2.6.0/jquery.json.min.js"></script>
+		<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+		<script type="text/javascript">[Eklenti#js_bootstrap_dialog_min.js#Eklenti]</script>
+		<script src="http://cdn.tinymce.com/4/tinymce.min.js"></script>
+		<script type="text/javascript">[Eklenti#js_twbspagination_min.js#Eklenti]</script>
+		<script type="text/javascript">[Eklenti#js_fastclick_min.js#Eklenti]</script>
+		<script type="text/javascript">[Eklenti#js_app_min.js#Eklenti]</script>
+		<script type="text/javascript">[Eklenti#js_demo.js#Eklenti]</script>
+		<script type="text/javascript">[Eklenti#js_sprintf.js#Eklenti]</script>
+		<script type="text/javascript">[Eklenti#js_jquery_easy_autocomplete_min.js#Eklenti]</script>
+		<script type="text/javascript">
+			$(function(){
+				var oncekisayfa = "anasayfa",
+					$Liste, $BtnListeEkleUst, $BtnListeEkleAlt,
+					$KategoriListesi, $BtnKategoriEkleUst, $BtnKategoriEkleAlt,
+					$TarzListesi, $BtnTarzEkleUst, $BtnTarzEkleAlt,
+					SarkiSecilenSiralamaTipi, $SarkiListesi, $BtnSarkiSiralamaTipi, $DDSarkiSiralamaTipi, $BtnSarkiEkleUst, $BtnSarkiEkleAlt;
+				
+				SayfaGetir("anasayfa");
+
+				$('.sidebar-menu li[data-sayfa="anasayfa"]').addClass('active');
+				
+				$('.sidebar-menu li[data-sayfa]').click(function () {
+					var $input = $(this);
+					SayfaGetir($input.attr("data-sayfa"));
+					$('.sidebar-menu li[data-sayfa=' + oncekisayfa + ']').removeClass('active');
+					$input.addClass('active');
+					oncekisayfa = $input.attr("data-sayfa");
+				});
+				
+				/*$('.sidebar-menu li[data-sayfa].nontreeview').click(function () {
+					var $input = $(this);
+					SayfaGetir($input.attr("data-sayfa"));
+					$('.sidebar-menu li[data-sayfa=' + oncekisayfa + ']').removeClass('active');
+					$('.sidebar-menu li[data-sayfa=' + oncekisayfa + ']').parent().removeClass('active');
+					$input.addClass('active');
+					oncekisayfa = $input.attr("data-sayfa");
+				});*/
+				
+				function SayfaGetir(Sayfa) {
+					var veriler = { Islem: "SayfaGetir", Sayfa: Sayfa };
+					
+					$.ajax({
+						type: "POST",
+						url: $.toJSON(veriler),
+						success: function (icerik) {
+							$('div.content-wrapper').html(icerik);
+							
+							if (Sayfa == "anasayfa") {
+								
+							} else if (Sayfa == "istatistikler") {
+								IstatistikSayfaDataGetir();
+							} else if (Sayfa == "liste_yonetimi") {
+								$Liste = $('#tblListe tbody');
+								$BtnListeEkleUst = $('#BtnListeEkleUst');
+								$BtnListeEkleAlt = $('#BtnListeEkleAlt');
+
+								$BtnListeEkleUst.click(function () {
+									ListeEkle();
+								});
+
+								$BtnListeEkleAlt.click(function () {
+									ListeEkle();
+								});
+
+								ListeGetir();
+							} else if (Sayfa == "kategori_yonetimi") {
+								$KategoriListesi = $('#tblKategoriListesi tbody');
+								$BtnKategoriEkleUst = $('#BtnKategoriEkleUst');
+								$BtnKategoriEkleAlt = $('#BtnKategoriEkleAlt');
+								
+								$BtnKategoriEkleUst.click(function () {
+									KategoriEkle();
+								});
+								
+								$BtnKategoriEkleAlt.click(function () {
+									KategoriEkle();
+								});
+								
+								KategoriListesiGetir();
+							} else if (Sayfa == "tarz_yonetimi") {
+								$TarzListesi = $('#tblTarzListesi tbody');
+								$BtnTarzEkleUst = $('#BtnTarzEkleUst');
+								$BtnTarzEkleAlt = $('#BtnTarzEkleAlt');
+								
+								$BtnTarzEkleUst.click(function () {
+									TarzEkle();
+								});
+								
+								$BtnTarzEkleAlt.click(function () {
+									TarzEkle();
+								});
+								
+								TarzListesiGetir();
+							} else if (Sayfa == "sarki_yonetimi") {
+								$SarkiListesi = $('#tblSarkiListesi tbody');
+								$TxtSarkiArama = $('#TxtSarkiArama');
+								$BtnSarkiSiralamaTipi = $('#BtnSarkiSiralamaTipi');
+								$DDSarkiSiralamaTipi = $('#DDSarkiSiralamaTipi a');
+								$BtnSarkiEkleUst = $('#BtnSarkiEkleUst');
+								$BtnSarkiEkleAlt = $('#BtnSarkiEkleAlt');
+								
+								$BtnSarkiEkleUst.click(function () {
+									SarkiEkle();
+								});
+								
+								$BtnSarkiEkleAlt.click(function () {
+									SarkiEkle();
+								});
+								
+								$DDSarkiSiralamaTipi.click(function () {
+									$BtnSarkiSiralamaTipi.html('[Str#web_sirala#Str]: <strong>' + $(this).html() + '</strong> <span class="caret"></span>');
+									SarkiSecilenSiralamaTipi = $(this).attr('data-sarkisiralamatipi');
+									SarkiListesiGetir(SarkiSecilenSiralamaTipi);
+								})
+
+								SarkiSecilenSiralamaTipi = "tblSarkilar.id ASC";
+
+								SarkiListesiGetir(SarkiSecilenSiralamaTipi);
+							} else if (Sayfa == "hakkinda") {
+								//HakkindaSayfaDataGetir();
+							}
+						},
+						error: function (xmlHttpRequest, status, err) {
+							alert(xmlHttpRequest.statusText + ' ' + xmlHttpRequest.status + ' : ' + xmlHttpRequest.responseText);
+						}
+					});
+				}
+
+
+
+
+
+
+
+				// ------ ISTATISTIKLER SAYFASI ------ //
+				function IstatistikSayfaDataGetir() {
+					var veriler = { Islem: "IstatistikSayfaDataGetir" };
+
+					$.ajax({
+						type: "POST",
+						url: $.toJSON(veriler),
+						contentType: "application/json; charset=utf-8",
+						dataType: "json",
+						success: function (data) {
+							$('#h3ToplamListe').html(data.ToplamListeSayisi);
+							$('#h3ToplamKategori').html(data.ToplamKategoriSayisi);
+							$('#h3ToplamTarz').html(data.ToplamTarzSayisi);
+							$('#h3ToplamSarki').html(data.ToplamSarkiSayisi);
+						},
+						error: function (xmlHttpRequest, status, err) {
+							alert(xmlHttpRequest.statusText + ' ' + xmlHttpRequest.status + ' : ' + xmlHttpRequest.responseText);
+						}
+					});
+				}
+
+
+
+
+
+
+
+
+				// ------ LİSTE YÖNETİMİ SAYFASI ------ //
+				function ListeGetir() {
+					var veriler = { Islem: "ToplamListeSayisiGetir" };
+
+					$.ajax({
+						type: "POST",
+						url: $.toJSON(veriler),
+						contentType: "application/json; charset=utf-8",
+						dataType: "json",
+						success: function (data) {
+							var ToplamListeSayisi = data.ToplamListeSayisi,
+								SayfaBasiGosterilecekListeSayisi = 10;
+
+							var SayfaSayisi = Math.ceil(ToplamListeSayisi / SayfaBasiGosterilecekListeSayisi);
+
+							var veriler = { Islem: "ListeListesiGetir", BaslangicNo: ((1*SayfaBasiGosterilecekListeSayisi)-SayfaBasiGosterilecekListeSayisi), Limit: SayfaBasiGosterilecekListeSayisi };
+
+							$.ajax({
+								type: "POST",
+								url: $.toJSON(veriler),
+								contentType: "application/json; charset=utf-8",
+								dataType: "json",
+								success: function (data) {
+									var ListeID = null,
+										array_ListeID = null,
+										ListeAdi = null,
+										array_ListeAdi = null,
+										ListeContainer = "";
+
+									ListeID = data.ListeID;
+									array_ListeID = ListeID.split(",");
+
+									ListeAdi = data.ListeAdi
+									array_ListeAdi = ListeAdi.split(",");
+
+									if (array_ListeID.length > 1) {
+										for (i = 0; i < array_ListeID.length - 1; i++) {
+											ListeContainer = ListeContainer + '<tr>\n';
+											ListeContainer = ListeContainer + '<td>' + array_ListeID[i] + '</td>\n';
+											ListeContainer = ListeContainer + '<td>' + array_ListeAdi[i] + '</td>\n';
+											ListeContainer = ListeContainer + '<td><button id="BtnDuzenle" type="button" class="btn btn-primary btn-sm" data-listeid="' + array_ListeID[i] + '"><span class="glyphicon glyphicon-edit"></span></button></td>\n';
+											ListeContainer = ListeContainer + '<td><button id="BtnSil" type="button" class="btn btn-danger btn-sm" data-listeid="' + array_ListeID[i] + '"><span class="glyphicon glyphicon-remove"></span></button></td>\n';
+											ListeContainer = ListeContainer + '</tr>\n';
+										}
+
+										$Liste.html(ListeContainer);
+
+										$Liste.find('#BtnDuzenle.btn').on("click", function () {
+											ListeDuzenle($(this).attr('data-listeid'));
+										});
+
+										$Liste.find('#BtnSil.btn').on("click", function () {
+											ListeSil($(this).attr('data-listeid'));
+										});
+									} else {
+										$Liste.html('<tr><td colspan="4" style="padding: 10px 10px; text-align: center"><strong>[Str#web_kayit_bulunamadi#Str]</strong></td>');
+									}
+								},
+								error: function (xmlHttpRequest, status, err) {
+									alert(xmlHttpRequest.statusText + ' ' + xmlHttpRequest.status + ' : ' + xmlHttpRequest.responseText);
+								}
+							});
+
+							if(SayfaSayisi > 0) {
+								$('#pagination-demo').twbsPagination({
+									totalPages: SayfaSayisi,
+									visiblePages: 7,
+									onPageClick: function (event, page) {
+										var veriler = { Islem: "ListeListesiGetir", BaslangicNo: ((page*SayfaBasiGosterilecekListeSayisi)-SayfaBasiGosterilecekListeSayisi), Limit: SayfaBasiGosterilecekListeSayisi};
+
+										$.ajax({
+											type: "POST",
+											url: $.toJSON(veriler),
+											contentType: "application/json; charset=utf-8",
+											dataType: "json",
+											success: function (data) {
+												var ListeID = null,
+													array_ListeID = null,
+													ListeAdi = null,
+													array_ListeAdi = null,
+													ListeContainer = "";
+
+												ListeID = data.ListeID;
+												array_ListeID = ListeID.split(",");
+
+												ListeAdi = data.ListeAdi
+												array_ListeAdi = ListeAdi.split(",");
+
+												if (array_ListeID.length > 1) {
+													for (i = 0; i < array_ListeID.length - 1; i++) {
+														ListeContainer = ListeContainer + '<tr>\n';
+														ListeContainer = ListeContainer + '<td>' + array_ListeID[i] + '</td>\n';
+														ListeContainer = ListeContainer + '<td>' + array_ListeAdi[i] + '</td>\n';
+														ListeContainer = ListeContainer + '<td><button id="BtnDuzenle" type="button" class="btn btn-primary btn-sm" data-listeid="' + array_ListeID[i] + '"><span class="glyphicon glyphicon-edit"></span></button></td>\n';
+														ListeContainer = ListeContainer + '<td><button id="BtnSil" type="button" class="btn btn-danger btn-sm" data-listeid="' + array_ListeID[i] + '"><span class="glyphicon glyphicon-remove"></span></button></td>\n';
+														ListeContainer = ListeContainer + '</tr>\n';
+													}
+
+													$Liste.html(ListeContainer);
+
+													$Liste.find('#BtnDuzenle.btn').on("click", function () {
+														ListeDuzenle($(this).attr('data-listeid'));
+													});
+
+													$Liste.find('#BtnSil.btn').on("click", function () {
+														ListeSil($(this).attr('data-listeid'));
+													});
+												} else {
+													$Liste.html('<tr><td colspan="4" style="padding: 10px 10px; text-align: center"><strong>[Str#web_kayit_bulunamadi#Str]</strong></td>');
+												}
+											},
+											error: function (xmlHttpRequest, status, err) {
+												alert(xmlHttpRequest.statusText + ' ' + xmlHttpRequest.status + ' : ' + xmlHttpRequest.responseText);
+											}
+										});
+									}
+								});
+							}
+						},
+						error: function (xmlHttpRequest, status, err) {
+							alert(xmlHttpRequest.statusText + ' ' + xmlHttpRequest.status + ' : ' + xmlHttpRequest.responseText);
+						}
+					});
+				}
+
+				function ListeEkle() {
+					var ListeEkleFormHTML = "";
+
+					ListeEkleFormHTML = ListeEkleFormHTML + '<div class="row">';
+					ListeEkleFormHTML = ListeEkleFormHTML + '<div class="col-sm-12"><div class="input-group" style="margin-bottom: 10px"><span class="input-group-addon" for="txtListeAdi"><strong>[Str#web_liste_adi#Str]</strong></span><input type="text" class="form-control" id="txtListeAdi"></div></div>';
+					ListeEkleFormHTML = ListeEkleFormHTML + '</div>';
+
+					BootstrapDialog.show({
+						type: BootstrapDialog.TYPE_PRIMARY,
+						size: BootstrapDialog.SIZE_NORMAL,
+						title: '[Str#web_liste_ekle#Str]',
+						message: function (dialog) {
+							var $content = $(ListeEkleFormHTML);
+
+							return $content;
+						},
+						onshown: function(dialog){
+							document.getElementById("txtListeAdi").focus();
+						},
+						buttons: [{
+							id: 'BtnEkle',
+							label: '[Str#web_ekle#Str]',
+							cssClass: 'btn-primary',
+							icon: 'glyphicon glyphicon-plus',
+							hotkey: 13, // Enter.
+							action: function (dialog) {
+								if ($('#txtListeAdi').val().length == 0) {
+									BootstrapDialog.show({
+										type: BootstrapDialog.TYPE_DANGER,
+										title: '[Str#web_hata#Str]',
+										message: '[Str#web_liste_adi_hata_bos#Str]',
+										onshown: function (dialog) {
+											setTimeout(function () {
+												dialog.close();
+											}, 1000);
+										},
+										onhidden: function(dialog){
+											document.getElementById("txtListeAdi").focus();
+										}
+									});
+								} else if ($('#txtListeAdi').val().length < 3) {
+									BootstrapDialog.show({
+										type: BootstrapDialog.TYPE_DANGER,
+										title: '[Str#web_hata#Str]',
+										message: '[Str#web_liste_adi_hata_enaz3#Str]',
+										onshown: function (dialog) {
+											setTimeout(function () {
+												dialog.close();
+											}, 1000);
+										},
+										onhidden: function(dialog){
+											document.getElementById("txtListeAdi").focus();
+										}
+									});
+								} else {
+									var BtnEkle = this;
+
+									dialog.enableButtons(false);
+									dialog.setClosable(false);
+									BtnEkle.toggleSpin(true);
+
+									$('#txtListeAdi').attr('disabled', true);
+
+									var veriler = { Islem: "ListeEkle", ListeAdi: $('#txtListeAdi').val() };
+
+									$.ajax({
+										type: "POST",
+										url: $.toJSON(veriler),
+										contentType: "application/json; charset=utf-8",
+										dataType: "json",
+										success: function (data) {
+											dialog.enableButtons(true);
+											dialog.setClosable(true);
+											BtnEkle.toggleSpin(false);
+
+											$('#txtListeAdi').attr('disabled', false);
+
+											if (data.Sonuc) {
+												dialog.close();
+
+												setTimeout(function () {
+													ListeGetir();
+												}, 1000);
+
+												BootstrapDialog.show({
+													type: BootstrapDialog.TYPE_SUCCESS,
+													title: '[Str#web_liste_eklendi1#Str]',
+													message: '[Str#web_liste_eklendi2#Str]',
+													onshown: function (dialog) {
+														setTimeout(function () {
+															dialog.close();
+														}, 1000);
+													}
+												});
+											} else {
+												if (data.ListeDurum == 'ListeVar') {
+													BootstrapDialog.show({
+														type: BootstrapDialog.TYPE_DANGER,
+														title: '[Str#web_liste_eklenemedi1#Str]',
+														message: sprintf('[Str#web_liste_eklenemedi3#Str]', '<strong>' + $('#txtListeAdi').val() + '</strong>'),
+														onshown: function (dialog) {
+															setTimeout(function () {
+																dialog.close();
+															}, 1000);
+														}
+													});
+												} else if (data.ListeDurum == 'ListeYok') {
+													BootstrapDialog.show({
+														type: BootstrapDialog.TYPE_DANGER,
+														title: '[Str#web_liste_eklenemedi1#Str]',
+														message: '[Str#web_liste_eklenemedi2#Str]',
+														onshown: function (dialog) {
+															setTimeout(function () {
+																dialog.close();
+															}, 1000);
+														}
+													});
+												}
+											}
+										},
+										error: function (xmlHttpRequest, status, err) {
+											alert(xmlHttpRequest.statusText + ' ' + xmlHttpRequest.status + ' : ' + xmlHttpRequest.responseText);
+										}
+									});
+								}
+							}
+						}, {
+							id: 'BtnDialogKapat',
+							label: '[Str#web_iptal#Str]',
+							cssClass: 'btn-danger',
+							icon: 'glyphicon glyphicon-remove',
+							action: function (dialog) {
+								dialog.close();
+							}
+						}]
+					});
+				}
+
+				function ListeDuzenle(ListeID) {
+					var ListeAdi = "";
+
+					var veriler = { Islem: "ListeAdiGetir", ListeID: ListeID };
+
+					$.ajax({
+						type: "POST",
+						url: $.toJSON(veriler),
+						contentType: "application/json; charset=utf-8",
+						dataType: "json",
+						success: function (data) {
+							ListeAdi = data.ListeAdi;
+
+							var ListeDuzenleFormHTML = "";
+
+							ListeDuzenleFormHTML = ListeDuzenleFormHTML + '<div class="row">';
+							ListeDuzenleFormHTML = ListeDuzenleFormHTML + '<div class="col-sm-12"><div class="input-group" style="margin-bottom: 10px"><span class="input-group-addon" for="txtListeAdi"><strong>[Str#web_liste_adi#Str]</strong></span><input type="text" class="form-control" id="txtListeAdi" value="' + ListeAdi + '"></div></div>';
+							ListeDuzenleFormHTML = ListeDuzenleFormHTML + '</div>';
+
+							BootstrapDialog.show({
+								type: BootstrapDialog.TYPE_PRIMARY,
+								size: BootstrapDialog.SIZE_NORMAL,
+								title: '[Str#web_liste_duzenle#Str]',
+								message: function (dialog) {
+									var $content = $(ListeDuzenleFormHTML);
+
+									return $content;
+								},
+								onshown: function(dialog){
+									document.getElementById("txtListeAdi").focus();
+								},
+								buttons: [{
+									id: 'BtnDuzenle',
+									label: '[Str#web_duzenle#Str]',
+									cssClass: 'btn-primary',
+									icon: 'glyphicon glyphicon-plus',
+									hotkey: 13, // Enter.
+									action: function (dialog) {
+										if ($('#txtListeAdi').val().length == 0) {
+											BootstrapDialog.show({
+												type: BootstrapDialog.TYPE_DANGER,
+												title: '[Str#web_hata#Str]',
+												message: '[Str#web_liste_adi_hata_bos#Str]',
+												onshown: function (dialog) {
+													setTimeout(function () {
+														dialog.close();
+													}, 1000);
+												},
+												onhidden: function(dialog){
+													document.getElementById("txtListeAdi").focus();
+												}
+											});
+										} else if ($('#txtListeAdi').val().length < 3) {
+											BootstrapDialog.show({
+												type: BootstrapDialog.TYPE_DANGER,
+												title: '[Str#web_hata#Str]',
+												message: '[Str#web_liste_adi_hata_enaz3#Str]',
+												onshown: function (dialog) {
+													setTimeout(function () {
+														dialog.close();
+													}, 1000);
+												},
+												onhidden: function(dialog){
+													document.getElementById("txtListeAdi").focus();
+												}
+											});
+										} else {
+											var BtnDuzenle = this;
+
+											dialog.enableButtons(false); // Buttonlar tıklanmaya engellendi
+											dialog.setClosable(false); // Dialog kapatılamaz yapıldı
+											BtnDuzenle.toggleSpin(true); // BtnDuzenle buttonunda spin aktif edildi
+
+											$('#txtListeAdi').attr('disabled', true);
+
+											var veriler = { Islem: "ListeDuzenle", ListeID: ListeID, ListeAdi: $('#txtListeAdi').val() };
+
+											$.ajax({
+												type: "POST",
+												url: $.toJSON(veriler),
+												contentType: "application/json; charset=utf-8",
+												dataType: "json",
+												success: function (data) {
+													dialog.enableButtons(true); // Buttonlar tıklanmaya açıldı
+													dialog.setClosable(true); // Dialog kapatılabilir yapıldı
+													BtnDuzenle.toggleSpin(false); // BtnDuzenle buttonundaki spin kaldırıldı
+
+													$('#txtListeAdi').attr('disabled', false);
+
+													if (data.Sonuc) {
+														dialog.close();
+
+														setTimeout(function () {
+															ListeGetir();
+														}, 1000);
+
+														BootstrapDialog.show({
+															type: BootstrapDialog.TYPE_SUCCESS,
+															title: '[Str#web_liste_duzenlendi1#Str]',
+															message: sprintf('[Str#web_liste_duzenlendi2#Str]', '<strong>' + ListeAdi + '</strong>', '<strong>' + $('#txtListeAdi').val() + '</strong>'),
+															onshown: function (dialog) {
+																setTimeout(function () {
+																	dialog.close();
+																}, 2000);
+															}
+														});
+													} else {
+														if (data.ListeDurum == 'ListeVar') {
+															BootstrapDialog.show({
+																type: BootstrapDialog.TYPE_DANGER,
+																title: '[Str#web_liste_duzenlenemedi1#Str]',
+																message: sprintf('[Str#web_liste_eklenemedi3#Str]', '<strong>' + $('#txtListeAdi').val() + '</strong>'),
+																onshown: function (dialog) {
+																	setTimeout(function () {
+																		dialog.close();
+																	}, 1000);
+																}
+															});
+														} else if (data.ListeDurum == 'ListeYok') {
+															BootstrapDialog.show({
+																type: BootstrapDialog.TYPE_DANGER,
+																title: '[Str#web_liste_duzenlenemedi1#Str]',
+																message: '[Str#web_liste_duzenlenemedi2#Str]',
+																onshown: function (dialog) {
+																	setTimeout(function () {
+																		dialog.close();
+																	}, 1000);
+																}
+															});
+														}
+													}
+												},
+												error: function (xmlHttpRequest, status, err) {
+													alert(xmlHttpRequest.statusText + ' ' + xmlHttpRequest.status + ' : ' + xmlHttpRequest.responseText);
+												}
+											});
+										}
+									}
+								}, {
+									id: 'BtnDialogKapat',
+									label: '[Str#web_iptal#Str]',
+									cssClass: 'btn-danger',
+									icon: 'glyphicon glyphicon-remove',
+									action: function (dialog) {
+										dialog.close();
+									}
+								}]
+							});
+						},
+						error: function (xmlHttpRequest, status, err) {
+							alert(xmlHttpRequest.statusText + " " + xmlHttpRequest.status + " : " + xmlHttpRequest.responseText);
+						}
+					});
+				}
+
+				function ListeSil(ListeID) {
+					var veriler = { Islem: "ListeyeAitSarkiVarmiKontrol", ListeID: ListeID };
+
+					$.ajax({
+						type: "POST",
+						url: $.toJSON(veriler),
+						contentType: "application/json; charset=utf-8",
+						dataType: "json",
+						success: function (data) {
+							if (!data.Sonuc) {
+								var veriler = { Islem: "ListeAdiGetir", ListeID: ListeID };
+
+								$.ajax({
+									type: "POST",
+									url: $.toJSON(veriler),
+									contentType: "application/json; charset=utf-8",
+									dataType: "json",
+									success: function (data) {
+										var ListeAdi = data.ListeAdi;
+
+										BootstrapDialog.show({
+											type: BootstrapDialog.TYPE_WARNING,
+											title: '<strong>' + ListeAdi + '</strong>',
+											message: sprintf('[Str#web_liste_sil_soru#Str]', '<strong>' + ListeAdi + '</strong>'),
+											buttons: [{
+												id: 'BtnSil',
+												label: '[Str#web_sil#Str]',
+												cssClass: 'btn-primary',
+												icon: 'glyphicon glyphicon-remove-sign',
+												action: function (dialog) {
+													var BtnSil = this;
+
+													dialog.enableButtons(false);
+													dialog.setClosable(false);
+													BtnSil.toggleSpin(true);
+
+													var veriler = { Islem: "ListeSil", ListeID: ListeID };
+
+													$.ajax({
+														type: "POST",
+														url: $.toJSON(veriler),
+														contentType: "application/json; charset=utf-8",
+														dataType: "json",
+														success: function (data) {
+															dialog.enableButtons(true);
+															dialog.setClosable(true);
+															BtnSil.toggleSpin(false);
+
+															if (data.Sonuc) {
+																dialog.close();
+
+																setTimeout(function () {
+																	ListeGetir();
+																}, 1000);
+
+																BootstrapDialog.show({
+																	type: BootstrapDialog.TYPE_SUCCESS,
+																	title: '[Str#web_liste_silindi1#Str]',
+																	message: sprintf('[Str#web_liste_silindi2#Str]', '<strong>' + ListeAdi + '</strong>'),
+																	onshown: function (dialog) {
+																		setTimeout(function () {
+																			dialog.close();
+																		}, 1000);
+																	}
+																});
+															} else {
+																BootstrapDialog.show({
+																	type: BootstrapDialog.TYPE_DANGER,
+																	title: '[Str#web_liste_silinemedi1#Str]',
+																	message: '[Str#web_liste_silinemedi2#Str]',
+																	onshown: function (dialog) {
+																		setTimeout(function () {
+																			dialog.close();
+																		}, 1000);
+																	}
+																});
+															}
+														},
+														error: function (xmlHttpRequest, status, err) {
+															alert(xmlHttpRequest.statusText + ' ' + xmlHttpRequest.status + ' : ' + xmlHttpRequest.responseText);
+														}
+													});
+												}
+											}, {
+												id: 'BtnDialogKapat',
+												label: '[Str#web_iptal#Str]',
+												cssClass: 'btn-danger',
+												icon: 'glyphicon glyphicon-remove',
+												action: function (dialog) {
+													dialog.close();
+												}
+											}]
+										});
+									},
+									error: function (xmlHttpRequest, status, err) {
+										alert(xmlHttpRequest.statusText + " " + xmlHttpRequest.status + " : " + xmlHttpRequest.responseText);
+									}
+								});
+							} else {
+								BootstrapDialog.show({
+									type: BootstrapDialog.TYPE_WARNING,
+									title: '[Str#web_liste_silinemedi1#Str]',
+									message: '[Str#web_liste_silinemedi3#Str]',
+									onshown: function (dialog) {
+										setTimeout(function () {
+											dialog.close();
+										}, 1500);
+									}
+								});
+							}
+						},
+						error: function (xmlHttpRequest, status, err) {
+							alert(xmlHttpRequest.statusText + " " + xmlHttpRequest.status + " : " + xmlHttpRequest.responseText);
+						}
+					});
+				}
+
+
+
+
+
+
+
+
+
+
+
+				// ------ KATEGORİ YÖNETİMİ SAYFASI ------ //
+				function KategoriListesiGetir() {
+					var veriler = { Islem: "ToplamKategoriSayisiGetir" };
+
+					$.ajax({
+						type: "POST",
+						url: $.toJSON(veriler),
+						contentType: "application/json; charset=utf-8",
+						dataType: "json",
+						success: function (data) {
+							var ToplamKategoriSayisi = data.ToplamKategoriSayisi,
+								SayfaBasiGosterilecekKategoriSayisi = 10;
+
+							var SayfaSayisi = Math.ceil(ToplamKategoriSayisi / SayfaBasiGosterilecekKategoriSayisi);
+
+							var veriler = { Islem: "KategoriListesiGetir", BaslangicNo: ((1*SayfaBasiGosterilecekKategoriSayisi)-SayfaBasiGosterilecekKategoriSayisi), Limit: SayfaBasiGosterilecekKategoriSayisi};
+
+							$.ajax({
+								type: "POST",
+								url: $.toJSON(veriler),
+								contentType: "application/json; charset=utf-8",
+								dataType: "json",
+								success: function (data) {
+									var KategoriID = null,
+										array_KategoriID = null,
+										KategoriAdi = null,
+										array_KategoriAdi = null,
+										ListeContainer = "";
+
+									KategoriID = data.KategoriID;
+									array_KategoriID = KategoriID.split(",");
+
+									KategoriAdi = data.KategoriAdi
+									array_KategoriAdi = KategoriAdi.split(",");
+
+									if (array_KategoriID.length > 1) {
+										for (i = 0; i < array_KategoriID.length - 1; i++) {
+											ListeContainer = ListeContainer + '<tr>\n';
+											ListeContainer = ListeContainer + '<td>' + array_KategoriID[i] + '</td>\n';
+											ListeContainer = ListeContainer + '<td>' + array_KategoriAdi[i] + '</td>\n';
+											ListeContainer = ListeContainer + '<td><button id="BtnDuzenle" type="button" class="btn btn-primary btn-sm" data-katid="' + array_KategoriID[i] + '"><span class="glyphicon glyphicon-edit"></span></button></td>\n';
+											ListeContainer = ListeContainer + '<td><button id="BtnSil" type="button" class="btn btn-danger btn-sm" data-katid="' + array_KategoriID[i] + '"><span class="glyphicon glyphicon-remove"></span></button></td>\n';
+											ListeContainer = ListeContainer + '</tr>\n';
+										}
+
+										$KategoriListesi.html(ListeContainer);
+
+										$KategoriListesi.find('#BtnDuzenle.btn').on("click", function () {
+											KategoriDuzenle($(this).attr('data-katid'));
+										});
+
+										$KategoriListesi.find('#BtnSil.btn').on("click", function () {
+											KategoriSil($(this).attr('data-katid'));
+										});
+									} else {
+										$KategoriListesi.html('<tr><td colspan="4" style="padding: 10px 10px; text-align: center"><strong>[Str#web_kayit_bulunamadi#Str]</strong></td>');
+									}
+								},
+								error: function (xmlHttpRequest, status, err) {
+									alert(xmlHttpRequest.statusText + ' ' + xmlHttpRequest.status + ' : ' + xmlHttpRequest.responseText);
+								}
+							});
+
+							if(SayfaSayisi > 0) {
+								$('#pagination-demo').twbsPagination({
+									totalPages: SayfaSayisi,
+									visiblePages: 7,
+									onPageClick: function (event, page) {
+										var veriler = { Islem: "KategoriListesiGetir", BaslangicNo: ((page*SayfaBasiGosterilecekKategoriSayisi)-SayfaBasiGosterilecekKategoriSayisi), Limit: SayfaBasiGosterilecekKategoriSayisi};
+
+										$.ajax({
+											type: "POST",
+											url: $.toJSON(veriler),
+											contentType: "application/json; charset=utf-8",
+											dataType: "json",
+											success: function (data) {
+												var KategoriID = null,
+													array_KategoriID = null,
+													KategoriAdi = null,
+													array_KategoriAdi = null,
+													ListeContainer = "";
+
+												KategoriID = data.KategoriID;
+												array_KategoriID = KategoriID.split(",");
+
+												KategoriAdi = data.KategoriAdi
+												array_KategoriAdi = KategoriAdi.split(",");
+
+												if (array_KategoriID.length > 1) {
+													for (i = 0; i < array_KategoriID.length - 1; i++) {
+														ListeContainer = ListeContainer + '<tr>\n';
+														ListeContainer = ListeContainer + '<td>' + array_KategoriID[i] + '</td>\n';
+														ListeContainer = ListeContainer + '<td>' + array_KategoriAdi[i] + '</td>\n';
+														ListeContainer = ListeContainer + '<td><button id="BtnDuzenle" type="button" class="btn btn-primary btn-sm" data-katid="' + array_KategoriID[i] + '"><span class="glyphicon glyphicon-edit"></span></button></td>\n';
+														ListeContainer = ListeContainer + '<td><button id="BtnSil" type="button" class="btn btn-danger btn-sm" data-katid="' + array_KategoriID[i] + '"><span class="glyphicon glyphicon-remove"></span></button></td>\n';
+														ListeContainer = ListeContainer + '</tr>\n';
+													}
+
+													$KategoriListesi.html(ListeContainer);
+
+													$KategoriListesi.find('#BtnDuzenle.btn').on("click", function () {
+														KategoriDuzenle($(this).attr('data-katid'));
+													});
+
+													$KategoriListesi.find('#BtnSil.btn').on("click", function () {
+														KategoriSil($(this).attr('data-katid'));
+													});
+												} else {
+													$KategoriListesi.html('<tr><td colspan="4" style="padding: 10px 10px; text-align: center"><strong>[Str#web_kayit_bulunamadi#Str]</strong></td>');
+												}
+											},
+											error: function (xmlHttpRequest, status, err) {
+												alert(xmlHttpRequest.statusText + ' ' + xmlHttpRequest.status + ' : ' + xmlHttpRequest.responseText);
+											}
+										});
+									}
+								});
+							}
+						},
+						error: function (xmlHttpRequest, status, err) {
+							alert(xmlHttpRequest.statusText + ' ' + xmlHttpRequest.status + ' : ' + xmlHttpRequest.responseText);
+						}
+					});
+				}
+
+				function KategoriEkle() {
+					var KategoriEkleFormHTML = "";
+
+					KategoriEkleFormHTML = KategoriEkleFormHTML + '<div class="row">';
+					KategoriEkleFormHTML = KategoriEkleFormHTML + '<div class="col-sm-12"><div class="input-group" style="margin-bottom: 10px"><span class="input-group-addon" for="txtKategoriAdi"><strong>[Str#web_kategori_adi#Str]</strong></span><input type="text" class="form-control" id="txtKategoriAdi"></div></div>';
+					KategoriEkleFormHTML = KategoriEkleFormHTML + '</div>';
+
+					BootstrapDialog.show({
+						type: BootstrapDialog.TYPE_PRIMARY,
+						size: BootstrapDialog.SIZE_NORMAL,
+						title: '[Str#web_kategori_ekle#Str]',
+						message: function (dialog) {
+							var $content = $(KategoriEkleFormHTML);
+
+							return $content;
+						},
+						onshown: function(dialog){
+							document.getElementById("txtKategoriAdi").focus();
+						},
+						buttons: [{
+							id: 'BtnEkle',
+							label: '[Str#web_ekle#Str]',
+							cssClass: 'btn-primary',
+							icon: 'glyphicon glyphicon-plus',
+							hotkey: 13, // Enter.
+							action: function (dialog) {
+								if ($('#txtKategoriAdi').val().length == 0) {
+									BootstrapDialog.show({
+										type: BootstrapDialog.TYPE_DANGER,
+										title: '[Str#web_hata#Str]',
+										message: '[Str#web_kategori_adi_hata_bos#Str]',
+										onshown: function (dialog) {
+											setTimeout(function () {
+												dialog.close();
+											}, 1000);
+										},
+										onhidden: function(dialog){
+											document.getElementById("txtKategoriAdi").focus();
+										}
+									});
+								} else if ($('#txtKategoriAdi').val().length < 3) {
+									BootstrapDialog.show({
+										type: BootstrapDialog.TYPE_DANGER,
+										title: '[Str#web_hata#Str]',
+										message: '[Str#web_kategori_adi_hata_enaz3#Str]',
+										onshown: function (dialog) {
+											setTimeout(function () {
+												dialog.close();
+											}, 1000);
+										},
+										onhidden: function(dialog){
+											document.getElementById("txtKategoriAdi").focus();
+										}
+									});
+								} else {
+									var BtnEkle = this;
+
+									dialog.enableButtons(false);
+									dialog.setClosable(false);
+									BtnEkle.toggleSpin(true);
+
+									$('#txtKategoriAdi').attr('disabled', true);
+
+									var veriler = { Islem: "KategoriEkle", KategoriAdi: $('#txtKategoriAdi').val() };
+
+									$.ajax({
+										type: "POST",
+										url: $.toJSON(veriler),
+										contentType: "application/json; charset=utf-8",
+										dataType: "json",
+										success: function (data) {
+											dialog.enableButtons(true);
+											dialog.setClosable(true);
+											BtnEkle.toggleSpin(false);
+
+											$('#txtKategoriAdi').attr('disabled', false);
+
+											if (data.Sonuc) {
+												dialog.close();
+
+												setTimeout(function () {
+													KategoriListesiGetir();
+												}, 1000);
+
+												BootstrapDialog.show({
+													type: BootstrapDialog.TYPE_SUCCESS,
+													title: '[Str#web_kategori_eklendi1#Str]',
+													message: '[Str#web_kategori_eklendi2#Str]',
+													onshown: function (dialog) {
+														setTimeout(function () {
+															dialog.close();
+														}, 1000);
+													}
+												});
+											} else {
+												if (data.KategoriDurum == 'KategoriVar') {
+													BootstrapDialog.show({
+														type: BootstrapDialog.TYPE_DANGER,
+														title: '[Str#web_kategori_eklenemedi1#Str]',
+														message: sprintf('[Str#web_kategori_eklenemedi3#Str]', '<strong>' + $('#txtKategoriAdi').val() + '</strong>'),
+														onshown: function (dialog) {
+															setTimeout(function () {
+																dialog.close();
+															}, 1000);
+														}
+													});
+												} else if (data.KategoriDurum == 'KategoriYok') {
+													BootstrapDialog.show({
+														type: BootstrapDialog.TYPE_DANGER,
+														title: '[Str#web_kategori_eklenemedi1#Str]',
+														message: '[Str#web_kategori_eklenemedi2#Str]',
+														onshown: function (dialog) {
+															setTimeout(function () {
+																dialog.close();
+															}, 1000);
+														}
+													});
+												}
+											}
+										},
+										error: function (xmlHttpRequest, status, err) {
+											alert(xmlHttpRequest.statusText + ' ' + xmlHttpRequest.status + ' : ' + xmlHttpRequest.responseText);
+										}
+									});
+								}
+							}
+						}, {
+							id: 'BtnDialogKapat',
+							label: '[Str#web_iptal#Str]',
+							cssClass: 'btn-danger',
+							icon: 'glyphicon glyphicon-remove',
+							action: function (dialog) {
+								dialog.close();
+							}
+						}]
+					});
+				}
+
+				function KategoriDuzenle(KategoriID) {
+					var KategoriAdi = "";
+
+					var veriler = { Islem: "KategoriAdiGetir", KategoriID: KategoriID };
+
+					$.ajax({
+						type: "POST",
+						url: $.toJSON(veriler),
+						contentType: "application/json; charset=utf-8",
+						dataType: "json",
+						success: function (data) {
+							KategoriAdi = data.KategoriAdi;
+
+							var KategoriDuzenleFormHTML = "";
+
+							KategoriDuzenleFormHTML = KategoriDuzenleFormHTML + '<div class="row">';
+							KategoriDuzenleFormHTML = KategoriDuzenleFormHTML + '<div class="col-sm-12"><div class="input-group" style="margin-bottom: 10px"><span class="input-group-addon" for="txtKategoriAdi"><strong>[Str#web_kategori_adi#Str]</strong></span><input type="text" class="form-control" id="txtKategoriAdi" value="' + KategoriAdi + '"></div></div>';
+							KategoriDuzenleFormHTML = KategoriDuzenleFormHTML + '</div>';
+
+							BootstrapDialog.show({
+								type: BootstrapDialog.TYPE_PRIMARY,
+								size: BootstrapDialog.SIZE_NORMAL,
+								title: '[Str#web_kategori_duzenle#Str]',
+								message: function (dialog) {
+									var $content = $(KategoriDuzenleFormHTML);
+
+									return $content;
+								},
+								onshown: function(dialog){
+									document.getElementById("txtKategoriAdi").focus();
+								},
+								buttons: [{
+									id: 'BtnDuzenle',
+									label: '[Str#web_duzenle#Str]',
+									cssClass: 'btn-primary',
+									icon: 'glyphicon glyphicon-plus',
+									hotkey: 13, // Enter.
+									action: function (dialog) {
+										if ($('#txtKategoriAdi').val().length == 0) {
+											BootstrapDialog.show({
+												type: BootstrapDialog.TYPE_DANGER,
+												title: '[Str#web_hata#Str]',
+												message: '[Str#web_kategori_adi_hata_bos#Str]',
+												onshown: function (dialog) {
+													setTimeout(function () {
+														dialog.close();
+													}, 1000);
+												},
+												onhidden: function(dialog){
+													document.getElementById("txtKategoriAdi").focus();
+												}
+											});
+										} else if ($('#txtKategoriAdi').val().length < 3) {
+											BootstrapDialog.show({
+												type: BootstrapDialog.TYPE_DANGER,
+												title: '[Str#web_hata#Str]',
+												message: '[Str#web_kategori_adi_hata_enaz3#Str]',
+												onshown: function (dialog) {
+													setTimeout(function () {
+														dialog.close();
+													}, 1000);
+												},
+												onhidden: function(dialog){
+													document.getElementById("txtKategoriAdi").focus();
+												}
+											});
+										} else {
+											var BtnDuzenle = this;
+
+											dialog.enableButtons(false); // Buttonlar tıklanmaya engellendi
+											dialog.setClosable(false); // Dialog kapatılamaz yapıldı
+											BtnDuzenle.toggleSpin(true); // BtnDuzenle buttonunda spin aktif edildi
+
+											$('#txtKategoriAdi').attr('disabled', true);
+
+											var veriler = { Islem: "KategoriDuzenle", KategoriID: KategoriID, KategoriAdi: $('#txtKategoriAdi').val() };
+
+											$.ajax({
+												type: "POST",
+												url: $.toJSON(veriler),
+												contentType: "application/json; charset=utf-8",
+												dataType: "json",
+												success: function (data) {
+													dialog.enableButtons(true); // Buttonlar tıklanmaya açıldı
+													dialog.setClosable(true); // Dialog kapatılabilir yapıldı
+													BtnDuzenle.toggleSpin(false); // BtnDuzenle buttonundaki spin kaldırıldı
+
+													$('#txtKategoriAdi').attr('disabled', false);
+
+													if (data.Sonuc) {
+														dialog.close();
+
+														setTimeout(function () {
+															KategoriListesiGetir();
+														}, 1000);
+
+														BootstrapDialog.show({
+															type: BootstrapDialog.TYPE_SUCCESS,
+															title: '[Str#web_kategori_duzenlendi1#Str]',
+															message: sprintf('[Str#web_kategori_duzenlendi2#Str]', '<strong>' + KategoriAdi + '</strong>', '<strong>' + $('#txtKategoriAdi').val() + '</strong>'),
+															onshown: function (dialog) {
+																setTimeout(function () {
+																	dialog.close();
+																}, 2000);
+															}
+														});
+													} else {
+														if (data.KategoriDurum == 'KategoriVar') {
+															BootstrapDialog.show({
+																type: BootstrapDialog.TYPE_DANGER,
+																title: '[Str#web_kategori_duzenlenemedi1#Str]',
+																message: sprintf('[Str#web_kategori_eklenemedi3#Str]', '<strong>' + $('#txtKategoriAdi').val() + '</strong>'),
+																onshown: function (dialog) {
+																	setTimeout(function () {
+																		dialog.close();
+																	}, 1000);
+																}
+															});
+														} else if (data.KategoriDurum == 'KategoriYok') {
+															BootstrapDialog.show({
+																type: BootstrapDialog.TYPE_DANGER,
+																title: '[Str#web_kategori_duzenlenemedi1#Str]',
+																message: '[Str#web_kategori_duzenlenemedi2#Str]',
+																onshown: function (dialog) {
+																	setTimeout(function () {
+																		dialog.close();
+																	}, 1000);
+																}
+															});
+														}
+													}
+												},
+												error: function (xmlHttpRequest, status, err) {
+													alert(xmlHttpRequest.statusText + ' ' + xmlHttpRequest.status + ' : ' + xmlHttpRequest.responseText);
+												}
+											});
+										}
+									}
+								}, {
+									id: 'BtnDialogKapat',
+									label: '[Str#web_iptal#Str]',
+									cssClass: 'btn-danger',
+									icon: 'glyphicon glyphicon-remove',
+									action: function (dialog) {
+										dialog.close();
+									}
+								}]
+							});
+						},
+						error: function (xmlHttpRequest, status, err) {
+							alert(xmlHttpRequest.statusText + " " + xmlHttpRequest.status + " : " + xmlHttpRequest.responseText);
+						}
+					});
+				}
+
+				function KategoriSil(KategoriID) {
+					var veriler = { Islem: "KategoriyeAitSarkiVarmiKontrol", KategoriID: KategoriID };
+
+					$.ajax({
+						type: "POST",
+						url: $.toJSON(veriler),
+						contentType: "application/json; charset=utf-8",
+						dataType: "json",
+						success: function (data) {
+							if (!data.Sonuc) {
+								var veriler = { Islem: "KategoriAdiGetir", KategoriID: KategoriID };
+
+								$.ajax({
+									type: "POST",
+									url: $.toJSON(veriler),
+									contentType: "application/json; charset=utf-8",
+									dataType: "json",
+									success: function (data) {
+										var KategoriAdi = data.KategoriAdi;
+
+										BootstrapDialog.show({
+											type: BootstrapDialog.TYPE_WARNING,
+											title: '<strong>' + KategoriAdi + '</strong>',
+											message: sprintf('[Str#web_kategori_sil_soru#Str]', '<strong>' + KategoriAdi + '</strong>'),
+											buttons: [{
+												id: 'BtnSil',
+												label: '[Str#web_sil#Str]',
+												cssClass: 'btn-primary',
+												icon: 'glyphicon glyphicon-remove-sign',
+												action: function (dialog) {
+													var BtnSil = this;
+
+													dialog.enableButtons(false);
+													dialog.setClosable(false);
+													BtnSil.toggleSpin(true);
+
+													var veriler = { Islem: "KategoriSil", KategoriID: KategoriID };
+
+													$.ajax({
+														type: "POST",
+														url: $.toJSON(veriler),
+														contentType: "application/json; charset=utf-8",
+														dataType: "json",
+														success: function (data) {
+															dialog.enableButtons(true);
+															dialog.setClosable(true);
+															BtnSil.toggleSpin(false);
+
+															if (data.Sonuc) {
+																dialog.close();
+
+																setTimeout(function () {
+																	KategoriListesiGetir();
+																}, 1000);
+
+																BootstrapDialog.show({
+																	type: BootstrapDialog.TYPE_SUCCESS,
+																	title: '[Str#web_kategori_silindi1#Str]',
+																	message: sprintf('[Str#web_kategori_silindi2#Str]', '<strong>' + KategoriAdi + '</strong>'),
+																	onshown: function (dialog) {
+																		setTimeout(function () {
+																			dialog.close();
+																		}, 1000);
+																	}
+																});
+															} else {
+																BootstrapDialog.show({
+																	type: BootstrapDialog.TYPE_DANGER,
+																	title: '[Str#web_kategori_silinemedi1#Str]',
+																	message: '[Str#web_kategori_silinemedi2#Str]',
+																	onshown: function (dialog) {
+																		setTimeout(function () {
+																			dialog.close();
+																		}, 1000);
+																	}
+																});
+															}
+														},
+														error: function (xmlHttpRequest, status, err) {
+															alert(xmlHttpRequest.statusText + ' ' + xmlHttpRequest.status + ' : ' + xmlHttpRequest.responseText);
+														}
+													});
+												}
+											}, {
+												id: 'BtnDialogKapat',
+												label: '[Str#web_iptal#Str]',
+												cssClass: 'btn-danger',
+												icon: 'glyphicon glyphicon-remove',
+												action: function (dialog) {
+													dialog.close();
+												}
+											}]
+										});
+									},
+									error: function (xmlHttpRequest, status, err) {
+										alert(xmlHttpRequest.statusText + " " + xmlHttpRequest.status + " : " + xmlHttpRequest.responseText);
+									}
+								});
+							} else {
+								BootstrapDialog.show({
+									type: BootstrapDialog.TYPE_WARNING,
+									title: '[Str#web_kategori_silinemedi1#Str]',
+									message: '[Str#web_kategori_silinemedi3#Str]',
+									onshown: function (dialog) {
+										setTimeout(function () {
+											dialog.close();
+										}, 1500);
+									}
+								});
+							}
+						},
+						error: function (xmlHttpRequest, status, err) {
+							alert(xmlHttpRequest.statusText + " " + xmlHttpRequest.status + " : " + xmlHttpRequest.responseText);
+						}
+					});
+				}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+				// ------ TARZ YÖNETİMİ SAYFASI ------ //
+				function TarzListesiGetir() {
+					var veriler = { Islem: "ToplamTarzSayisiGetir" };
+
+					$.ajax({
+						type: "POST",
+						url: $.toJSON(veriler),
+						contentType: "application/json; charset=utf-8",
+						dataType: "json",
+						success: function (data) {
+							var ToplamTarzSayisi = data.ToplamTarzSayisi,
+								SayfaBasiGosterilecekTarzSayisi = 10;
+
+							var SayfaSayisi = Math.ceil(ToplamTarzSayisi / SayfaBasiGosterilecekTarzSayisi);
+
+							var veriler = { Islem: "TarzListesiGetir", BaslangicNo: ((1*SayfaBasiGosterilecekTarzSayisi)-SayfaBasiGosterilecekTarzSayisi), Limit: SayfaBasiGosterilecekTarzSayisi };
+
+							$.ajax({
+								type: "POST",
+								url: $.toJSON(veriler),
+								contentType: "application/json; charset=utf-8",
+								dataType: "json",
+								success: function (data) {
+									var TarzID = null,
+										array_TarzID = null,
+										TarzAdi = null,
+										array_TarzAdi = null,
+										ListeContainer = "";
+
+									TarzID = data.TarzID;
+									array_TarzID = TarzID.split(",");
+
+									TarzAdi = data.TarzAdi
+									array_TarzAdi = TarzAdi.split(",");
+
+									if (array_TarzID.length > 1) {
+										for (i = 0; i < array_TarzID.length - 1; i++) {
+											ListeContainer = ListeContainer + '<tr>\n';
+											ListeContainer = ListeContainer + '<td>' + array_TarzID[i] + '</td>\n';
+											ListeContainer = ListeContainer + '<td>' + array_TarzAdi[i] + '</td>\n';
+											ListeContainer = ListeContainer + '<td><button id="BtnDuzenle" type="button" class="btn btn-primary btn-sm" data-tarzid="' + array_TarzID[i] + '"><span class="glyphicon glyphicon-edit"></span></button></td>\n';
+											ListeContainer = ListeContainer + '<td><button id="BtnSil" type="button" class="btn btn-danger btn-sm" data-tarzid="' + array_TarzID[i] + '"><span class="glyphicon glyphicon-remove"></span></button></td>\n';
+											ListeContainer = ListeContainer + '</tr>\n';
+										}
+
+										$TarzListesi.html(ListeContainer);
+
+										$TarzListesi.find('#BtnDuzenle.btn').on("click", function () {
+											TarzDuzenle($(this).attr('data-tarzid'));
+										});
+
+										$TarzListesi.find('#BtnSil.btn').on("click", function () {
+											TarzSil($(this).attr('data-tarzid'));
+										});
+									} else {
+										$TarzListesi.html('<tr><td colspan="4" style="padding: 10px 10px; text-align: center"><strong>[Str#web_kayit_bulunamadi#Str]</strong></td>');
+									}
+								},
+								error: function (xmlHttpRequest, status, err) {
+									alert(xmlHttpRequest.statusText + ' ' + xmlHttpRequest.status + ' : ' + xmlHttpRequest.responseText);
+								}
+							});
+
+							if(SayfaSayisi > 0) {
+								$('#pagination-demo').twbsPagination({
+									totalPages: SayfaSayisi,
+									visiblePages: 7,
+									onPageClick: function (event, page) {
+										var veriler = { Islem: "TarzListesiGetir", BaslangicNo: ((page*SayfaBasiGosterilecekTarzSayisi)-SayfaBasiGosterilecekTarzSayisi), Limit: SayfaBasiGosterilecekTarzSayisi};
+
+										$.ajax({
+											type: "POST",
+											url: $.toJSON(veriler),
+											contentType: "application/json; charset=utf-8",
+											dataType: "json",
+											success: function (data) {
+												var TarzID = null,
+													array_TarzID = null,
+													TarzAdi = null,
+													array_TarzAdi = null,
+													ListeContainer = "";
+
+												TarzID = data.TarzID;
+												array_TarzID = TarzID.split(",");
+
+												TarzAdi = data.TarzAdi
+												array_TarzAdi = TarzAdi.split(",");
+
+												if (array_TarzID.length > 1) {
+													for (i = 0; i < array_TarzID.length - 1; i++) {
+														ListeContainer = ListeContainer + '<tr>\n';
+														ListeContainer = ListeContainer + '<td>' + array_TarzID[i] + '</td>\n';
+														ListeContainer = ListeContainer + '<td>' + array_TarzAdi[i] + '</td>\n';
+														ListeContainer = ListeContainer + '<td><button id="BtnDuzenle" type="button" class="btn btn-primary btn-sm" data-tarzid="' + array_TarzID[i] + '"><span class="glyphicon glyphicon-edit"></span></button></td>\n';
+														ListeContainer = ListeContainer + '<td><button id="BtnSil" type="button" class="btn btn-danger btn-sm" data-tarzid="' + array_TarzID[i] + '"><span class="glyphicon glyphicon-remove"></span></button></td>\n';
+														ListeContainer = ListeContainer + '</tr>\n';
+													}
+
+													$TarzListesi.html(ListeContainer);
+
+													$TarzListesi.find('#BtnDuzenle.btn').on("click", function () {
+														TarzDuzenle($(this).attr('data-tarzid'));
+													});
+
+													$TarzListesi.find('#BtnSil.btn').on("click", function () {
+														TarzSil($(this).attr('data-tarzid'));
+													});
+												} else {
+													$TarzListesi.html('<tr><td colspan="4" style="padding: 10px 10px; text-align: center"><strong>[Str#web_kayit_bulunamadi#Str]</strong></td>');
+												}
+											},
+											error: function (xmlHttpRequest, status, err) {
+												alert(xmlHttpRequest.statusText + ' ' + xmlHttpRequest.status + ' : ' + xmlHttpRequest.responseText);
+											}
+										});
+									}
+								});
+							}
+						},
+						error: function (xmlHttpRequest, status, err) {
+							alert(xmlHttpRequest.statusText + ' ' + xmlHttpRequest.status + ' : ' + xmlHttpRequest.responseText);
+						}
+					});
+				}
+
+				function TarzEkle() {
+					var TarzEkleFormHTML = "";
+
+					TarzEkleFormHTML = TarzEkleFormHTML + '<div class="row">';
+					TarzEkleFormHTML = TarzEkleFormHTML + '<div class="col-sm-12"><div class="input-group" style="margin-bottom: 10px"><span class="input-group-addon" for="txtTarzAdi"><strong>[Str#web_tarz_adi#Str]</strong></span><input type="text" class="form-control" id="txtTarzAdi"></div></div>';
+					TarzEkleFormHTML = TarzEkleFormHTML + '</div>';
+
+					BootstrapDialog.show({
+						type: BootstrapDialog.TYPE_PRIMARY,
+						size: BootstrapDialog.SIZE_NORMAL,
+						title: '[Str#web_tarz_ekle#Str]',
+						message: function (dialog) {
+							var $content = $(TarzEkleFormHTML);
+
+							return $content;
+						},
+						onshown: function(dialog){
+							document.getElementById("txtTarzAdi").focus();
+						},
+						buttons: [{
+							id: 'BtnEkle',
+							label: '[Str#web_ekle#Str]',
+							cssClass: 'btn-primary',
+							icon: 'glyphicon glyphicon-plus',
+							hotkey: 13, // Enter.
+							action: function (dialog) {
+								if ($('#txtTarzAdi').val().length == 0) {
+									BootstrapDialog.show({
+										type: BootstrapDialog.TYPE_DANGER,
+										title: '[Str#web_hata#Str]',
+										message: '[Str#web_tarz_adi_hata_bos#Str]',
+										onshown: function (dialog) {
+											setTimeout(function () {
+												dialog.close();
+											}, 1000);
+										},
+										onhidden: function(dialog){
+											document.getElementById("txtTarzAdi").focus();
+										}
+									});
+								} else if ($('#txtTarzAdi').val().length < 3) {
+									BootstrapDialog.show({
+										type: BootstrapDialog.TYPE_DANGER,
+										title: '[Str#web_hata#Str]',
+										message: '[Str#web_tarz_adi_hata_enaz3#Str]',
+										onshown: function (dialog) {
+											setTimeout(function () {
+												dialog.close();
+											}, 1000);
+										},
+										onhidden: function(dialog){
+											document.getElementById("txtTarzAdi").focus();
+										}
+									});
+								} else {
+									var BtnEkle = this;
+
+									dialog.enableButtons(false);
+									dialog.setClosable(false);
+									BtnEkle.toggleSpin(true);
+
+									$('#txtTarzAdi').attr('disabled', true);
+
+									var veriler = { Islem: "TarzEkle", TarzAdi: $('#txtTarzAdi').val() };
+
+									$.ajax({
+										type: "POST",
+										url: $.toJSON(veriler),
+										contentType: "application/json; charset=utf-8",
+										dataType: "json",
+										success: function (data) {
+											dialog.enableButtons(true);
+											dialog.setClosable(true);
+											BtnEkle.toggleSpin(false);
+
+											$('#txtTarzAdi').attr('disabled', false);
+
+											if (data.Sonuc) {
+												dialog.close();
+
+												setTimeout(function () {
+													TarzListesiGetir();
+												}, 1000);
+
+												BootstrapDialog.show({
+													type: BootstrapDialog.TYPE_SUCCESS,
+													title: '[Str#web_tarz_eklendi1#Str]',
+													message: '[Str#web_tarz_eklendi2#Str]',
+													onshown: function (dialog) {
+														setTimeout(function () {
+															dialog.close();
+														}, 1000);
+													}
+												});
+											} else {
+												if (data.TarzDurum == 'TarzVar') {
+													BootstrapDialog.show({
+														type: BootstrapDialog.TYPE_DANGER,
+														title: '[Str#web_tarz_eklenemedi1#Str]',
+														message: sprintf('[Str#web_tarz_eklenemedi3#Str]', '<strong>' + $('#txtTarzAdi').val() + '</strong>'),
+														onshown: function (dialog) {
+															setTimeout(function () {
+																dialog.close();
+															}, 1000);
+														}
+													});
+												} else if (data.TarzDurum == 'TarzYok') {
+													BootstrapDialog.show({
+														type: BootstrapDialog.TYPE_DANGER,
+														title: '[Str#web_tarz_eklenemedi1#Str]',
+														message: '[Str#web_tarz_eklenemedi2#Str]',
+														onshown: function (dialog) {
+															setTimeout(function () {
+																dialog.close();
+															}, 1000);
+														}
+													});
+												}
+											}
+										},
+										error: function (xmlHttpRequest, status, err) {
+											alert(xmlHttpRequest.statusText + ' ' + xmlHttpRequest.status + ' : ' + xmlHttpRequest.responseText);
+										}
+									});
+								}
+							}
+						}, {
+							id: 'BtnDialogKapat',
+							label: '[Str#web_iptal#Str]',
+							cssClass: 'btn-danger',
+							icon: 'glyphicon glyphicon-remove',
+							action: function (dialog) {
+								dialog.close();
+							}
+						}]
+					});
+				}
+
+				function TarzDuzenle(TarzID) {
+					var TarzAdi = "";
+
+					var veriler = { Islem: "TarzAdiGetir", TarzID: TarzID };
+
+					$.ajax({
+						type: "POST",
+						url: $.toJSON(veriler),
+						contentType: "application/json; charset=utf-8",
+						dataType: "json",
+						success: function (data) {
+							TarzAdi = data.TarzAdi;
+
+							var TarzDuzenleFormHTML = "";
+
+							TarzDuzenleFormHTML = TarzDuzenleFormHTML + '<div class="row">';
+							TarzDuzenleFormHTML = TarzDuzenleFormHTML + '<div class="col-sm-12"><div class="input-group" style="margin-bottom: 10px"><span class="input-group-addon" for="txtTarzAdi"><strong>[Str#web_tarz_adi#Str]</strong></span><input type="text" class="form-control" id="txtTarzAdi" value="' + TarzAdi + '"></div></div>';
+							TarzDuzenleFormHTML = TarzDuzenleFormHTML + '</div>';
+
+							BootstrapDialog.show({
+								type: BootstrapDialog.TYPE_PRIMARY,
+								size: BootstrapDialog.SIZE_NORMAL,
+								title: '[Str#web_tarz_duzenle#Str]',
+								message: function (dialog) {
+									var $content = $(TarzDuzenleFormHTML);
+
+									return $content;
+								},
+								onshown: function(dialog){
+									document.getElementById("txtTarzAdi").focus();
+								},
+								buttons: [{
+									id: 'BtnDuzenle',
+									label: '[Str#web_duzenle#Str]',
+									cssClass: 'btn-primary',
+									icon: 'glyphicon glyphicon-plus',
+									hotkey: 13, // Enter.
+									action: function (dialog) {
+										if ($('#txtTarzAdi').val().length == 0) {
+											BootstrapDialog.show({
+												type: BootstrapDialog.TYPE_DANGER,
+												title: '[Str#web_hata#Str]',
+												message: '[Str#web_tarz_adi_hata_bos#Str]',
+												onshown: function (dialog) {
+													setTimeout(function () {
+														dialog.close();
+													}, 1000);
+												},
+												onhidden: function(dialog){
+													document.getElementById("txtTarzAdi").focus();
+												}
+											});
+										} else if ($('#txtTarzAdi').val().length < 3) {
+											BootstrapDialog.show({
+												type: BootstrapDialog.TYPE_DANGER,
+												title: '[Str#web_hata#Str]',
+												message: '[Str#web_tarz_adi_hata_enaz3#Str]',
+												onshown: function (dialog) {
+													setTimeout(function () {
+														dialog.close();
+													}, 1000);
+												},
+												onhidden: function(dialog){
+													document.getElementById("txtTarzAdi").focus();
+												}
+											});
+										} else {
+											var BtnDuzenle = this;
+
+											dialog.enableButtons(false); // Buttonlar tıklanmaya engellendi
+											dialog.setClosable(false); // Dialog kapatılamaz yapıldı
+											BtnDuzenle.toggleSpin(true); // BtnDuzenle buttonunda spin aktif edildi
+
+											$('#txtTarzAdi').attr('disabled', true);
+
+											var veriler = { Islem: "TarzDuzenle", TarzID: TarzID, TarzAdi: $('#txtTarzAdi').val() };
+
+											$.ajax({
+												type: "POST",
+												url: $.toJSON(veriler),
+												contentType: "application/json; charset=utf-8",
+												dataType: "json",
+												success: function (data) {
+													dialog.enableButtons(true); // Buttonlar tıklanmaya açıldı
+													dialog.setClosable(true); // Dialog kapatılabilir yapıldı
+													BtnDuzenle.toggleSpin(false); // BtnDuzenle buttonundaki spin kaldırıldı
+
+													$('#txtTarzAdi').attr('disabled', false);
+
+													if (data.Sonuc) {
+														dialog.close();
+
+														setTimeout(function () {
+															TarzListesiGetir();
+														}, 1000);
+
+														BootstrapDialog.show({
+															type: BootstrapDialog.TYPE_SUCCESS,
+															title: '[Str#web_tarz_duzenlendi1#Str]',
+															message: sprintf('[Str#web_tarz_duzenlendi2#Str]', '<strong>' + TarzAdi + '</strong>', '<strong>' + $('#txtTarzAdi').val() + '</strong>'),
+															onshown: function (dialog) {
+																setTimeout(function () {
+																	dialog.close();
+																}, 2000);
+															}
+														});
+													} else {
+														if (data.TarzDurum == 'TarzVar') {
+															BootstrapDialog.show({
+																type: BootstrapDialog.TYPE_DANGER,
+																title: '[Str#web_tarz_duzenlenemedi1#Str]',
+																message: sprintf('[Str#web_tarz_eklenemedi3#Str]', '<strong>' + $('#txtTarzAdi').val() + '</strong>'),
+																onshown: function (dialog) {
+																	setTimeout(function () {
+																		dialog.close();
+																	}, 1000);
+																}
+															});
+														} else if (data.TarzDurum == 'TarzYok') {
+															BootstrapDialog.show({
+																type: BootstrapDialog.TYPE_DANGER,
+																title: '[Str#web_tarz_duzenlenemedi1#Str]',
+																message: '[Str#web_tarz_duzenlenemedi2#Str]',
+																onshown: function (dialog) {
+																	setTimeout(function () {
+																		dialog.close();
+																	}, 1000);
+																}
+															});
+														}
+													}
+												},
+												error: function (xmlHttpRequest, status, err) {
+													alert(xmlHttpRequest.statusText + ' ' + xmlHttpRequest.status + ' : ' + xmlHttpRequest.responseText);
+												}
+											});
+										}
+									}
+								}, {
+									id: 'BtnDialogKapat',
+									label: '[Str#web_iptal#Str]',
+									cssClass: 'btn-danger',
+									icon: 'glyphicon glyphicon-remove',
+									action: function (dialog) {
+										dialog.close();
+									}
+								}]
+							});
+						},
+						error: function (xmlHttpRequest, status, err) {
+							alert(xmlHttpRequest.statusText + " " + xmlHttpRequest.status + " : " + xmlHttpRequest.responseText);
+						}
+					});
+				}
+
+				function TarzSil(TarzID) {
+					var veriler = { Islem: "TarzaAitSarkiVarmiKontrol", TarzID: TarzID };
+
+					$.ajax({
+						type: "POST",
+						url: $.toJSON(veriler),
+						contentType: "application/json; charset=utf-8",
+						dataType: "json",
+						success: function (data) {
+							if (!data.Sonuc) {
+								var veriler = { Islem: "TarzAdiGetir", TarzID: TarzID };
+
+								$.ajax({
+									type: "POST",
+									url: $.toJSON(veriler),
+									contentType: "application/json; charset=utf-8",
+									dataType: "json",
+									success: function (data) {
+										var TarzAdi = data.TarzAdi;
+
+										BootstrapDialog.show({
+											type: BootstrapDialog.TYPE_WARNING,
+											title: '<strong>' + TarzAdi + '</strong>',
+											message: sprintf('[Str#web_tarz_sil_soru#Str]', '<strong>' + TarzAdi + '</strong>'),
+											buttons: [{
+												id: 'BtnSil',
+												label: '[Str#web_sil#Str]',
+												cssClass: 'btn-primary',
+												icon: 'glyphicon glyphicon-remove-sign',
+												action: function (dialog) {
+													var BtnSil = this;
+
+													dialog.enableButtons(false);
+													dialog.setClosable(false);
+													BtnSil.toggleSpin(true);
+
+													var veriler = { Islem: "TarzSil", TarzID: TarzID };
+
+													$.ajax({
+														type: "POST",
+														url: $.toJSON(veriler),
+														contentType: "application/json; charset=utf-8",
+														dataType: "json",
+														success: function (data) {
+															dialog.enableButtons(true);
+															dialog.setClosable(true);
+															BtnSil.toggleSpin(false);
+
+															if (data.Sonuc) {
+																dialog.close();
+
+																setTimeout(function () {
+																	TarzListesiGetir();
+																}, 1000);
+
+																BootstrapDialog.show({
+																	type: BootstrapDialog.TYPE_SUCCESS,
+																	title: '[Str#web_tarz_silindi1#Str]',
+																	message: sprintf('[Str#web_tarz_silindi2#Str]', '<strong>' + TarzAdi + '</strong>'),
+																	onshown: function (dialog) {
+																		setTimeout(function () {
+																			dialog.close();
+																		}, 1000);
+																	}
+																});
+															} else {
+																BootstrapDialog.show({
+																	type: BootstrapDialog.TYPE_DANGER,
+																	title: '[Str#web_tarz_silinemedi1#Str]',
+																	message: '[Str#web_tarz_silinemedi2#Str]',
+																	onshown: function (dialog) {
+																		setTimeout(function () {
+																			dialog.close();
+																		}, 1000);
+																	}
+																});
+															}
+														},
+														error: function (xmlHttpRequest, status, err) {
+															alert(xmlHttpRequest.statusText + ' ' + xmlHttpRequest.status + ' : ' + xmlHttpRequest.responseText);
+														}
+													});
+												}
+											}, {
+												id: 'BtnDialogKapat',
+												label: '[Str#web_iptal#Str]',
+												cssClass: 'btn-danger',
+												icon: 'glyphicon glyphicon-remove',
+												action: function (dialog) {
+													dialog.close();
+												}
+											}]
+										});
+									},
+									error: function (xmlHttpRequest, status, err) {
+										alert(xmlHttpRequest.statusText + " " + xmlHttpRequest.status + " : " + xmlHttpRequest.responseText);
+									}
+								});
+							} else {
+								BootstrapDialog.show({
+									type: BootstrapDialog.TYPE_WARNING,
+									title: '[Str#web_tarz_silinemedi1#Str]',
+									message: '[Str#web_tarz_silinemedi3#Str]',
+									onshown: function (dialog) {
+										setTimeout(function () {
+											dialog.close();
+										}, 1500);
+									}
+								});
+							}
+						},
+						error: function (xmlHttpRequest, status, err) {
+							alert(xmlHttpRequest.statusText + " " + xmlHttpRequest.status + " : " + xmlHttpRequest.responseText);
+						}
+					});
+				}
+
+
+
+
+
+
+
+				// ------ ŞARKI YÖNETİMİ SAYFASI ------ //
+				function SarkiListesiGetir(SiralamaTipi) {
+					var veriler = { Islem: "ToplamSarkiSayisiGetir" };
+
+					$.ajax({
+						type: "POST",
+						url: $.toJSON(veriler),
+						contentType: "application/json; charset=utf-8",
+						dataType: "json",
+						success: function (data) {
+							var ToplamSarkiSayisi = data.ToplamSarkiSayisi,
+								SayfaBasiGosterilecekSarkiSayisi = 10;
+
+							var SayfaSayisi = Math.ceil(ToplamSarkiSayisi / SayfaBasiGosterilecekSarkiSayisi);
+
+							var veriler = { Islem: "SarkiListesiGetir", BaslangicNo: ((1*SayfaBasiGosterilecekSarkiSayisi)-SayfaBasiGosterilecekSarkiSayisi), Limit: SayfaBasiGosterilecekSarkiSayisi, SiralamaTipi: SiralamaTipi};
+
+							$.ajax({
+								type: "POST",
+								url: $.toJSON(veriler),
+								contentType: "application/json; charset=utf-8",
+								dataType: "json",
+								success: function (data) {
+									var ID = null,
+										array_ID = null,
+										SanatciAdi = null,
+										array_SanatciAdi = null,
+										SarkiAdi = null,
+										array_SarkiAdi = null,
+										ListeAdi = null,
+										array_ListeAdi = null,
+										KategoriAdi = null,
+										array_KategoriAdi = null,
+										TarzAdi = null,
+										array_TarzAdi = null,
+										DuzenlenmeTarihi = null,
+										array_DuzenlenmeTarihi = null,
+										ListeContainer = "";
+
+									ID = data.ID;
+									array_ID = ID.split(",");
+
+									SanatciAdi = data.SanatciAdi
+									array_SanatciAdi = SanatciAdi.split(",");
+
+									SarkiAdi = data.SarkiAdi
+									array_SarkiAdi = SarkiAdi.split(",");
+
+									ListeAdi = data.ListeAdi
+									array_ListeAdi = ListeAdi.split(",");
+
+									KategoriAdi = data.KategoriAdi
+									array_KategoriAdi = KategoriAdi.split(",");
+
+									TarzAdi = data.TarzAdi
+									array_TarzAdi = TarzAdi.split(",");
+
+									DuzenlenmeTarihi = data.DuzenlenmeTarihi
+									array_DuzenlenmeTarihi = DuzenlenmeTarihi.split(",");
+
+									if (array_ID.length > 1) {
+										for (i = 0; i < array_ID.length - 1; i++) {
+											ListeContainer = ListeContainer + '<tr>\n';
+											ListeContainer = ListeContainer + '<td>' + array_ID[i] + '</td>\n';
+											ListeContainer = ListeContainer + '<td>' + array_SanatciAdi[i] + '</td>\n';
+											ListeContainer = ListeContainer + '<td>' + array_SarkiAdi[i] + '</td>\n';
+											ListeContainer = ListeContainer + '<td>' + array_ListeAdi[i] + '</td>\n';
+											ListeContainer = ListeContainer + '<td>' + array_KategoriAdi[i] + '</td>\n';
+											ListeContainer = ListeContainer + '<td>' + array_TarzAdi[i] + '</td>\n';
+											ListeContainer = ListeContainer + '<td>' + array_DuzenlenmeTarihi[i] + '</td>\n';
+											ListeContainer = ListeContainer + '<td><button id="BtnDuzenle" type="button" class="btn btn-primary btn-sm" data-sarkiid="' + array_ID[i] + '"><span class="glyphicon glyphicon-edit"></span></button></td>\n';
+											ListeContainer = ListeContainer + '<td><button id="BtnSil" type="button" class="btn btn-danger btn-sm" data-sarkiid="' + array_ID[i] + '"><span class="glyphicon glyphicon-remove"></span></button></td>\n';
+											ListeContainer = ListeContainer + '</tr>\n';
+										}
+
+										$SarkiListesi.html(ListeContainer);
+
+										$SarkiListesi.find('#BtnDuzenle.btn').on("click", function () {
+											SarkiDuzenle($(this).attr('data-sarkiid'));
+										});
+
+										$SarkiListesi.find('#BtnSil.btn').on("click", function () {
+											SarkiSil($(this).attr('data-sarkiid'));
+										});
+									} else {
+										$SarkiListesi.html('<tr><td colspan="10" style="padding: 10px 10px; text-align: center"><strong>[Str#web_kayit_bulunamadi#Str]</strong></td>');
+									}
+
+									/*var veriler = { Islem: "FullSarkiListesiGetir" };
+
+									$.ajax({
+										type: "POST",
+										url: $.toJSON(veriler),
+										contentType: "application/json; charset=utf-8",
+										dataType: "json",
+										success: function (data) {
+											var SanatciAdi,
+												array_SanatciAdi,
+												SarkiAdi,
+												array_SarkiAdi,
+												array_SanatciAdi_SarkiAdi;
+
+											SanatciAdi = data.SanatciAdi;
+											array_SanatciAdi = SanatciAdi.split(",");
+
+											SarkiAdi = data.SarkiAdi;
+											array_SarkiAdi = SarkiAdi.split(",");
+
+											array_SanatciAdi_SarkiAdi = array_SanatciAdi.concat(array_SarkiAdi);
+
+											var options = {
+												data: array_SanatciAdi_SarkiAdi,
+												list: {
+													maxNumberOfElements: 15,
+													match: {
+														enabled: true
+													},
+													showAnimation: {
+														type: "fade", //normal|slide|fade
+														time: 400,
+														callback: function() {}
+													},
+													hideAnimation: {
+														type: "slide", //normal|slide|fade
+														time: 400,
+														callback: function() {}
+													}
+												}
+											};
+
+											$TxtSarkiArama.easyAutocomplete(options);
+										},
+										error: function (xmlHttpRequest, status, err) {
+											alert(xmlHttpRequest.statusText + ' ' + xmlHttpRequest.status + ' : ' + xmlHttpRequest.responseText);
+										}
+									});*/
+								},
+								error: function (xmlHttpRequest, status, err) {
+									alert(xmlHttpRequest.statusText + ' ' + xmlHttpRequest.status + ' : ' + xmlHttpRequest.responseText);
+								}
+							});
+
+							if(SayfaSayisi > 0) {
+								$('#pagination-demo').twbsPagination({
+									totalPages: SayfaSayisi,
+									visiblePages: 7,
+									onPageClick: function (event, page) {
+										var veriler = { Islem: "SarkiListesiGetir", BaslangicNo: ((page*SayfaBasiGosterilecekSarkiSayisi)-SayfaBasiGosterilecekSarkiSayisi), Limit: SayfaBasiGosterilecekSarkiSayisi, SiralamaTipi: SarkiSecilenSiralamaTipi};
+
+										$.ajax({
+											type: "POST",
+											url: $.toJSON(veriler),
+											contentType: "application/json; charset=utf-8",
+											dataType: "json",
+											success: function (data) {
+												var ID = null,
+													array_ID = null,
+													SanatciAdi = null,
+													array_SanatciAdi = null,
+													SarkiAdi = null,
+													array_SarkiAdi = null,
+													ListeAdi = null,
+													array_ListeAdi = null,
+													KategoriAdi = null,
+													array_KategoriAdi = null,
+													TarzAdi = null,
+													array_TarzAdi = null,
+													DuzenlenmeTarihi = null,
+													array_DuzenlenmeTarihi = null,
+													ListeContainer = "";
+
+												ID = data.ID;
+												array_ID = ID.split(",");
+
+												SanatciAdi = data.SanatciAdi
+												array_SanatciAdi = SanatciAdi.split(",");
+
+												SarkiAdi = data.SarkiAdi
+												array_SarkiAdi = SarkiAdi.split(",");
+
+												ListeAdi = data.ListeAdi
+												array_ListeAdi = ListeAdi.split(",");
+
+												KategoriAdi = data.KategoriAdi
+												array_KategoriAdi = KategoriAdi.split(",");
+
+												TarzAdi = data.TarzAdi
+												array_TarzAdi = TarzAdi.split(",");
+
+												DuzenlenmeTarihi = data.DuzenlenmeTarihi
+												array_DuzenlenmeTarihi = DuzenlenmeTarihi.split(",");
+
+												if (array_ID.length > 1) {
+													for (i = 0; i < array_ID.length - 1; i++) {
+														ListeContainer = ListeContainer + '<tr>\n';
+														ListeContainer = ListeContainer + '<td>' + array_ID[i] + '</td>\n';
+														ListeContainer = ListeContainer + '<td>' + array_SanatciAdi[i] + '</td>\n';
+														ListeContainer = ListeContainer + '<td>' + array_SarkiAdi[i] + '</td>\n';
+														ListeContainer = ListeContainer + '<td>' + array_ListeAdi[i] + '</td>\n';
+														ListeContainer = ListeContainer + '<td>' + array_KategoriAdi[i] + '</td>\n';
+														ListeContainer = ListeContainer + '<td>' + array_TarzAdi[i] + '</td>\n';
+														ListeContainer = ListeContainer + '<td>' + array_DuzenlenmeTarihi[i] + '</td>\n';
+														ListeContainer = ListeContainer + '<td><button id="BtnDuzenle" type="button" class="btn btn-primary btn-sm" data-sarkiid="' + array_ID[i] + '"><span class="glyphicon glyphicon-edit"></span></button></td>\n';
+														ListeContainer = ListeContainer + '<td><button id="BtnSil" type="button" class="btn btn-danger btn-sm" data-sarkiid="' + array_ID[i] + '"><span class="glyphicon glyphicon-remove"></span></button></td>\n';
+														ListeContainer = ListeContainer + '</tr>\n';
+													}
+
+													$SarkiListesi.html(ListeContainer);
+
+													$SarkiListesi.find('#BtnDuzenle.btn').on("click", function () {
+														SarkiDuzenle($(this).attr('data-sarkiid'));
+													});
+
+													$SarkiListesi.find('#BtnSil.btn').on("click", function () {
+														SarkiSil($(this).attr('data-sarkiid'));
+													});
+												} else {
+													$SarkiListesi.html('<tr><td colspan="10" style="padding: 10px 10px; text-align: center"><strong>[Str#web_kayit_bulunamadi#Str]</strong></td>');
+												}
+											},
+											error: function (xmlHttpRequest, status, err) {
+												alert(xmlHttpRequest.statusText + ' ' + xmlHttpRequest.status + ' : ' + xmlHttpRequest.responseText);
+											}
+										});
+									}
+								});
+							}
+						},
+						error: function (xmlHttpRequest, status, err) {
+							alert(xmlHttpRequest.statusText + ' ' + xmlHttpRequest.status + ' : ' + xmlHttpRequest.responseText);
+						}
+					});
+				}
+
+				function SarkiEkle() {
+					var ToplamListeSayisi, ToplamTarzSayisi, ToplamKategoriSayisi;
+
+					var veriler = { Islem: "ToplamListeSayisiGetir" };
+
+					$.ajax({
+						type: "POST",
+						url: $.toJSON(veriler),
+						contentType: "application/json; charset=utf-8",
+						dataType: "json",
+						success: function (data) {
+							ToplamListeSayisi = data.ToplamListeSayisi;
+
+							var veriler = { Islem: "ToplamKategoriSayisiGetir" };
+
+							$.ajax({
+								type: "POST",
+								url: $.toJSON(veriler),
+								contentType: "application/json; charset=utf-8",
+								dataType: "json",
+								success: function (data) {
+									ToplamKategoriSayisi = data.ToplamKategoriSayisi;
+
+									var veriler = { Islem: "ToplamTarzSayisiGetir" };
+
+									$.ajax({
+										type: "POST",
+										url: $.toJSON(veriler),
+										contentType: "application/json; charset=utf-8",
+										dataType: "json",
+										success: function (data) {
+											ToplamTarzSayisi = data.ToplamTarzSayisi;
+
+											var SarkiEkleFormHTML = "",
+												Listeler = "", SecilenListeID = "", SecilenListeAdi = "",
+												Kategoriler = "", SecilenKategoriID = "", SecilenKategoriAdi = "",
+												Tarzlar = "", SecilenTarzID = "", SecilenTarzAdi = "",
+
+												verilerListe = { Islem: "ListeListesiGetir", BaslangicNo: 0, Limit: ToplamListeSayisi };
+												verilerKategori = { Islem: "KategoriListesiGetir", BaslangicNo: 0, Limit: ToplamKategoriSayisi };
+												verilerTarz = { Islem: "TarzListesiGetir", BaslangicNo: 0, Limit: ToplamTarzSayisi };
+
+											$.ajax({
+												type: "POST",
+												url: $.toJSON(verilerListe),
+												contentType: "application/json; charset=utf-8",
+												dataType: "json",
+												success: function (data) {
+													var ListeID = null,
+														array_ListeID = null,
+														ListeAdi = null,
+														array_ListeAdi = null;
+
+													ListeID = data.ListeID;
+													array_ListeID = ListeID.split(",");
+
+													ListeAdi = data.ListeAdi;
+													array_ListeAdi = ListeAdi.split(",");
+
+													if (array_ListeID.length > 1) {
+														for (i = 0; i < array_ListeID.length - 1; i++) {
+															Listeler = Listeler + '<li><a href="#" data-listeid="' + array_ListeID[i] + '">' + array_ListeAdi[i] + '</a></li>';
+														}
+
+														if (SecilenListeID == "") SecilenListeID = array_ListeID[0];
+														if (SecilenListeAdi == "") SecilenListeAdi = array_ListeAdi[0];
+
+														$.ajax({
+															type: "POST",
+															url: $.toJSON(verilerKategori),
+															contentType: "application/json; charset=utf-8",
+															dataType: "json",
+															success: function (data) {
+																var KategoriID = null,
+																	array_KategoriID = null,
+																	KategoriAdi = null,
+																	array_KategoriAdi = null;
+
+																KategoriID = data.KategoriID;
+																array_KategoriID = KategoriID.split(",");
+
+																KategoriAdi = data.KategoriAdi;
+																array_KategoriAdi = KategoriAdi.split(",");
+
+																if (array_KategoriID.length > 1) {
+																	for (i = 0; i < array_KategoriID.length - 1; i++) {
+																		Kategoriler = Kategoriler + '<li><a href="#" data-katid="' + array_KategoriID[i] + '">' + array_KategoriAdi[i] + '</a></li>';
+																	}
+
+																	if (SecilenKategoriID == "") SecilenKategoriID = array_KategoriID[0];
+																	if (SecilenKategoriAdi == "") SecilenKategoriAdi = array_KategoriAdi[0];
+
+																	$.ajax({
+																		type: "POST",
+																		url: $.toJSON(verilerTarz),
+																		contentType: "application/json; charset=utf-8",
+																		dataType: "json",
+																		success: function (data) {
+																			var TarzID = null,
+																				array_TarzID = null,
+																				TarzAdi = null,
+																				array_TarzAdi = null;
+
+																			TarzID = data.TarzID;
+																			array_TarzID = TarzID.split(",");
+
+																			TarzAdi = data.TarzAdi;
+																			array_TarzAdi = TarzAdi.split(",");
+
+																			if (array_TarzID.length > 1) {
+																				for (i = 0; i < array_TarzID.length - 1; i++) {
+																					Tarzlar = Tarzlar + '<li><a href="#" data-tarzid="' + array_TarzID[i] + '">' + array_TarzAdi[i] + '</a></li>';
+																				}
+
+																				if (SecilenTarzID == "") SecilenTarzID = array_TarzID[0];
+																				if (SecilenTarzAdi == "") SecilenTarzAdi = array_TarzAdi[0];
+
+																				SarkiEkleFormHTML = SarkiEkleFormHTML + '<div class="row">';
+																				SarkiEkleFormHTML = SarkiEkleFormHTML + '<div class="col-xs-12 col-lg-12"><div class="input-group" style="margin-bottom: 10px"><span class="input-group-addon" for="txtSanatciAdi"><strong>[Str#web_sarkilar_sanatci_adi#Str]</strong></span><input type="text" class="form-control" id="txtSanatciAdi"></div></div>';
+																				SarkiEkleFormHTML = SarkiEkleFormHTML + '<div class="col-xs-12 col-lg-12"><div class="input-group" style="margin-bottom: 10px"><span class="input-group-addon" for="txtSarkiAdi"><strong>[Str#web_sarkilar_sarki_adi#Str]</strong></span><input type="text" class="form-control" id="txtSarkiAdi"></div></div>';
+																				SarkiEkleFormHTML = SarkiEkleFormHTML + '<div class="col-xs-12 col-lg-12"><div class="btn-group" style="margin-bottom: 10px"><button id="BtnListe" type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">[Str#liste#Str]: <strong>' + SecilenListeAdi + '</strong> <span class="caret"></span></button><ul id="DDListe" class="dropdown-menu" role="menu" data-container="body" data-toggle="popover" data-placement="top" data-content="" data-original-title="">' + Listeler + '</ul></div></div>';
+																				SarkiEkleFormHTML = SarkiEkleFormHTML + '<div class="col-xs-12 col-lg-12"><div class="btn-group" style="margin-bottom: 10px"><button id="BtnKategori" type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">[Str#kategori#Str]: <strong>' + SecilenKategoriAdi + '</strong> <span class="caret"></span></button><ul id="DDKategori" class="dropdown-menu" role="menu" data-container="body" data-toggle="popover" data-placement="top" data-content="" data-original-title="">' + Kategoriler + '</ul></div></div>';
+																				SarkiEkleFormHTML = SarkiEkleFormHTML + '<div class="col-xs-12 col-lg-12"><div class="btn-group" style="margin-bottom: 10px"><button id="BtnTarz" type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">[Str#tarz#Str]: <strong>' + SecilenTarzAdi + '</strong> <span class="caret"></span></button><ul id="DDTarz" class="dropdown-menu" role="menu" data-container="body" data-toggle="popover" data-placement="top" data-content="" data-original-title="">' + Tarzlar + '</ul></div></div>';
+																				SarkiEkleFormHTML = SarkiEkleFormHTML + '<div class="col-xs-12 col-lg-12"><textarea id="txtSarkiIcerik" style="width: 100%" rows="15" placeholder="İçerik"></textarea></div>';
+																				SarkiEkleFormHTML = SarkiEkleFormHTML + '<div class="col-xs-12 col-lg-12"><div id="DIVChkBoxIcerikGonder" class="checkbox"><label><input id="ChkBoxIcerikGonder" type="checkbox" value="">[Str#web_akordefterime_gonder#Str]</label></div></div>';
+																				SarkiEkleFormHTML = SarkiEkleFormHTML + '</div>';
+
+																				BootstrapDialog.show({
+																					size: BootstrapDialog.SIZE_WIDE,
+																					type: BootstrapDialog.TYPE_PRIMARY,
+																					title: '[Str#web_sarkilar_ekle#Str]',
+																					message: function (dialog) {
+																						var $content = $(SarkiEkleFormHTML);
+
+																						$content.find('#DDListe a').click(function () {
+																							$content.find('#BtnListe').html('[Str#liste#Str]: <strong>' + $(this).html() + '</strong> <span class="caret"></span>');
+																							SecilenListeID = parseInt($(this).attr('data-listeid'));
+																						})
+
+																						$content.find('#DDKategori a').click(function () {
+																							$content.find('#BtnKategori').html('[Str#kategori#Str]: <strong>' + $(this).html() + '</strong> <span class="caret"></span>');
+																							SecilenKategoriID = parseInt($(this).attr('data-katid'));
+																						})
+
+																						$content.find('#DDTarz a').click(function () {
+																							$content.find('#BtnTarz').html('[Str#tarz#Str]: <strong>' + $(this).html() + '</strong> <span class="caret"></span>');
+																							SecilenTarzID = parseInt($(this).attr('data-tarzid'));
+																						})
+
+																						return $content;
+																					},
+																					onshown: function(dialog){
+																						/*$('#txtSarkiIcerik').wysihtml5({
+																							toolbar: {
+																								"font-styles": true, //Font styling, e.g. h1, h2, etc. Default true
+																								"emphasis": true, //Italics, bold, etc. Default true
+																								"lists": false, //(Un)ordered lists, e.g. Bullets, Numbers. Default true
+																								"html": true, //Button which allows you to edit the generated HTML. Default false
+																								"link": false, //Button to insert a link. Default true
+																								"image": false, //Button to insert an image. Default true,
+																								"color": false, //Button to change color of font
+																								"blockquote": false, //Blockquote
+																								fa: true
+																							},
+																							locale: 'tr-TR'
+																						});*/
+
+																						document.getElementById("txtSanatciAdi").focus();
+
+																						tinymce.init({
+																							selector: '#txtSarkiIcerik',
+																							plugins: ["autosave code table"],
+																							external_plugins: {
+																								"akor_isaretleyici": "http://akordefterim.cbcapp.net/araclar/javascript/tinymce_plugins/akor_isaretleyici/js_tinymce_akor_isaretleyici.js"
+																							},
+																							menubar: "file edit table tools",
+																							toolbar: 'undo redo | bold | table | akor_isaretleyici',
+																							br_in_pre: false,
+																							custom_undo_redo_levels: 15,
+																							extended_valid_elements : 'span[style|onclick]', // Tag içinde izin verilen elementler
+																							forced_root_block : false //Enter tuşuna basıldığında paragraf açmak yerine direk br ekler. Ve Komple paragraf'ı iptal eder. (<p><(p>)
+																						});
+																					},
+																					onhidden: function () {
+																						tinymce.remove();
+																					},
+																					buttons: [{
+																						id: 'BtnEkle',
+																						label: '[Str#web_ekle#Str]',
+																						cssClass: 'btn-primary',
+																						icon: 'glyphicon glyphicon-plus',
+																						action: function (dialog) {
+																							if ($('#txtSanatciAdi').val().length == 0) {
+																								BootstrapDialog.show({
+																									type: BootstrapDialog.TYPE_DANGER,
+																									title: '[Str#web_hata#Str]',
+																									message: '[Str#web_sarkilar_sanatci_adi_hata_bos#Str]',
+																									onshown: function (dialog) {
+																										setTimeout(function () {
+																											dialog.close();
+																										}, 1000);
+																									}
+																								});
+																							} else if ($('#txtSanatciAdi').val().length < 3) {
+																								BootstrapDialog.show({
+																									type: BootstrapDialog.TYPE_DANGER,
+																									title: '[Str#web_hata#Str]',
+																									message: '[Str#web_sarkilar_sanatci_adi_hata_enaz3#Str]',
+																									onshown: function (dialog) {
+																										setTimeout(function () {
+																											dialog.close();
+																										}, 1000);
+																									}
+																								});
+																							} else if ($('#txtSarkiAdi').val().length == 0) {
+																								BootstrapDialog.show({
+																									type: BootstrapDialog.TYPE_DANGER,
+																									title: '[Str#web_hata#Str]',
+																									message: '[Str#web_sarkilar_sarki_adi_hata_bos#Str]',
+																									onshown: function (dialog) {
+																										setTimeout(function () {
+																											dialog.close();
+																										}, 1000);
+																									}
+																								});
+																							} else if ($('#txtSarkiAdi').val().length < 3) {
+																								BootstrapDialog.show({
+																									type: BootstrapDialog.TYPE_DANGER,
+																									title: '[Str#web_hata#Str]',
+																									message: '[Str#web_sarkilar_sarki_adi_hata_enaz3#Str]',
+																									onshown: function (dialog) {
+																										setTimeout(function () {
+																											dialog.close();
+																										}, 1000);
+																									}
+																								});
+																							} else if (tinyMCE.activeEditor.getContent().length == 0) {
+																								BootstrapDialog.show({
+																									type: BootstrapDialog.TYPE_DANGER,
+																									title: '[Str#web_hata#Str]',
+																									message: '[Str#web_sarkilar_sarki_icerik_hata_bos#Str]',
+																									onshown: function (dialog) {
+																										setTimeout(function () {
+																											dialog.close();
+																										}, 1000);
+																									}
+																								});
+																							} else if (tinyMCE.activeEditor.getContent().length < 10) {
+																								BootstrapDialog.show({
+																									type: BootstrapDialog.TYPE_DANGER,
+																									title: '[Str#web_hata#Str]',
+																									message: '[Str#web_sarkilar_sarki_icerik_hata_enaz10#Str]',
+																									onshown: function (dialog) {
+																										setTimeout(function () {
+																											dialog.close();
+																										}, 1000);
+																									}
+																								});
+																							} else {
+																								var BtnEkle = this,
+																									SarkiIcerik = tinyMCE.activeEditor.getContent();
+
+																								dialog.enableButtons(false);
+																								dialog.setClosable(false);
+																								BtnEkle.toggleSpin(true);
+
+																								$('#BtnListe').attr('disabled', true);
+																								$('#BtnKategori').attr('disabled', true);
+																								$('#BtnTarz').attr('disabled', true);
+																								$('#txtSanatciAdi').attr('disabled', true);
+																								$('#txtSarkiAdi').attr('disabled', true);
+																								$('#txtSarkiIcerik').attr('disabled', true);
+																								$('#DIVChkBoxIcerikGonder').addClass('disabled');
+																								$('#ChkBoxIcerikGonder').attr('disabled', true);
+
+																								var veriler = { Islem: "SarkiEkle", ListeID: SecilenListeID, KategoriID: SecilenKategoriID, TarzID: SecilenTarzID, SanatciAdi: $('#txtSanatciAdi').val(), SarkiAdi: $('#txtSarkiAdi').val(), SarkiIcerik: SarkiIcerik.replace(/#/g, '[sharp]'), AkorDefterimGonder: $('#ChkBoxIcerikGonder').is(":checked") };
+
+																								$.ajax({
+																									type: "POST",
+																									url: $.toJSON(veriler),
+																									contentType: "application/json; charset=utf-8",
+																									dataType: "json",
+																									success: function (data) {
+																										dialog.enableButtons(true);
+																										dialog.setClosable(true);
+																										BtnEkle.toggleSpin(false);
+
+																										$('#BtnListe').attr('disabled', false);
+																										$('#BtnKategori').attr('disabled', false);
+																										$('#BtnTarz').attr('disabled', false);
+																										$('#txtSanatciAdi').attr('disabled', false);
+																										$('#txtSarkiAdi').attr('disabled', false);
+																										$('#txtSarkiIcerik').attr('disabled', false);
+																										$('#DIVChkBoxIcerikGonder').removeClass('disabled');
+																										$('#ChkBoxIcerikGonder').attr('disabled', false);
+
+																										if (data.Sonuc) {
+																											dialog.close();
+
+																											setTimeout(function () {
+																												SarkiListesiGetir(SarkiSecilenSiralamaTipi);
+																											}, 1000);
+
+																											BootstrapDialog.show({
+																												type: BootstrapDialog.TYPE_SUCCESS,
+																												title: '[Str#web_sarkilar_eklendi1#Str]',
+																												message: $('#ChkBoxIcerikGonder').is(":checked") ? '[Str#web_sarkilar_eklendi2#Str] [Str#icerik_gonderildi#Str]' : '[Str#web_sarkilar_eklendi2#Str]',
+																												onshown: function (dialog) {
+																													setTimeout(function () {
+																														dialog.close();
+																													}, $('#ChkBoxIcerikGonder').is(":checked") ? 4000 : 1000);
+																												}
+																											});
+																										} else {
+																											BootstrapDialog.show({
+																												type: BootstrapDialog.TYPE_DANGER,
+																												title: '[Str#web_sarkilar_eklenemedi1#Str]',
+																												message: '[Str#web_sarkilar_eklenemedi2#Str]',
+																												onshown: function (dialog) {
+																													setTimeout(function () {
+																														dialog.close();
+																													}, 1000);
+																												}
+																											});
+																										}
+																									},
+																									error: function (xmlHttpRequest, status, err) {
+																										alert(xmlHttpRequest.statusText + ' ' + xmlHttpRequest.status + ' : ' + xmlHttpRequest.responseText);
+																									}
+																								});
+																							}
+																						}
+																					}, {
+																						id: 'BtnDialogKapat',
+																						label: '[Str#web_iptal#Str]',
+																						cssClass: 'btn-danger',
+																						icon: 'glyphicon glyphicon-remove',
+																						action: function (dialog) {
+																							dialog.close();
+																						}
+																					}]
+																				});
+																			} else {
+																				BootstrapDialog.show({
+																					type: BootstrapDialog.TYPE_DANGER,
+																					title: '[Str#web_sarkilar_tarz_yok1#Str]',
+																					message: '[Str#web_sarkilar_tarz_yok2#Str]',
+																					onshown: function (dialog) {
+																						setTimeout(function () {
+																							dialog.close();
+																						}, 1500);
+																					}
+																				});
+																			}
+																		},
+																		error: function (xmlHttpRequest, status, err) {
+																			alert(xmlHttpRequest.statusText + " " + xmlHttpRequest.status + " : " + xmlHttpRequest.responseText);
+																		}
+																	});
+																} else {
+																	BootstrapDialog.show({
+																		type: BootstrapDialog.TYPE_DANGER,
+																		title: '[Str#web_sarkilar_kategori_yok1#Str]',
+																		message: '[Str#web_sarkilar_kategori_yok2#Str]',
+																		onshown: function (dialog) {
+																			setTimeout(function () {
+																				dialog.close();
+																			}, 1500);
+																		}
+																	});
+																}
+															},
+															error: function (xmlHttpRequest, status, err) {
+																alert(xmlHttpRequest.statusText + " " + xmlHttpRequest.status + " : " + xmlHttpRequest.responseText);
+															}
+														});
+													} else {
+														BootstrapDialog.show({
+															type: BootstrapDialog.TYPE_DANGER,
+															title: '[Str#web_sarkilar_liste_yok1#Str]',
+															message: '[Str#web_sarkilar_liste_yok2#Str]',
+															onshown: function (dialog) {
+																setTimeout(function () {
+																	dialog.close();
+																}, 1500);
+															}
+														});
+													}
+												},
+												error: function (xmlHttpRequest, status, err) {
+													alert(xmlHttpRequest.statusText + " " + xmlHttpRequest.status + " : " + xmlHttpRequest.responseText);
+												}
+											});
+										},
+										error: function (xmlHttpRequest, status, err) {
+											alert(xmlHttpRequest.statusText + ' ' + xmlHttpRequest.status + ' : ' + xmlHttpRequest.responseText);
+										}
+									});
+								},
+								error: function (xmlHttpRequest, status, err) {
+									alert(xmlHttpRequest.statusText + ' ' + xmlHttpRequest.status + ' : ' + xmlHttpRequest.responseText);
+								}
+							});
+						},
+						error: function (xmlHttpRequest, status, err) {
+							alert(xmlHttpRequest.statusText + ' ' + xmlHttpRequest.status + ' : ' + xmlHttpRequest.responseText);
+						}
+					});
+				}
+
+				function SarkiDuzenle(SarkiID) {
+					var ToplamListeSayisi, ToplamTarzSayisi, ToplamKategoriSayisi;
+
+					var veriler = { Islem: "ToplamListeSayisiGetir" };
+
+					$.ajax({
+						type: "POST",
+						url: $.toJSON(veriler),
+						contentType: "application/json; charset=utf-8",
+						dataType: "json",
+						success: function (data) {
+							ToplamListeSayisi = data.ToplamListeSayisi;
+
+							var veriler = { Islem: "ToplamKategoriSayisiGetir" };
+
+							$.ajax({
+								type: "POST",
+								url: $.toJSON(veriler),
+								contentType: "application/json; charset=utf-8",
+								dataType: "json",
+								success: function (data) {
+									ToplamKategoriSayisi = data.ToplamKategoriSayisi;
+
+									var veriler = { Islem: "ToplamTarzSayisiGetir" };
+
+									$.ajax({
+										type: "POST",
+										url: $.toJSON(veriler),
+										contentType: "application/json; charset=utf-8",
+										dataType: "json",
+										success: function (data) {
+											ToplamTarzSayisi = data.ToplamTarzSayisi;
+
+											var SarkiDuzenleFormHTML = "",
+												Listeler = "", SecilenListeID = "", SecilenListeAdi = "",
+												Kategoriler = "", SecilenKategoriID = "", SecilenKategoriAdi = "",
+												Tarzlar = "", SecilenTarzID = "", SecilenTarzAdi = "",
+
+												verilerListe = { Islem: "ListeListesiGetir", BaslangicNo: 0, Limit: ToplamListeSayisi };
+												verilerKategori = { Islem: "KategoriListesiGetir", BaslangicNo: 0, Limit: ToplamKategoriSayisi };
+												verilerTarz = { Islem: "TarzListesiGetir", BaslangicNo: 0, Limit: ToplamTarzSayisi };
+												verilerSarkilar = { Islem: "SarkiGetir", SarkiID: SarkiID };
+
+											$.ajax({
+												type: "POST",
+												url: $.toJSON(verilerListe),
+												contentType: "application/json; charset=utf-8",
+												dataType: "json",
+												success: function (data) {
+													var ListeID = null,
+														array_ListeID = null,
+														ListeAdi = null,
+														array_ListeAdi = null;
+
+													ListeID = data.ListeID;
+													array_ListeID = ListeID.split(",");
+
+													ListeAdi = data.ListeAdi;
+													array_ListeAdi = ListeAdi.split(",");
+
+													if (array_ListeID.length > 1) {
+														for (i = 0; i < array_ListeID.length - 1; i++) {
+															Listeler = Listeler + '<li><a href="#" data-listeid="' + array_ListeID[i] + '">' + array_ListeAdi[i] + '</a></li>';
+														}
+													}
+
+													$.ajax({
+														type: "POST",
+														url: $.toJSON(verilerKategori),
+														contentType: "application/json; charset=utf-8",
+														dataType: "json",
+														success: function (data) {
+															var KategoriID = null,
+																array_KategoriID = null,
+																KategoriAdi = null,
+																array_KategoriAdi = null;
+
+															KategoriID = data.KategoriID;
+															array_KategoriID = KategoriID.split(",");
+
+															KategoriAdi = data.KategoriAdi;
+															array_KategoriAdi = KategoriAdi.split(",");
+
+															if (array_KategoriID.length > 1) {
+																for (i = 0; i < array_KategoriID.length - 1; i++) {
+																	Kategoriler = Kategoriler + '<li><a href="#" data-katid="' + array_KategoriID[i] + '">' + array_KategoriAdi[i] + '</a></li>';
+																}
+															}
+
+															$.ajax({
+																type: "POST",
+																url: $.toJSON(verilerTarz),
+																contentType: "application/json; charset=utf-8",
+																dataType: "json",
+																success: function (data) {
+																	var TarzID = null,
+																		array_TarzID = null,
+																		TarzAdi = null,
+																		array_TarzAdi = null;
+
+																	TarzID = data.TarzID;
+																	array_TarzID = TarzID.split(",");
+
+																	TarzAdi = data.TarzAdi;
+																	array_TarzAdi = TarzAdi.split(",");
+
+																	if (array_TarzID.length > 1) {
+																		for (i = 0; i < array_TarzID.length - 1; i++) {
+																			Tarzlar = Tarzlar + '<li><a href="#" data-tarzid="' + array_TarzID[i] + '">' + array_TarzAdi[i] + '</a></li>';
+																		}
+																	}
+
+																	$.ajax({
+																		type: "POST",
+																		url: $.toJSON(verilerSarkilar),
+																		contentType: "application/json; charset=utf-8",
+																		dataType: "json",
+																		success: function (data) {
+																			var SarkiDuzenleFormHTML = "",
+																				SarkiID = "",
+																				SanatciAdi = "",
+																				SarkiAdi = "",
+																				Icerik = "";
+
+																			SarkiID = data.ID;
+																			SecilenListeID = data.ListeID;
+																			SecilenKategoriID = data.KategoriID;
+																			SecilenTarzID = data.TarzID;
+																			SanatciAdi = data.SanatciAdi;
+																			SarkiAdi = data.SarkiAdi;
+																			SarkiIcerik = data.Icerik;
+
+																			if (array_ListeID.length > 1) {
+																				for (i = 0; i < array_ListeID.length - 1; i++) {
+																					if (array_ListeID[i] == SecilenListeID) SecilenListeAdi = array_ListeAdi[i];
+																				}
+																			}
+
+																			if (array_KategoriID.length > 1) {
+																				for (i = 0; i < array_KategoriID.length - 1; i++) {
+																					if (array_KategoriID[i] == SecilenKategoriID) SecilenKategoriAdi = array_KategoriAdi[i];
+																				}
+																			}
+
+																			if (array_TarzID.length > 1) {
+																				for (i = 0; i < array_TarzID.length - 1; i++) {
+																					if (array_TarzID[i] == SecilenTarzID) SecilenTarzAdi = array_TarzAdi[i];
+																				}
+																			}
+
+																			SarkiDuzenleFormHTML = SarkiDuzenleFormHTML + '<div class="row">';
+																			SarkiDuzenleFormHTML = SarkiDuzenleFormHTML + '<div class="col-xs-12 col-lg-12"><div class="input-group" style="margin-bottom: 10px"><span class="input-group-addon" for="txtSanatciAdi"><strong>[Str#web_sarkilar_sanatci_adi#Str]</strong></span><input type="text" class="form-control" id="txtSanatciAdi" value="' + SanatciAdi + '"></div></div>';
+																			SarkiDuzenleFormHTML = SarkiDuzenleFormHTML + '<div class="col-xs-12 col-lg-12"><div class="input-group" style="margin-bottom: 10px"><span class="input-group-addon" for="txtSarkiAdi"><strong>[Str#web_sarkilar_sarki_adi#Str]</strong></span><input type="text" class="form-control" id="txtSarkiAdi" value="' + SarkiAdi + '"></div></div>';
+																			SarkiDuzenleFormHTML = SarkiDuzenleFormHTML + '<div class="col-xs-12 col-lg-12"><div class="btn-group" style="margin-bottom: 10px"><button id="BtnListe" type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">[Str#liste#Str]: <strong>' + SecilenListeAdi + '</strong> <span class="caret"></span></button><ul id="DDListe" class="dropdown-menu" role="menu" data-container="body" data-toggle="popover" data-placement="top" data-content="" data-original-title="">' + Listeler + '</ul></div></div>';
+																			SarkiDuzenleFormHTML = SarkiDuzenleFormHTML + '<div class="col-xs-12 col-lg-12"><div class="btn-group" style="margin-bottom: 10px"><button id="BtnKategori" type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">[Str#kategori#Str]: <strong>' + SecilenKategoriAdi + '</strong> <span class="caret"></span></button><ul id="DDKategori" class="dropdown-menu" role="menu" data-container="body" data-toggle="popover" data-placement="top" data-content="" data-original-title="">' + Kategoriler + '</ul></div></div>';
+																			SarkiDuzenleFormHTML = SarkiDuzenleFormHTML + '<div class="col-xs-12 col-lg-12"><div class="btn-group" style="margin-bottom: 10px"><button id="BtnTarz" type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">[Str#tarz#Str]: <strong>' + SecilenTarzAdi + '</strong> <span class="caret"></span></button><ul id="DDTarz" class="dropdown-menu" role="menu" data-container="body" data-toggle="popover" data-placement="top" data-content="" data-original-title="">' + Tarzlar + '</ul></div></div>';
+																			SarkiDuzenleFormHTML = SarkiDuzenleFormHTML + '<div class="col-xs-12 col-lg-12"><textarea id="txtSarkiIcerik" style="width: 100%" rows="15" placeholder="İçerik">' + SarkiIcerik.replace(/\[sharp\]/g,'#') + '</textarea></div>';
+																			SarkiDuzenleFormHTML = SarkiDuzenleFormHTML + '</div>';
+
+																			BootstrapDialog.show({
+																				size: BootstrapDialog.SIZE_WIDE,
+																				type: BootstrapDialog.TYPE_PRIMARY,
+																				title: '[Str#web_sarkilar_duzenle#Str]',
+																				message: function (dialog) {
+																					var $content = $(SarkiDuzenleFormHTML);
+
+																					$content.find('#DDListe a').click(function () {
+																							$content.find('#BtnListe').html('[Str#liste#Str]: <strong>' + $(this).html() + '</strong> <span class="caret"></span>');
+																							SecilenListeID = parseInt($(this).attr('data-listeid'));
+																						})
+
+																					$content.find('#DDKategori a').click(function () {
+																						$content.find('#BtnKategori').html('[Str#kategori#Str]: <strong>' + $(this).html() + '</strong> <span class="caret"></span>');
+																						SecilenKategoriID = parseInt($(this).attr('data-katid'));
+																					})
+
+																					$content.find('#DDTarz a').click(function () {
+																						$content.find('#BtnTarz').html('[Str#tarz#Str]: <strong>' + $(this).html() + '</strong> <span class="caret"></span>');
+																						SecilenTarzID = parseInt($(this).attr('data-tarzid'));
+																					})
+
+																					return $content;
+																				},
+																				onshown: function(dialog){
+																					/*$('#txtSarkiIcerik').wysihtml5({
+																						toolbar: {
+																							"font-styles": true, //Font styling, e.g. h1, h2, etc. Default true
+																							"emphasis": true, //Italics, bold, etc. Default true
+																							"lists": false, //(Un)ordered lists, e.g. Bullets, Numbers. Default true
+																							"html": true, //Button which allows you to edit the generated HTML. Default false
+																							"link": false, //Button to insert a link. Default true
+																							"image": false, //Button to insert an image. Default true,
+																							"color": false, //Button to change color of font
+																							"blockquote": false, //Blockquote
+																							fa: true
+																						},
+																						locale: 'tr-TR'
+																					});*/
+
+																					document.getElementById("txtSanatciAdi").focus();
+
+																					tinymce.init({
+																						selector: '#txtSarkiIcerik',
+																						plugins: ["autosave code"],
+																						external_plugins: {
+																							"akor_isaretleyici": "http://akordefterim.cbcapp.net/araclar/javascript/tinymce_plugins/akor_isaretleyici/js_tinymce_akor_isaretleyici.js"
+																						},
+																						menubar: "file edit tools",
+																						toolbar: 'undo redo | bold | akor_isaretleyici',
+																						br_in_pre: false,
+																						custom_undo_redo_levels: 15,
+																						forced_root_block : false //Enter tuşuna basıldığında paragraf açmak yerine direk br ekler. Ve Komple paragraf'ı iptal eder. (<p><(p>)
+																					});
+																				},
+																				onhidden: function () {
+																					tinymce.remove();
+																				},
+																				buttons: [{
+																					id: 'BtnDuzenle',
+																					label: '[Str#web_duzenle#Str]',
+																					cssClass: 'btn-primary',
+																					icon: 'glyphicon glyphicon-plus',
+																					action: function (dialog) {
+																						if ($('#txtSanatciAdi').val().length == 0) {
+																							BootstrapDialog.show({
+																								type: BootstrapDialog.TYPE_DANGER,
+																								title: '[Str#web_hata#Str]',
+																								message: '[Str#web_sarkilar_sanatci_adi_hata_bos#Str]',
+																								onshown: function (dialog) {
+																									setTimeout(function () {
+																										dialog.close();
+																									}, 1000);
+																								}
+																							});
+																						} else if ($('#txtSanatciAdi').val().length < 3) {
+																							BootstrapDialog.show({
+																								type: BootstrapDialog.TYPE_DANGER,
+																								title: '[Str#web_hata#Str]',
+																								message: '[Str#web_sarkilar_sanatci_adi_hata_enaz3#Str]',
+																								onshown: function (dialog) {
+																									setTimeout(function () {
+																										dialog.close();
+																									}, 1000);
+																								}
+																							});
+																						} else if ($('#txtSarkiAdi').val().length == 0) {
+																							BootstrapDialog.show({
+																								type: BootstrapDialog.TYPE_DANGER,
+																								title: '[Str#web_hata#Str]',
+																								message: '[Str#web_sarkilar_sarki_adi_hata_bos#Str]',
+																								onshown: function (dialog) {
+																									setTimeout(function () {
+																										dialog.close();
+																									}, 1000);
+																								}
+																							});
+																						} else if ($('#txtSarkiAdi').val().length < 3) {
+																							BootstrapDialog.show({
+																								type: BootstrapDialog.TYPE_DANGER,
+																								title: '[Str#web_hata#Str]',
+																								message: '[Str#web_sarkilar_sarki_adi_hata_enaz3#Str]',
+																								onshown: function (dialog) {
+																									setTimeout(function () {
+																										dialog.close();
+																									}, 1000);
+																								}
+																							});
+																						} else if (tinyMCE.activeEditor.getContent().length == 0) {
+																							BootstrapDialog.show({
+																								type: BootstrapDialog.TYPE_DANGER,
+																								title: '[Str#web_hata#Str]',
+																								message: '[Str#web_sarkilar_sarki_icerik_hata_bos#Str]',
+																								onshown: function (dialog) {
+																									setTimeout(function () {
+																										dialog.close();
+																									}, 1000);
+																								}
+																							});
+																						} else if (tinyMCE.activeEditor.getContent().length < 10) {
+																							BootstrapDialog.show({
+																								type: BootstrapDialog.TYPE_DANGER,
+																								title: '[Str#web_hata#Str]',
+																								message: '[Str#web_sarkilar_sarki_icerik_hata_enaz10#Str]',
+																								onshown: function (dialog) {
+																									setTimeout(function () {
+																										dialog.close();
+																									}, 1000);
+																								}
+																							});
+																						} else {
+																							var BtnDuzenle = this,
+																								SarkiIcerik = tinyMCE.activeEditor.getContent();
+
+																							dialog.enableButtons(false);
+																							dialog.setClosable(false);
+																							BtnDuzenle.toggleSpin(true);
+
+																							$('#BtnListe').attr('disabled', true);
+																							$('#BtnKategori').attr('disabled', true);
+																							$('#BtnTarz').attr('disabled', true);
+																							$('#txtSanatciAdi').attr('disabled', true);
+																							$('#txtSarkiAdi').attr('disabled', true);
+																							$('#txtSarkiIcerik').attr('disabled', true);
+
+																							var veriler = { Islem: "SarkiDuzenle", SarkiID: SarkiID, ListeID: SecilenListeID, KategoriID: SecilenKategoriID, TarzID: SecilenTarzID, SanatciAdi: $('#txtSanatciAdi').val(), SarkiAdi: $('#txtSarkiAdi').val(), SarkiIcerik: SarkiIcerik.replace(/#/g, '[sharp]') };
+
+																							$.ajax({
+																								type: "POST",
+																								url: $.toJSON(veriler),
+																								contentType: "application/json; charset=utf-8",
+																								dataType: "json",
+																								success: function (data) {
+																									dialog.enableButtons(true);
+																									dialog.setClosable(true);
+																									BtnDuzenle.toggleSpin(false);
+
+																									$('#BtnListe').attr('disabled', false);
+																									$('#BtnKategori').attr('disabled', false);
+																									$('#BtnTarz').attr('disabled', false);
+																									$('#txtSanatciAdi').attr('disabled', false);
+																									$('#txtSarkiAdi').attr('disabled', false);
+																									$('#txtSarkiIcerik').attr('disabled', false);
+
+																									if (data.Sonuc) {
+																										dialog.close();
+
+																										setTimeout(function () {
+																											SarkiListesiGetir(SarkiSecilenSiralamaTipi);
+																										}, 1000);
+
+																										BootstrapDialog.show({
+																											type: BootstrapDialog.TYPE_SUCCESS,
+																											title: '[Str#web_sarkilar_duzenlendi1#Str]',
+																											message: '[Str#web_sarkilar_duzenlendi2#Str]',
+																											onshown: function (dialog) {
+																												setTimeout(function () {
+																													dialog.close();
+																												}, 1000);
+																											}
+																										});
+																									} else {
+																										BootstrapDialog.show({
+																											type: BootstrapDialog.TYPE_DANGER,
+																											title: '[Str#web_sarkilar_duzenlenemedi1#Str]',
+																											message: '[Str#web_sarkilar_duzenlenemedi2#Str]',
+																											onshown: function (dialog) {
+																												setTimeout(function () {
+																													dialog.close();
+																												}, 1000);
+																											}
+																										});
+																									}
+																								},
+																								error: function (xmlHttpRequest, status, err) {
+																									alert(xmlHttpRequest.statusText + ' ' + xmlHttpRequest.status + ' : ' + xmlHttpRequest.responseText);
+																								}
+																							});
+																						}
+																					}
+																				}, {
+																					id: 'BtnDialogKapat',
+																					label: '[Str#web_iptal#Str]',
+																					cssClass: 'btn-danger',
+																					icon: 'glyphicon glyphicon-remove',
+																					action: function (dialog) {
+																						dialog.close();
+																					}
+																				}]
+																			});
+																		},
+																		error: function (xmlHttpRequest, status, err) {
+																			alert(xmlHttpRequest.statusText + " " + xmlHttpRequest.status + " : " + xmlHttpRequest.responseText);
+																		}
+																	});
+																},
+																error: function (xmlHttpRequest, status, err) {
+																	alert(xmlHttpRequest.statusText + " " + xmlHttpRequest.status + " : " + xmlHttpRequest.responseText);
+																}
+															});
+														},
+														error: function (xmlHttpRequest, status, err) {
+															alert(xmlHttpRequest.statusText + " " + xmlHttpRequest.status + " : " + xmlHttpRequest.responseText);
+														}
+													});
+												},
+												error: function (xmlHttpRequest, status, err) {
+													alert(xmlHttpRequest.statusText + " " + xmlHttpRequest.status + " : " + xmlHttpRequest.responseText);
+												}
+											});
+										},
+										error: function (xmlHttpRequest, status, err) {
+											alert(xmlHttpRequest.statusText + ' ' + xmlHttpRequest.status + ' : ' + xmlHttpRequest.responseText);
+										}
+									});
+								},
+								error: function (xmlHttpRequest, status, err) {
+									alert(xmlHttpRequest.statusText + ' ' + xmlHttpRequest.status + ' : ' + xmlHttpRequest.responseText);
+								}
+							});
+						},
+						error: function (xmlHttpRequest, status, err) {
+							alert(xmlHttpRequest.statusText + ' ' + xmlHttpRequest.status + ' : ' + xmlHttpRequest.responseText);
+						}
+					});
+				}
+
+				function SarkiSil(SarkiID) {
+					var SanatciAdi = "",
+						SarkiAdi = "";
+
+					var veriler = { Islem: "SarkiGetir", SarkiID: SarkiID };
+
+					$.ajax({
+						type: "POST",
+						url: $.toJSON(veriler),
+						contentType: "application/json; charset=utf-8",
+						dataType: "json",
+						success: function (data) {
+							SanatciAdi = data.SanatciAdi;
+							SarkiAdi = data.SarkiAdi;
+
+							BootstrapDialog.show({
+								type: BootstrapDialog.TYPE_WARNING,
+								title: '<strong>' + SanatciAdi + ' - ' + SarkiAdi + '</strong>',
+								message: sprintf('[Str#web_sarkilar_sil_soru#Str]', '<strong>' + SanatciAdi + '</strong>', '<strong>' + SarkiAdi + '</strong>'),
+								buttons: [{
+									id: 'BtnSil',
+									label: '[Str#web_sil#Str]',
+									cssClass: 'btn-primary',
+									icon: 'glyphicon glyphicon-remove-sign',
+									action: function (dialog) {
+										var BtnSil = this;
+
+										dialog.enableButtons(false);
+										dialog.setClosable(false);
+										BtnSil.toggleSpin(true);
+
+										var veriler = { Islem: "SarkiSil", SarkiID: SarkiID };
+
+										$.ajax({
+											type: "POST",
+											url: $.toJSON(veriler),
+											contentType: "application/json; charset=utf-8",
+											dataType: "json",
+											success: function (data) {
+												dialog.enableButtons(true);
+												dialog.setClosable(true);
+												BtnSil.toggleSpin(false);
+
+												if (data.Sonuc) {
+													dialog.close();
+
+													setTimeout(function () {
+														SarkiListesiGetir(SarkiSecilenSiralamaTipi);
+													}, 1000);
+
+													BootstrapDialog.show({
+														type: BootstrapDialog.TYPE_SUCCESS,
+														title: '[Str#web_sarkilar_silindi1#Str]',
+														message: sprintf('[Str#web_sarkilar_silindi2#Str]', '<strong>' + SanatciAdi + '</strong>', '<strong>' + SarkiAdi + '</strong>'),
+														onshown: function (dialog) {
+															setTimeout(function () {
+																dialog.close();
+															}, 1000);
+														}
+													});
+												} else {
+													BootstrapDialog.show({
+														type: BootstrapDialog.TYPE_DANGER,
+														title: '[Str#web_sarkilar_silinemedi1#Str]',
+														message: '[Str#web_sarkilar_silinemedi2#Str]',
+														onshown: function (dialog) {
+															setTimeout(function () {
+																dialog.close();
+															}, 1000);
+														}
+													});
+												}
+											},
+											error: function (xmlHttpRequest, status, err) {
+												alert(xmlHttpRequest.statusText + ' ' + xmlHttpRequest.status + ' : ' + xmlHttpRequest.responseText);
+											}
+										});
+									}
+								}, {
+									id: 'BtnDialogKapat',
+									label: '[Str#web_iptal#Str]',
+									cssClass: 'btn-danger',
+									icon: 'glyphicon glyphicon-remove',
+									action: function (dialog) {
+										dialog.close();
+									}
+								}]
+							});
+						},
+						error: function (xmlHttpRequest, status, err) {
+							alert(xmlHttpRequest.statusText + " " + xmlHttpRequest.status + " : " + xmlHttpRequest.responseText);
+						}
+					});
+				}
+
+				// ------ HAKKINDA SAYFASI ------ //
+				function HakkindaSayfaDataGetir() {
+					var veriler = { Islem: "HakkindaSayfaDataGetir" };
+
+					$.ajax({
+						type: "POST",
+						url: $.toJSON(veriler),
+						contentType: "application/json; charset=utf-8",
+						dataType: "json",
+						success: function (data) {
+							$('#DIVTellifHakkiYazisi').html("<strong>" + data.TelifHakkiYazisi1 + "</strong></br>" + data.TelifHakkiYazisi2);
+							$('#DIVVersiyon').html(data.Versiyon);
+						},
+						error: function (xmlHttpRequest, status, err) {
+							alert(xmlHttpRequest.statusText + ' ' + xmlHttpRequest.status + ' : ' + xmlHttpRequest.responseText);
+						}
+					});
+				}
+			});
+		</script>
+	</body>
+</html>

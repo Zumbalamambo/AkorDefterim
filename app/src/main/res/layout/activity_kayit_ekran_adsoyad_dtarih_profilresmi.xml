@@ -1,0 +1,181 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.design.widget.CoordinatorLayout
+	xmlns:android="http://schemas.android.com/apk/res/android"
+	xmlns:app="http://schemas.android.com/apk/res-auto"
+	xmlns:tools="http://schemas.android.com/tools"
+	android:id="@+id/coordinatorLayout"
+	android:layout_width="match_parent"
+	android:layout_height="match_parent">
+
+	<android.support.constraint.ConstraintLayout
+		android:layout_width="match_parent"
+		android:layout_height="match_parent"
+		android:descendantFocusability="beforeDescendants"
+		android:focusableInTouchMode="true"
+		android:keepScreenOn="true">
+
+		<android.support.constraint.Guideline
+			android:id="@+id/v_guideline1"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:orientation="vertical"
+			app:layout_constraintGuide_percent="0.05"
+			tools:layout_editor_absoluteY="25dp"
+			tools:layout_editor_absoluteX="21dp" />
+
+		<android.support.constraint.Guideline
+			android:id="@+id/v_guideline2"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:orientation="vertical"
+			app:layout_constraintGuide_percent="0.95"
+			tools:layout_editor_absoluteY="25dp"
+			tools:layout_editor_absoluteX="391dp" />
+
+		<Button
+			android:id="@+id/btnGeri"
+			android:layout_width="24dp"
+			android:layout_height="24dp"
+			android:layout_marginLeft="0dp"
+			android:layout_marginStart="0dp"
+			android:layout_marginTop="35dp"
+			android:background="@drawable/ic_arrow_back_siyah"
+			app:layout_constraintLeft_toLeftOf="@+id/v_guideline1"
+			app:layout_constraintTop_toTopOf="parent" />
+
+		<TextView
+			android:id="@+id/lblVazgec"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:text="@string/vazgec"
+			android:textAppearance="@style/TextAppearance.AppCompat.Button"
+			android:textColor="@color/AcikMavi3"
+			app:layout_constraintBaseline_toBaselineOf="@+id/btnGeri"
+			app:layout_constraintRight_toLeftOf="@+id/v_guideline2" />
+
+		<TextView
+			android:id="@+id/lblBaslik"
+			android:layout_width="0dp"
+			android:layout_height="wrap_content"
+			android:layout_marginTop="24dp"
+			android:text="@string/profilini_olustur"
+			android:textColor="@color/KoyuYazi"
+			android:textSize="@dimen/yazi_boyutu22"
+			app:layout_constraintLeft_toLeftOf="@+id/v_guideline1"
+			app:layout_constraintTop_toBottomOf="@+id/btnGeri" />
+
+		<TextView
+			android:id="@+id/lblAdSoyadResimAciklama"
+			android:layout_width="0dp"
+			android:layout_height="wrap_content"
+			android:layout_marginTop="16dp"
+			android:text="@string/adsoyad_dogumtarih_resim_ekran_aciklama"
+			android:textColor="@color/KoyuGri"
+			app:layout_constraintLeft_toLeftOf="@+id/v_guideline1"
+			app:layout_constraintRight_toLeftOf="@+id/v_guideline2"
+			app:layout_constraintTop_toBottomOf="@+id/lblBaslik" />
+
+		<LinearLayout
+			android:id="@+id/LLAdSoyadResim"
+			android:layout_width="0dp"
+			android:layout_height="wrap_content"
+			android:layout_marginTop="16dp"
+			android:weightSum="1"
+			app:layout_constraintLeft_toLeftOf="@+id/v_guideline1"
+			app:layout_constraintRight_toLeftOf="@+id/v_guideline2"
+			app:layout_constraintTop_toBottomOf="@+id/lblAdSoyadResimAciklama">
+
+			<LinearLayout
+				android:id="@+id/LLAdSoyad"
+				android:layout_width="0dp"
+				android:layout_height="match_parent"
+				android:layout_weight="0.7"
+				android:orientation="vertical">
+
+				<android.support.design.widget.TextInputLayout
+					android:id="@+id/txtILAdSoyad"
+					android:layout_width="match_parent"
+					android:layout_height="wrap_content"
+					android:textColorHint="@color/KoyuGri">
+
+					<EditText
+						android:id="@+id/txtAdSoyad"
+						android:layout_width="match_parent"
+						android:layout_height="wrap_content"
+						android:hint="@string/ad_soyad"
+						android:textColor="@color/KoyuYazi"
+						android:inputType="textPersonName"/>
+				</android.support.design.widget.TextInputLayout>
+
+				<android.support.design.widget.TextInputLayout
+					android:id="@+id/txtILDogumTarih"
+					android:layout_width="match_parent"
+					android:layout_height="wrap_content"
+					android:textColorHint="@color/KoyuGri">
+
+					<EditText
+						android:id="@+id/txtDogumTarih"
+						android:layout_width="match_parent"
+						android:layout_height="wrap_content"
+						android:hint="@string/dogumtarihi"
+						android:textColor="@color/KoyuYazi"
+                        android:inputType="date"/>
+				</android.support.design.widget.TextInputLayout>
+			</LinearLayout>
+
+			<RelativeLayout
+				android:layout_width="0dp"
+				android:layout_height="match_parent"
+				android:layout_weight="0.3"
+				android:layout_marginLeft="10dp"
+				android:layout_marginStart="10dp">
+
+				<com.cnbcyln.app.akordefterim.util.CircleImageView
+					android:id="@+id/CImgProfilResim"
+					android:layout_width="120dp"
+					android:layout_height="120dp"
+					android:layout_centerHorizontal="true"
+					android:src="@drawable/com_facebook_profile_picture_blank_square"
+					app:civ_border_color="#eaebeb"
+					app:civ_border_width="2dp" />
+
+				<ImageView
+					android:id="@+id/ImgKameraIcon"
+					android:layout_width="32dp"
+					android:layout_height="32dp"
+					android:layout_alignBottom="@+id/CImgProfilResim"
+					android:layout_alignRight="@+id/CImgProfilResim"
+					android:layout_alignEnd="@+id/CImgProfilResim"
+					android:contentDescription="@string/imageDesc"
+					android:src="@drawable/ic_photo_camera" />
+
+				<ImageView
+					android:id="@+id/ImgSilIcon"
+					android:layout_width="32dp"
+					android:layout_height="32dp"
+					android:layout_alignBottom="@+id/CImgProfilResim"
+					android:layout_alignLeft="@+id/CImgProfilResim"
+					android:layout_alignStart="@+id/CImgProfilResim"
+					android:contentDescription="@string/imageDesc"
+					android:src="@drawable/ic_cancel" />
+			</RelativeLayout>
+		</LinearLayout>
+
+		<Button
+			android:id="@+id/btnIleri"
+			android:layout_width="wrap_content"
+			android:layout_height="48dp"
+			android:background="@drawable/custom_button_mavi"
+			android:drawableEnd="@drawable/ic_btn_arrow_forward"
+			android:drawableRight="@drawable/ic_btn_arrow_forward"
+			android:paddingRight="5dp"
+			android:paddingEnd="5dp"
+			android:text="@string/ileri"
+			android:textAppearance="@style/TextAppearance.AppCompat"
+			android:textColor="@color/Beyaz"
+			app:layout_constraintRight_toLeftOf="@+id/v_guideline2"
+			android:layout_marginTop="24dp"
+			app:layout_constraintTop_toBottomOf="@+id/LLAdSoyadResim" />
+
+	</android.support.constraint.ConstraintLayout>
+</android.support.design.widget.CoordinatorLayout>

@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/action_son_eklenen_sarkiyi_ac"
+        android:orderInCategory="100"
+        android:title="@string/son_eklenen_sarkiyi_ac" />
+
+    <item
+        android:id="@+id/action_sanatciya_ait_sarki_listesini_getir"
+        android:orderInCategory="101"
+        android:title="@string/sanatciya_ait_sarki_listesini_getir" />
+</menu>

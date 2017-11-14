@@ -1,0 +1,231 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    package="com.cnbcyln.app.akordefterim" >
+
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
+    <uses-permission android:name="android.permission.CHANGE_WIFI_STATE" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.VIBRATE" />
+    <uses-permission android:name="android.permission.RECEIVE_SMS" />
+    <!--<uses-permission android:name="android.permission.READ_SMS" />
+    <uses-permission android:name="android.permission.SEND_SMS" />
+    <uses-permission android:name="android.permission.WRITE_SMS" />-->
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <!--<uses-permission android:name="android.permission.CAMERA" />-->
+    <!--<uses-permission android:name="com.android.vending.BILLING" />-->
+    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
+    <uses-permission android:name="com.google.android.c2dm.permission.RECEIVE" />
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="android.permission.USE_CREDENTIALS" />
+    <uses-permission android:name="android.permission.GET_ACCOUNTS" />
+    <uses-permission android:name="android.permission.WRITE_SETTINGS"/>
+
+    <!--<supports-screens
+        android:anyDensity="true"
+        android:largeScreens="true"
+        android:normalScreens="true"
+        android:smallScreens="true" />-->
+
+    <!--<compatible-screens>-->
+        <!--no small size screens -->
+    <!--<screen android:screenSize="small" android:screenDensity="ldpi" />-->
+    <!--<screen android:screenSize="small" android:screenDensity="mdpi" />-->
+    <!--<screen android:screenSize="small" android:screenDensity="hdpi" />-->
+    <!--<screen android:screenSize="small" android:screenDensity="xhdpi" />-->
+    <!--<screen android:screenSize="small" android:screenDensity="480" />-->
+
+        <!--all normal size screens -->
+    <!--<screen android:screenSize="normal" android:screenDensity="ldpi" />-->
+    <!--<screen android:screenSize="normal" android:screenDensity="mdpi" />-->
+    <!--<screen android:screenSize="normal" android:screenDensity="hdpi" />-->
+    <!--<screen android:screenSize="normal" android:screenDensity="xhdpi" />-->
+    <!--<screen android:screenSize="normal" android:screenDensity="480" />-->
+
+        <!-- all large size screens -->
+    <!--<screen android:screenSize="large" android:screenDensity="ldpi" />-->
+    <!--<screen android:screenSize="large" android:screenDensity="mdpi" />-->
+    <!--<screen android:screenSize="large" android:screenDensity="hdpi" />-->
+    <!--<screen android:screenSize="large" android:screenDensity="xhdpi" />-->
+    <!--<screen android:screenSize="large" android:screenDensity="480" />-->
+
+        <!-- all xlarge size screens -->
+    <!--<screen android:screenSize="xlarge" android:screenDensity="ldpi" />-->
+    <!--<screen android:screenSize="xlarge" android:screenDensity="mdpi" />-->
+    <!--<screen android:screenSize="xlarge" android:screenDensity="hdpi" />-->
+    <!--<screen android:screenSize="xlarge" android:screenDensity="xhdpi" />-->
+    <!--<screen android:screenSize="xlarge" android:screenDensity="480" />`-->
+
+        <!-- Special case for Nexus 7 -->
+    <!--<screen android:screenSize="large" android:screenDensity="213" />-->
+
+    <!--</compatible-screens>-->
+
+    <!--<supports-screens android:resizeable = "true"
+        android:smallScreens = "true"
+        android:normalScreens = "true"
+        android:largeScreens = "true"
+        android:xlargeScreens = "true"
+        android:anyDensity = "true"
+        android:requiresSmallestWidthDp = "300"
+        android:compatibleWidthLimitDp = "300"
+        android:largestWidthLimitDp = "400"/>-->
+
+    <application
+        android:name=".MyApplication"
+        android:allowBackup="true"
+        android:icon="@mipmap/ic_launcher"
+        android:label="@string/uygulama_adi"
+        android:supportsRtl="true"
+        android:theme="@style/AppTheme"
+        tools:replace="android:label">
+
+        <activity android:name=".SplashEkran">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity android:name=".Egitim" >
+            <intent-filter>
+                <action android:name="android.intent.action.EGITIM" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
+        <activity android:name=".Ana" >
+            <intent-filter>
+                <action android:name="android.intent.action.ANA" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
+        <activity android:name=".GirisEkran" >
+            <intent-filter>
+                <action android:name="android.intent.action.GIRISEKRAN" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
+        <activity android:name=".GirisYap" >
+            <intent-filter>
+                <action android:name="android.intent.action.GIRISEKRAN_GIRISYAP" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
+        <activity android:name=".KayitEkran_EPosta">
+            <intent-filter>
+                <action android:name="android.intent.action.KAYITEKRAN_EPOSTA" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
+        <activity android:name=".Onaykodu">
+            <intent-filter>
+                <action android:name="android.intent.action.KAYITEKRAN_ONAYKODU" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
+        <activity android:name=".ParolaBelirle">
+            <intent-filter>
+                <action android:name="android.intent.action.KAYITEKRAN_PAROLA" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
+        <activity android:name=".KayitEkran_AdSoyad_DTarih_Resim">
+            <intent-filter>
+                <action android:name="android.intent.action.KAYITEKRAN_ADSOYAD_DTARIH_RESIM" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
+        <activity android:name=".KayitEkran_KullaniciAdi">
+            <intent-filter>
+                <action android:name="android.intent.action.KAYITEKRAN_KULLANICIADI" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
+        <activity android:name=".ParolamiUnuttum" >
+            <intent-filter>
+                <action android:name="android.intent.action.SIFREMIUNUTTUM" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
+        <activity android:name="com.facebook.FacebookActivity"
+            android:configChanges="keyboard|keyboardHidden|screenLayout|screenSize|orientation"
+            android:label="@string/uygulama_adi"
+            android:screenOrientation="portrait"
+            tools:replace="android:theme"
+            android:theme="@android:style/Theme.Translucent.NoTitleBar" />
+        <activity android:name="com.theartofdev.edmodo.cropper.CropImageActivity"
+            android:theme="@style/Base.Theme.AppCompat"/>
+        <activity
+            android:name="com.startapp.android.publish.ads.list3d.List3DActivity"
+            android:theme="@android:style/Theme" />
+        <activity
+            android:name="com.startapp.android.publish.adsCommon.activities.OverlayActivity"
+            android:configChanges="orientation|keyboardHidden|screenSize"
+            android:theme="@android:style/Theme.Translucent" />
+        <activity
+            android:name="com.startapp.android.publish.adsCommon.activities.FullScreenActivity"
+            android:configChanges="orientation|keyboardHidden|screenSize"
+            android:theme="@android:style/Theme" />
+
+        <service android:name=".util.AppService" android:exported="false" />
+        <service android:name=".util.MqttService" android:exported="false" />
+        <service android:name=".util.WebServerService" />
+
+        <!-- [START firebase_service] -->
+        <service android:name=".util.MyFirebaseMessagingService" android:exported="false">
+            <intent-filter>
+                <action android:name="com.google.firebase.MESSAGING_EVENT"/>
+            </intent-filter>
+        </service>
+        <!-- [END firebase_service] -->
+
+        <!-- [START firebase_iid_service] -->
+        <!-- <service android:name=".util.MyFirebaseInstanceIDService">
+            <intent-filter>kl can da da can can
+                <action android:name="com.google.firebase.INSTANCE_ID_EVENT"/>
+            </intent-filter>
+        </service> -->
+        <!-- [END firebase_iid_service] -->
+
+        <receiver android:name=".util.OnayKoduSMSReceiver"
+            android:permission="android.permission.BROADCAST_SMS">
+            <intent-filter>
+                <action android:name="android.provider.Telephony.SMS_RECEIVED" />
+            </intent-filter>
+        </receiver>
+
+        <!-- ATTENTION: This was auto-generated to add Google Play services to your project for App Indexing.  See https://g.co/AppIndexing/AndroidStudio for more information. -->
+        <meta-data android:name="com.google.android.gms.version" android:value="@integer/google_play_services_version" />
+
+        <!-- [BAŞLANGIÇ Facebook Login] -->
+        <meta-data android:name="com.facebook.sdk.ApplicationId" android:value="@string/facebook_app_id"/>
+        <provider
+            android:name="com.facebook.FacebookContentProvider"
+            android:authorities="com.facebook.app.FacebookContentProvider1136309509735788"
+            android:exported="true"
+            tools:ignore="ExportedContentProvider" />
+        <!-- [BİTİŞ Facebook Login] -->
+
+        <!--<receiver android:name=".util.MqttReciever">
+            <intent-filter>
+                <action android:name="com.cnbcyln.app.akordefterim" />
+                <action android:name="android.intent.action.BOOT_COMPLETED" />
+            </intent-filter>
+        </receiver>
+        <meta-data
+            android:name="io.fabric.ApiKey"
+            android:value="64489a12b8e891b1e5d12fbb07ced31c0460b056" />-->
+    </application>
+</manifest>

@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+	xmlns:ripple="http://schemas.android.com/apk/res-auto"
+	android:layout_width="fill_parent"
+	android:layout_height="fill_parent"
+	android:orientation="vertical"
+	android:fillViewport="true"
+	android:background="#dedede"
+	android:scrollbarThumbVertical="@drawable/scroll_vertical_thumb_bar">
+    
+	<LinearLayout
+	    android:layout_width="fill_parent"
+	    android:layout_height="wrap_content"
+	    android:padding="5dp"
+	    android:orientation="vertical" >
+	    
+	    <LinearLayout
+	        android:layout_width="fill_parent"
+	        android:layout_height="wrap_content"
+			android:orientation="vertical">
+			
+	        <TextView
+			    android:id="@+id/lblListeler"
+			    android:layout_width="wrap_content"
+			    android:layout_height="wrap_content"
+			    android:layout_marginBottom="5dp"
+			    android:text="@string/liste"
+			    android:textColor="@color/TuruncuYazi" />
+			
+			<Spinner
+				android:id="@+id/spnListeler"
+			    android:layout_width="fill_parent"
+			    android:layout_height="wrap_content"
+			    android:layout_marginBottom="15dp"
+				android:background="@drawable/custom_spinner" />
+			
+			<TextView
+			    android:id="@+id/lblKategori"
+			    android:layout_width="wrap_content"
+			    android:layout_height="wrap_content"
+			    android:layout_marginBottom="5dp"
+			    android:text="@string/kategori"
+			    android:textColor="@color/TuruncuYazi" />
+			
+			<Spinner
+				android:id="@+id/spnKategori"
+			    android:layout_width="fill_parent"
+			    android:layout_height="wrap_content"
+			    android:layout_marginBottom="15dp"
+			    android:background="@drawable/custom_spinner" />
+			
+			<TextView
+			    android:id="@+id/lblTarz"
+			    android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+			    android:layout_marginBottom="5dp"
+			    android:text="@string/tarz"
+			    android:textColor="@color/TuruncuYazi" />
+			
+			<Spinner
+			    android:id="@+id/spnTarz"
+			    android:layout_width="fill_parent"
+			    android:layout_height="wrap_content"
+			    android:layout_marginBottom="15dp"
+			    android:background="@drawable/custom_spinner" />
+			
+			<TextView
+			    android:id="@+id/lblListelemeTipi"
+			    android:layout_width="wrap_content"
+			    android:layout_height="wrap_content"
+			    android:layout_marginBottom="5dp"
+			    android:text="@string/listelemetipi"
+			    android:textColor="@color/TuruncuYazi" />
+			
+			<Spinner
+			    android:id="@+id/spnListelemeTipi"
+			    android:layout_width="fill_parent"
+			    android:layout_height="wrap_content"
+			    android:layout_marginBottom="20dp"
+			    android:background="@drawable/custom_spinner" />
+	    </LinearLayout>
+	    
+	    <RelativeLayout
+	        android:layout_width="fill_parent"
+			android:layout_height="wrap_content"
+			android:orientation="vertical">
+
+			<com.andexert.library.RippleView
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				ripple:rv_alpha="@integer/Ripple_Alpha"
+				ripple:rv_rippleDuration="@integer/Ripple_Duration"
+				ripple:rv_color="@color/RippleEffectColor">
+
+				<Button
+					android:id="@+id/btnListele"
+					android:layout_width="fill_parent"
+					android:layout_height="wrap_content"
+					android:background="@drawable/custom_button"
+					android:text="@string/listele"
+					android:textColor="@color/KoyuYazi" />
+			</com.andexert.library.RippleView>
+	    </RelativeLayout>
+	</LinearLayout>
+</ScrollView>

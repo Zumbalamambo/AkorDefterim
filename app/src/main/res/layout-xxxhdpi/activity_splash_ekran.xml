@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+	xmlns:app="http://schemas.android.com/apk/res-auto"
+	android:layout_width="match_parent"
+	android:layout_height="match_parent"
+	android:keepScreenOn="true"
+	android:background="#000000">
+
+	<!-- android:keepScreenOn="true" Ekranın sürekli uyanık kalmasını sağlar -->
+
+	<RelativeLayout
+		android:id="@+id/RLBG"
+		android:layout_width="fill_parent"
+		android:layout_height="fill_parent">
+
+		<LinearLayout
+			android:layout_width="fill_parent"
+			android:layout_height="fill_parent"
+			android:orientation="vertical">
+
+			<ImageView
+				android:layout_width="fill_parent"
+				android:layout_height="fill_parent"
+				android:contentDescription="@string/imageDesc"
+				android:scaleType="centerCrop"
+				android:src="@drawable/bg" />
+		</LinearLayout>
+
+		<RelativeLayout
+			android:id="@+id/RLLogo"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:layout_marginTop="20dp"
+			android:layout_marginBottom="10dp"
+			android:layout_marginLeft="15dp"
+			android:layout_marginRight="15dp"
+			android:layout_centerVertical="true"
+			android:layout_centerHorizontal="true">
+
+			<ImageView
+				android:id="@+id/ImgLogo"
+				android:layout_width="500dp"
+				android:layout_height="250dp"
+				android:contentDescription="@string/imageDesc"
+				android:src="@drawable/banner_trans"
+				android:layout_centerHorizontal="true"
+				android:scaleType="fitCenter" />
+
+			<TextView
+				android:id="@+id/lblVersiyonNo"
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				android:layout_alignEnd="@+id/ImgLogo"
+				android:layout_alignRight="@+id/ImgLogo"
+				android:layout_alignBottom="@+id/ImgLogo"
+				android:layout_margin="10dp"
+				android:gravity="center"
+				android:text="@string/labeltire"
+				android:textStyle="bold"
+				android:textColor="#f6edf3" />
+		</RelativeLayout>
+
+		<!--<RelativeLayout
+			android:id="@+id/RLYukleniyor"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:layout_below="@+id/RLLogo"
+			android:layout_centerVertical="true"
+			android:layout_centerHorizontal="true">
+
+			<com.github.ybq.android.spinkit.SpinKitView
+				android:id="@+id/spin_kit"
+				style="@style/SpinKitView.FadingCircle"
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				android:layout_gravity="center"
+				app:SpinKit_Color="@color/TuruncuYazi" />
+		</RelativeLayout>-->
+	</RelativeLayout>
+</RelativeLayout>

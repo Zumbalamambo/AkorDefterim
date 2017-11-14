@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:contentDescription="@string/imageDesc"
+        android:scaleType="centerCrop"
+        android:src="@drawable/bg" />
+
+    <RelativeLayout
+        android:id="@+id/RLBanner"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="10dp">
+
+        <com.cnbcyln.app.akordefterim.util.ResizableImageView
+            android:id="@+id/ImgBanner"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/banner_trans" />
+
+        <TextView
+            android:id="@+id/Dialog_lblVersiyonNo"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignEnd="@+id/ImgBanner"
+            android:layout_alignRight="@+id/ImgBanner"
+            android:layout_alignBottom="@+id/ImgBanner"
+            android:layout_margin="10dp"
+            android:gravity="center"
+            android:text="@string/labeltire"
+            android:textStyle="bold"
+            android:textColor="#f6edf3" />
+    </RelativeLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:weightSum="100"
+        android:layout_below="@+id/RLBanner">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="10">
+
+            <com.cnbcyln.app.akordefterim.LLTransparanPanel
+                android:id="@+id/transparanPanel1"
+                android:layout_width="fill_parent"
+                android:layout_height="match_parent"
+                android:layout_marginRight="5dp"
+                android:layout_marginBottom="5dp"
+                android:layout_marginLeft="5dp"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/Dialog_lblDuyuru_Reklam_Icerik"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="3dp"
+                    android:layout_marginRight="3dp"
+                    android:layout_marginLeft="3dp"
+                    android:layout_marginStart="3dp"
+                    android:text="@string/labeltire"
+                    android:textSize="@dimen/yazi_boyutu16"
+                    android:textColor="@color/Beyaz" />
+
+                <!--<WebView
+                    android:id="@+id/Dialog_WebDuyuru_Reklam_Icerik"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"/>-->
+            </com.cnbcyln.app.akordefterim.LLTransparanPanel>
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="90">
+
+            <CheckBox
+                android:id="@+id/Dialog_chkBirDahaGosterme"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/Beyaz"
+                android:theme="@style/MyCheckBoxTuruncu"
+                android:text="@string/bir_daha_gosterme"/>
+        </LinearLayout>
+    </LinearLayout>
+
+
+</RelativeLayout>

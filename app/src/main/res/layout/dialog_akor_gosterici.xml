@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="match_parent"
+    android:orientation="horizontal"
+	android:background="@color/Gri">
+
+	<RelativeLayout
+		android:layout_width="0dp"
+		android:layout_weight="0.12"
+		android:layout_height="match_parent">
+
+		<TextView
+			android:id="@+id/Dialog_txtTon"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:layout_centerHorizontal="true"
+			android:layout_marginBottom="5dp"
+			android:text="@string/ton"
+			android:textColor="@color/KoyuYazi" />
+
+		<ListView
+			android:id="@+id/Dialog_lstTonlar"
+			android:layout_width="match_parent"
+			android:layout_height="match_parent"
+			android:layout_below="@+id/Dialog_txtTon"
+			android:background="@color/Gri" />
+	</RelativeLayout>
+
+	<RelativeLayout
+		android:layout_width="0dp"
+		android:layout_weight="0.22"
+		android:layout_height="match_parent">
+
+		<TextView
+			android:id="@+id/Dialog_txtAkor"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:layout_centerHorizontal="true"
+			android:layout_marginBottom="5dp"
+			android:text="@string/akor"
+			android:textColor="@color/KoyuYazi" />
+
+		<ListView
+			android:id="@+id/Dialog_lstAkorlar"
+			android:layout_width="match_parent"
+			android:layout_height="match_parent"
+			android:layout_below="@+id/Dialog_txtAkor"
+			android:background="@color/Gri" />
+	</RelativeLayout>
+
+	<ScrollView
+		android:layout_width="0dp"
+		android:layout_weight="0.56"
+		android:layout_height="match_parent"
+		android:orientation="vertical" >
+
+		<ImageView
+			android:id="@+id/Dialog_ImgGitarKlavye"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:contentDescription="@string/imageDesc"/>
+	</ScrollView>
+</LinearLayout>

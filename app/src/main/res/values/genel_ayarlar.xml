@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="facebook_app_id">1136309509735788</string>
+    <string name="twitter_consumer_key" translatable="false">kDzgYWE9Ih07nd3w6dFUYg1mc</string>
+    <string name="twitter_consumer_secret" translatable="false">BS5PM6K7WHxKUIU4IeCBeiLkvuXlALqQBtO7gCLtQeAMxgdknx</string>
+
+    <integer name="AdKarakterSayisi_MIN">3</integer>
+    <integer name="AdKarakterSayisi_MAX">25</integer>
+    <integer name="SoyadKarakterSayisi_MIN">3</integer>
+    <integer name="SoyadKarakterSayisi_MAX">25</integer>
+    <integer name="AdSoyadKarakterSayisi_MIN">3</integer>
+    <integer name="AdSoyadKarakterSayisi_MAX">50</integer>
+    <integer name="KullaniciAdiKarakterSayisi_MIN">6</integer>
+    <integer name="KullaniciAdiKarakterSayisi_MAX">15</integer>
+    <integer name="SifreKarakterSayisi_MIN">6</integer>
+    <integer name="SifreKarakterSayisi_MAX">20</integer>
+    <integer name="AppServiceCalismaAraligi">300</integer> <!-- 300 Saniye = 5 Dakika-->
+
+    <!-- Sarki Icerik Değerleri -->
+    <integer name="SarkiIcerikYaziBoyutu_MIN">40</integer>
+    <integer name="SarkiIcerikYaziBoyutu_MAX">100</integer>
+    <integer name="SarkiIcerikYaziBuyultmeKucultmeOrani">5</integer>
+
+    <!-- Ripple Efekt Değerleri -->
+    <integer name="Ripple_Alpha">100</integer>
+    <integer name="Ripple_Duration">300</integer>
+
+    <!-- İstek Yapma Ve Alma Ayarları (GPS Google Map Ayarları Dahil) -->
+    <integer name="ZamanBazliMinimumGuncellemeAraligi">5000</integer> <!-- 5000 MS = 5 Saniye -->
+    <integer name="FATEST_INTERVAL">2000</integer> <!-- 2000 MS = 2 Saniye -->
+    <integer name="MesafeBazliMinimumGuncellemeAraligi">10</integer> <!-- 10 Metre -->
+    <integer name="SQLLokasyonGuncellemeAraligi">10</integer> <!-- 10 Dakika -->
+    <integer name="IstekYapmaKapsamaAlani">30</integer> <!-- 30 Metre -->
+    <integer name="MapZoom">18</integer> <!-- Kullanıcıya yapılan zoom -->
+
+    <!-- SnackBar Ayarları -->
+    <integer name="SnackBar_GurunumSuresi_5">5000</integer> <!-- 5000 MS = 5 Saniye -->
+    <integer name="SnackBar_GurunumSuresi_10">10000</integer> <!-- 10000 MS = 10 Saniye -->
+
+    <item name="item_click_support" type="id" />
+</resources>

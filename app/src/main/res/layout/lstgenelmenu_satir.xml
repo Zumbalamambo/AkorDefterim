@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/RLGenelMenu"
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content"
+    android:padding="6dp"
+    android:background="?android:attr/activatedBackgroundIndicator">
+    
+    <ImageView
+        android:id="@+id/ImgMenuIcon"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:scaleType="centerCrop"
+        android:contentDescription="@string/imageDesc"/>
+
+    <TextView
+        android:id="@+id/txtMenuAdi"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
+        android:layout_toRightOf="@+id/ImgMenuIcon"
+        android:layout_toEndOf="@+id/ImgMenuIcon"
+        android:layout_marginLeft="10dp"
+        android:layout_marginStart="10dp"
+        android:text="@string/labeltire"
+        android:textColor="@color/KoyuYazi" />
+    
+</RelativeLayout>

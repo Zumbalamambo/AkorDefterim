@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/btnMenuRepertuvarListesiYenile"
+        android:icon="@drawable/yenile2"
+        android:title="@string/listeyi_yenile" />
+</menu>

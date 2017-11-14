@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:contentDescription="@string/imageDesc"
+        android:scaleType="centerCrop"
+        android:src="@drawable/bg" />
+
+    <RelativeLayout
+        android:id="@+id/RLBanner"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="10dp">
+
+        <com.cnbcyln.app.akordefterim.util.ResizableImageView
+            android:id="@+id/ImgBanner"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/banner_trans" />
+
+        <TextView
+            android:id="@+id/Dialog_lblVersiyonNo"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignEnd="@+id/ImgBanner"
+            android:layout_alignRight="@+id/ImgBanner"
+            android:layout_alignBottom="@+id/ImgBanner"
+            android:layout_margin="10dp"
+            android:gravity="center"
+            android:text="@string/labeltire"
+            android:textStyle="bold"
+            android:textColor="#f6edf3" />
+    </RelativeLayout>
+
+    <com.cnbcyln.app.akordefterim.LLTransparanPanel
+        android:id="@+id/transparanPanel1"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/RLBanner"
+        android:layout_marginRight="5dp"
+        android:layout_marginBottom="5dp"
+        android:layout_marginLeft="5dp"
+        android:orientation="vertical"
+        android:padding="5dp" >
+
+        <TextView
+            android:id="@+id/Dialog_lblYenilikler"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="10dp"
+            android:text="@string/yenilikler"
+            android:textSize="@dimen/yazi_boyutu16"
+            android:textColor="@color/TuruncuYazi"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/Dialog_lblYenilikler_Icerik"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/labeltire"
+
+            android:textColor="@color/Beyaz"
+            android:textStyle="normal" />
+
+    </com.cnbcyln.app.akordefterim.LLTransparanPanel>
+</RelativeLayout>

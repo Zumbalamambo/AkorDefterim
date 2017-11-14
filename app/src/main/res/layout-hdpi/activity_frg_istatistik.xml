@@ -1,0 +1,129 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#000000" >
+
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:orientation="vertical">
+
+        <ImageView
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:contentDescription="@string/imageDesc"
+            android:scaleType="centerCrop"
+            android:src="@drawable/bg" />
+    </LinearLayout>
+
+    <ScrollView
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:orientation="vertical" >
+
+        <RelativeLayout
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content">
+
+            <com.cnbcyln.app.akordefterim.LLTransparanPanel
+                android:id="@+id/transparanPanel1"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_margin="@dimen/transparan_panel_margin"
+                android:orientation="vertical"
+                android:padding="10dp"
+                android:layout_centerHorizontal="true">
+
+                <TextView
+                    android:id="@+id/lblGenelOnlineIstatistik"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="10dp"
+                    android:text="@string/istatistikler"
+                    android:textSize="@dimen/yazi_boyutu16"
+                    android:textColor="@color/TuruncuYazi"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/lblGenelOnlineIstatistik_Yazi"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="10dp"
+                    android:text="@string/genel_online_istatistik_aciklama"
+                    android:textColor="#ffffff" />
+
+                <com.github.mikephil.charting.charts.PieChart
+                    android:id="@+id/ChartEnSonGoruntulenenSarkilar"
+                    android:layout_width="match_parent"
+                    android:layout_height="300dp"/>
+
+            </com.cnbcyln.app.akordefterim.LLTransparanPanel>
+
+            <com.cnbcyln.app.akordefterim.LLTransparanPanel
+                android:id="@+id/transparanPanel2"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/transparanPanel1"
+                android:layout_margin="@dimen/transparan_panel_margin"
+                android:orientation="vertical"
+                android:padding="10dp"
+                android:layout_centerHorizontal="true">
+
+                <LinearLayout
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical" >
+
+                    <TextView
+                        android:id="@+id/lblIstatistiklerBaslik"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="10dp"
+                        android:text="@string/istatistikler"
+                        android:textSize="@dimen/yazi_boyutu16"
+                        android:textColor="@color/TuruncuYazi"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:id="@+id/lblToplamListe"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/labeltire"
+
+                        android:textColor="@color/Beyaz"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:id="@+id/lblToplamKategori"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/labeltire"
+
+                        android:textColor="@color/Beyaz"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:id="@+id/lblToplamTarz"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/labeltire"
+
+                        android:textColor="@color/Beyaz"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:id="@+id/lblToplamSarki"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/labeltire"
+
+                        android:textColor="@color/Beyaz"
+                        android:textStyle="bold" />
+                </LinearLayout>
+            </com.cnbcyln.app.akordefterim.LLTransparanPanel>
+
+
+        </RelativeLayout>
+    </ScrollView>
+</RelativeLayout>

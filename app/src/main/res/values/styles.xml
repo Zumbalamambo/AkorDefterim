@@ -1,0 +1,66 @@
+<resources>
+
+    <!-- Base application theme. -->
+    <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
+        <!-- Customize your theme here. -->
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+        <item name="colorAccent">@color/colorAccent</item>
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+    </style>
+
+    <style name="ParolaKorumasiDusuk" parent="TextAppearance.AppCompat.Small">
+        <item name="android:textColor">@color/Kirmizi</item>
+    </style>
+
+    <style name="ParolaKorumasiOrta" parent="TextAppearance.AppCompat.Small">
+        <item name="android:textColor">@color/TuruncuYazi</item>
+    </style>
+
+    <style name="ParolaKorumasiYuksek" parent="TextAppearance.AppCompat.Small">
+        <item name="android:textColor">@color/Yesil2</item>
+    </style>
+
+    <style name="MyCheckBoxTuruncu" parent="Theme.AppCompat.Light.DarkActionBar">
+        <item name="colorControlNormal">@color/TuruncuYazi</item>
+        <item name="colorControlActivated">@color/TuruncuYazi</item>
+    </style>
+
+    <style name="MyCheckBoxBeyaz" parent="Theme.AppCompat.Light.DarkActionBar">
+        <item name="colorControlNormal">@color/Beyaz</item>
+        <item name="colorControlActivated">@color/Beyaz</item>
+    </style>
+
+    <style name="MyCheckBoxKoyuMavi" parent="Theme.AppCompat.Light.DarkActionBar">
+        <item name="colorControlNormal">@color/KoyuMavi</item>
+        <item name="colorControlActivated">@color/KoyuMavi</item>
+    </style>
+
+    <style name="AppTheme.NoActionBar">
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+    </style>
+
+    <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
+
+    <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
+
+    <style name="DialogAnimation">
+        <item name="android:windowEnterAnimation">@anim/anim_dialog_open</item>
+        <item name="android:windowExitAnimation">@anim/anim_dialog_close</item>
+    </style>
+
+    <style name="FacebookLoginButton">
+        <item name="android:textSize">@dimen/yazi_boyutu16</item>
+        <item name="android:background">@drawable/custom_btnfacebook_login</item>
+        <item name="android:layout_marginTop">10dp</item>
+        <item name="android:layout_marginBottom">10dp</item>
+        <item name="android:layout_gravity">center_horizontal</item>
+    </style>
+
+    <style name="TextAppearance1" parent="TextAppearance.Design.Hint">
+        <item name="android:textStyle">bold</item>
+        <item name="android:textSize">@dimen/yazi_boyutu16</item>
+    </style>
+</resources>

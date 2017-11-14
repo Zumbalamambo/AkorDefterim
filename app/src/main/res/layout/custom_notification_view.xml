@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/KoyuMavi"
+    style="@android:style/TextAppearance.StatusBar.EventContent">
+
+    <ImageView
+        android:id="@+id/NotifyImage"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:layout_margin="8dp"
+        android:contentDescription="@string/imageDesc"
+        android:src="@mipmap/ic_launcher" />
+
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:layout_alignParentBottom="false"
+        android:layout_toRightOf="@+id/NotifyImage"
+        android:layout_toEndOf="@+id/NotifyImage"
+        android:gravity="center_vertical"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/NotifyBaslik"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/labeltire"
+            android:textSize="16sp"
+            android:textColor="@color/TuruncuYazi"/>
+
+        <TextView
+            android:id="@+id/NotifyIcerik"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/labeltire"
+            android:textSize="13sp"
+            android:textColor="@color/Beyaz"/>
+    </LinearLayout>
+
+</RelativeLayout>

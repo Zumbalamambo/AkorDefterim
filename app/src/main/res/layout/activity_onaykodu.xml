@@ -1,0 +1,143 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.design.widget.CoordinatorLayout
+	xmlns:android="http://schemas.android.com/apk/res/android"
+	xmlns:app="http://schemas.android.com/apk/res-auto"
+	xmlns:tools="http://schemas.android.com/tools"
+	android:id="@+id/coordinatorLayout"
+	android:layout_width="match_parent"
+	android:layout_height="match_parent">
+
+	<android.support.constraint.ConstraintLayout
+		android:layout_width="match_parent"
+		android:layout_height="match_parent"
+		android:descendantFocusability="beforeDescendants"
+		android:focusableInTouchMode="true"
+		android:keepScreenOn="true">
+
+		<android.support.constraint.Guideline
+			android:id="@+id/v_guideline1"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:orientation="vertical"
+			app:layout_constraintGuide_percent="0.05"
+			tools:layout_editor_absoluteY="0dp"
+			tools:layout_editor_absoluteX="21dp" />
+
+		<android.support.constraint.Guideline
+			android:id="@+id/v_guideline2"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:orientation="vertical"
+			app:layout_constraintGuide_percent="0.95"
+			tools:layout_editor_absoluteY="0dp"
+			tools:layout_editor_absoluteX="391dp" />
+
+		<Button
+			android:id="@+id/btnGeri"
+			android:layout_width="24dp"
+			android:layout_height="24dp"
+			android:layout_marginLeft="0dp"
+			android:layout_marginStart="0dp"
+			android:layout_marginTop="35dp"
+			android:background="@drawable/ic_arrow_back_siyah"
+			app:layout_constraintLeft_toLeftOf="@+id/v_guideline1"
+			app:layout_constraintTop_toTopOf="parent" />
+
+		<TextView
+			android:id="@+id/lblVazgec"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:layout_marginRight="0dp"
+			android:layout_marginEnd="0dp"
+			android:text="@string/vazgec"
+			android:textAppearance="@style/TextAppearance.AppCompat.Button"
+			android:textColor="@color/AcikMavi3"
+			app:layout_constraintBaseline_toBaselineOf="@+id/btnGeri"
+			app:layout_constraintRight_toLeftOf="@+id/v_guideline2" />
+
+		<TextView
+			android:id="@+id/lblBaslik"
+			android:layout_width="0dp"
+			android:layout_height="wrap_content"
+			android:layout_marginLeft="0dp"
+			android:layout_marginStart="0dp"
+			android:layout_marginTop="24dp"
+			android:text="@string/onay_kodu"
+			android:textColor="@color/KoyuYazi"
+			android:textSize="@dimen/yazi_boyutu22"
+			app:layout_constraintLeft_toLeftOf="@+id/v_guideline1"
+			app:layout_constraintTop_toBottomOf="@+id/btnGeri" />
+
+		<TextView
+			android:id="@+id/lblOnayKoduAciklama"
+			android:layout_width="0dp"
+			android:layout_height="wrap_content"
+			android:text="@string/onay_kodu_bilgilendirme_email"
+			android:layout_marginLeft="0dp"
+			android:layout_marginStart="0dp"
+			android:layout_marginTop="16dp"
+			android:textColor="@color/KoyuGri"
+			app:layout_constraintLeft_toLeftOf="@+id/v_guideline1"
+			app:layout_constraintTop_toBottomOf="@+id/lblBaslik" />
+
+		<com.mhk.android.passcodeview.PasscodeView
+			android:id="@+id/txtOnayKodu"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:layout_gravity="center_horizontal"
+			android:layout_marginTop="24dp"
+			android:layout_marginLeft="0dp"
+			android:layout_marginStart="0dp"
+			android:layout_marginRight="0dp"
+			android:layout_marginEnd="0dp"
+			app:digitColorBorder="@color/KoyuYazi"
+			app:digitColorFilled="@color/AcikMavi3"
+			app:numDigits="6"
+			app:layout_constraintLeft_toLeftOf="@+id/v_guideline1"
+			app:layout_constraintTop_toBottomOf="@+id/lblOnayKoduAciklama"
+			app:layout_constraintRight_toLeftOf="@+id/v_guideline2" />
+
+		<TextView
+			android:id="@+id/lblOnayKoduKalanSureAciklama"
+			android:layout_width="0dp"
+			android:layout_height="wrap_content"
+			android:layout_marginLeft="0dp"
+			android:layout_marginStart="0dp"
+			android:layout_marginTop="24dp"
+			android:text="@string/kalan_sure"
+			android:textColor="@color/KoyuGri"
+			app:layout_constraintLeft_toLeftOf="@+id/v_guideline1"
+			app:layout_constraintTop_toBottomOf="@+id/txtOnayKodu" />
+
+		<TextView
+			android:id="@+id/lblYenidenGonder"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:layout_marginLeft="0dp"
+			android:layout_marginStart="0dp"
+			android:layout_marginTop="16dp"
+			android:text="@string/yeniden_gonder"
+			android:textAppearance="@style/TextAppearance.AppCompat.Button"
+			android:textColor="@color/AcikMavi3"
+			app:layout_constraintLeft_toLeftOf="@+id/v_guideline1"
+			app:layout_constraintTop_toBottomOf="@+id/lblOnayKoduKalanSureAciklama" />
+
+		<Button
+			android:id="@+id/btnIleri"
+			android:layout_width="wrap_content"
+			android:layout_height="48dp"
+			android:layout_marginRight="0dp"
+			android:layout_marginTop="24dp"
+			android:background="@drawable/custom_button_mavi"
+			android:drawableEnd="@drawable/ic_btn_arrow_forward"
+			android:drawableRight="@drawable/ic_btn_arrow_forward"
+			android:paddingRight="5dp"
+			android:paddingEnd="5dp"
+			android:text="@string/ileri"
+			android:textAppearance="@style/TextAppearance.AppCompat"
+			android:textColor="@color/Beyaz"
+			app:layout_constraintRight_toLeftOf="@+id/v_guideline2"
+			app:layout_constraintTop_toBottomOf="@+id/lblYenidenGonder" />
+
+	</android.support.constraint.ConstraintLayout>
+</android.support.design.widget.CoordinatorLayout>

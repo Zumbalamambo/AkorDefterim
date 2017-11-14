@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:ripple="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="10dp">
+    
+    <TextView
+        android:id="@+id/Dialog_lblSifreDegistirmeBilgi"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="10dp"
+        android:text="@string/sifre_degistirme_bilgi"
+        android:textSize="16sp"
+        android:textColor="@color/KoyuYazi" />
+
+	<com.andexert.library.RippleView
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content"
+		ripple:rv_alpha="@integer/Ripple_Alpha"
+		ripple:rv_rippleDuration="@integer/Ripple_Duration"
+		ripple:rv_color="@color/RippleEffectColor">
+
+		<EditText
+			android:id="@+id/Dialog_EtxtGuncelSifre"
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content"
+			android:layout_marginBottom="10dp"
+			android:inputType="textPassword"
+			android:singleLine="true"
+			android:background="@drawable/custom_edittext"
+			android:textColor="@color/Siyah"
+			android:hint="@string/guncel_sifre"
+			android:textColorHint="@color/EditTextHint"
+			android:textCursorDrawable="@drawable/edittext_siyah_cursor"
+			 />
+	</com.andexert.library.RippleView>
+
+	<com.andexert.library.RippleView
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content"
+		ripple:rv_alpha="@integer/Ripple_Alpha"
+		ripple:rv_rippleDuration="@integer/Ripple_Duration"
+		ripple:rv_color="@color/RippleEffectColor">
+
+		<EditText
+			android:id="@+id/Dialog_EtxtYeniSifre"
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content"
+			android:layout_marginBottom="10dp"
+			android:inputType="textPassword"
+			android:singleLine="true"
+			android:background="@drawable/custom_edittext"
+			android:textColor="@color/Siyah"
+			android:hint="@string/yeni_sifre"
+			android:textColorHint="@color/EditTextHint"
+			android:textCursorDrawable="@drawable/edittext_siyah_cursor"
+			 />
+	</com.andexert.library.RippleView>
+
+	<com.andexert.library.RippleView
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content"
+		ripple:rv_alpha="@integer/Ripple_Alpha"
+		ripple:rv_rippleDuration="@integer/Ripple_Duration"
+		ripple:rv_color="@color/RippleEffectColor">
+
+		<EditText
+			android:id="@+id/Dialog_EtxtYeniSifreTekrar"
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content"
+			android:inputType="textPassword"
+			android:singleLine="true"
+			android:background="@drawable/custom_edittext"
+			android:textColor="@color/Siyah"
+			android:hint="@string/yeni_sifre_tekrar"
+			android:textColorHint="@color/EditTextHint"
+			android:textCursorDrawable="@drawable/edittext_siyah_cursor"
+			 />
+	</com.andexert.library.RippleView>
+</LinearLayout>

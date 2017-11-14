@@ -1,0 +1,133 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/KoyuMavi"
+    android:padding="10dp"
+    android:orientation="vertical">
+
+    <com.cnbcyln.app.akordefterim.LLTransparanPanel
+        android:id="@+id/transparanPanel"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:padding="5dp" >
+
+        <TextView
+            android:id="@+id/Dialog_lblListeler"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="5dp"
+            android:text="@string/liste"
+            android:textSize="16sp"
+            android:textColor="@color/TuruncuYazi" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginBottom="15dp"
+            android:orientation="horizontal">
+
+            <Spinner
+                android:id="@+id/Dialog_spnListeler"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:background="@drawable/custom_spinner" />
+
+            <Button
+                android:id="@+id/Dialog_btnListeEkle"
+                android:layout_width="34dp"
+                android:layout_height="34dp"
+                android:layout_marginLeft="5dp"
+                android:layout_marginStart="5dp"
+                android:background="@drawable/custom_btnplus"/>
+
+            <Button
+                android:id="@+id/Dialog_btnListeSil"
+                android:layout_width="34dp"
+                android:layout_height="34dp"
+                android:layout_marginLeft="5dp"
+                android:layout_marginStart="5dp"
+                android:background="@drawable/custom_btnminus"/>
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/Dialog_lblKategori"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="5dp"
+            android:text="@string/kategori"
+            android:textSize="16sp"
+            android:textColor="@color/TuruncuYazi" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginBottom="15dp"
+            android:orientation="horizontal">
+
+            <Spinner
+                android:id="@+id/Dialog_spnKategori"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:background="@drawable/custom_spinner" />
+
+            <Button
+                android:id="@+id/Dialog_btnKategoriEkle"
+                android:layout_width="34dp"
+                android:layout_height="34dp"
+                android:layout_marginLeft="5dp"
+                android:layout_marginStart="5dp"
+                android:background="@drawable/custom_btnplus"/>
+
+            <Button
+                android:id="@+id/Dialog_btnKategoriSil"
+                android:layout_width="34dp"
+                android:layout_height="34dp"
+                android:layout_marginLeft="5dp"
+                android:layout_marginStart="5dp"
+                android:background="@drawable/custom_btnminus"/>
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/Dialog_lblTarz"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="5dp"
+            android:text="@string/tarz"
+            android:textSize="16sp"
+            android:textColor="@color/TuruncuYazi" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="horizontal">
+
+            <Spinner
+                android:id="@+id/Dialog_spnTarz"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:background="@drawable/custom_spinner" />
+
+            <Button
+                android:id="@+id/Dialog_btnTarzEkle"
+                android:layout_width="34dp"
+                android:layout_height="34dp"
+                android:layout_marginLeft="5dp"
+                android:layout_marginStart="5dp"
+                android:background="@drawable/custom_btnplus"/>
+
+            <Button
+                android:id="@+id/Dialog_btnTarzSil"
+                android:layout_width="34dp"
+                android:layout_height="34dp"
+                android:layout_marginLeft="5dp"
+                android:layout_marginStart="5dp"
+                android:background="@drawable/custom_btnminus"/>
+        </LinearLayout>
+
+    </com.cnbcyln.app.akordefterim.LLTransparanPanel>
+</LinearLayout>

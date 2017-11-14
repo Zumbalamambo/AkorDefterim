@@ -1,0 +1,109 @@
+apply plugin: 'com.android.application'
+
+android {
+    signingConfigs {
+        keystore {
+            keyAlias 'akordefterim'
+            keyPassword '625tr7sq'
+            storeFile file('D:/AkorDefterim/keystore')
+            storePassword '625tr7sq'
+        }
+    }
+    compileSdkVersion 26
+    buildToolsVersion '26.0.2'
+    defaultConfig {
+        applicationId "com.cnbcyln.app.akordefterim"
+        minSdkVersion 16
+        targetSdkVersion 26
+        versionCode 49
+        versionName '1.4.9'
+        // Enabling multidex support.
+        multiDexEnabled true
+        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+        vectorDrawables.useSupportLibrary = true
+    }
+    buildTypes {
+        release {
+            minifyEnabled true
+            shrinkResources false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            signingConfig signingConfigs.keystore
+        }
+        debug {
+            minifyEnabled false
+            signingConfig signingConfigs.keystore
+        }
+    }
+    lintOptions {
+        abortOnError false
+    }
+    dexOptions {
+        //Bu ayar android studio'nun bilgisayar ram'inde kullanacağı kapasiteyi belirler. Önemlidir. Aksi halde derleme yaparken hata verir.. (Can, bu sorunu çözmek için çok uğraştın ;))
+        javaMaxHeapSize "6g"
+    }
+    packagingOptions {
+        exclude 'META-INF/NOTICE'
+        exclude 'META-INF/LICENSE'
+        exclude 'META-INF/DEPENDENCIES'
+    }
+    useLibrary 'org.apache.http.legacy'
+}
+
+repositories {
+    mavenCentral()
+    maven { url 'http://jzaccone.github.io/SlidingMenu-aar' }
+    maven { url 'https://jitpack.io' }
+    google()
+}
+
+dependencies {
+    compile fileTree(include: ['*.jar'], dir: 'libs')
+    androidTestCompile('com.android.support.test.espresso:espresso-core:2.2.2', {
+        exclude group: 'com.android.support', module: 'support-annotations'
+    })
+    compile 'com.android.support:design:26.+'
+    compile 'com.android.support:appcompat-v7:26.1.0'
+    compile 'com.android.support.constraint:constraint-layout:1.0.2'
+    compile 'com.android.support:recyclerview-v7:26.+'
+    compile 'com.android.support:cardview-v7:26.+'
+    testCompile 'junit:junit:4.12'
+    compile 'com.android.support:multidex:1.0.2'
+    //compile files('libs/mysql-connector-java-5.1.35-bin.jar')
+    compile files('libs/httpclient-4.3.6.jar')
+    compile files('libs/httpcore-4.3.3.jar')
+    compile files('libs/httpmime-4.3.6.jar')
+    //compile files('libs/StartAppInApp-3.5.4.jar')
+    compile 'com.google.android.gms:play-services:11.6.0'
+    compile 'com.google.firebase:firebase-core:11.6.0'
+    compile 'com.google.firebase:firebase-crash:11.6.0'
+    compile 'com.google.firebase:firebase-messaging:11.6.0'
+    compile 'com.google.firebase:firebase-config:11.6.0'
+    //compile 'com.google.android.gms:play-services-maps:9.2.0'
+    compile 'com.facebook.android:facebook-android-sdk:4.+'
+    compile 'com.jeremyfeinstein.slidingmenu:library:1.3@aar'
+    compile 'com.jpardogo.materialtabstrip:library:1.1.0'
+    //compile 'com.github.shell-software:fab:1.1.2'
+    //compile 'org.apache.poi:poi:3.14'
+    //compile 'org.apache.poi:poi-scratchpad:3.14'
+    compile project(':app:libraries:rippleeffect')
+    compile 'com.github.clans:fab:1.6.4'
+    compile 'org.eclipse.paho:org.eclipse.paho.client.mqttv3:1.1.0'
+    //Mqtt servera bağlanmaya yarayan kütüphane
+    compile 'com.theartofdev.edmodo:android-image-cropper:2.3.+'
+    //Resim kesmeye yarayan kütüphane
+    compile 'org.jsoup:jsoup:1.9.2'
+    //HTML sayfalarından bilgi çeken kütüphane
+    compile 'com.google.code.gson:gson:2.8.0'
+    compile 'com.squareup.retrofit2:retrofit:2.3.0'
+    //Dataların GET - POST işlemlerini yapan kütüphane
+    compile 'com.squareup.retrofit2:converter-gson:2.3.0'
+    //compile 'com.squareup.okhttp:okhttp:2.4.0' //Dataların GET - POST işlemlerini yapan kütüphane
+    compile 'com.github.PhilJay:MPAndroidChart:v3.0.2'
+    compile 'com.github.ybq:Android-SpinKit:1.1.0'
+    // Loader Animasyon
+    compile 'com.github.iammehedi:passcodeview:1.03'
+    compile 'com.github.bumptech.glide:glide:3.7.0'
+    compile 'com.nostra13.universalimageloader:universal-image-loader:1.9.5'
+}
+
+apply plugin: 'com.google.gms.google-services'

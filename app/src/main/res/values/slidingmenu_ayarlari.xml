@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="slidingmenu_genisligi_tablet">470dp</dimen>
+    <dimen name="slidingmenu_genisligi_mobile">300dp</dimen>
+    <dimen name="list_padding">10dp</dimen>
+    <dimen name="shadow_width">15dp</dimen>
+    <dimen name="behind_width">10dp</dimen>
+
+    <!-- Sliding NAV -->
+    <string name="srn_drawer_open">Open</string>
+    <string name="srn_drawer_close">Close</string>
+
+    <string name="srn_ex_no_menu_view">No view for menu provided. You must either call .withMenuView(View) or pass a valid resource id to .withMenuLayout(int)</string>
+    <string name="srn_ex_bad_content_view">Your content view must contain exactly one child. Make sure you call inject() after setContentView().</string>
+
+    <item name="srn_root_layout" type="id" />
+</resources>
