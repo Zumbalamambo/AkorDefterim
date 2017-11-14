@@ -52,7 +52,7 @@ public class ParolamiUnuttum extends AppCompatActivity implements Interface_Asyn
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.activity_parolamiunuttum);
+		setContentView(R.layout.activity_girisyardimi);
 
 		activity = this;
 		AkorDefterimSys = new AkorDefterimSys(activity);

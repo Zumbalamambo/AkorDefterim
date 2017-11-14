@@ -181,9 +181,11 @@
     <string name="facebook_oturum_ac">Facebook ile Bağlan</string>
     <string name="twitter_oturum_ac">Twitter ile Bağlan</string>
     <string name="eposta_yada_telefon_kaydol">E-Posta ya da Telefon ile Kaydol</string>
+    <string name="kullanici_adi_veya_eposta_kullan">Kullanıcı Adı veya E-posta Kullan</string>
     <string name="google_kayit_ol">Google+ ile Kaydol</string>
     <string name="facebook_kayit_ol">Facebook ile Kaydol</string>
     <string name="twitter_kayit_ol">Twitter ile Kaydol</string>
+    <string name="s_yardim_merkezi">%s Yardım Merkezi</string>
     <string name="giris_yap">Giriş Yap</string>
     <string name="cikis_yap">Çıkış Yap</string>
     <string name="devam">Devam</string>
@@ -240,6 +242,8 @@
     <string name="listelemetipi">Listeleme Tipi</string>
     <string name="parolami_unuttum">Parolamı Unuttum</string>
     <string name="giris_yardimi">Giriş Yardımı</string>
+    <string name="hesabina_eris">Hesabına Eriş</string>
+    <string name="yardim_merkezi">Yardım Merkezi</string>
     <string name="giris_detaylarini_unuttun_mu">Giriş detaylarını unuttun mu? [Giriş yapmak için yardım al.]</string>
     <string name="yeni_hesap">Yeni Hesap</string>
     <string name="kullanici_girisi">Kullanıcı Girişi</string>
