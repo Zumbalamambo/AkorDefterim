@@ -111,10 +111,12 @@ import android.text.Spannable;
 import android.text.SpannableString;
 import android.text.SpannableStringBuilder;
 import android.text.Spanned;
+import android.text.TextPaint;
 import android.text.TextUtils;
 import android.text.method.LinkMovementMethod;
 import android.text.method.ScrollingMovementMethod;
 import android.text.style.ClickableSpan;
+import android.text.style.StyleSpan;
 import android.text.style.URLSpan;
 import android.transition.Explode;
 import android.util.Base64;
@@ -181,7 +183,7 @@ public class AkorDefterimSys {
 	// PHP AYARLARI (MAİL VE SMS GÖNDERİMİ)
 	public String CBCAPP_HttpsAdres = "https://www.cbcapp.net";
 	private String AkorDefterimHttpAdres = "http://akordefterim.cbcapp.net/";
-	private List<String> SMSGondericiAdi = Arrays.asList("+908503042567", "C.B.CEYLAN");
+	public List<String> SMSGondericiAdi = Arrays.asList("+908503042567", "C.B.CEYLAN");
 
 	public String AnaKlasorDizini = Environment.getExternalStorageDirectory() + File.separator + "Akor Defterim" + File.separator;
 	public int WebBaglantiIstegiToplamSure = 30;
@@ -373,7 +375,7 @@ public class AkorDefterimSys {
 		}
 	}
 
-	public float[] EkranDPGetir() {
+	private float[] EkranDPGetir() {
 		Display display = activity.getWindowManager().getDefaultDisplay();
 		DisplayMetrics outMetrics = new DisplayMetrics();
 		display.getMetrics(outMetrics);
@@ -819,8 +821,8 @@ public class AkorDefterimSys {
 		strBuilder.removeSpan(span);
 	}
 
-	public void setTextViewHTML(TextView text, String html) {
-		CharSequence sequence = Html.fromHtml(html);
+	public void setTextViewHTML(TextView text) {
+		CharSequence sequence = Html.fromHtml(text.getText().toString());
 		SpannableStringBuilder strBuilder = new SpannableStringBuilder(sequence);
 		URLSpan[] urls = strBuilder.getSpans(0, sequence.length(), URLSpan.class);
 
@@ -830,6 +832,37 @@ public class AkorDefterimSys {
 
 		text.setText(strBuilder);
 		text.setMovementMethod(LinkMovementMethod.getInstance());
+	}
+
+	public void setTextViewOnClick(TextView textView, final String Islem) {
+		final Interface_AsyncResponse AsyncResponse = (Interface_AsyncResponse) activity;
+		String Icerik = textView.getText().toString().trim();
+		int KarakterBaslangicNo = Icerik.indexOf("[");
+        int KarakterBitisNo = Icerik.indexOf("]") - 1;
+
+		SpannableString ss = new SpannableString(Icerik.replace("[", "").replace("]", ""));
+
+		StyleSpan bss = new StyleSpan(android.graphics.Typeface.BOLD);
+		ss.setSpan(bss, KarakterBaslangicNo, KarakterBitisNo, Spannable.SPAN_INCLUSIVE_INCLUSIVE);
+		//StyleSpan iss = new StyleSpan(android.graphics.Typeface.ITALIC);
+		//ss.setSpan(iss, 4, 6, Spannable.SPAN_INCLUSIVE_INCLUSIVE);
+
+		ClickableSpan clickableSpan = new ClickableSpan() {
+			@Override
+			public void onClick(View textView) {
+				AsyncResponse.AsyncTaskReturnValue("{\"Islem\":\"" + Islem + "\"}");
+			}
+			@Override
+			public void updateDrawState(TextPaint ds) {
+				super.updateDrawState(ds);
+				ds.setUnderlineText(false);
+			}
+		};
+		ss.setSpan(clickableSpan, KarakterBaslangicNo, KarakterBitisNo, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+
+		textView.setText(ss);
+		textView.setMovementMethod(LinkMovementMethod.getInstance());
+		textView.setHighlightColor(Color.TRANSPARENT);
 	}
 
 	@SuppressLint("InflateParams")

@@ -69,7 +69,7 @@ public class KayitEkran_AdSoyad_DTarih_Resim extends AppCompatActivity {
 		EPosta = mBundle.getString("EPosta");
 		Parola = mBundle.getString("Parola");
 
-		coordinatorLayout = (CoordinatorLayout) activity.findViewById(R.id.coordinatorLayout);
+		coordinatorLayout = activity.findViewById(R.id.coordinatorLayout);
 		coordinatorLayout.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
@@ -80,7 +80,7 @@ public class KayitEkran_AdSoyad_DTarih_Resim extends AppCompatActivity {
 			}
 		});
 
-		btnGeri = (Button) findViewById(R.id.btnGeri);
+		btnGeri = findViewById(R.id.btnGeri);
 		btnGeri.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
@@ -88,7 +88,7 @@ public class KayitEkran_AdSoyad_DTarih_Resim extends AppCompatActivity {
 			}
 		});
 
-		lblVazgec = (TextView) findViewById(R.id.lblVazgec);
+		lblVazgec = findViewById(R.id.lblVazgec);
 		lblVazgec.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
@@ -100,17 +100,17 @@ public class KayitEkran_AdSoyad_DTarih_Resim extends AppCompatActivity {
 			}
 		});
 
-		lblBaslik = (TextView) findViewById(R.id.lblBaslik);
+		lblBaslik = findViewById(R.id.lblBaslik);
 		lblBaslik.setTypeface(YaziFontu, Typeface.BOLD);
 
-		lblAdSoyadResimAciklama = (TextView) findViewById(R.id.lblAdSoyadResimAciklama);
+		lblAdSoyadResimAciklama = findViewById(R.id.lblAdSoyadResimAciklama);
 		lblAdSoyadResimAciklama.setTypeface(YaziFontu, Typeface.NORMAL);
-		AkorDefterimSys.setTextViewHTML(lblAdSoyadResimAciklama, getString(R.string.adsoyad_dogumtarih_resim_ekran_aciklama, String.valueOf(AkorDefterimSys.ProfilResmiResimBoyutuMB)));
+		AkorDefterimSys.setTextViewHTML(lblAdSoyadResimAciklama);
 
-		txtILAdSoyad = (TextInputLayout) findViewById(R.id.txtILAdSoyad);
+		txtILAdSoyad = findViewById(R.id.txtILAdSoyad);
 		txtILAdSoyad.setTypeface(YaziFontu);
 
-		txtAdSoyad = (EditText) findViewById(R.id.txtAdSoyad);
+		txtAdSoyad = findViewById(R.id.txtAdSoyad);
 		txtAdSoyad.setTypeface(YaziFontu, Typeface.NORMAL);
 		txtAdSoyad.addTextChangedListener(new TextWatcher() {
 			@Override
@@ -129,10 +129,10 @@ public class KayitEkran_AdSoyad_DTarih_Resim extends AppCompatActivity {
 			}
 		});
 
-		txtILDogumTarih = (TextInputLayout) findViewById(R.id.txtILDogumTarih);
+		txtILDogumTarih = findViewById(R.id.txtILDogumTarih);
 		txtILDogumTarih.setTypeface(YaziFontu);
 
-		txtDogumTarih = (EditText) findViewById(R.id.txtDogumTarih);
+		txtDogumTarih = findViewById(R.id.txtDogumTarih);
 		txtDogumTarih.setInputType(InputType.TYPE_NULL);
 		txtDogumTarih.addTextChangedListener(new TextWatcher() {
 			@Override
@@ -166,7 +166,7 @@ public class KayitEkran_AdSoyad_DTarih_Resim extends AppCompatActivity {
 			}
 		});
 
-        CImgProfilResim = (CircleImageView) findViewById(R.id.CImgProfilResim);
+        CImgProfilResim = findViewById(R.id.CImgProfilResim);
 		CImgProfilResim.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
@@ -174,7 +174,7 @@ public class KayitEkran_AdSoyad_DTarih_Resim extends AppCompatActivity {
 			}
 		});
 
-		ImgSilIcon = (ImageView) findViewById(R.id.ImgSilIcon);
+		ImgSilIcon = findViewById(R.id.ImgSilIcon);
 		ImgSilIcon.setVisibility(View.GONE);
 		ImgSilIcon.setOnClickListener(new OnClickListener() {
 			@Override
@@ -185,7 +185,7 @@ public class KayitEkran_AdSoyad_DTarih_Resim extends AppCompatActivity {
 			}
 		});
 
-        ImgKameraIcon = (ImageView) findViewById(R.id.ImgKameraIcon);
+        ImgKameraIcon = findViewById(R.id.ImgKameraIcon);
 		ImgKameraIcon.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
@@ -193,7 +193,7 @@ public class KayitEkran_AdSoyad_DTarih_Resim extends AppCompatActivity {
 			}
 		});
 
-		btnIleri = (Button) findViewById(R.id.btnIleri);
+		btnIleri = findViewById(R.id.btnIleri);
 		btnIleri.setTypeface(YaziFontu, Typeface.NORMAL);
 		btnIleri.setOnClickListener(new OnClickListener() {
 			@Override

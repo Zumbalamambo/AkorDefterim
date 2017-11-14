@@ -214,8 +214,8 @@
     <string name="crop_image_menu_crop">Kırp</string>
 
     <!-- Radio Button'lar -->
-    <string name="sonu_xx_ile_biten_telefon"><b>%s</b> ile biten telefonuma onay kodu gönder</string>
-    <string name="email_adresine_onay_kodu_gonder"><b>%s</b> adresine onay kodu gönder</string>
+    <string name="sonu_xx_ile_biten_telefon">&lt;b&gt;%s&lt;/b&gt; ile biten telefonuma onay kodu gönder</string>
+    <string name="email_adresine_onay_kodu_gonder">&lt;b&gt;%s&lt;/b&gt; adresine onay kodu gönder</string>
 
     <!-- CheckBox'lar -->
 
@@ -239,6 +239,8 @@
     <string name="tarz">Tarz</string>
     <string name="listelemetipi">Listeleme Tipi</string>
     <string name="parolami_unuttum">Parolamı Unuttum</string>
+    <string name="giris_yardimi">Giriş Yardımı</string>
+    <string name="giris_detaylarini_unuttun_mu">Giriş detaylarını unuttun mu? [Giriş yapmak için yardım al.]</string>
     <string name="yeni_hesap">Yeni Hesap</string>
     <string name="kullanici_girisi">Kullanıcı Girişi</string>
     <string name="resim_duzenle">Resim Düzenle</string>

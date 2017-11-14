@@ -64,7 +64,7 @@ public class KayitEkran_EPosta extends AppCompatActivity implements Interface_As
 		AkorDefterimSys.NotifyIkonParlakligi(); // Notification Bar'daki simgelerin parlaklığını aldık.
 		AkorDefterimSys.EkranAnimasyon("Explode");
 
-		coordinatorLayout = (CoordinatorLayout) activity.findViewById(R.id.coordinatorLayout);
+		coordinatorLayout = activity.findViewById(R.id.coordinatorLayout);
 		coordinatorLayout.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
@@ -73,7 +73,7 @@ public class KayitEkran_EPosta extends AppCompatActivity implements Interface_As
 			}
 		});
 
-		btnGeri = (Button) findViewById(R.id.btnGeri);
+		btnGeri = findViewById(R.id.btnGeri);
 		btnGeri.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
@@ -81,13 +81,13 @@ public class KayitEkran_EPosta extends AppCompatActivity implements Interface_As
 			}
 		});
 
-		lblBaslik = (TextView) findViewById(R.id.lblBaslik);
+		lblBaslik = findViewById(R.id.lblBaslik);
 		lblBaslik.setTypeface(YaziFontu, Typeface.BOLD);
 
-		txtILEPosta = (TextInputLayout) findViewById(R.id.txtILEPosta);
+		txtILEPosta = findViewById(R.id.txtILEPosta);
 		txtILEPosta.setTypeface(YaziFontu);
 
-		txtEPosta = (EditText) findViewById(R.id.txtEPosta);
+		txtEPosta = findViewById(R.id.txtEPosta);
 		txtEPosta.setTypeface(YaziFontu, Typeface.NORMAL);
 		txtEPosta.addTextChangedListener(new TextWatcher() {
 			@Override
@@ -116,11 +116,11 @@ public class KayitEkran_EPosta extends AppCompatActivity implements Interface_As
 			}
 		});
 
-		lblEPostaAciklama = (TextView) findViewById(R.id.lblEPostaAciklama);
+		lblEPostaAciklama = findViewById(R.id.lblEPostaAciklama);
 		lblEPostaAciklama.setTypeface(YaziFontu, Typeface.NORMAL);
-		AkorDefterimSys.setTextViewHTML(lblEPostaAciklama, getString(R.string.eposta_adresini_kimseye_gormeyecek));
+		AkorDefterimSys.setTextViewHTML(lblEPostaAciklama);
 
-		btnIleri = (Button) findViewById(R.id.btnIleri);
+		btnIleri = findViewById(R.id.btnIleri);
 		btnIleri.setTypeface(YaziFontu, Typeface.NORMAL);
 		btnIleri.setOnClickListener(new OnClickListener() {
 			@Override

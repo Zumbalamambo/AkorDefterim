@@ -66,7 +66,7 @@ public class Onaykodu extends AppCompatActivity implements Interface_AsyncRespon
 		EPosta = mBundle.getString("EPosta");
 		OnayKodu = mBundle.getString("OnayKodu");
 
-		coordinatorLayout = (CoordinatorLayout) activity.findViewById(R.id.coordinatorLayout);
+		coordinatorLayout = activity.findViewById(R.id.coordinatorLayout);
 		coordinatorLayout.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
@@ -74,7 +74,7 @@ public class Onaykodu extends AppCompatActivity implements Interface_AsyncRespon
 			}
 		});
 
-		lblVazgec = (TextView) findViewById(R.id.lblVazgec);
+		lblVazgec = findViewById(R.id.lblVazgec);
 		lblVazgec.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
@@ -86,7 +86,7 @@ public class Onaykodu extends AppCompatActivity implements Interface_AsyncRespon
 			}
 		});
 
-		btnGeri = (Button) findViewById(R.id.btnGeri);
+		btnGeri = findViewById(R.id.btnGeri);
 		btnGeri.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
@@ -94,14 +94,14 @@ public class Onaykodu extends AppCompatActivity implements Interface_AsyncRespon
 			}
 		});
 
-		lblBaslik = (TextView) findViewById(R.id.lblBaslik);
+		lblBaslik = findViewById(R.id.lblBaslik);
 		lblBaslik.setTypeface(YaziFontu, Typeface.BOLD);
 
-		lblOnayKoduAciklama = (TextView) findViewById(R.id.lblOnayKoduAciklama);
+		lblOnayKoduAciklama = findViewById(R.id.lblOnayKoduAciklama);
 		lblOnayKoduAciklama.setTypeface(YaziFontu, Typeface.NORMAL);
-		AkorDefterimSys.setTextViewHTML(lblOnayKoduAciklama, getString(R.string.onay_kodu_bilgilendirme_email, EPosta));
+		AkorDefterimSys.setTextViewHTML(lblOnayKoduAciklama);
 
-		txtOnayKodu = (PasscodeView) findViewById(R.id.txtOnayKodu);
+		txtOnayKodu = findViewById(R.id.txtOnayKodu);
 		txtOnayKodu.setPasscodeEntryListener(new PasscodeView.PasscodeEntryListener() {
 			@Override
 			public void onPasscodeEntered(String GirilenOnayKodu) {
@@ -109,11 +109,11 @@ public class Onaykodu extends AppCompatActivity implements Interface_AsyncRespon
 			}
 		});
 
-		lblOnayKoduKalanSureAciklama = (TextView) findViewById(R.id.lblOnayKoduKalanSureAciklama);
+		lblOnayKoduKalanSureAciklama = findViewById(R.id.lblOnayKoduKalanSureAciklama);
 		lblOnayKoduKalanSureAciklama.setTypeface(YaziFontu, Typeface.NORMAL);
 		lblOnayKoduKalanSureAciklama.setText(getString(R.string.kalan_sure, AkorDefterimSys.ZamanFormatMMSS(EPostaOnayKoduKalanSure)));
 
-		lblYenidenGonder = (TextView) findViewById(R.id.lblYenidenGonder);
+		lblYenidenGonder = findViewById(R.id.lblYenidenGonder);
 		lblYenidenGonder.setTypeface(YaziFontu, Typeface.BOLD);
 		lblYenidenGonder.setOnClickListener(new OnClickListener() {
 			@Override
@@ -135,7 +135,7 @@ public class Onaykodu extends AppCompatActivity implements Interface_AsyncRespon
 			}
 		});
 
-		btnIleri = (Button) findViewById(R.id.btnIleri);
+		btnIleri = findViewById(R.id.btnIleri);
 		btnIleri.setTypeface(YaziFontu, Typeface.NORMAL);
 		btnIleri.setOnClickListener(new OnClickListener() {
 			@Override

@@ -25,6 +25,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import com.cnbcyln.app.akordefterim.Interface.CustomItemClickListener;
 import com.cnbcyln.app.akordefterim.Interface.Interface_AsyncResponse;
 import com.cnbcyln.app.akordefterim.util.AkorDefterimSys;
 import com.cnbcyln.app.akordefterim.util.Strings;
@@ -46,7 +47,7 @@ public class GirisYap extends AppCompatActivity implements Interface_AsyncRespon
 
 	CoordinatorLayout coordinatorLayout;
 	Button btnGeri, btnGirisYap;
-	TextView lblBaslik, lblParolamiUnuttum;
+	TextView lblBaslik, lblGirisYardimi;
 	TextInputLayout txtILEPostaKullaniciAdi, txtILParola;
 	EditText txtEPostaKullaniciAdi, txtParola;
 
@@ -64,7 +65,7 @@ public class GirisYap extends AppCompatActivity implements Interface_AsyncRespon
 		AkorDefterimSys.NotifyIkonParlakligi(); // Notification Bar'daki simgelerin parlaklığını aldık.
 		AkorDefterimSys.EkranAnimasyon("Explode");
 
-		coordinatorLayout = (CoordinatorLayout) activity.findViewById(R.id.coordinatorLayout);
+		coordinatorLayout = activity.findViewById(R.id.coordinatorLayout);
 		coordinatorLayout.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
@@ -75,7 +76,7 @@ public class GirisYap extends AppCompatActivity implements Interface_AsyncRespon
 			}
 		});
 
-		btnGeri = (Button) findViewById(R.id.btnGeri);
+		btnGeri = findViewById(R.id.btnGeri);
 		btnGeri.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
@@ -83,13 +84,13 @@ public class GirisYap extends AppCompatActivity implements Interface_AsyncRespon
 			}
 		});
 
-		lblBaslik = (TextView) findViewById(R.id.lblBaslik);
+		lblBaslik = findViewById(R.id.lblBaslik);
 		lblBaslik.setTypeface(YaziFontu, Typeface.BOLD);
 
-		txtILEPostaKullaniciAdi = (TextInputLayout) findViewById(R.id.txtILEPostaKullaniciAdi);
+		txtILEPostaKullaniciAdi = findViewById(R.id.txtILEPostaKullaniciAdi);
 		txtILEPostaKullaniciAdi.setTypeface(YaziFontu);
 
-		txtEPostaKullaniciAdi = (EditText) findViewById(R.id.txtEPostaKullaniciAdi);
+		txtEPostaKullaniciAdi = findViewById(R.id.txtEPostaKullaniciAdi);
 		txtEPostaKullaniciAdi.setTypeface(YaziFontu, Typeface.NORMAL);
 		txtEPostaKullaniciAdi.addTextChangedListener(new TextWatcher() {
 			@Override
@@ -108,10 +109,10 @@ public class GirisYap extends AppCompatActivity implements Interface_AsyncRespon
 			}
 		});
 
-		txtILParola = (TextInputLayout) findViewById(R.id.txtILParola);
+		txtILParola = findViewById(R.id.txtILParola);
 		txtILParola.setTypeface(YaziFontu);
 
-		txtParola = (EditText) findViewById(R.id.txtParola);
+		txtParola = findViewById(R.id.txtParola);
 		txtParola.setTypeface(YaziFontu, Typeface.NORMAL);
 		txtParola.addTextChangedListener(new TextWatcher() {
 			@Override
@@ -140,16 +141,11 @@ public class GirisYap extends AppCompatActivity implements Interface_AsyncRespon
 			}
 		});
 
-		lblParolamiUnuttum = (TextView) findViewById(R.id.lblParolamiUnuttum);
-		lblParolamiUnuttum.setOnClickListener(new OnClickListener() {
-			@Override
-			public void onClick(View v) {
-				AkorDefterimSys.KlavyeKapat();
-				AkorDefterimSys.EkranGetir(new Intent(activity, ParolamiUnuttum.class), "Slide");
-			}
-		});
+		lblGirisYardimi = findViewById(R.id.lblGirisYardimi);
+		lblGirisYardimi.setTypeface(YaziFontu, Typeface.NORMAL);
+		AkorDefterimSys.setTextViewOnClick(lblGirisYardimi, "GirisYardimi");
 
-		btnGirisYap = (Button) findViewById(R.id.btnGirisYap);
+		btnGirisYap = findViewById(R.id.btnGirisYap);
 		btnGirisYap.setTypeface(YaziFontu, Typeface.NORMAL);
 		btnGirisYap.setOnClickListener(new OnClickListener() {
 			@Override
@@ -185,6 +181,10 @@ public class GirisYap extends AppCompatActivity implements Interface_AsyncRespon
             JSONObject JSONSonuc = new JSONObject(sonuc);
 
             switch (JSONSonuc.getString("Islem")) {
+				case "GirisYardimi":
+					AkorDefterimSys.KlavyeKapat();
+					AkorDefterimSys.EkranGetir(new Intent(activity, ParolamiUnuttum.class), "Slide");
+					break;
 				case "HesapGirisYap":
 					// PDGirisYap Progress Dialog'u kapattık
 					AkorDefterimSys.DismissProgressDialog(PDGirisYap);

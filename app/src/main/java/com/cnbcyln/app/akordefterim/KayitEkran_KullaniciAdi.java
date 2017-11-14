@@ -92,7 +92,7 @@ public class KayitEkran_KullaniciAdi extends AppCompatActivity implements Interf
 		DogumTarih = mBundle.getString("DogumTarih");
 		SecilenProfilResmiFile = (File) mBundle.get("SecilenProfilResmiFile");
 
-		coordinatorLayout = (CoordinatorLayout) activity.findViewById(R.id.coordinatorLayout);
+		coordinatorLayout = activity.findViewById(R.id.coordinatorLayout);
 		coordinatorLayout.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
@@ -101,7 +101,7 @@ public class KayitEkran_KullaniciAdi extends AppCompatActivity implements Interf
 			}
 		});
 
-		btnGeri = (Button) findViewById(R.id.btnGeri);
+		btnGeri = findViewById(R.id.btnGeri);
 		btnGeri.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
@@ -109,7 +109,7 @@ public class KayitEkran_KullaniciAdi extends AppCompatActivity implements Interf
 			}
 		});
 
-		lblVazgec = (TextView) findViewById(R.id.lblVazgec);
+		lblVazgec = findViewById(R.id.lblVazgec);
 		lblVazgec.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
@@ -121,17 +121,17 @@ public class KayitEkran_KullaniciAdi extends AppCompatActivity implements Interf
 			}
 		});
 
-		lblBaslik = (TextView) findViewById(R.id.lblBaslik);
+		lblBaslik = findViewById(R.id.lblBaslik);
 		lblBaslik.setTypeface(YaziFontu, Typeface.BOLD);
 
-		lblKullaniciAdiAciklama = (TextView) findViewById(R.id.lblKullaniciAdiAciklama);
+		lblKullaniciAdiAciklama = findViewById(R.id.lblKullaniciAdiAciklama);
 		lblKullaniciAdiAciklama.setTypeface(YaziFontu, Typeface.NORMAL);
-		AkorDefterimSys.setTextViewHTML(lblKullaniciAdiAciklama, getString(R.string.kullaniciadi_ekran_belirle, String.valueOf(getResources().getInteger(R.integer.KullaniciAdiKarakterSayisi_MIN))));
+		AkorDefterimSys.setTextViewHTML(lblKullaniciAdiAciklama);
 
-		txtILKullaniciAdi = (TextInputLayout) findViewById(R.id.txtILEPosta);
+		txtILKullaniciAdi = findViewById(R.id.txtILEPosta);
 		txtILKullaniciAdi.setTypeface(YaziFontu);
 
-		txtKullaniciAdi = (EditText) findViewById(R.id.txtKullaniciAdi);
+		txtKullaniciAdi = findViewById(R.id.txtKullaniciAdi);
 		txtKullaniciAdi.setTypeface(YaziFontu, Typeface.NORMAL);
         txtKullaniciAdi.addTextChangedListener(new TextWatcher() {
             @Override
@@ -160,11 +160,11 @@ public class KayitEkran_KullaniciAdi extends AppCompatActivity implements Interf
 			}
 		});
 
-		lblKullanimKosullariAciklama = (TextView) findViewById(R.id.lblKullanimKosullariAciklama);
+		lblKullanimKosullariAciklama = findViewById(R.id.lblKullanimKosullariAciklama);
 		lblKullanimKosullariAciklama.setTypeface(YaziFontu, Typeface.NORMAL);
-		AkorDefterimSys.setTextViewHTML(lblKullanimKosullariAciklama, getString(R.string.kullanim_kosullari_aciklama, "<b>" + getString(R.string.uygulama_adi) + "</b>", "<b><a href=\"http://www.akordefterim.com/sozlesme.html\">" + getString(R.string.kullanici_sozlesmesi) + "</a></b>", "<b><a href=\"http://www.akordefterim.com/gizlilik.html\">" + getString(R.string.gizlilik_sartlari) + "</a></b>"));
+		AkorDefterimSys.setTextViewHTML(lblKullanimKosullariAciklama);
 
-		btnTamamla = (Button) findViewById(R.id.btnTamamla);
+		btnTamamla = findViewById(R.id.btnTamamla);
 		btnTamamla.setTypeface(YaziFontu, Typeface.NORMAL);
 		btnTamamla.setOnClickListener(new OnClickListener() {
 			@Override

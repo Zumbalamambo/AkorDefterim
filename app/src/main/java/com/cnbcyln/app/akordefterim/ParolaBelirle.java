@@ -66,7 +66,7 @@ public class ParolaBelirle extends AppCompatActivity implements Interface_AsyncR
 		Islem = mBundle.getString("Islem");
 		EPosta = mBundle.getString("EPosta");
 
-		coordinatorLayout = (CoordinatorLayout) activity.findViewById(R.id.coordinatorLayout);
+		coordinatorLayout = activity.findViewById(R.id.coordinatorLayout);
 		coordinatorLayout.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
@@ -77,7 +77,7 @@ public class ParolaBelirle extends AppCompatActivity implements Interface_AsyncR
 			}
 		});
 
-		btnGeri = (Button) findViewById(R.id.btnGeri);
+		btnGeri = findViewById(R.id.btnGeri);
 		btnGeri.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
@@ -89,7 +89,7 @@ public class ParolaBelirle extends AppCompatActivity implements Interface_AsyncR
 			}
 		});
 
-		lblVazgec = (TextView) findViewById(R.id.lblVazgec);
+		lblVazgec = findViewById(R.id.lblVazgec);
 		lblVazgec.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
@@ -101,17 +101,17 @@ public class ParolaBelirle extends AppCompatActivity implements Interface_AsyncR
 			}
 		});
 
-		lblBaslik = (TextView) findViewById(R.id.lblBaslik);
+		lblBaslik = findViewById(R.id.lblBaslik);
 		lblBaslik.setTypeface(YaziFontu, Typeface.BOLD);
 
-		lblParolaAciklama = (TextView) findViewById(R.id.lblParolaAciklama);
+		lblParolaAciklama = findViewById(R.id.lblParolaAciklama);
 		lblParolaAciklama.setTypeface(YaziFontu, Typeface.NORMAL);
-		AkorDefterimSys.setTextViewHTML(lblParolaAciklama, getString(R.string.parola_ekran_aciklama, String.valueOf(getResources().getInteger(R.integer.SifreKarakterSayisi_MIN)), String.valueOf(getResources().getInteger(R.integer.SifreKarakterSayisi_MAX))));
+		AkorDefterimSys.setTextViewHTML(lblParolaAciklama);
 
-		txtILParola = (TextInputLayout) findViewById(R.id.txtILParola);
+		txtILParola = findViewById(R.id.txtILParola);
 		txtILParola.setTypeface(YaziFontu);
 
-		txtParola = (PasswordView) findViewById(R.id.txtParola);
+		txtParola = findViewById(R.id.txtParola);
 		txtParola.setTypeface(YaziFontu, Typeface.NORMAL);
 		txtParola.addTextChangedListener(new TextWatcher() {
 			@Override
@@ -135,25 +135,25 @@ public class ParolaBelirle extends AppCompatActivity implements Interface_AsyncR
 					LLParolaGuvenligi1.setBackgroundColor(getResources().getColor(R.color.Kirmizi));
 					LLParolaGuvenligi2.setBackgroundColor(0);
 					LLParolaGuvenligi3.setBackgroundColor(0);
-					AkorDefterimSys.setTextViewHTML(lblParolaGuvenligi, getString(R.string.parola_guvenligi, getString(R.string.dusuk)));
+					AkorDefterimSys.setTextViewHTML(lblParolaGuvenligi);
 				} else if(ParolaGuvenligiSkor >= 30 && ParolaGuvenligiSkor < 90) {
 					LLParolaGuvenligi1.setBackgroundColor(getResources().getColor(R.color.TuruncuYazi));
 					LLParolaGuvenligi2.setBackgroundColor(getResources().getColor(R.color.TuruncuYazi));
 					LLParolaGuvenligi3.setBackgroundColor(0);
-					AkorDefterimSys.setTextViewHTML(lblParolaGuvenligi, getString(R.string.parola_guvenligi, getString(R.string.orta)));
+					AkorDefterimSys.setTextViewHTML(lblParolaGuvenligi);
 				} else if(ParolaGuvenligiSkor >= 90) {
 					LLParolaGuvenligi1.setBackgroundColor(getResources().getColor(R.color.Yesil2));
 					LLParolaGuvenligi2.setBackgroundColor(getResources().getColor(R.color.Yesil2));
 					LLParolaGuvenligi3.setBackgroundColor(getResources().getColor(R.color.Yesil2));
-					AkorDefterimSys.setTextViewHTML(lblParolaGuvenligi, getString(R.string.parola_guvenligi, getString(R.string.yuksek)));
+					AkorDefterimSys.setTextViewHTML(lblParolaGuvenligi);
 				}
 			}
 		});
 
-		txtILParolaTekrar = (TextInputLayout) findViewById(R.id.txtILParolaTekrar);
+		txtILParolaTekrar = findViewById(R.id.txtILParolaTekrar);
 		txtILParolaTekrar.setTypeface(YaziFontu);
 
-		txtParolaTekrar = (PasswordView) findViewById(R.id.txtParolaTekrar);
+		txtParolaTekrar = findViewById(R.id.txtParolaTekrar);
 		txtParolaTekrar.setTypeface(YaziFontu, Typeface.NORMAL);
 		txtParolaTekrar.setOnEditorActionListener(new TextView.OnEditorActionListener() {
 			@Override
@@ -166,18 +166,18 @@ public class ParolaBelirle extends AppCompatActivity implements Interface_AsyncR
 			}
 		});
 
-		LLParolaGuvenligi1 = (LinearLayout) findViewById(R.id.LLParolaGuvenligi1);
+		LLParolaGuvenligi1 = findViewById(R.id.LLParolaGuvenligi1);
 		LLParolaGuvenligi1.setBackgroundColor(getResources().getColor(R.color.Kirmizi));
-		LLParolaGuvenligi2 = (LinearLayout) findViewById(R.id.LLParolaGuvenligi2);
+		LLParolaGuvenligi2 = findViewById(R.id.LLParolaGuvenligi2);
 		LLParolaGuvenligi2.setBackgroundColor(0);
-		LLParolaGuvenligi3 = (LinearLayout) findViewById(R.id.LLParolaGuvenligi3);
+		LLParolaGuvenligi3 = findViewById(R.id.LLParolaGuvenligi3);
 		LLParolaGuvenligi3.setBackgroundColor(0);
 
-		lblParolaGuvenligi = (TextView) findViewById(R.id.lblParolaGuvenligi);
+		lblParolaGuvenligi = findViewById(R.id.lblParolaGuvenligi);
 		lblParolaGuvenligi.setTypeface(YaziFontu, Typeface.NORMAL);
-		AkorDefterimSys.setTextViewHTML(lblParolaGuvenligi, getString(R.string.parola_guvenligi, getString(R.string.dusuk)));
+		AkorDefterimSys.setTextViewHTML(lblParolaGuvenligi);
 
-		btnIleri = (Button) findViewById(R.id.btnIleri);
+		btnIleri = findViewById(R.id.btnIleri);
 		btnIleri.setTypeface(YaziFontu, Typeface.NORMAL);
 		if(Islem.equals("ParolamiUnuttum")) {
 			btnIleri.setText(getString(R.string.tamamla));
@@ -255,13 +255,13 @@ public class ParolaBelirle extends AppCompatActivity implements Interface_AsyncR
 			LLParolaGuvenligi1.setBackgroundColor(getResources().getColor(R.color.Kirmizi));
 			LLParolaGuvenligi2.setBackgroundColor(0);
 			LLParolaGuvenligi3.setBackgroundColor(0);
-			AkorDefterimSys.setTextViewHTML(lblParolaGuvenligi, getString(R.string.parola_guvenligi, getString(R.string.dusuk)));
+			AkorDefterimSys.setTextViewHTML(lblParolaGuvenligi);
 		} else if(AkorDefterimSys.EditTextKarakterKontrolMIN(Parola, getResources().getInteger(R.integer.SifreKarakterSayisi_MIN))) {
 			txtILParola.setError(getString(R.string.hata_en_az_karakter, String.valueOf(getResources().getInteger(R.integer.SifreKarakterSayisi_MIN))));
 			LLParolaGuvenligi1.setBackgroundColor(getResources().getColor(R.color.Kirmizi));
 			LLParolaGuvenligi2.setBackgroundColor(0);
 			LLParolaGuvenligi3.setBackgroundColor(0);
-			AkorDefterimSys.setTextViewHTML(lblParolaGuvenligi, getString(R.string.parola_guvenligi, getString(R.string.dusuk)));
+			AkorDefterimSys.setTextViewHTML(lblParolaGuvenligi);
 		} else if(AkorDefterimSys.EditTextKarakterKontrolMAX(Parola, getResources().getInteger(R.integer.SifreKarakterSayisi_MAX)))
 			txtILParola.setError(getString(R.string.hata_en_fazla_karakter, String.valueOf(getResources().getInteger(R.integer.SifreKarakterSayisi_MAX))));
 		else
