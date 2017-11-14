@@ -110,8 +110,14 @@ public class GirisEkran extends AppCompatActivity implements Interface_AsyncResp
 		sharedPrefEditor.remove("Action");
 		sharedPrefEditor.remove("GelinenEkran");
 		sharedPrefEditor.apply();
+	}
+
+	@Override
+	protected void onStart() {
+		super.onStart();
 
 		FacebookLoginInit();
+		GoogleAPIInit();
 	}
 
 	@Override
@@ -122,8 +128,9 @@ public class GirisEkran extends AppCompatActivity implements Interface_AsyncResp
 		AkorDefterimSys.DismissAlertDialog(ADDialog_InternetErisimSorunu);
 		AkorDefterimSys.DismissAlertDialog(ADDialog_HesapDurumu);
 
-		if (mGoogleLoginApiClient.isConnected())
-			mGoogleLoginApiClient.disconnect();
+		if(mGoogleLoginApiClient != null) {
+			if (mGoogleLoginApiClient.isConnected()) mGoogleLoginApiClient.disconnect();
+		}
 	}
 
 	@Override

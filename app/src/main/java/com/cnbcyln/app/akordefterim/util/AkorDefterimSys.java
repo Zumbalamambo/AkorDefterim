@@ -180,8 +180,8 @@ public class AkorDefterimSys {
 
 	// PHP AYARLARI (MAİL VE SMS GÖNDERİMİ)
 	public String CBCAPP_HttpsAdres = "https://www.cbcapp.net";
-	public String AkorDefterimHttpAdres = "http://akordefterim.cbcapp.net/";
-	public List<String> SMSGondericiAdi = Arrays.asList("+908503042567", "C.B.CEYLAN");
+	private String AkorDefterimHttpAdres = "http://akordefterim.cbcapp.net/";
+	private List<String> SMSGondericiAdi = Arrays.asList("+908503042567", "C.B.CEYLAN");
 
 	public String AnaKlasorDizini = Environment.getExternalStorageDirectory() + File.separator + "Akor Defterim" + File.separator;
 	public int WebBaglantiIstegiToplamSure = 30;
@@ -2689,11 +2689,11 @@ public class AkorDefterimSys {
 		});
 	}
 
-	public void HesapGirisYap(final String mGirisTipi, String mFirebaseToken, String mOSID, String mOSVersiyon, String mUygulamaVersiyon, String mEPostaVeyaKullaniciAdi, String mParolaSHA1, String mSosyalID, String mAdSoyad) {
+	public void HesapGirisYap(final String mGirisTipi, String mFirebaseToken, String mOSID, String mOSVersiyon, String mUygulamaVersiyon, String mEPostaVeyaKullaniciAdi, String mParolaSHA1, String mSosyalHesapID, String mAdSoyad) {
 		RetrofitInterface retrofitInterface = RetrofitServiceGenerator.createService(activity, RetrofitInterface.class);
 		final Interface_AsyncResponse AsyncResponse = (Interface_AsyncResponse) activity;
 
-		Call<SnfHesapGirisYap> snfHesapGirisYapCall = retrofitInterface.HesapGirisYap(mGirisTipi, mFirebaseToken, mOSID, mOSVersiyon, mUygulamaVersiyon, mEPostaVeyaKullaniciAdi, mParolaSHA1, mSosyalID, mAdSoyad);
+		Call<SnfHesapGirisYap> snfHesapGirisYapCall = retrofitInterface.HesapGirisYap(mGirisTipi, mFirebaseToken, mOSID, mOSVersiyon, mUygulamaVersiyon, mEPostaVeyaKullaniciAdi, mParolaSHA1, mSosyalHesapID, mAdSoyad);
 		snfHesapGirisYapCall.enqueue(new Callback<SnfHesapGirisYap>() {
 			@Override
 			public void onResponse(Call<SnfHesapGirisYap> call, Response<SnfHesapGirisYap> response) {

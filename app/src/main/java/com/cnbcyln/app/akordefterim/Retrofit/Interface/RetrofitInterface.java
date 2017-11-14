@@ -47,7 +47,7 @@ public interface RetrofitInterface {
                                          @Query("UygulamaVersiyon") String mUygulamaVersiyon,
                                          @Query("EPostaVeyaKullaniciAdi") String mEPostaVeyaKullaniciAdi,
                                          @Query("ParolaSHA1") String mParolaSHA1,
-                                         @Query("SosyalID") String mSosyalID,
+                                         @Query("SosyalHesapID") String mSosyalHesapID,
                                          @Query("AdSoyad") String mAdSoyad);
 
     @GET("phpscriptleri/hesapislemleri/hesap_bilgi_getir.php")
