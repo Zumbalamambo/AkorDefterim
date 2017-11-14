@@ -179,7 +179,7 @@ public class ParolaBelirle extends AppCompatActivity implements Interface_AsyncR
 
 		btnIleri = findViewById(R.id.btnIleri);
 		btnIleri.setTypeface(YaziFontu, Typeface.NORMAL);
-		if(Islem.equals("ParolamiUnuttum")) {
+		if(Islem.equals("GirisYardimi")) {
 			btnIleri.setText(getString(R.string.tamamla));
 			btnIleri.setBackground(getResources().getDrawable(R.drawable.custom_button_yesil));
 			btnIleri.setCompoundDrawablesWithIntrinsicBounds(null, null, getResources().getDrawable(R.drawable.ic_check_beyaz), null);
@@ -275,7 +275,7 @@ public class ParolaBelirle extends AppCompatActivity implements Interface_AsyncR
 		if(txtILParola.getError() == null && txtILParolaTekrar.getError() == null) {
 			if(AkorDefterimSys.InternetErisimKontrolu()) {
 				if(Islem.equals("Kayit")) SonrakiEkran();
-				else if(Islem.equals("ParolamiUnuttum")) {
+				else if(Islem.equals("GirisYardimi")) {
 					PDParolaBelirle = AkorDefterimSys.CustomProgressDialog(getString(R.string.islem_yapiliyor), false, AkorDefterimSys.ProgressBarTimeoutSuresi);
 					PDParolaBelirle.show();
 

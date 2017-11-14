@@ -188,6 +188,7 @@
     <string name="s_yardim_merkezi">%s Yardım Merkezi</string>
     <string name="giris_yap">Giriş Yap</string>
     <string name="cikis_yap">Çıkış Yap</string>
+    <string name="sms_gonder">Sms Gönder</string>
     <string name="devam">Devam</string>
     <string name="kaydol">Kaydol</string>
     <string name="degistir">Değiştir</string>
@@ -243,8 +244,10 @@
     <string name="parolami_unuttum">Parolamı Unuttum</string>
     <string name="giris_yardimi">Giriş Yardımı</string>
     <string name="hesabina_eris">Hesabına Eriş</string>
+    <string name="hesabini_bul">Hesabını Bul</string>
     <string name="yardim_merkezi">Yardım Merkezi</string>
     <string name="giris_detaylarini_unuttun_mu">Giriş detaylarını unuttun mu? [Giriş yapmak için yardım al.]</string>
+    <string name="hesabini_bul_aciklama">%s kullanıcı adını veya hesabınla ilişkili e-posta adresini gir.</string>
     <string name="yeni_hesap">Yeni Hesap</string>
     <string name="kullanici_girisi">Kullanıcı Girişi</string>
     <string name="resim_duzenle">Resim Düzenle</string>
@@ -301,7 +304,7 @@
     <string name="port">Port</string>
     <string name="kullaniciadi">Kullanıcı adı</string>
     <string name="ceptelefon">Cep telefon</string>
-    <string name="email_kullaniciadi">Email ya da Kullanıcı Adı</string>
+    <string name="email_kullaniciadi">Kullanıcı adı veya e-posta</string>
     <string name="sifre">Şifre</string>
     <string name="sifre_tekrar">Şifre tekrar</string>
     <string name="guncel_sifre">Güncel şifre</string>

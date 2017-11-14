@@ -23,9 +23,9 @@ import android.view.View.OnClickListener;
 import android.view.inputmethod.EditorInfo;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.TextView;
 
-import com.cnbcyln.app.akordefterim.Interface.CustomItemClickListener;
 import com.cnbcyln.app.akordefterim.Interface.Interface_AsyncResponse;
 import com.cnbcyln.app.akordefterim.util.AkorDefterimSys;
 import com.cnbcyln.app.akordefterim.util.Strings;
@@ -46,7 +46,8 @@ public class GirisYap extends AppCompatActivity implements Interface_AsyncRespon
 	AlertDialog ADDialog_HesapDurumu, ADDialog_GirisHata;
 
 	CoordinatorLayout coordinatorLayout;
-	Button btnGeri, btnGirisYap;
+	ImageButton btnGeri;
+	Button btnGirisYap;
 	TextView lblBaslik, lblGirisYardimi;
 	TextInputLayout txtILEPostaKullaniciAdi, txtILParola;
 	EditText txtEPostaKullaniciAdi, txtParola;
@@ -61,9 +62,9 @@ public class GirisYap extends AppCompatActivity implements Interface_AsyncRespon
 		YaziFontu = AkorDefterimSys.FontGetir(activity, "anivers_regular"); // Genel yazı fontunu belirttik
 
 		AkorDefterimSys.GenelAyarlar(); // Uygulama için genel ayarları uyguladık.
-		AkorDefterimSys.TransparanNotifyBar(); // Notification Bar'ı transparan yapıyoruz.
-		AkorDefterimSys.NotifyIkonParlakligi(); // Notification Bar'daki simgelerin parlaklığını aldık.
-		AkorDefterimSys.EkranAnimasyon("Explode");
+		//AkorDefterimSys.TransparanNotifyBar(); // Notification Bar'ı transparan yapıyoruz.
+		//AkorDefterimSys.NotifyIkonParlakligi(); // Notification Bar'daki simgelerin parlaklığını aldık.
+		//AkorDefterimSys.EkranAnimasyon("Explode");
 
 		coordinatorLayout = activity.findViewById(R.id.coordinatorLayout);
 		coordinatorLayout.setOnClickListener(new OnClickListener() {
@@ -183,7 +184,7 @@ public class GirisYap extends AppCompatActivity implements Interface_AsyncRespon
             switch (JSONSonuc.getString("Islem")) {
 				case "GirisYardimi":
 					AkorDefterimSys.KlavyeKapat();
-					AkorDefterimSys.EkranGetir(new Intent(activity, ParolamiUnuttum.class), "Slide");
+					AkorDefterimSys.EkranGetir(new Intent(activity, GirisYardimi.class), "Slide");
 					break;
 				case "HesapGirisYap":
 					// PDGirisYap Progress Dialog'u kapattık

@@ -117,6 +117,13 @@
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>
+        <activity android:name=".HesabiniBul" >
+            <intent-filter>
+                <action android:name="android.intent.action.HESABINI_BUL" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
         <activity android:name=".KayitEkran_EPosta">
             <intent-filter>
                 <action android:name="android.intent.action.KAYITEKRAN_EPOSTA" />
@@ -152,7 +159,7 @@
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>
-        <activity android:name=".ParolamiUnuttum" >
+        <activity android:name=".GirisYardimi" >
             <intent-filter>
                 <action android:name="android.intent.action.SIFREMIUNUTTUM" />
 

@@ -318,7 +318,7 @@ public class GirisEkran extends AppCompatActivity implements Interface_AsyncResp
 					btnNormalLogin.setOnClickListener(new OnClickListener() {
 						@Override
 						public void onClick(View v) {
-                            AkorDefterimSys.EkranGetir(new Intent(activity, GirisYap.class), "Explode");
+                            AkorDefterimSys.EkranGetir(new Intent(activity, GirisYap.class), "Slide");
 						}
 					});
 

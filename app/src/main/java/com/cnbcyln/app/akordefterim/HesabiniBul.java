@@ -17,8 +17,8 @@ import android.view.KeyEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.inputmethod.EditorInfo;
-import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.TextView;
 
 import com.cnbcyln.app.akordefterim.Interface.Interface_AsyncResponse;
@@ -30,7 +30,7 @@ import org.json.JSONObject;
 import java.util.Random;
 
 @SuppressWarnings({"deprecation", "ResultOfMethodCallIgnored", "ConstantConditions"})
-public class ParolamiUnuttum extends AppCompatActivity implements Interface_AsyncResponse {
+public class HesabiniBul extends AppCompatActivity implements Interface_AsyncResponse {
 
 	private Activity activity;
 	private AkorDefterimSys AkorDefterimSys;
@@ -42,17 +42,17 @@ public class ParolamiUnuttum extends AppCompatActivity implements Interface_Asyn
 	AlertDialog ADDialog_HesapDurumu;
 
 	CoordinatorLayout coordinatorLayout;
-	Button btnGeri, btnIleri;
-	TextView lblBaslik;
+	ImageButton btnGeri, btnIleri;
 	TextInputLayout txtILEPostaKullaniciAdi;
 	EditText txtEPostaKullaniciAdi;
+	TextView lblBaslik, lblHesabiniBul, lblHesabiniBulAciklama;
 
     String OnayKodu, BulunanEPosta;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.activity_girisyardimi);
+		setContentView(R.layout.activity_hesabini_bul);
 
 		activity = this;
 		AkorDefterimSys = new AkorDefterimSys(activity);
@@ -60,19 +60,19 @@ public class ParolamiUnuttum extends AppCompatActivity implements Interface_Asyn
         rnd = new Random();
 
 		AkorDefterimSys.GenelAyarlar(); // Uygulama için genel ayarları uyguladık.
-		AkorDefterimSys.TransparanNotifyBar(); // Notification Bar'ı transparan yapıyoruz.
-		AkorDefterimSys.NotifyIkonParlakligi(); // Notification Bar'daki simgelerin parlaklığını aldık.
+		//AkorDefterimSys.TransparanNotifyBar(); // Notification Bar'ı transparan yapıyoruz.
+		//AkorDefterimSys.NotifyIkonParlakligi(); // Notification Bar'daki simgelerin parlaklığını aldık.
 
-		coordinatorLayout = (CoordinatorLayout) activity.findViewById(R.id.coordinatorLayout);
+		coordinatorLayout = activity.findViewById(R.id.coordinatorLayout);
 		coordinatorLayout.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
 				txtILEPostaKullaniciAdi.setError(null);
-                AkorDefterimSys.UnFocusEditText(txtEPostaKullaniciAdi);
+				AkorDefterimSys.UnFocusEditText(txtEPostaKullaniciAdi);
 			}
 		});
 
-		btnGeri = (Button) findViewById(R.id.btnGeri);
+		btnGeri = findViewById(R.id.btnGeri);
 		btnGeri.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
@@ -80,24 +80,36 @@ public class ParolamiUnuttum extends AppCompatActivity implements Interface_Asyn
 			}
 		});
 
-		lblBaslik = (TextView) findViewById(R.id.lblBaslik);
+		lblBaslik = findViewById(R.id.lblBaslik);
 		lblBaslik.setTypeface(YaziFontu, Typeface.BOLD);
 
-		txtILEPostaKullaniciAdi = (TextInputLayout) findViewById(R.id.txtILEPostaKullaniciAdi);
+		btnIleri = findViewById(R.id.btnIleri);
+		btnIleri.setOnClickListener(new OnClickListener() {
+			@Override
+			public void onClick(View v) {
+
+			}
+		});
+
+		lblHesabiniBul = findViewById(R.id.lblHesabiniBul);
+		lblHesabiniBul.setTypeface(YaziFontu, Typeface.BOLD);
+		lblHesabiniBul.setText(lblHesabiniBul.getText().toString().toUpperCase());
+
+		txtILEPostaKullaniciAdi = findViewById(R.id.txtILEPostaKullaniciAdi);
 		txtILEPostaKullaniciAdi.setTypeface(YaziFontu);
 
-		txtEPostaKullaniciAdi = (EditText) findViewById(R.id.txtEPostaKullaniciAdi);
+		txtEPostaKullaniciAdi = findViewById(R.id.txtEPostaKullaniciAdi);
 		txtEPostaKullaniciAdi.setTypeface(YaziFontu, Typeface.NORMAL);
-        txtEPostaKullaniciAdi.setOnEditorActionListener(new TextView.OnEditorActionListener() {
-            @Override
-            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
-                if ((event != null && (event.getKeyCode() == KeyEvent.KEYCODE_ENTER)) || (actionId == EditorInfo.IME_ACTION_DONE)) {
-                    IleriIslem();
-                }
+		txtEPostaKullaniciAdi.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+			@Override
+			public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+				if ((event != null && (event.getKeyCode() == KeyEvent.KEYCODE_ENTER)) || (actionId == EditorInfo.IME_ACTION_DONE)) {
+					//IleriIslem();
+				}
 
-                return false;
-            }
-        });
+				return false;
+			}
+		});
 		txtEPostaKullaniciAdi.addTextChangedListener(new TextWatcher() {
 			@Override
 			public void onTextChanged(CharSequence s, int start, int before, int count) {
@@ -115,43 +127,37 @@ public class ParolamiUnuttum extends AppCompatActivity implements Interface_Asyn
 			}
 		});
 
-		btnIleri = (Button) findViewById(R.id.btnIleri);
-		btnIleri.setTypeface(YaziFontu, Typeface.NORMAL);
-		btnIleri.setOnClickListener(new OnClickListener() {
-			@Override
-			public void onClick(View v) {
-                IleriIslem();
-			}
-		});
+		lblHesabiniBulAciklama = findViewById(R.id.lblHesabiniBulAciklama);
+		lblHesabiniBulAciklama.setTypeface(YaziFontu, Typeface.NORMAL);
 	}
 
 	@Override
 	protected void onStart() {
 		super.onStart();
 
-		if(AkorDefterimSys.PrefAyarlar().getString("Action", "").equals("Vazgec")) {
+		/*if(AkorDefterimSys.PrefAyarlar().getString("Action", "").equals("Vazgec")) {
 			sharedPrefEditor = AkorDefterimSys.PrefAyarlar().edit();
 			sharedPrefEditor.remove("Action");
 			sharedPrefEditor.apply();
 
 			onBackPressed();
-		}
+		}*/
 	}
 
 	@Override
 	protected void onDestroy() {
 		super.onDestroy();
 
-		AkorDefterimSys.DismissProgressDialog(PDParolamiUnuttum);
-		AkorDefterimSys.DismissAlertDialog(ADDialog_HesapDurumu);
+		//AkorDefterimSys.DismissProgressDialog(PDParolamiUnuttum);
+		//AkorDefterimSys.DismissAlertDialog(ADDialog_HesapDurumu);
 	}
 
 	@Override
 	public void onBackPressed() {
 		AkorDefterimSys.KlavyeKapat();
 
-		AkorDefterimSys.DismissProgressDialog(PDParolamiUnuttum);
-		AkorDefterimSys.DismissAlertDialog(ADDialog_HesapDurumu);
+		//AkorDefterimSys.DismissProgressDialog(PDParolamiUnuttum);
+		//AkorDefterimSys.DismissAlertDialog(ADDialog_HesapDurumu);
 
 		super.onBackPressed();
 	}
@@ -194,7 +200,7 @@ public class ParolamiUnuttum extends AppCompatActivity implements Interface_Asyn
 						// PDParolamiUnuttum Progress Dialog'u kapattık
 						AkorDefterimSys.DismissProgressDialog(PDParolamiUnuttum);
 
-						AkorDefterimSys.StandartSnackBarMsj(coordinatorLayout, getString(R.string.hesap_bilgileri_bulunamadi));
+						//AkorDefterimSys.StandartSnackBarMsj(coordinatorLayout, getString(R.string.hesap_bilgileri_bulunamadi));
 					}
 
 					break;
@@ -205,13 +211,13 @@ public class ParolamiUnuttum extends AppCompatActivity implements Interface_Asyn
                     if(JSONSonuc.getBoolean("Sonuc")) {
 						// Yeni açılacak olan intent'e gönderilecek bilgileri tanımlıyoruz
 						Intent mIntent = new Intent(activity, Onaykodu.class);
-						mIntent.putExtra("Islem", "ParolamiUnuttum");
+						mIntent.putExtra("Islem", "GirisYardimi");
 						mIntent.putExtra("EPosta", BulunanEPosta);
 						mIntent.putExtra("OnayKodu", String.valueOf(OnayKodu));
 
 						AkorDefterimSys.EkranGetir(mIntent, "Slide");
 					}
-                    else AkorDefterimSys.StandartSnackBarMsj(coordinatorLayout, getString(R.string.islem_yapilirken_bir_hata_olustu));
+                    else //AkorDefterimSys.StandartSnackBarMsj(coordinatorLayout, getString(R.string.islem_yapilirken_bir_hata_olustu));
 
                     break;
             }
@@ -221,7 +227,7 @@ public class ParolamiUnuttum extends AppCompatActivity implements Interface_Asyn
         }
     }
 
-    private void IleriIslem() {
+    /*private void IleriIslem() {
 		AkorDefterimSys.KlavyeKapat();
 
 		txtEPostaKullaniciAdi.setText(txtEPostaKullaniciAdi.getText().toString().trim());
@@ -254,5 +260,5 @@ public class ParolamiUnuttum extends AppCompatActivity implements Interface_Asyn
 				AkorDefterimSys.HesapBilgiGetir(null, EPostaKullaniciAdi);
 			} else AkorDefterimSys.StandartSnackBarMsj(coordinatorLayout, getString(R.string.internet_baglantisi_saglanamadi));
 		}
-	}
+	}*/
 }
