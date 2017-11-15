@@ -9,10 +9,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.ActivityInfo;
 import android.content.pm.PackageManager;
-import android.content.res.AssetFileDescriptor;
-import android.graphics.Color;
 import android.graphics.Typeface;
-import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
@@ -25,14 +22,12 @@ import android.text.Html;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.Window;
 import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
-import android.widget.VideoView;
 
 import com.cnbcyln.app.akordefterim.util.AkorDefterimSys;
 import com.facebook.CallbackManager;
@@ -229,13 +224,13 @@ public class Egitim extends AppCompatActivity implements View.OnClickListener {
                     if (sharedPref.getString("prefHesapEmailKullaniciAdi", "").equals("") && sharedPref.getString("prefHesapSifreSha1", "").equals("")) {
                         AkorDefterimSys.HesapPrefSifirla();
 
-                        startActivity(new Intent(activity, GirisEkran.class));
+                        startActivity(new Intent(activity, Giris.class));
                         finish();
                     } else new GirisYap().execute("Normal", "", "", "", sharedPref.getString("prefHesapEmailKullaniciAdi", ""), sharedPref.getString("prefHesapSifreSha1", ""));
                 else {
                     AkorDefterimSys.HesapPrefSifirla();
 
-                    startActivity(new Intent(activity, GirisEkran.class));
+                    startActivity(new Intent(activity, Giris.class));
                     finish();
                 }
             } else if(sharedPref.getString("prefOturumTipi", "Cevrimdisi").equals("Google")) {
@@ -259,7 +254,7 @@ public class Egitim extends AppCompatActivity implements View.OnClickListener {
                         } else {
                             AkorDefterimSys.HesapPrefSifirla();
 
-                            startActivity(new Intent(activity, GirisEkran.class));
+                            startActivity(new Intent(activity, Giris.class));
                             finish();
                         }
                     } else {
@@ -282,7 +277,7 @@ public class Egitim extends AppCompatActivity implements View.OnClickListener {
                                 } else {
                                     AkorDefterimSys.HesapPrefSifirla();
 
-                                    startActivity(new Intent(activity, GirisEkran.class));
+                                    startActivity(new Intent(activity, Giris.class));
                                     finish();
                                 }
                             }
@@ -291,7 +286,7 @@ public class Egitim extends AppCompatActivity implements View.OnClickListener {
                 } else {
                     AkorDefterimSys.HesapPrefSifirla();
 
-                    startActivity(new Intent(activity, GirisEkran.class));
+                    startActivity(new Intent(activity, Giris.class));
                     finish();
                 }
             } else if(sharedPref.getString("prefOturumTipi", "Cevrimdisi").equals("Facebook")) {
@@ -306,7 +301,7 @@ public class Egitim extends AppCompatActivity implements View.OnClickListener {
                                     if (response.getError() != null) {
                                         AkorDefterimSys.HesapPrefSifirla();
 
-                                        startActivity(new Intent(activity, GirisEkran.class));
+                                        startActivity(new Intent(activity, Giris.class));
                                         finish();
                                     } else {
                                         //Bundle bFacebookData = getFacebookData(object);
@@ -348,11 +343,11 @@ public class Egitim extends AppCompatActivity implements View.OnClickListener {
                 } else {
                     AkorDefterimSys.HesapPrefSifirla();
 
-                    startActivity(new Intent(activity, GirisEkran.class));
+                    startActivity(new Intent(activity, Giris.class));
                     finish();
                 }
             } else {
-                startActivity(new Intent(activity, GirisEkran.class));
+                startActivity(new Intent(activity, Giris.class));
                 finish();
             }
         }
@@ -529,7 +524,7 @@ public class Egitim extends AppCompatActivity implements View.OnClickListener {
 
                                     AkorDefterimSys.HesapPrefSifirla();
 
-                                    startActivity(new Intent(activity, GirisEkran.class));
+                                    startActivity(new Intent(activity, Giris.class));
                                     finish();
                                 }
                             });
@@ -571,7 +566,7 @@ public class Egitim extends AppCompatActivity implements View.OnClickListener {
                             if(!JSONGelenVeri.getString("FirebaseToken").equals(FirebaseToken))
                                 AkorDefterimSys.FirebaseMesajGonder(JSONGelenVeri.getString("FirebaseToken"), "{\"Islem\":\"PushHesapCikis\", \"FirebaseToken\":\"" + JSONGelenVeri.getString("FirebaseToken") + "\"}");
 
-                            Intent myIntent = new Intent(activity, Ana.class);
+                            Intent myIntent = new Intent(activity, AnaEkran.class);
                             myIntent.putExtra("Islem", "");
                             startActivity(myIntent);
                             finish();
@@ -582,13 +577,13 @@ public class Egitim extends AppCompatActivity implements View.OnClickListener {
                         if (JSONGelenVeri.getString("aciklama").equals("hesap bulunamadı")) {
                             AkorDefterimSys.HesapPrefSifirla();
 
-                            startActivity(new Intent(activity, GirisEkran.class));
+                            startActivity(new Intent(activity, Giris.class));
                             finish();
                         } else if (JSONGelenVeri.getString("aciklama").equals("hatalı işlem")) {
                             AkorDefterimSys.ToastMsj(activity, getString(R.string.islem_yapilirken_bir_hata_olustu), Toast.LENGTH_SHORT);
                             AkorDefterimSys.HesapPrefSifirla();
 
-                            startActivity(new Intent(activity, GirisEkran.class));
+                            startActivity(new Intent(activity, Giris.class));
                             finish();
                         }
 
@@ -597,7 +592,7 @@ public class Egitim extends AppCompatActivity implements View.OnClickListener {
                         AkorDefterimSys.ToastMsj(activity, getString(R.string.islem_yapilirken_bir_hata_olustu), Toast.LENGTH_SHORT);
                         AkorDefterimSys.HesapPrefSifirla();
 
-                        startActivity(new Intent(activity, GirisEkran.class));
+                        startActivity(new Intent(activity, Giris.class));
                         finish();
                         break;
                 }

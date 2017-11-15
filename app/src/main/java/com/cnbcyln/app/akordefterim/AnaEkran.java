@@ -49,7 +49,7 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
 
-public class Ana extends AppCompatActivity implements Interface_FragmentDataConn, Interface_AsyncResponse {
+public class AnaEkran extends AppCompatActivity implements Interface_FragmentDataConn, Interface_AsyncResponse {
 
 	private Activity activity;
 	private AkorDefterimSys AkorDefterimSys;

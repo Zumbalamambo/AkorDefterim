@@ -154,7 +154,7 @@ public class Onaykodu extends AppCompatActivity implements Interface_AsyncRespon
 	protected void onStart() {
 		super.onStart();
 
-		if(AkorDefterimSys.PrefAyarlar().getString("Action", "").equals("Vazgec") || AkorDefterimSys.PrefAyarlar().getString("GelinenEkran", "").equals("ParolaBelirle")) {
+		if(AkorDefterimSys.PrefAyarlar().getString("Action", "").equals("Vazgec") || AkorDefterimSys.PrefAyarlar().getString("GelinenEkran", "").equals("Parola_Belirle")) {
 			sharedPrefEditor = AkorDefterimSys.PrefAyarlar().edit();
 			sharedPrefEditor.remove("GelinenEkran");
 			sharedPrefEditor.apply();
@@ -272,7 +272,7 @@ public class Onaykodu extends AppCompatActivity implements Interface_AsyncRespon
 		if(AkorDefterimSys.InternetErisimKontrolu()) {
 			if(EPostaOnayKoduKalanSure > 0) { // Eğer kalan süre hala bitmemişse
 				if(txtOnayKodu.getText().toString().equals(OnayKodu)) {
-					Intent mIntent = new Intent(activity, ParolaBelirle.class);
+					Intent mIntent = new Intent(activity, Parola_Belirle.class);
 					mIntent.putExtra("Islem", Islem);
 					mIntent.putExtra("EPosta", EPosta);
 

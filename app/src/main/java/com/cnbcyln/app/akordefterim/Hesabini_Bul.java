@@ -30,7 +30,7 @@ import org.json.JSONObject;
 import java.util.Random;
 
 @SuppressWarnings({"deprecation", "ResultOfMethodCallIgnored", "ConstantConditions"})
-public class HesabiniBul extends AppCompatActivity implements Interface_AsyncResponse {
+public class Hesabini_Bul extends AppCompatActivity implements Interface_AsyncResponse {
 
 	private Activity activity;
 	private AkorDefterimSys AkorDefterimSys;
@@ -211,7 +211,7 @@ public class HesabiniBul extends AppCompatActivity implements Interface_AsyncRes
                     if(JSONSonuc.getBoolean("Sonuc")) {
 						// Yeni açılacak olan intent'e gönderilecek bilgileri tanımlıyoruz
 						Intent mIntent = new Intent(activity, Onaykodu.class);
-						mIntent.putExtra("Islem", "GirisYardimi");
+						mIntent.putExtra("Islem", "Giris_Yardimi");
 						mIntent.putExtra("EPosta", BulunanEPosta);
 						mIntent.putExtra("OnayKodu", String.valueOf(OnayKodu));
 

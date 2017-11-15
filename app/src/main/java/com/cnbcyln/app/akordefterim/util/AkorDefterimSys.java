@@ -2741,7 +2741,7 @@ public class AkorDefterimSys {
 
 			@Override
 			public void onFailure(Call<SnfHesapGirisYap> call, Throwable t) {
-				AsyncResponse.AsyncTaskReturnValue("{\"Islem\":\"GirisYap\", \"Sonuc\":false}");
+				AsyncResponse.AsyncTaskReturnValue("{\"Islem\":\"Giris_Yap\", \"Sonuc\":false}");
 			}
 		});
 	}

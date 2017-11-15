@@ -30,7 +30,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 @SuppressWarnings({"deprecation", "ResultOfMethodCallIgnored", "ConstantConditions"})
-public class ParolaBelirle extends AppCompatActivity implements Interface_AsyncResponse {
+public class Parola_Belirle extends AppCompatActivity implements Interface_AsyncResponse {
 
 	private Activity activity;
 	private AkorDefterimSys AkorDefterimSys;
@@ -82,7 +82,7 @@ public class ParolaBelirle extends AppCompatActivity implements Interface_AsyncR
 			@Override
 			public void onClick(View v) {
                 sharedPrefEditor = AkorDefterimSys.PrefAyarlar().edit();
-                sharedPrefEditor.putString("GelinenEkran", "ParolaBelirle");
+                sharedPrefEditor.putString("GelinenEkran", "Parola_Belirle");
                 sharedPrefEditor.apply();
 
 				onBackPressed();
@@ -179,7 +179,7 @@ public class ParolaBelirle extends AppCompatActivity implements Interface_AsyncR
 
 		btnIleri = findViewById(R.id.btnIleri);
 		btnIleri.setTypeface(YaziFontu, Typeface.NORMAL);
-		if(Islem.equals("GirisYardimi")) {
+		if(Islem.equals("Giris_Yardimi")) {
 			btnIleri.setText(getString(R.string.tamamla));
 			btnIleri.setBackground(getResources().getDrawable(R.drawable.custom_button_yesil));
 			btnIleri.setCompoundDrawablesWithIntrinsicBounds(null, null, getResources().getDrawable(R.drawable.ic_check_beyaz), null);
@@ -275,7 +275,7 @@ public class ParolaBelirle extends AppCompatActivity implements Interface_AsyncR
 		if(txtILParola.getError() == null && txtILParolaTekrar.getError() == null) {
 			if(AkorDefterimSys.InternetErisimKontrolu()) {
 				if(Islem.equals("Kayit")) SonrakiEkran();
-				else if(Islem.equals("GirisYardimi")) {
+				else if(Islem.equals("Giris_Yardimi")) {
 					PDParolaBelirle = AkorDefterimSys.CustomProgressDialog(getString(R.string.islem_yapiliyor), false, AkorDefterimSys.ProgressBarTimeoutSuresi);
 					PDParolaBelirle.show();
 

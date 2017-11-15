@@ -35,7 +35,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 @SuppressWarnings({"deprecation", "ResultOfMethodCallIgnored", "ConstantConditions"})
-public class GirisYap extends AppCompatActivity implements Interface_AsyncResponse {
+public class Giris_Yap extends AppCompatActivity implements Interface_AsyncResponse {
 
 	private Activity activity;
 	private AkorDefterimSys AkorDefterimSys;
@@ -144,7 +144,7 @@ public class GirisYap extends AppCompatActivity implements Interface_AsyncRespon
 
 		lblGirisYardimi = findViewById(R.id.lblGirisYardimi);
 		lblGirisYardimi.setTypeface(YaziFontu, Typeface.NORMAL);
-		AkorDefterimSys.setTextViewOnClick(lblGirisYardimi, "GirisYardimi");
+		AkorDefterimSys.setTextViewOnClick(lblGirisYardimi, "Giris_Yardimi");
 
 		btnGirisYap = findViewById(R.id.btnGirisYap);
 		btnGirisYap.setTypeface(YaziFontu, Typeface.NORMAL);
@@ -182,9 +182,9 @@ public class GirisYap extends AppCompatActivity implements Interface_AsyncRespon
             JSONObject JSONSonuc = new JSONObject(sonuc);
 
             switch (JSONSonuc.getString("Islem")) {
-				case "GirisYardimi":
+				case "Giris_Yardimi":
 					AkorDefterimSys.KlavyeKapat();
-					AkorDefterimSys.EkranGetir(new Intent(activity, GirisYardimi.class), "Slide");
+					AkorDefterimSys.EkranGetir(new Intent(activity, Giris_Yardimi.class), "Slide");
 					break;
 				case "HesapGirisYap":
 					// PDGirisYap Progress Dialog'u kapattık
@@ -197,7 +197,7 @@ public class GirisYap extends AppCompatActivity implements Interface_AsyncRespon
 						sharedPrefEditor.putString("prefParolaSHA1", JSONSonuc.getString("HesapParolaSHA1"));
 						sharedPrefEditor.apply();
 
-						Intent mIntent = new Intent(activity, Ana.class);
+						Intent mIntent = new Intent(activity, AnaEkran.class);
 						mIntent.putExtra("Islem", "");
 
 						AkorDefterimSys.EkranGetir(mIntent, "Normal");
@@ -254,11 +254,12 @@ public class GirisYap extends AppCompatActivity implements Interface_AsyncRespon
 
 		txtEPostaKullaniciAdi.setText(txtEPostaKullaniciAdi.getText().toString().trim());
 		String EPostaKullaniciAdi = txtEPostaKullaniciAdi.getText().toString();
-		if(TextUtils.isEmpty(EPostaKullaniciAdi))
+
+		if(TextUtils.isEmpty(EPostaKullaniciAdi)) // EPostaKullaniciAdi alanı boş ise
 			txtILEPostaKullaniciAdi.setError(getString(R.string.hata_bos_alan));
-		else {
-			if(AkorDefterimSys.isValid(EPostaKullaniciAdi, "EPosta")) {
-				if(AkorDefterimSys.isValid(EPostaKullaniciAdi, "FakeEPosta"))
+		else { // EPostaKullaniciAdi alanı dolu ise
+			if(AkorDefterimSys.isValid(EPostaKullaniciAdi, "EPosta")) { // Girilen bilgi EPosta ise
+				if(AkorDefterimSys.isValid(EPostaKullaniciAdi, "FakeEPosta")) // Girilen EPosta fake ise
 					txtILEPostaKullaniciAdi.setError(getString(R.string.hata_format_eposta));
 				else
 					txtILEPostaKullaniciAdi.setError(null);
@@ -274,6 +275,7 @@ public class GirisYap extends AppCompatActivity implements Interface_AsyncRespon
 
 		txtParola.setText(txtParola.getText().toString().trim());
 		String Parola = txtParola.getText().toString();
+
 		if(TextUtils.isEmpty(Parola))
 			txtILParola.setError(getString(R.string.hata_bos_alan));
 		else if(AkorDefterimSys.EditTextKarakterKontrolMIN(Parola, getResources().getInteger(R.integer.SifreKarakterSayisi_MIN)))

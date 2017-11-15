@@ -96,28 +96,28 @@
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>
-        <activity android:name=".Ana" >
+        <activity android:name=".AnaEkran" >
             <intent-filter>
-                <action android:name="android.intent.action.ANA" />
+                <action android:name="android.intent.action.ANAEKRAN" />
 
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>
-        <activity android:name=".GirisEkran" >
+        <activity android:name=".Giris" >
             <intent-filter>
-                <action android:name="android.intent.action.GIRISEKRAN" />
+                <action android:name="android.intent.action.GIRIS" />
 
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>
-        <activity android:name=".GirisYap" >
+        <activity android:name=".Giris_Yap" >
             <intent-filter>
-                <action android:name="android.intent.action.GIRISEKRAN_GIRISYAP" />
+                <action android:name="android.intent.action.GIRIS_YAP" />
 
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>
-        <activity android:name=".HesabiniBul" >
+        <activity android:name=".Hesabini_Bul" >
             <intent-filter>
                 <action android:name="android.intent.action.HESABINI_BUL" />
 
@@ -133,14 +133,14 @@
         </activity>
         <activity android:name=".Onaykodu">
             <intent-filter>
-                <action android:name="android.intent.action.KAYITEKRAN_ONAYKODU" />
+                <action android:name="android.intent.action.ONAYKODU" />
 
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>
-        <activity android:name=".ParolaBelirle">
+        <activity android:name=".Parola_Belirle">
             <intent-filter>
-                <action android:name="android.intent.action.KAYITEKRAN_PAROLA" />
+                <action android:name="android.intent.action.PAROLA_BELIRLE" />
 
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
@@ -159,9 +159,9 @@
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>
-        <activity android:name=".GirisYardimi" >
+        <activity android:name=".Giris_Yardimi" >
             <intent-filter>
-                <action android:name="android.intent.action.SIFREMIUNUTTUM" />
+                <action android:name="android.intent.action.GIRIS_YARDIMI" />
 
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>

@@ -439,7 +439,7 @@ public class KayitEkran_KullaniciAdi extends AppCompatActivity implements Interf
 		// PDKayitIslem Progress Dialog'u kapattık
 		AkorDefterimSys.DismissProgressDialog(PDKayitIslem);
 
-		Intent mIntent = new Intent(activity, Ana.class);
+		Intent mIntent = new Intent(activity, AnaEkran.class);
 		mIntent.putExtra("Islem", "");
 
 		AkorDefterimSys.EkranGetir(mIntent, "Normal");

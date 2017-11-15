@@ -190,7 +190,7 @@ public class KayitEkran_EPosta extends AppCompatActivity implements Interface_As
 								ADHesapKontrol.dismiss();
 
 								sharedPrefEditor = AkorDefterimSys.PrefAyarlar().edit();
-								sharedPrefEditor.putString("Action", "GirisYap");
+								sharedPrefEditor.putString("Action", "Giris_Yap");
 								sharedPrefEditor.apply();
 
 								onBackPressed();

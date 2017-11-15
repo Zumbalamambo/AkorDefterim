@@ -6,25 +6,15 @@ import android.app.ProgressDialog;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Typeface;
-import android.os.Build;
 import android.os.Bundle;
-import android.support.design.widget.CoordinatorLayout;
-import android.support.design.widget.TextInputLayout;
 import android.support.v7.app.AppCompatActivity;
-import android.text.Editable;
 import android.text.TextUtils;
-import android.text.TextWatcher;
-import android.view.KeyEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
-import android.view.inputmethod.EditorInfo;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.TextView;
-import android.widget.Toolbar;
 
-import com.andexert.library.RippleView;
 import com.cnbcyln.app.akordefterim.Interface.Interface_AsyncResponse;
 import com.cnbcyln.app.akordefterim.util.AkorDefterimSys;
 
@@ -34,22 +24,17 @@ import org.json.JSONObject;
 import java.util.Random;
 
 @SuppressWarnings({"deprecation", "ResultOfMethodCallIgnored", "ConstantConditions"})
-public class GirisYardimi extends AppCompatActivity implements Interface_AsyncResponse {
+public class Giris_Yardimi extends AppCompatActivity implements Interface_AsyncResponse {
 
 	private Activity activity;
 	private AkorDefterimSys AkorDefterimSys;
 
 	Typeface YaziFontu;
     SharedPreferences.Editor sharedPrefEditor;
-    Random rnd;
-	ProgressDialog PDParolamiUnuttum;
-	AlertDialog ADDialog_HesapDurumu;
 
 	ImageButton btnGeri;
 	Button btnKullaniciAdiVeyaEPostaKullan, btnSmsGonder, btnAkorDefterimYardimMerkezi;
 	TextView lblBaslik, lblHesabinaEris, lblYardimMerkezi;
-
-    String OnayKodu, BulunanEPosta;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -59,7 +44,6 @@ public class GirisYardimi extends AppCompatActivity implements Interface_AsyncRe
 		activity = this;
 		AkorDefterimSys = new AkorDefterimSys(activity);
 		YaziFontu = AkorDefterimSys.FontGetir(activity, "anivers_regular"); // Genel yazı fontunu belirttik
-        rnd = new Random();
 
 		AkorDefterimSys.GenelAyarlar(); // Uygulama için genel ayarları uyguladık.
 		//AkorDefterimSys.TransparanNotifyBar(); // Notification Bar'ı transparan yapıyoruz.
@@ -86,7 +70,7 @@ public class GirisYardimi extends AppCompatActivity implements Interface_AsyncRe
 			@Override
 			public void onClick(View v) {
 				AkorDefterimSys.KlavyeKapat();
-				AkorDefterimSys.EkranGetir(new Intent(activity, HesabiniBul.class), "Slide");
+				AkorDefterimSys.EkranGetir(new Intent(activity, Hesabini_Bul.class), "Slide");
 			}
 		});
 
@@ -193,7 +177,7 @@ public class GirisYardimi extends AppCompatActivity implements Interface_AsyncRe
 
             switch (JSONSonuc.getString("Islem")) {
 				case "HesapBilgiGetir":
-					if(JSONSonuc.getBoolean("Sonuc") && !TextUtils.isEmpty(JSONSonuc.getString("ParolaSHA1"))) { // Eğer hesap bulundu ve ParolaSHA1 var ise. Yani normal hesap açıldıysa..
+					/*if(JSONSonuc.getBoolean("Sonuc") && !TextUtils.isEmpty(JSONSonuc.getString("ParolaSHA1"))) { // Eğer hesap bulundu ve ParolaSHA1 var ise. Yani normal hesap açıldıysa..
                         if(JSONSonuc.getString("HesapDurum").equals("Ban")) { // Eğer hesap banlanmışsa
 							// PDParolamiUnuttum Progress Dialog'u kapattık
 							AkorDefterimSys.DismissProgressDialog(PDParolamiUnuttum);
@@ -225,23 +209,23 @@ public class GirisYardimi extends AppCompatActivity implements Interface_AsyncRe
 						AkorDefterimSys.DismissProgressDialog(PDParolamiUnuttum);
 
 						//AkorDefterimSys.StandartSnackBarMsj(coordinatorLayout, getString(R.string.hesap_bilgileri_bulunamadi));
-					}
+					}*/
 
 					break;
                 case "EPostaGonder":
                     // PDParolamiUnuttum Progress Dialog'u kapattık
-                    AkorDefterimSys.DismissProgressDialog(PDParolamiUnuttum);
+                    /*AkorDefterimSys.DismissProgressDialog(PDParolamiUnuttum);
 
                     if(JSONSonuc.getBoolean("Sonuc")) {
 						// Yeni açılacak olan intent'e gönderilecek bilgileri tanımlıyoruz
 						Intent mIntent = new Intent(activity, Onaykodu.class);
-						mIntent.putExtra("Islem", "GirisYardimi");
+						mIntent.putExtra("Islem", "Giris_Yardimi");
 						mIntent.putExtra("EPosta", BulunanEPosta);
 						mIntent.putExtra("OnayKodu", String.valueOf(OnayKodu));
 
 						AkorDefterimSys.EkranGetir(mIntent, "Slide");
 					}
-                    else //AkorDefterimSys.StandartSnackBarMsj(coordinatorLayout, getString(R.string.islem_yapilirken_bir_hata_olustu));
+                    else //AkorDefterimSys.StandartSnackBarMsj(coordinatorLayout, getString(R.string.islem_yapilirken_bir_hata_olustu));*/
 
                     break;
             }

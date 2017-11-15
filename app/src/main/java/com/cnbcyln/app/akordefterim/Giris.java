@@ -50,7 +50,7 @@ import org.json.JSONObject;
 import java.util.Arrays;
 
 @SuppressWarnings("ALL")
-public class GirisEkran extends AppCompatActivity implements Interface_AsyncResponse {
+public class Giris extends AppCompatActivity implements Interface_AsyncResponse {
 
 	private Activity activity;
 	private AkorDefterimSys AkorDefterimSys;
@@ -72,7 +72,7 @@ public class GirisEkran extends AppCompatActivity implements Interface_AsyncResp
 		FacebookSdk.sdkInitialize(getApplicationContext());
 		mFacebookCallbackManager = CallbackManager.Factory.create();
 
-		setContentView(R.layout.activity_giris);
+		setContentView(R.layout.activity_giris_bgekran);
 
 		activity = this;
 		AkorDefterimSys = new AkorDefterimSys(activity);
@@ -137,7 +137,7 @@ public class GirisEkran extends AppCompatActivity implements Interface_AsyncResp
 	protected void onResume() {
 		super.onResume();
 
-		if(AkorDefterimSys.PrefAyarlar().getString("Action", "").equals("GirisYap")) {
+		if(AkorDefterimSys.PrefAyarlar().getString("Action", "").equals("Giris_Yap")) {
 			sharedPrefEditor = AkorDefterimSys.PrefAyarlar().edit();
 			sharedPrefEditor.remove("Action");
 			sharedPrefEditor.apply();
@@ -158,7 +158,7 @@ public class GirisEkran extends AppCompatActivity implements Interface_AsyncResp
 	@Override
 	public void onBackPressed() {
 		// Cihazdan fiziksel geri tuşuna basıldığında eğer ana ekranda değilsek ana ekranı getiriyoruz.
-		// Ana ekrandaysak uygulamayı kapatıyoruz..
+		// AnaEkran ekrandaysak uygulamayı kapatıyoruz..
 		if(VPGirisEkranPager.getCurrentItem() > 0) {
 			VPGirisEkranPager.setCurrentItem(0);
 		} else {
@@ -318,7 +318,7 @@ public class GirisEkran extends AppCompatActivity implements Interface_AsyncResp
 					btnNormalLogin.setOnClickListener(new OnClickListener() {
 						@Override
 						public void onClick(View v) {
-                            AkorDefterimSys.EkranGetir(new Intent(activity, GirisYap.class), "Slide");
+                            AkorDefterimSys.EkranGetir(new Intent(activity, Giris_Yap.class), "Slide");
 						}
 					});
 
@@ -613,7 +613,7 @@ public class GirisEkran extends AppCompatActivity implements Interface_AsyncResp
 						sharedPrefEditor.putString("prefParolaSHA1", JSONSonuc.getString("HesapParolaSHA1"));
 						sharedPrefEditor.apply();
 
-						Intent mIntent = new Intent(activity, Ana.class);
+						Intent mIntent = new Intent(activity, AnaEkran.class);
 						mIntent.putExtra("Islem", "");
 
 						AkorDefterimSys.EkranGetir(mIntent, "Normal");

@@ -75,14 +75,14 @@ public class SplashEkran extends Activity implements Interface_AsyncResponse {
 			e.printStackTrace();
 		}
 
-		lblVersiyonNo = (TextView) findViewById(R.id.lblVersiyonNo);
+		lblVersiyonNo = findViewById(R.id.lblVersiyonNo);
 		lblVersiyonNo.setTypeface(YaziFontu, Typeface.BOLD);
 		lblVersiyonNo.setText(String.valueOf("v").concat(UygulamaVersiyon));
 
 		anim = AnimationUtils.loadAnimation(this, R.anim.anim_giris_bg_alpha);
 		anim.reset();
 
-		RLBG = (RelativeLayout) findViewById(R.id.RLBG);
+		RLBG = findViewById(R.id.RLBG);
 		RLBG.clearAnimation();
 		RLBG.startAnimation(anim);
 
@@ -120,7 +120,7 @@ public class SplashEkran extends Activity implements Interface_AsyncResponse {
 
 						AkorDefterimSys.HesapPrefSifirla();
 
-						Intent mIntent = new Intent(activity, Ana.class);
+						Intent mIntent = new Intent(activity, AnaEkran.class);
 						mIntent.putExtra("Islem", "");
 						startActivity(mIntent);
 
@@ -259,7 +259,7 @@ public class SplashEkran extends Activity implements Interface_AsyncResponse {
 
 								AkorDefterimSys.HesapPrefSifirla();
 
-								Intent myIntent = new Intent(activity, Ana.class);
+								Intent myIntent = new Intent(activity, AnaEkran.class);
 								myIntent.putExtra("Islem", "");
 								startActivity(myIntent);
 								finish();
@@ -288,7 +288,7 @@ public class SplashEkran extends Activity implements Interface_AsyncResponse {
 						if (AkorDefterimSys.PrefAyarlar().getString("prefHesapID", "").equals("")) {
 							AkorDefterimSys.HesapPrefSifirla();
 
-							AkorDefterimSys.EkranGetir(new Intent(activity, GirisEkran.class), "Normal");
+							AkorDefterimSys.EkranGetir(new Intent(activity, Giris.class), "Normal");
 							finish();
 						} else {
 							PDGirisYap = AkorDefterimSys.CustomProgressDialog(getString(R.string.giris_yapiliyor), false, AkorDefterimSys.ProgressBarTimeoutSuresi);
@@ -310,7 +310,7 @@ public class SplashEkran extends Activity implements Interface_AsyncResponse {
 						sharedPrefEditor.putString("prefParolaSHA1", JSONSonuc.getString("HesapParolaSHA1"));
                         sharedPrefEditor.apply();
 
-						Intent mIntent = new Intent(activity, Ana.class);
+						Intent mIntent = new Intent(activity, AnaEkran.class);
 						mIntent.putExtra("Islem", "");
 
 						AkorDefterimSys.EkranGetir(mIntent, "Normal");
@@ -332,14 +332,14 @@ public class SplashEkran extends Activity implements Interface_AsyncResponse {
                                     @Override
                                     public void onClick(View v) {
                                         ADDialog_HesapDurumu.dismiss();
-										AkorDefterimSys.EkranGetir(new Intent(activity, GirisEkran.class), "Normal");
+										AkorDefterimSys.EkranGetir(new Intent(activity, Giris.class), "Normal");
 										finish();
                                     }
                                 });
 
 								break;
 							default:
-								AkorDefterimSys.EkranGetir(new Intent(activity, GirisEkran.class), "Normal");
+								AkorDefterimSys.EkranGetir(new Intent(activity, Giris.class), "Normal");
 								finish();
 								break;
 						}
@@ -400,14 +400,14 @@ public class SplashEkran extends Activity implements Interface_AsyncResponse {
             @Override
             public void onCancel() {
 				AkorDefterimSys.HesapPrefSifirla();
-				AkorDefterimSys.EkranGetir(new Intent(activity, GirisEkran.class), "Normal");
+				AkorDefterimSys.EkranGetir(new Intent(activity, Giris.class), "Normal");
 				finish();
             }
 
             @Override
             public void onError(FacebookException error) {
 				AkorDefterimSys.HesapPrefSifirla();
-				AkorDefterimSys.EkranGetir(new Intent(activity, GirisEkran.class), "Normal");
+				AkorDefterimSys.EkranGetir(new Intent(activity, Giris.class), "Normal");
 				finish();
             }
         });

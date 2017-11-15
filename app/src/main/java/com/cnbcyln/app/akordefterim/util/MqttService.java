@@ -14,8 +14,8 @@ import android.provider.Settings;
 import android.support.annotation.Nullable;
 import android.util.Log;
 
-import com.cnbcyln.app.akordefterim.Ana;
-import com.cnbcyln.app.akordefterim.GirisEkran;
+import com.cnbcyln.app.akordefterim.AnaEkran;
+import com.cnbcyln.app.akordefterim.Giris;
 import com.cnbcyln.app.akordefterim.R;
 import com.cnbcyln.app.akordefterim.Siniflar.SnfIstekler;
 
@@ -245,11 +245,11 @@ public class MqttService extends Service implements MqttCallback {
             case "Bildirim":
                 if(sharedPref.getString("prefOturumTipi", "Cevrimdisi").equals("Normal")) {
                     if (sharedPref.getString("prefHesapEmailKullaniciAdi", "").equals("") && sharedPref.getString("prefHesapSifreSha1", "").equals("")) {
-                        myIntent = new Intent(context, GirisEkran.class);
+                        myIntent = new Intent(context, Giris.class);
                     } else {
-                        myIntent = new Intent(context, Ana.class);
+                        myIntent = new Intent(context, AnaEkran.class);
                     }
-                } else myIntent = new Intent(context, GirisEkran.class);
+                } else myIntent = new Intent(context, Giris.class);
 
                 AkorDefterimSys.NotifyGoster(myIntent, JSONGelenVeri.getString("Baslik"), JSONGelenVeri.getString("Icerik"), "", -1, JSONGelenVeri.getString("Icerik"), JSONGelenVeri.getString("Baslik"), JSONGelenVeri.getString("Icerik"), "", true);
 
@@ -266,7 +266,7 @@ public class MqttService extends Service implements MqttCallback {
                     Intent_AnaEkran.putExtra("JSONData", "{\"Islem\":\"PushHesapCikis\"}");
                     this.sendBroadcast(Intent_AnaEkran);
 
-                    myIntent = new Intent(context, Ana.class);
+                    myIntent = new Intent(context, AnaEkran.class);
                     AkorDefterimSys.NotifyGoster(myIntent, getString(R.string.uygulama_adi), getString(R.string.farkli_bir_cihazdan_oturum_acildi), "", -1, getString(R.string.farkli_bir_cihazdan_oturum_acildi), getString(R.string.uygulama_adi), getString(R.string.farkli_bir_cihazdan_oturum_acildi), "", true);
                 }
 
