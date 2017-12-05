@@ -100,7 +100,7 @@ public class SifremiUnuttum extends Activity implements OnClickListener {
 		RES = activity.getResources();
 		rnd = new Random();
 		YaziFontu = AkorDefterimSys.FontGetir(activity, "anivers_regular");
-		CepOnayKoduKalanSure = AkorDefterimSys.CepOnayKoduKalanSure;
+		CepOnayKoduKalanSure = AkorDefterimSys.SMSGondermeToplamSure;
 
 		imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE); // İstenildiği zaman klavyeyi gizlemeye yarayan kod tanımlayıcısı
 
@@ -131,17 +131,17 @@ public class SifremiUnuttum extends Activity implements OnClickListener {
 			e.printStackTrace();
 		}
 
-		lblVersiyonNo = (TextView) findViewById(R.id.lblVersiyonNo);
+		lblVersiyonNo = findViewById(R.id.lblVersiyonNo);
 		lblVersiyonNo.setTypeface(YaziFontu, Typeface.BOLD);
 		lblVersiyonNo.setText(String.valueOf("v").concat(Versiyon));
 
-		lblSifremiUnuttumBaslik = (TextView) findViewById(R.id.lblSifremiUnuttumBaslik);
+		lblSifremiUnuttumBaslik = findViewById(R.id.lblSifremiUnuttumBaslik);
 		lblSifremiUnuttumBaslik.setTypeface(YaziFontu, Typeface.BOLD);
 
-		lblSifremiUnuttumBilgi = (TextView) findViewById(R.id.lblSifremiUnuttumBilgi);
+		lblSifremiUnuttumBilgi = findViewById(R.id.lblSifremiUnuttumBilgi);
 		lblSifremiUnuttumBilgi.setTypeface(YaziFontu);
 
-		EtxtEmailKullaniciAdi = (EditText) findViewById(R.id.EtxtEmailKullaniciAdi);
+		EtxtEmailKullaniciAdi = findViewById(R.id.EtxtEmailKullaniciAdi);
 		EtxtEmailKullaniciAdi.setTypeface(YaziFontu);
 		EtxtEmailKullaniciAdi.setOnEditorActionListener(new OnEditorActionListener() {
 			@Override
@@ -154,7 +154,7 @@ public class SifremiUnuttum extends Activity implements OnClickListener {
 			}
 		});
 
-		btnAra = (Button) findViewById(R.id.btnAra);
+		btnAra = findViewById(R.id.btnAra);
 		btnAra.setTypeface(YaziFontu);
 		btnAra.setOnClickListener(this);
 		// ATTENTION: This was auto-generated to implement the App Indexing API.
@@ -280,15 +280,15 @@ public class SifremiUnuttum extends Activity implements OnClickListener {
 							ADDialog = AkorDefterimSys.CustomAlertDialog(activity, R.mipmap.ic_launcher, getString(R.string.yontem_secin), ViewDialogContent, getString(R.string.devam), getString(R.string.iptal), false);
 							ADDialog.getWindow().getAttributes().windowAnimations = R.style.DialogAnimation;
 
-							Dialog_lblSifreSifirlamaYontemBilgi = (TextView) ViewDialogContent.findViewById(R.id.Dialog_lblSifreSifirlamaYontemBilgi);
+							Dialog_lblSifreSifirlamaYontemBilgi = ViewDialogContent.findViewById(R.id.Dialog_lblSifreSifirlamaYontemBilgi);
 							Dialog_lblSifreSifirlamaYontemBilgi.setTypeface(YaziFontu);
 							Dialog_lblSifreSifirlamaYontemBilgi.setText(getString(R.string.sifre_sifirlama_yontem_bilgi, AdSoyad));
 
-							Dialog_RBTelefon = (RadioButton) ViewDialogContent.findViewById(R.id.Dialog_RBTelefon);
+							Dialog_RBTelefon = ViewDialogContent.findViewById(R.id.Dialog_RBTelefon);
 							Dialog_RBTelefon.setTypeface(YaziFontu);
 							Dialog_RBTelefon.setText(Html.fromHtml(getString(R.string.sonu_xx_ile_biten_telefon, Telefon.substring(Telefon.length() - 2))), TextView.BufferType.SPANNABLE);
 
-							Dialog_RBEmail = (RadioButton) ViewDialogContent.findViewById(R.id.Dialog_RBEmail);
+							Dialog_RBEmail = ViewDialogContent.findViewById(R.id.Dialog_RBEmail);
 							Dialog_RBEmail.setTypeface(YaziFontu);
 							Dialog_RBEmail.setText(Html.fromHtml(getString(R.string.email_adresine_onay_kodu_gonder, Email.subSequence(0, 2) + "*********" + Email.substring(Email.indexOf("@"), Email.length()))), TextView.BufferType.SPANNABLE);
 
@@ -406,8 +406,8 @@ public class SifremiUnuttum extends Activity implements OnClickListener {
 					case "EmailYontemi":
 						nameValuePairs.add(new BasicNameValuePair("adsoyad", AdSoyad));
 						nameValuePairs.add(new BasicNameValuePair("email", EmailTelefon));
-						nameValuePairs.add(new BasicNameValuePair("baslik", getString(R.string.uygulama_adi) + " - " + getString(R.string.mail_sifremiunuttum)));
-						nameValuePairs.add(new BasicNameValuePair("icerik", getString(R.string.mail_sifremiunuttum_icerik, AdSoyad, String.valueOf(OnayKodu))));
+						nameValuePairs.add(new BasicNameValuePair("baslik", getString(R.string.uygulama_adi) + " - " + getString(R.string.eposta_sifremiunuttum)));
+						nameValuePairs.add(new BasicNameValuePair("icerik", getString(R.string.eposta_sifremiunuttum_icerik, AdSoyad, String.valueOf(OnayKodu))));
 
 						httpPost = new HttpPost(AkorDefterimSys.PHPEMailYolla);
 
@@ -449,11 +449,11 @@ public class SifremiUnuttum extends Activity implements OnClickListener {
 							ADDialog = AkorDefterimSys.CustomAlertDialog(activity, R.mipmap.ic_launcher, getString(R.string.dogrulama_kodu), ViewDialogContent, getString(R.string.dogrula), getString(R.string.iptal), getString(R.string.yeniden_gonder));
 							ADDialog.getWindow().getAttributes().windowAnimations = R.style.DialogAnimation;
 
-							Dialog_lblOnayKoduBilgilendirme = (TextView) ViewDialogContent.findViewById(R.id.Dialog_lblOnayKoduBilgilendirme);
+							Dialog_lblOnayKoduBilgilendirme = ViewDialogContent.findViewById(R.id.Dialog_lblOnayKoduBilgilendirme);
 							Dialog_lblOnayKoduBilgilendirme.setTypeface(YaziFontu);
-							Dialog_lblOnayKoduBilgilendirme.setText(getString(R.string.onay_kodu_bilgilendirme_cep, String.valueOf(CepOnayKoduKalanSure)));
+							Dialog_lblOnayKoduBilgilendirme.setText(getString(R.string.onay_kodu_cep, String.valueOf(CepOnayKoduKalanSure)));
 
-							Dialog_txtOnayKodu = (EditText) ViewDialogContent.findViewById(R.id.Dialog_txtOnayKodu);
+							Dialog_txtOnayKodu = ViewDialogContent.findViewById(R.id.Dialog_txtOnayKodu);
 							Dialog_txtOnayKodu.setTypeface(YaziFontu);
 
 							ADDialog.show();
@@ -476,20 +476,20 @@ public class SifremiUnuttum extends Activity implements OnClickListener {
 										if (CepOnayKoduSayac != null) {
 											CepOnayKoduSayac.cancel();
 											CepOnayKoduSayac = null;
-											CepOnayKoduKalanSure = AkorDefterimSys.CepOnayKoduKalanSure;
+											CepOnayKoduKalanSure = AkorDefterimSys.SMSGondermeToplamSure;
 										}
 
 										ViewDialogContent = inflater.inflate(R.layout.dialog_sifre_sifirla, null);
 										ADDialog = AkorDefterimSys.CustomAlertDialog(activity, R.mipmap.ic_launcher, getString(R.string.sifre_sifirla), ViewDialogContent, getString(R.string.sifirla), getString(R.string.iptal), false);
 										ADDialog.getWindow().getAttributes().windowAnimations = R.style.DialogAnimation;
 
-										TextView Dialog_lblSifreSifirlaBilgi = (TextView) ViewDialogContent.findViewById(R.id.Dialog_lblSifreSifirlaBilgi);
+										TextView Dialog_lblSifreSifirlaBilgi = ViewDialogContent.findViewById(R.id.Dialog_lblSifreSifirlaBilgi);
 										Dialog_lblSifreSifirlaBilgi.setTypeface(YaziFontu);
 
-										final EditText Dialog_EtxtYeniSifre = (EditText) ViewDialogContent.findViewById(R.id.EtxtYeniSifre);
+										final EditText Dialog_EtxtYeniSifre = ViewDialogContent.findViewById(R.id.EtxtYeniSifre);
 										Dialog_EtxtYeniSifre.setTypeface(YaziFontu);
 
-										final EditText Dialog_EtxtYeniSifreTekrar = (EditText) ViewDialogContent.findViewById(R.id.EtxtYeniSifreTekrar);
+										final EditText Dialog_EtxtYeniSifreTekrar = ViewDialogContent.findViewById(R.id.EtxtYeniSifreTekrar);
 										Dialog_EtxtYeniSifreTekrar.setTypeface(YaziFontu);
 
 										ADDialog.show();
@@ -509,11 +509,11 @@ public class SifremiUnuttum extends Activity implements OnClickListener {
 													imm.showSoftInput(Dialog_EtxtYeniSifre, 0);
 													AkorDefterimSys.ToastMsj(activity, getString(R.string.txtyenisifre_hata1), Toast.LENGTH_SHORT);
 
-												} else if (AkorDefterimSys.EditTextKarakterKontrol(YeniSifre, RES.getInteger(R.integer.SifreKarakterSayisi_MIN), RES.getInteger(R.integer.SifreKarakterSayisi_MAX))) {
+												} else if (AkorDefterimSys.EditTextKarakterKontrol(YeniSifre, RES.getInteger(R.integer.ParolaKarakterSayisi_MIN), RES.getInteger(R.integer.ParolaKarakterSayisi_MAX))) {
 													Dialog_EtxtYeniSifre.requestFocus();
 													Dialog_EtxtYeniSifre.setSelection(YeniSifre.length());
 													imm.showSoftInput(Dialog_EtxtYeniSifre, 0);
-													AkorDefterimSys.ToastMsj(activity, getString(R.string.txtyenisifre_hata2, String.valueOf(RES.getInteger(R.integer.SifreKarakterSayisi_MIN)), String.valueOf(RES.getInteger(R.integer.SifreKarakterSayisi_MAX))), Toast.LENGTH_SHORT);
+													AkorDefterimSys.ToastMsj(activity, getString(R.string.txtyenisifre_hata2, String.valueOf(RES.getInteger(R.integer.ParolaKarakterSayisi_MIN)), String.valueOf(RES.getInteger(R.integer.ParolaKarakterSayisi_MAX))), Toast.LENGTH_SHORT);
 
 												} else if (!AkorDefterimSys.isValid(YeniSifre, "SadeceSayiKucukHarfBuyukHarf")) {
 													Dialog_EtxtYeniSifre.requestFocus();
@@ -562,7 +562,7 @@ public class SifremiUnuttum extends Activity implements OnClickListener {
 									if (CepOnayKoduSayac != null) {
 										CepOnayKoduSayac.cancel();
 										CepOnayKoduSayac = null;
-										CepOnayKoduKalanSure = AkorDefterimSys.CepOnayKoduKalanSure;
+										CepOnayKoduKalanSure = AkorDefterimSys.SMSGondermeToplamSure;
 									}
 								}
 							});
@@ -577,7 +577,7 @@ public class SifremiUnuttum extends Activity implements OnClickListener {
                                             if (CepOnayKoduSayac != null) {
                                                 CepOnayKoduSayac.cancel();
                                                 CepOnayKoduSayac = null;
-                                                CepOnayKoduKalanSure = AkorDefterimSys.CepOnayKoduKalanSure;
+                                                CepOnayKoduKalanSure = AkorDefterimSys.SMSGondermeToplamSure;
                                             }
 
                                             new SifreSifirlamaOnayKoduYolla().execute(AdSoyad, Email, "TelefonYontemi");
@@ -600,25 +600,25 @@ public class SifremiUnuttum extends Activity implements OnClickListener {
 								}
 							});
 
-							CepOnayKoduKalanSure = AkorDefterimSys.CepOnayKoduKalanSure;
+							CepOnayKoduKalanSure = AkorDefterimSys.SMSGondermeToplamSure;
 							CepOnayKoduSayac = new Timer();
 							CepOnayKoduDialogSayac_Ayarla();
 							CepOnayKoduSayac.schedule(CepOnayKoduDialogSayac, 10, 1000);
 						} else if (JSONGelenVeri.getInt("sonuc") == 0) {
 							if (JSONGelenVeri.getString("aciklama").equals("cepno alanı boş")) {
-								AkorDefterimSys.ToastMsj(activity, getString(R.string.sms_gonderim_hatasi), Toast.LENGTH_SHORT);
+								//AkorDefterimSys.ToastMsj(activity, getString(R.string.sms_gonderim_hatasi), Toast.LENGTH_SHORT);
 							} else if (JSONGelenVeri.getString("aciklama").equals("mesaj alanı boş")) {
-								AkorDefterimSys.ToastMsj(activity, getString(R.string.sms_gonderim_hatasi), Toast.LENGTH_SHORT);
+								//AkorDefterimSys.ToastMsj(activity, getString(R.string.sms_gonderim_hatasi), Toast.LENGTH_SHORT);
 							} else if (JSONGelenVeri.getString("aciklama").equals("hatalı mesaj metni")) {
-								AkorDefterimSys.ToastMsj(activity, getString(R.string.sms_gonderim_hatasi), Toast.LENGTH_SHORT);
+								//AkorDefterimSys.ToastMsj(activity, getString(R.string.sms_gonderim_hatasi), Toast.LENGTH_SHORT);
 							} else if (JSONGelenVeri.getString("aciklama").equals("hatalı api ip hatası")) {
-								AkorDefterimSys.ToastMsj(activity, getString(R.string.sms_gonderim_hatasi), Toast.LENGTH_SHORT);
+								//AkorDefterimSys.ToastMsj(activity, getString(R.string.sms_gonderim_hatasi), Toast.LENGTH_SHORT);
 							} else if (JSONGelenVeri.getString("aciklama").equals("hatalı gönderici adı")) {
-								AkorDefterimSys.ToastMsj(activity, getString(R.string.sms_gonderim_hatasi), Toast.LENGTH_SHORT);
+								//AkorDefterimSys.ToastMsj(activity, getString(R.string.sms_gonderim_hatasi), Toast.LENGTH_SHORT);
 							} else if (JSONGelenVeri.getString("aciklama").equals("hatalı sorgu parametresi")) {
-								AkorDefterimSys.ToastMsj(activity, getString(R.string.sms_gonderim_hatasi), Toast.LENGTH_SHORT);
+								//AkorDefterimSys.ToastMsj(activity, getString(R.string.sms_gonderim_hatasi), Toast.LENGTH_SHORT);
 							} else if (JSONGelenVeri.getString("aciklama").equals("hatalı işlem")) {
-								AkorDefterimSys.ToastMsj(activity, getString(R.string.islem_yapilirken_bir_hata_olustu), Toast.LENGTH_SHORT);
+								//AkorDefterimSys.ToastMsj(activity, getString(R.string.islem_yapilirken_bir_hata_olustu), Toast.LENGTH_SHORT);
 							}
 						}
 
@@ -629,11 +629,11 @@ public class SifremiUnuttum extends Activity implements OnClickListener {
 							ADDialog = AkorDefterimSys.CustomAlertDialog(activity, R.mipmap.ic_launcher, getString(R.string.dogrulama_kodu), ViewDialogContent, getString(R.string.dogrula), getString(R.string.iptal), getString(R.string.yeniden_gonder));
 							ADDialog.getWindow().getAttributes().windowAnimations = R.style.DialogAnimation;
 
-							Dialog_lblOnayKoduBilgilendirme = (TextView) ViewDialogContent.findViewById(R.id.Dialog_lblOnayKoduBilgilendirme);
+							Dialog_lblOnayKoduBilgilendirme = ViewDialogContent.findViewById(R.id.Dialog_lblOnayKoduBilgilendirme);
 							Dialog_lblOnayKoduBilgilendirme.setTypeface(YaziFontu);
-							Dialog_lblOnayKoduBilgilendirme.setText(getString(R.string.onay_kodu_bilgilendirme_email, String.valueOf(EPostaOnayKoduKalanSure)));
+							Dialog_lblOnayKoduBilgilendirme.setText(getString(R.string.onay_kodu_email, String.valueOf(EPostaOnayKoduKalanSure)));
 
-							Dialog_txtOnayKodu = (EditText) ViewDialogContent.findViewById(R.id.Dialog_txtOnayKodu);
+							Dialog_txtOnayKodu = ViewDialogContent.findViewById(R.id.Dialog_txtOnayKodu);
 							Dialog_txtOnayKodu.setTypeface(YaziFontu);
 
 							ADDialog.show();
@@ -654,20 +654,20 @@ public class SifremiUnuttum extends Activity implements OnClickListener {
 										if (EmailOnayKoduSayac != null) {
 											EmailOnayKoduSayac.cancel();
 											EmailOnayKoduSayac = null;
-											EPostaOnayKoduKalanSure = AkorDefterimSys.EPostaOnayKoduKalanSure;
+											EPostaOnayKoduKalanSure = AkorDefterimSys.EPostaGondermeToplamSure;
 										}
 
 										ViewDialogContent = inflater.inflate(R.layout.dialog_sifre_sifirla, null);
 										ADDialog = AkorDefterimSys.CustomAlertDialog(activity, R.mipmap.ic_launcher, getString(R.string.sifre_sifirla), ViewDialogContent, getString(R.string.sifirla), getString(R.string.iptal), false);
 										ADDialog.getWindow().getAttributes().windowAnimations = R.style.DialogAnimation;
 
-										Dialog_lblSifreSifirlaBilgi = (TextView) ViewDialogContent.findViewById(R.id.Dialog_lblSifreSifirlaBilgi);
+										Dialog_lblSifreSifirlaBilgi = ViewDialogContent.findViewById(R.id.Dialog_lblSifreSifirlaBilgi);
 										Dialog_lblSifreSifirlaBilgi.setTypeface(YaziFontu);
 
-										Dialog_EtxtYeniSifre = (EditText) ViewDialogContent.findViewById(R.id.EtxtYeniSifre);
+										Dialog_EtxtYeniSifre = ViewDialogContent.findViewById(R.id.EtxtYeniSifre);
 										Dialog_EtxtYeniSifre.setTypeface(YaziFontu);
 
-										Dialog_EtxtYeniSifreTekrar = (EditText) ViewDialogContent.findViewById(R.id.EtxtYeniSifreTekrar);
+										Dialog_EtxtYeniSifreTekrar = ViewDialogContent.findViewById(R.id.EtxtYeniSifreTekrar);
 										Dialog_EtxtYeniSifreTekrar.setTypeface(YaziFontu);
 
 										ADDialog.show();
@@ -690,11 +690,11 @@ public class SifremiUnuttum extends Activity implements OnClickListener {
 													imm.showSoftInput(Dialog_EtxtYeniSifre, 0);
 													AkorDefterimSys.ToastMsj(activity, getString(R.string.txtyenisifre_hata1), Toast.LENGTH_SHORT);
 
-												} else if (AkorDefterimSys.EditTextKarakterKontrol(YeniSifre, RES.getInteger(R.integer.SifreKarakterSayisi_MIN), RES.getInteger(R.integer.SifreKarakterSayisi_MAX))) {
+												} else if (AkorDefterimSys.EditTextKarakterKontrol(YeniSifre, RES.getInteger(R.integer.ParolaKarakterSayisi_MIN), RES.getInteger(R.integer.ParolaKarakterSayisi_MAX))) {
 													Dialog_EtxtYeniSifre.requestFocus();
 													Dialog_EtxtYeniSifre.setSelection(YeniSifre.length());
 													imm.showSoftInput(Dialog_EtxtYeniSifre, 0);
-													AkorDefterimSys.ToastMsj(activity, getString(R.string.txtyenisifre_hata2, String.valueOf(RES.getInteger(R.integer.SifreKarakterSayisi_MIN)), String.valueOf(RES.getInteger(R.integer.SifreKarakterSayisi_MAX))), Toast.LENGTH_SHORT);
+													AkorDefterimSys.ToastMsj(activity, getString(R.string.txtyenisifre_hata2, String.valueOf(RES.getInteger(R.integer.ParolaKarakterSayisi_MIN)), String.valueOf(RES.getInteger(R.integer.ParolaKarakterSayisi_MAX))), Toast.LENGTH_SHORT);
 
 												} else if (!AkorDefterimSys.isValid(YeniSifre, "SadeceSayiKucukHarfBuyukHarf")) {
 													Dialog_EtxtYeniSifre.requestFocus();
@@ -743,7 +743,7 @@ public class SifremiUnuttum extends Activity implements OnClickListener {
 									if (EmailOnayKoduSayac != null) {
 										EmailOnayKoduSayac.cancel();
 										EmailOnayKoduSayac = null;
-										EPostaOnayKoduKalanSure = AkorDefterimSys.EPostaOnayKoduKalanSure;
+										EPostaOnayKoduKalanSure = AkorDefterimSys.EPostaGondermeToplamSure;
 									}
 								}
 							});
@@ -756,30 +756,30 @@ public class SifremiUnuttum extends Activity implements OnClickListener {
 									if (EmailOnayKoduSayac != null) {
 										EmailOnayKoduSayac.cancel();
 										EmailOnayKoduSayac = null;
-										EPostaOnayKoduKalanSure = AkorDefterimSys.EPostaOnayKoduKalanSure;
+										EPostaOnayKoduKalanSure = AkorDefterimSys.EPostaGondermeToplamSure;
 									}
 
 									new SifreSifirlamaOnayKoduYolla().execute(AdSoyad, Email, "EmailYontemi");
 								}
 							});
 
-							EPostaOnayKoduKalanSure = AkorDefterimSys.EPostaOnayKoduKalanSure;
+							EPostaOnayKoduKalanSure = AkorDefterimSys.EPostaGondermeToplamSure;
 							EmailOnayKoduSayac = new Timer();
 							EmailOnayKoduDialogSayac_Ayarla();
 							EmailOnayKoduSayac.schedule(EmailOnayKoduDialogSayac, 10, 1000);
 						} else if (JSONGelenVeri.getInt("sonuc") == 0) {
 							if (JSONGelenVeri.getString("aciklama").equals("adsoyad alanı boş")) {
-								AkorDefterimSys.ToastMsj(activity, getString(R.string.mail_gonderim_hatasi), Toast.LENGTH_SHORT);
+								//AkorDefterimSys.ToastMsj(activity, getString(R.string.mail_gonderim_hatasi), Toast.LENGTH_SHORT);
 							} else if (JSONGelenVeri.getString("aciklama").equals("email alanı boş")) {
-								AkorDefterimSys.ToastMsj(activity, getString(R.string.mail_gonderim_hatasi), Toast.LENGTH_SHORT);
+								//AkorDefterimSys.ToastMsj(activity, getString(R.string.mail_gonderim_hatasi), Toast.LENGTH_SHORT);
 							} else if (JSONGelenVeri.getString("aciklama").equals("baslik alanı boş")) {
-								AkorDefterimSys.ToastMsj(activity, getString(R.string.mail_gonderim_hatasi), Toast.LENGTH_SHORT);
+								//AkorDefterimSys.ToastMsj(activity, getString(R.string.mail_gonderim_hatasi), Toast.LENGTH_SHORT);
 							} else if (JSONGelenVeri.getString("aciklama").equals("icerik alanı boş")) {
-								AkorDefterimSys.ToastMsj(activity, getString(R.string.mail_gonderim_hatasi), Toast.LENGTH_SHORT);
+								//AkorDefterimSys.ToastMsj(activity, getString(R.string.mail_gonderim_hatasi), Toast.LENGTH_SHORT);
 							} else if (JSONGelenVeri.getString("aciklama").equals("email gönderilemedi")) {
-								AkorDefterimSys.ToastMsj(activity, getString(R.string.mail_gonderim_hatasi), Toast.LENGTH_SHORT);
+								//AkorDefterimSys.ToastMsj(activity, getString(R.string.mail_gonderim_hatasi), Toast.LENGTH_SHORT);
 							} else if (JSONGelenVeri.getString("aciklama").equals("hatalı işlem")) {
-								AkorDefterimSys.ToastMsj(activity, getString(R.string.islem_yapilirken_bir_hata_olustu), Toast.LENGTH_SHORT);
+								//AkorDefterimSys.ToastMsj(activity, getString(R.string.islem_yapilirken_bir_hata_olustu), Toast.LENGTH_SHORT);
 							}
 						}
 
@@ -901,12 +901,12 @@ public class SifremiUnuttum extends Activity implements OnClickListener {
 							if (CepOnayKoduSayac != null) {
 								CepOnayKoduSayac.cancel();
 								CepOnayKoduSayac = null;
-								CepOnayKoduKalanSure = AkorDefterimSys.CepOnayKoduKalanSure;
+								CepOnayKoduKalanSure = AkorDefterimSys.SMSGondermeToplamSure;
 							}
 
 							AkorDefterimSys.ToastMsj(activity, getString(R.string.onay_kodu_sure_bitti), Toast.LENGTH_SHORT);
 						} else {
-							Dialog_lblOnayKoduBilgilendirme.setText(getString(R.string.onay_kodu_bilgilendirme_cep, AkorDefterimSys.ZamanFormatMMSS(CepOnayKoduKalanSure)));
+							Dialog_lblOnayKoduBilgilendirme.setText(getString(R.string.onay_kodu_cep, AkorDefterimSys.ZamanFormatMMSS(CepOnayKoduKalanSure)));
 							CepOnayKoduKalanSure--;
 						}
 					}
@@ -927,12 +927,12 @@ public class SifremiUnuttum extends Activity implements OnClickListener {
 							if (EmailOnayKoduSayac != null) {
 								EmailOnayKoduSayac.cancel();
 								EmailOnayKoduSayac = null;
-								EPostaOnayKoduKalanSure = AkorDefterimSys.EPostaOnayKoduKalanSure;
+								EPostaOnayKoduKalanSure = AkorDefterimSys.EPostaGondermeToplamSure;
 							}
 
 							AkorDefterimSys.ToastMsj(activity, getString(R.string.onay_kodu_sure_bitti), Toast.LENGTH_SHORT);
 						} else {
-							Dialog_lblOnayKoduBilgilendirme.setText(getString(R.string.onay_kodu_bilgilendirme_email, AkorDefterimSys.ZamanFormatMMSS(EPostaOnayKoduKalanSure)));
+							Dialog_lblOnayKoduBilgilendirme.setText(getString(R.string.onay_kodu_email, AkorDefterimSys.ZamanFormatMMSS(EPostaOnayKoduKalanSure)));
 							EPostaOnayKoduKalanSure--;
 						}
 					}
@@ -967,20 +967,20 @@ public class SifremiUnuttum extends Activity implements OnClickListener {
                 if (CepOnayKoduSayac != null) {
                     CepOnayKoduSayac.cancel();
                     CepOnayKoduSayac = null;
-                    CepOnayKoduKalanSure = AkorDefterimSys.CepOnayKoduKalanSure;
+                    CepOnayKoduKalanSure = AkorDefterimSys.SMSGondermeToplamSure;
                 }
 
                 ViewDialogContent = inflater.inflate(R.layout.dialog_sifre_sifirla, null);
                 ADDialog = AkorDefterimSys.CustomAlertDialog(activity, R.mipmap.ic_launcher, getString(R.string.sifre_sifirla), ViewDialogContent, getString(R.string.sifirla), getString(R.string.iptal), false);
                 ADDialog.getWindow().getAttributes().windowAnimations = R.style.DialogAnimation;
 
-                Dialog_lblSifreSifirlaBilgi = (TextView) ViewDialogContent.findViewById(R.id.Dialog_lblSifreSifirlaBilgi);
+                Dialog_lblSifreSifirlaBilgi = ViewDialogContent.findViewById(R.id.Dialog_lblSifreSifirlaBilgi);
                 Dialog_lblSifreSifirlaBilgi.setTypeface(YaziFontu);
 
-                Dialog_EtxtYeniSifre = (EditText) ViewDialogContent.findViewById(R.id.EtxtYeniSifre);
+                Dialog_EtxtYeniSifre = ViewDialogContent.findViewById(R.id.EtxtYeniSifre);
                 Dialog_EtxtYeniSifre.setTypeface(YaziFontu);
 
-                Dialog_EtxtYeniSifreTekrar = (EditText) ViewDialogContent.findViewById(R.id.EtxtYeniSifreTekrar);
+                Dialog_EtxtYeniSifreTekrar = ViewDialogContent.findViewById(R.id.EtxtYeniSifreTekrar);
                 Dialog_EtxtYeniSifreTekrar.setTypeface(YaziFontu);
 
                 ADDialog.show();
@@ -1000,11 +1000,11 @@ public class SifremiUnuttum extends Activity implements OnClickListener {
                             imm.showSoftInput(Dialog_EtxtYeniSifre, 0);
                             AkorDefterimSys.ToastMsj(activity, getString(R.string.txtyenisifre_hata1), Toast.LENGTH_SHORT);
 
-                        } else if (AkorDefterimSys.EditTextKarakterKontrol(YeniSifre, RES.getInteger(R.integer.SifreKarakterSayisi_MIN), RES.getInteger(R.integer.SifreKarakterSayisi_MAX))) {
+                        } else if (AkorDefterimSys.EditTextKarakterKontrol(YeniSifre, RES.getInteger(R.integer.ParolaKarakterSayisi_MIN), RES.getInteger(R.integer.ParolaKarakterSayisi_MAX))) {
                             Dialog_EtxtYeniSifre.requestFocus();
                             Dialog_EtxtYeniSifre.setSelection(YeniSifre.length());
                             imm.showSoftInput(Dialog_EtxtYeniSifre, 0);
-                            AkorDefterimSys.ToastMsj(activity, getString(R.string.txtyenisifre_hata2, String.valueOf(RES.getInteger(R.integer.SifreKarakterSayisi_MIN)), String.valueOf(RES.getInteger(R.integer.SifreKarakterSayisi_MAX))), Toast.LENGTH_SHORT);
+                            AkorDefterimSys.ToastMsj(activity, getString(R.string.txtyenisifre_hata2, String.valueOf(RES.getInteger(R.integer.ParolaKarakterSayisi_MIN)), String.valueOf(RES.getInteger(R.integer.ParolaKarakterSayisi_MAX))), Toast.LENGTH_SHORT);
 
                         } else if (!AkorDefterimSys.isValid(YeniSifre, "SadeceSayiKucukHarfBuyukHarf")) {
                             Dialog_EtxtYeniSifre.requestFocus();

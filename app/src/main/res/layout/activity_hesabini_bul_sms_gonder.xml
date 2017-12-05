@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.design.widget.CoordinatorLayout
-	xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
 	xmlns:app="http://schemas.android.com/apk/res-auto"
 	xmlns:tools="http://schemas.android.com/tools"
 	android:id="@+id/coordinatorLayout"
@@ -53,7 +52,7 @@
 			android:layout_height="wrap_content"
 			android:layout_marginLeft="12dp"
 			android:layout_marginStart="12dp"
-			android:text="@string/hesabina_eris"
+			android:text="@string/sms_gonder"
 			android:textColor="@color/KoyuYazi"
 			android:textSize="@dimen/yazi_boyutu18"
 			app:layout_constraintBottom_toTopOf="@+id/view1"
@@ -95,13 +94,13 @@
 			app:layout_constraintTop_toTopOf="@+id/h_guideline1" />
 
 		<TextView
-			android:id="@+id/lblHesabiniBul"
+			android:id="@+id/lblCepTelefon"
 			android:layout_width="wrap_content"
 			android:layout_height="wrap_content"
 			android:layout_marginLeft="16dp"
 			android:layout_marginStart="16dp"
 			android:layout_marginTop="24dp"
-			android:text="@string/hesabini_bul"
+			android:text="@string/telefon_numarasi"
 			android:textColor="@color/KoyuYazi"
 			android:textSize="@dimen/yazi_boyutu18"
 			app:layout_constraintStart_toStartOf="@+id/v_guideline1"
@@ -115,22 +114,23 @@
 			android:layout_marginTop="8dp"
 			app:layout_constraintEnd_toStartOf="@+id/v_guideline2"
 			app:layout_constraintStart_toStartOf="@+id/v_guideline1"
-			app:layout_constraintTop_toBottomOf="@+id/lblHesabiniBul" />
+			app:layout_constraintTop_toBottomOf="@+id/lblCepTelefon" />
 
-		<ImageView
-			android:id="@+id/ImgEmail"
+		<Spinner
+			android:id="@+id/spnUlkeKodlari"
 			android:layout_width="wrap_content"
-			android:layout_height="0dp"
-			android:layout_marginLeft="8dp"
+			android:layout_height="wrap_content"
+			android:layout_marginBottom="8dp"
 			android:layout_marginStart="8dp"
-			app:layout_constraintBottom_toBottomOf="@+id/txtILEPostaKullaniciAdi"
+			android:layout_marginLeft="8dp"
+			android:layout_marginTop="8dp"
+			android:background="@drawable/custom_spinner"
+			app:layout_constraintBottom_toTopOf="@+id/lblHesabiniBulSmsGonderAciklama"
 			app:layout_constraintStart_toStartOf="@+id/v_guideline1"
-			app:layout_constraintTop_toBottomOf="@+id/view2"
-			app:srcCompat="@drawable/ic_user"
-			android:contentDescription="@string/imageDesc" />
+			app:layout_constraintTop_toTopOf="@+id/view2" />
 
 		<android.support.design.widget.TextInputLayout
-			android:id="@+id/txtILEPostaKullaniciAdi"
+			android:id="@+id/txtILCepTelefon"
 			android:layout_width="0dp"
 			android:layout_height="wrap_content"
 			android:layout_marginLeft="8dp"
@@ -138,29 +138,29 @@
 			android:layout_marginTop="8dp"
 			android:textColorHint="@color/KoyuGri"
 			app:layout_constraintEnd_toStartOf="@+id/v_guideline2"
-			app:layout_constraintStart_toEndOf="@+id/ImgEmail"
+			app:layout_constraintStart_toEndOf="@+id/spnUlkeKodlari"
 			app:layout_constraintTop_toBottomOf="@+id/view2">
 
 			<EditText
-				android:id="@+id/txtEPostaKullaniciAdi"
+				android:id="@+id/txtCepTelefon"
 				android:layout_width="match_parent"
 				android:layout_height="match_parent"
-				android:hint="@string/email_kullaniciadi"
+				android:hint="@string/telefon_numarasi"
 				android:inputType="textEmailAddress"
 				android:maxLines="1"
 				android:textColor="@color/KoyuYazi" />
 		</android.support.design.widget.TextInputLayout>
 
 		<TextView
-			android:id="@+id/lblHesabiniBulAciklama"
+			android:id="@+id/lblHesabiniBulSmsGonderAciklama"
 			android:layout_width="0dp"
 			android:layout_height="wrap_content"
 			android:layout_marginTop="8dp"
-			android:text="@string/hesabini_bul_aciklama"
+			android:text="@string/hesabini_bul_sms_gonder_aciklama"
 			android:textColor="@color/KoyuYazi"
 			app:layout_constraintEnd_toStartOf="@+id/v_guideline2"
 			app:layout_constraintStart_toStartOf="@+id/v_guideline1"
-			app:layout_constraintTop_toBottomOf="@+id/txtILEPostaKullaniciAdi" />
+			app:layout_constraintTop_toBottomOf="@+id/txtILCepTelefon" />
 
 	</android.support.constraint.ConstraintLayout>
 </android.support.design.widget.CoordinatorLayout>

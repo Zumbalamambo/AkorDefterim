@@ -117,9 +117,23 @@
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>
-        <activity android:name=".Hesabini_Bul" >
+        <activity android:name=".Hesabina_Eris_Hesabini_Bul" >
             <intent-filter>
                 <action android:name="android.intent.action.HESABINI_BUL" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
+        <activity android:name=".Hesabina_Eris_Hesabini_Bul2" >
+            <intent-filter>
+                <action android:name="android.intent.action.HESABINI_BUL2" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
+        <activity android:name=".Hesabina_Eris_Sms_Gonder" >
+            <intent-filter>
+                <action android:name="android.intent.action.HESABINI_BUL_SMS_GONDER" />
 
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
@@ -138,7 +152,7 @@
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>
-        <activity android:name=".Parola_Belirle">
+        <activity android:name=".KayitEkran_Parola_Belirle">
             <intent-filter>
                 <action android:name="android.intent.action.PAROLA_BELIRLE" />
 

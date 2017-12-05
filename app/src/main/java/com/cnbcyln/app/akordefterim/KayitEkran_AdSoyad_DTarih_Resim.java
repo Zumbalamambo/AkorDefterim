@@ -19,6 +19,7 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -29,7 +30,7 @@ import com.theartofdev.edmodo.cropper.CropImage;
 import java.io.File;
 
 @SuppressWarnings({"deprecation", "ResultOfMethodCallIgnored", "ConstantConditions"})
-public class KayitEkran_AdSoyad_DTarih_Resim extends AppCompatActivity {
+public class KayitEkran_AdSoyad_DTarih_Resim extends AppCompatActivity implements OnClickListener {
 
 	private Activity activity;
 	private AkorDefterimSys AkorDefterimSys;
@@ -37,10 +38,11 @@ public class KayitEkran_AdSoyad_DTarih_Resim extends AppCompatActivity {
 	Typeface YaziFontu;
     SharedPreferences.Editor sharedPrefEditor;
 	File SecilenProfilResmiFile;
-	AlertDialog ADHata;
+	AlertDialog ADDialog_Hata;
 
 	CoordinatorLayout coordinatorLayout;
-	Button btnGeri, btnIleri;
+	ImageButton btnGeri;
+	Button btnIleri;
 	TextInputLayout txtILAdSoyad, txtILDogumTarih;
 	TextView lblVazgec, lblBaslik, lblAdSoyadResimAciklama;
 	EditText txtAdSoyad, txtDogumTarih;
@@ -48,6 +50,7 @@ public class KayitEkran_AdSoyad_DTarih_Resim extends AppCompatActivity {
     ImageView ImgSilIcon, ImgKameraIcon;
 
 	String EPosta, Parola;
+	int ProfilResimYuklemeBoyutu;
 	Boolean DogumTarihAlaninaGirildiMi = false;
     private static final int DOSYAOKUMAYAZMA_IZIN = 1;
 	private static final int RESIMSEC = 2;
@@ -62,49 +65,30 @@ public class KayitEkran_AdSoyad_DTarih_Resim extends AppCompatActivity {
 		YaziFontu = AkorDefterimSys.FontGetir(activity, "anivers_regular"); // Genel yazı fontunu belirttik
 
 		AkorDefterimSys.GenelAyarlar(); // Uygulama için genel ayarları uyguladık.
-		AkorDefterimSys.TransparanNotifyBar(); // Notification Bar'ı transparan yapıyoruz.
-		AkorDefterimSys.NotifyIkonParlakligi(); // Notification Bar'daki simgelerin parlaklığını aldık.
+		//AkorDefterimSys.TransparanNotifyBar(); // Notification Bar'ı transparan yapıyoruz.
+		//AkorDefterimSys.NotifyIkonParlakligi(); // Notification Bar'daki simgelerin parlaklığını aldık.
+
+		ProfilResimYuklemeBoyutu = getResources().getInteger(R.integer.ProfilResimYuklemeBoyutu);
 
 		Bundle mBundle = getIntent().getExtras();
 		EPosta = mBundle.getString("EPosta");
 		Parola = mBundle.getString("Parola");
 
 		coordinatorLayout = activity.findViewById(R.id.coordinatorLayout);
-		coordinatorLayout.setOnClickListener(new OnClickListener() {
-			@Override
-			public void onClick(View v) {
-				txtILAdSoyad.setError(null);
-				AkorDefterimSys.UnFocusEditText(txtAdSoyad);
-				txtILDogumTarih.setError(null);
-				AkorDefterimSys.UnFocusEditText(txtDogumTarih);
-			}
-		});
+		coordinatorLayout.setOnClickListener(this);
 
 		btnGeri = findViewById(R.id.btnGeri);
-		btnGeri.setOnClickListener(new OnClickListener() {
-			@Override
-			public void onClick(View v) {
-				onBackPressed();
-			}
-		});
+		btnGeri.setOnClickListener(this);
 
 		lblVazgec = findViewById(R.id.lblVazgec);
-		lblVazgec.setOnClickListener(new OnClickListener() {
-			@Override
-			public void onClick(View v) {
-				sharedPrefEditor = AkorDefterimSys.PrefAyarlar().edit();
-				sharedPrefEditor.putString("Action", "Vazgec");
-				sharedPrefEditor.apply();
-
-				onBackPressed();
-			}
-		});
+		lblVazgec.setOnClickListener(this);
 
 		lblBaslik = findViewById(R.id.lblBaslik);
 		lblBaslik.setTypeface(YaziFontu, Typeface.BOLD);
 
 		lblAdSoyadResimAciklama = findViewById(R.id.lblAdSoyadResimAciklama);
 		lblAdSoyadResimAciklama.setTypeface(YaziFontu, Typeface.NORMAL);
+		lblAdSoyadResimAciklama.setText(getString(R.string.adsoyad_dogumtarih_resim_ekran_aciklama, String.valueOf(ProfilResimYuklemeBoyutu)));
 		AkorDefterimSys.setTextViewHTML(lblAdSoyadResimAciklama);
 
 		txtILAdSoyad = findViewById(R.id.txtILAdSoyad);
@@ -159,62 +143,75 @@ public class KayitEkran_AdSoyad_DTarih_Resim extends AppCompatActivity {
 				} else DogumTarihAlaninaGirildiMi = false;
 			}
 		});
-		txtDogumTarih.setOnClickListener(new OnClickListener() {
-			@Override
-			public void onClick(View v) {
-				txtDogumTarih.setText(AkorDefterimSys.TarihSeciciDialog(txtDogumTarih));
-			}
-		});
+		txtDogumTarih.setOnClickListener(this);
 
         CImgProfilResim = findViewById(R.id.CImgProfilResim);
-		CImgProfilResim.setOnClickListener(new OnClickListener() {
-			@Override
-			public void onClick(View v) {
-				AkorDefterimSys.IntentGetir(new String[]{"GaleridenResimGetir", String.valueOf(DOSYAOKUMAYAZMA_IZIN), String.valueOf(RESIMSEC)});
-			}
-		});
+		CImgProfilResim.setOnClickListener(this);
 
 		ImgSilIcon = findViewById(R.id.ImgSilIcon);
 		ImgSilIcon.setVisibility(View.GONE);
-		ImgSilIcon.setOnClickListener(new OnClickListener() {
-			@Override
-			public void onClick(View v) {
-				SecilenProfilResmiFile = null;
-				CImgProfilResim.setImageDrawable(getResources().getDrawable(R.drawable.com_facebook_profile_picture_blank_square));
-				ImgSilIcon.setVisibility(View.GONE);
-			}
-		});
+		ImgSilIcon.setOnClickListener(this);
 
         ImgKameraIcon = findViewById(R.id.ImgKameraIcon);
-		ImgKameraIcon.setOnClickListener(new OnClickListener() {
-			@Override
-			public void onClick(View v) {
-				AkorDefterimSys.IntentGetir(new String[]{"GaleridenResimGetir", String.valueOf(DOSYAOKUMAYAZMA_IZIN), String.valueOf(RESIMSEC)});
-			}
-		});
+		ImgKameraIcon.setOnClickListener(this);
 
 		btnIleri = findViewById(R.id.btnIleri);
 		btnIleri.setTypeface(YaziFontu, Typeface.NORMAL);
-		btnIleri.setOnClickListener(new OnClickListener() {
-			@Override
-			public void onClick(View v) {
-				IleriEkran();
-			}
-		});
+		btnIleri.setOnClickListener(this);
 	}
 
 	@Override
 	protected void onStart() {
 		super.onStart();
 
-		if(AkorDefterimSys.PrefAyarlar().getString("Action", "").equals("Vazgec")) onBackPressed();
+		if(AkorDefterimSys.PrefAyarlar().getString("prefAction", "").equals("Vazgec")) onBackPressed();
 	}
 
 	@Override
 	public void onBackPressed() {
 		AkorDefterimSys.KlavyeKapat();
+		AkorDefterimSys.DismissAlertDialog(ADDialog_Hata);
 
 		super.onBackPressed();
+	}
+
+	@Override
+	public void onClick(View v) {
+		switch (v.getId()) {
+			case R.id.coordinatorLayout:
+				txtILAdSoyad.setError(null);
+				AkorDefterimSys.UnFocusEditText(txtAdSoyad);
+				txtILDogumTarih.setError(null);
+				AkorDefterimSys.UnFocusEditText(txtDogumTarih);
+				break;
+			case R.id.btnGeri:
+				onBackPressed();
+				break;
+			case R.id.lblVazgec:
+				sharedPrefEditor = AkorDefterimSys.PrefAyarlar().edit();
+				sharedPrefEditor.putString("prefAction", "Vazgec");
+				sharedPrefEditor.apply();
+
+				onBackPressed();
+				break;
+			case R.id.btnIleri:
+				IleriIslem();
+				break;
+			case R.id.txtDogumTarih:
+				txtDogumTarih.setText(AkorDefterimSys.TarihSeciciDialog(txtDogumTarih));
+				break;
+			case R.id.CImgProfilResim:
+				AkorDefterimSys.IntentGetir(new String[]{"GaleridenResimGetir", String.valueOf(DOSYAOKUMAYAZMA_IZIN), String.valueOf(RESIMSEC)});
+				break;
+			case R.id.ImgSilIcon:
+				SecilenProfilResmiFile = null;
+				CImgProfilResim.setImageDrawable(getResources().getDrawable(R.drawable.com_facebook_profile_picture_blank_square));
+				ImgSilIcon.setVisibility(View.GONE);
+				break;
+			case R.id.ImgKameraIcon:
+				AkorDefterimSys.IntentGetir(new String[]{"GaleridenResimGetir", String.valueOf(DOSYAOKUMAYAZMA_IZIN), String.valueOf(RESIMSEC)});
+				break;
+		}
 	}
 
 	@Override
@@ -224,19 +221,21 @@ public class KayitEkran_AdSoyad_DTarih_Resim extends AppCompatActivity {
 				if(grantResults[0] == PackageManager.PERMISSION_GRANTED)
 					AkorDefterimSys.IntentGetir(new String[]{"GaleridenResimGetir", String.valueOf(DOSYAOKUMAYAZMA_IZIN), String.valueOf(RESIMSEC)});
 				else {
-					ADHata = AkorDefterimSys.CustomAlertDialog(activity, R.mipmap.ic_launcher,
-							getString(R.string.uygulama_izinleri),
-							getString(R.string.uygulama_izni_dosya_yazma_hata),
-							getString(R.string.tamam));
-					ADHata.getWindow().getAttributes().windowAnimations = R.style.DialogAnimation;
-					ADHata.show();
+					if(AkorDefterimSys.AlertDialogisShowing(ADDialog_Hata)) {
+						ADDialog_Hata = AkorDefterimSys.CustomAlertDialog(activity, R.mipmap.ic_launcher,
+								getString(R.string.uygulama_izinleri),
+								getString(R.string.uygulama_izni_dosya_yazma_hata),
+								getString(R.string.tamam));
+						ADDialog_Hata.getWindow().getAttributes().windowAnimations = R.style.DialogAnimation;
+						ADDialog_Hata.show();
 
-					ADHata.getButton(AlertDialog.BUTTON_NEUTRAL).setOnClickListener(new View.OnClickListener() {
-						@Override
-						public void onClick(View v) {
-							ADHata.cancel();
-						}
-					});
+						ADDialog_Hata.getButton(AlertDialog.BUTTON_NEUTRAL).setOnClickListener(new View.OnClickListener() {
+							@Override
+							public void onClick(View v) {
+								ADDialog_Hata.cancel();
+							}
+						});
+					}
 				}
 
 				break;
@@ -260,11 +259,14 @@ public class KayitEkran_AdSoyad_DTarih_Resim extends AppCompatActivity {
         }
     }
 
-	private void IleriEkran() {
+	private void IleriIslem() {
+		btnIleri.setEnabled(false);
 		AkorDefterimSys.KlavyeKapat();
 
 		txtAdSoyad.setText(txtAdSoyad.getText().toString().trim());
-		String AdSoyad = txtAdSoyad.getText().toString().trim();
+		String AdSoyad = txtAdSoyad.getText().toString();
+
+		txtDogumTarih.setText(txtDogumTarih.getText().toString().trim());
 		String DogumTarih = txtDogumTarih.getText().toString().trim();
 
 		if(TextUtils.isEmpty(AdSoyad))
@@ -283,19 +285,21 @@ public class KayitEkran_AdSoyad_DTarih_Resim extends AppCompatActivity {
 		AkorDefterimSys.UnFocusEditText(txtDogumTarih);
 
 		if(txtILAdSoyad.getError() == null && txtILDogumTarih.getError() == null) {
-			if(AkorDefterimSys.InternetErisimKontrolu()) SonrakiEkran();
-			else AkorDefterimSys.StandartSnackBarMsj(coordinatorLayout, getString(R.string.internet_baglantisi_saglanamadi));
+			if(AkorDefterimSys.InternetErisimKontrolu()) {
+				Intent mIntent = new Intent(activity, KayitEkran_KullaniciAdi.class);
+				mIntent.putExtra("EPosta", EPosta);
+				mIntent.putExtra("Parola", Parola);
+				mIntent.putExtra("AdSoyad", txtAdSoyad.getText().toString().trim());
+				mIntent.putExtra("DogumTarih", txtDogumTarih.getText().toString().trim());
+				mIntent.putExtra("SecilenProfilResmiFile", SecilenProfilResmiFile);
+
+				AkorDefterimSys.EkranGetir(mIntent, "Slide");
+
+				btnIleri.setEnabled(true);
+			} else {
+				btnIleri.setEnabled(true);
+				AkorDefterimSys.StandartSnackBarMsj(coordinatorLayout, getString(R.string.internet_baglantisi_saglanamadi));
+			}
 		}
-	}
-
-	private void SonrakiEkran() {
-		Intent mIntent = new Intent(activity, KayitEkran_KullaniciAdi.class);
-		mIntent.putExtra("EPosta", EPosta);
-		mIntent.putExtra("Parola", Parola);
-		mIntent.putExtra("AdSoyad", txtAdSoyad.getText().toString().trim());
-		mIntent.putExtra("DogumTarih", txtDogumTarih.getText().toString().trim());
-		mIntent.putExtra("SecilenProfilResmiFile", SecilenProfilResmiFile);
-
-		AkorDefterimSys.EkranGetir(mIntent, "Slide");
 	}
 }

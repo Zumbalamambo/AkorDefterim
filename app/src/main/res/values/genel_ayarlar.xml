@@ -12,9 +12,10 @@
     <integer name="AdSoyadKarakterSayisi_MAX">50</integer>
     <integer name="KullaniciAdiKarakterSayisi_MIN">6</integer>
     <integer name="KullaniciAdiKarakterSayisi_MAX">15</integer>
-    <integer name="SifreKarakterSayisi_MIN">6</integer>
-    <integer name="SifreKarakterSayisi_MAX">20</integer>
+    <integer name="ParolaKarakterSayisi_MIN">6</integer>
+    <integer name="ParolaKarakterSayisi_MAX">20</integer>
     <integer name="AppServiceCalismaAraligi">300</integer> <!-- 300 Saniye = 5 Dakika-->
+    <integer name="ProfilResimYuklemeBoyutu">5</integer>
 
     <!-- Sarki Icerik Değerleri -->
     <integer name="SarkiIcerikYaziBoyutu_MIN">40</integer>

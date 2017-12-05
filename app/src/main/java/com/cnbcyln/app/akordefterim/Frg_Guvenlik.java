@@ -138,11 +138,11 @@ public class Frg_Guvenlik extends Fragment implements OnClickListener {
 								imm.showSoftInput(Dialog_EtxtGuncelSifre, 0);
 								AkorDefterimSys.ToastMsj(activity, getString(R.string.txtguncelsifre_hata1), Toast.LENGTH_SHORT);
 
-							} else if(AkorDefterimSys.EditTextKarakterKontrol(GuncelSifre, RES.getInteger(R.integer.SifreKarakterSayisi_MIN), RES.getInteger(R.integer.SifreKarakterSayisi_MAX))) {
+							} else if(AkorDefterimSys.EditTextKarakterKontrol(GuncelSifre, RES.getInteger(R.integer.ParolaKarakterSayisi_MIN), RES.getInteger(R.integer.ParolaKarakterSayisi_MAX))) {
 								Dialog_EtxtGuncelSifre.requestFocus();
 								Dialog_EtxtGuncelSifre.setSelection(GuncelSifre.length());
 								imm.showSoftInput(Dialog_EtxtGuncelSifre, 0);
-								AkorDefterimSys.ToastMsj(activity, getString(R.string.txtguncelsifre_hata2, String.valueOf(RES.getInteger(R.integer.SifreKarakterSayisi_MIN)), String.valueOf(RES.getInteger(R.integer.SifreKarakterSayisi_MAX))), Toast.LENGTH_SHORT);
+								AkorDefterimSys.ToastMsj(activity, getString(R.string.txtguncelsifre_hata2, String.valueOf(RES.getInteger(R.integer.ParolaKarakterSayisi_MIN)), String.valueOf(RES.getInteger(R.integer.ParolaKarakterSayisi_MAX))), Toast.LENGTH_SHORT);
 
 							} else if(!AkorDefterimSys.isValid(GuncelSifre, "SadeceSayiKucukHarfBuyukHarf")) {
 								Dialog_EtxtGuncelSifre.requestFocus();
@@ -168,11 +168,11 @@ public class Frg_Guvenlik extends Fragment implements OnClickListener {
 								imm.showSoftInput(Dialog_EtxtYeniSifre, 0);
 								AkorDefterimSys.ToastMsj(activity, getString(R.string.txtyenisifre_hata1), Toast.LENGTH_SHORT);
 
-							} else if(AkorDefterimSys.EditTextKarakterKontrol(YeniSifre, RES.getInteger(R.integer.SifreKarakterSayisi_MIN), RES.getInteger(R.integer.SifreKarakterSayisi_MAX))) {
+							} else if(AkorDefterimSys.EditTextKarakterKontrol(YeniSifre, RES.getInteger(R.integer.ParolaKarakterSayisi_MIN), RES.getInteger(R.integer.ParolaKarakterSayisi_MAX))) {
 								Dialog_EtxtYeniSifre.requestFocus();
 								Dialog_EtxtYeniSifre.setSelection(YeniSifre.length());
 								imm.showSoftInput(Dialog_EtxtYeniSifre, 0);
-								AkorDefterimSys.ToastMsj(activity, getString(R.string.txtyenisifre_hata2, String.valueOf(RES.getInteger(R.integer.SifreKarakterSayisi_MIN)), String.valueOf(RES.getInteger(R.integer.SifreKarakterSayisi_MAX))), Toast.LENGTH_SHORT);
+								AkorDefterimSys.ToastMsj(activity, getString(R.string.txtyenisifre_hata2, String.valueOf(RES.getInteger(R.integer.ParolaKarakterSayisi_MIN)), String.valueOf(RES.getInteger(R.integer.ParolaKarakterSayisi_MAX))), Toast.LENGTH_SHORT);
 
 							} else if(!AkorDefterimSys.isValid(YeniSifre, "SadeceSayiKucukHarfBuyukHarf")) {
 								Dialog_EtxtYeniSifre.requestFocus();

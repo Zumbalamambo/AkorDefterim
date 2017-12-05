@@ -67,6 +67,7 @@ import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.DatePickerDialog;
+import android.app.Dialog;
 import android.app.Fragment;
 import android.app.Notification;
 import android.app.NotificationManager;
@@ -133,6 +134,7 @@ import android.view.WindowManager;
 import android.view.animation.AnimationUtils;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
+import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.DatePicker;
@@ -142,6 +144,7 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import org.apache.commons.lang3.RandomStringUtils;
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
 import org.apache.http.NameValuePair;
@@ -187,8 +190,8 @@ public class AkorDefterimSys {
 
 	public String AnaKlasorDizini = Environment.getExternalStorageDirectory() + File.separator + "Akor Defterim" + File.separator;
 	public int WebBaglantiIstegiToplamSure = 30;
-	public int CepOnayKoduKalanSure = 180;
-	public int EPostaOnayKoduKalanSure = 180;
+	public int SMSGondermeToplamSure = 180;
+	public int EPostaGondermeToplamSure = 180;
 	public int ProgressBarTimeoutSuresi = 30 * 1000;
 	private static final int PLAY_SERVICES_RESOLUTION_REQUEST = 1000;
 	public int RC_GOOGLE_LOGIN = 9001;
@@ -197,7 +200,6 @@ public class AkorDefterimSys {
 	public long FirebaseRemoteConfigCacheExpiration = 3600;
 	public String PrefAdi = "AkorDefterim";
 	public String IstekWebSitesi = "IstekBudur.Com";
-	public int ProfilResmiResimBoyutuMB = 5; // En fazla 5 MB'lik resim
 
 	/** Google API Lokasyon İşlem Değişkenleri **/
 	public int UPDATE_INTERVAL = 4000; // 4 saniye
@@ -388,7 +390,7 @@ public class AkorDefterimSys {
 	}
 
 	public SlidingRootNav SetupSlidingMenu(Bundle savedInstanceState, View ViewSlidingContainer, final boolean Alpha, final boolean Scale) {
-        final ConstraintLayout CLContainer = (ConstraintLayout) ViewSlidingContainer.findViewById(R.id.CLMenu);
+        final ConstraintLayout CLContainer = ViewSlidingContainer.findViewById(R.id.CLMenu);
         if(Alpha) CLContainer.setAlpha(0.0f);
         if(Scale) {
             CLContainer.setScaleX(1.1f);
@@ -543,7 +545,7 @@ public class AkorDefterimSys {
 	public void HesapPrefSifirla() {
 		sharedPrefEditor = sharedPref.edit();
 		sharedPrefEditor.remove("prefHesapID");
-		sharedPrefEditor.remove("prefEPostaKullaniciAdi");
+		sharedPrefEditor.remove("prefEPostaKullaniciAdiTelefon");
 		sharedPrefEditor.remove("prefParolaSHA1");
 		sharedPrefEditor.remove("prefOturumTipi");
 		sharedPrefEditor.apply();
@@ -561,7 +563,7 @@ public class AkorDefterimSys {
 	}
 
 	public boolean WifiErisimKontrolu() {
-		ConnectivityManager connManager = (ConnectivityManager) activity.getSystemService(activity.CONNECTIVITY_SERVICE);
+		ConnectivityManager connManager = (ConnectivityManager) activity.getSystemService(Context.CONNECTIVITY_SERVICE);
 		NetworkInfo mWifi = connManager.getNetworkInfo(ConnectivityManager.TYPE_WIFI);
 
 		return mWifi.isConnected();
@@ -574,17 +576,9 @@ public class AkorDefterimSys {
 			NetworkInfo MobileInfo = conMgr.getNetworkInfo(ConnectivityManager.TYPE_MOBILE);
 
 			if (wifiInfo.isConnected()) {
-				if (conMgr.getActiveNetworkInfo() != null && conMgr.getActiveNetworkInfo().isAvailable() && conMgr.getActiveNetworkInfo().isConnected()) {
-					return true;
-				} else {
-					return false;
-				}
+				return conMgr.getActiveNetworkInfo() != null && conMgr.getActiveNetworkInfo().isAvailable() && conMgr.getActiveNetworkInfo().isConnected();
 			} else if (MobileInfo.isConnected()) {
-				if (conMgr.getActiveNetworkInfo() != null && conMgr.getActiveNetworkInfo().isAvailable() && conMgr.getActiveNetworkInfo().isConnected()) {
-					return true;
-				} else {
-					return false;
-				}
+				return conMgr.getActiveNetworkInfo() != null && conMgr.getActiveNetworkInfo().isAvailable() && conMgr.getActiveNetworkInfo().isConnected();
 			} else {
 				return false;
 			}
@@ -594,17 +588,9 @@ public class AkorDefterimSys {
 			NetworkInfo MobileInfo = conMgr.getNetworkInfo(ConnectivityManager.TYPE_MOBILE);
 
 			if (wifiInfo.isConnected()) {
-				if (conMgr.getActiveNetworkInfo() != null && conMgr.getActiveNetworkInfo().isAvailable() && conMgr.getActiveNetworkInfo().isConnected()) {
-					return true;
-				} else {
-					return false;
-				}
+				return conMgr.getActiveNetworkInfo() != null && conMgr.getActiveNetworkInfo().isAvailable() && conMgr.getActiveNetworkInfo().isConnected();
 			} else if (MobileInfo.isConnected()) {
-				if (conMgr.getActiveNetworkInfo() != null && conMgr.getActiveNetworkInfo().isAvailable() && conMgr.getActiveNetworkInfo().isConnected()) {
-					return true;
-				} else {
-					return false;
-				}
+				return conMgr.getActiveNetworkInfo() != null && conMgr.getActiveNetworkInfo().isAvailable() && conMgr.getActiveNetworkInfo().isConnected();
 			} else {
 				return false;
 			}
@@ -618,17 +604,9 @@ public class AkorDefterimSys {
 			NetworkInfo MobileInfo = conMgr.getNetworkInfo(ConnectivityManager.TYPE_MOBILE);
 
 			if (wifiInfo.isConnected()) {
-				if (conMgr.getActiveNetworkInfo() != null && conMgr.getActiveNetworkInfo().isAvailable() && conMgr.getActiveNetworkInfo().isConnected()) {
-					return true;
-				} else {
-					return false;
-				}
+				return conMgr.getActiveNetworkInfo() != null && conMgr.getActiveNetworkInfo().isAvailable() && conMgr.getActiveNetworkInfo().isConnected();
 			} else if (MobileInfo.isConnected()) {
-				if (conMgr.getActiveNetworkInfo() != null && conMgr.getActiveNetworkInfo().isAvailable() && conMgr.getActiveNetworkInfo().isConnected()) {
-					return true;
-				} else {
-					return false;
-				}
+				return conMgr.getActiveNetworkInfo() != null && conMgr.getActiveNetworkInfo().isAvailable() && conMgr.getActiveNetworkInfo().isConnected();
 			} else {
 				return false;
 			}
@@ -638,10 +616,7 @@ public class AkorDefterimSys {
 	public boolean GucTasarrufKontrolu() {
 		PowerManager powerManager = (PowerManager) activity.getSystemService(Context.POWER_SERVICE);
 
-		if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP && powerManager.isPowerSaveMode())
-			return true;
-		else
-			return false;
+		return Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP && powerManager.isPowerSaveMode();
 	}
 
 	public boolean checkPlayServices(Activity activity) {
@@ -871,7 +846,7 @@ public class AkorDefterimSys {
 		View ViewCustomToast = inflater.inflate(R.layout.toast_custom, null);
 		Typeface YaziFontu = FontGetir(activity, "anivers_regular");
 
-		TextView txtToastMesaj = (TextView) ViewCustomToast.findViewById(R.id.txtToastMesaj);
+		TextView txtToastMesaj = ViewCustomToast.findViewById(R.id.txtToastMesaj);
 		txtToastMesaj.setText(Mesaj);
 		txtToastMesaj.setTypeface(YaziFontu, Typeface.NORMAL);
 
@@ -924,7 +899,7 @@ public class AkorDefterimSys {
 		sbView.setBackgroundColor(activity.getResources().getColor(R.color.SnackBarBG)); // Snack bar arkaplan rengi ayarlandı
 		//sbView.setAnimation(AnimationUtils.loadAnimation(activity, R.anim.anim_fadein)); // Snack bar açılış animasyonu ayarlandı
 
-		TextView MesajIcerik = (TextView) sbView.findViewById(android.support.design.R.id.snackbar_text);
+		TextView MesajIcerik = sbView.findViewById(android.support.design.R.id.snackbar_text);
 		MesajIcerik.setTextColor(activity.getResources().getColor(MesajRengi));
 		MesajIcerik.setTypeface(YaziFontu, Typeface.NORMAL);
 
@@ -942,7 +917,7 @@ public class AkorDefterimSys {
 		sbView.setBackgroundColor(activity.getResources().getColor(R.color.SnackBarBG)); // Snack bar arkaplan rengi ayarlandı
 		sbView.setAnimation(AnimationUtils.loadAnimation(activity, R.anim.anim_fade_up)); // Snack bar açılış animasyonu ayarlandı
 
-		TextView MesajIcerik = (TextView) sbView.findViewById(android.support.design.R.id.snackbar_text);
+		TextView MesajIcerik = sbView.findViewById(android.support.design.R.id.snackbar_text);
 		MesajIcerik.setTextColor(activity.getResources().getColor(MesajRengi));
 		MesajIcerik.setTypeface(YaziFontu, Typeface.NORMAL);
 		//MesajIcerik.setTextSize(TypedValue.COMPLEX_UNIT_PX, activity.getResources().getDimension(R.dimen.yazi_boyutu16));
@@ -1037,10 +1012,10 @@ public class AkorDefterimSys {
 
 		ViewDialogBaslik = inflater.inflate(R.layout.dialog_custom_baslik, null);
 
-		ImageView ImgDialogIcon = (ImageView) ViewDialogBaslik.findViewById(R.id.ImgDialogIcon);
+		ImageView ImgDialogIcon = ViewDialogBaslik.findViewById(R.id.ImgDialogIcon);
 		ImgDialogIcon.setImageDrawable(res.getDrawable(Icon));
 
-		TextView lblDialogBaslik = (TextView) ViewDialogBaslik.findViewById(R.id.lblDialogBaslik);
+		TextView lblDialogBaslik = ViewDialogBaslik.findViewById(R.id.lblDialogBaslik);
 		lblDialogBaslik.setTypeface(YaziFontu, Typeface.BOLD);
 		lblDialogBaslik.setText(new SpannableStringBuilder(Html.fromHtml(Baslik)));
 
@@ -1055,6 +1030,82 @@ public class AkorDefterimSys {
 	}
 
 	@SuppressLint("InflateParams")
+	public AlertDialog CustomAlertDialog(Activity activity, String Baslik, String Mesaj, String OnayButtonMsjText, final String Islem) {
+		final Interface_AsyncResponse AsyncResponse = (Interface_AsyncResponse) activity;
+		LayoutInflater inflater = activity.getLayoutInflater();
+		View ViewDialogCustom;
+		Typeface YaziFontu = FontGetir(activity, "anivers_regular");
+
+		ViewDialogCustom = inflater.inflate(R.layout.dialog_custom, null);
+
+		TextView lblDialogBaslik = ViewDialogCustom.findViewById(R.id.lblDialogBaslik);
+		lblDialogBaslik.setTypeface(YaziFontu, Typeface.BOLD);
+		lblDialogBaslik.setText(new SpannableStringBuilder(Html.fromHtml(Baslik)));
+
+		TextView lblDialogIcerik = ViewDialogCustom.findViewById(R.id.lblDialogIcerik);
+		lblDialogIcerik.setTypeface(YaziFontu, Typeface.NORMAL);
+		lblDialogIcerik.setText(new SpannableStringBuilder(Html.fromHtml(Mesaj)));
+
+		Button btnDialogOnayButton = ViewDialogCustom.findViewById(R.id.btnDialogOnayButton);
+		btnDialogOnayButton.setTypeface(YaziFontu, Typeface.BOLD);
+		btnDialogOnayButton.setText(OnayButtonMsjText);
+		btnDialogOnayButton.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				AsyncResponse.AsyncTaskReturnValue("{\"Islem\":\"" + Islem + "\"}");
+			}
+		});
+
+		return new AlertDialog.Builder(activity)
+				.setView(ViewDialogCustom)
+				.setCancelable(false)
+				.create();
+	}
+
+	@SuppressLint("InflateParams")
+	public AlertDialog CustomAlertDialog(Activity activity, String Baslik, String Mesaj, String IptalButtonMsjText, final String IslemIptal, String OnayButtonMsjText, final String IslemOnay) {
+		final Interface_AsyncResponse AsyncResponse = (Interface_AsyncResponse) activity;
+		LayoutInflater inflater = activity.getLayoutInflater();
+		View ViewDialogCustom;
+		Typeface YaziFontu = FontGetir(activity, "anivers_regular");
+
+		ViewDialogCustom = inflater.inflate(R.layout.dialog_custom2, null);
+
+		TextView lblDialogBaslik = ViewDialogCustom.findViewById(R.id.lblDialogBaslik);
+		lblDialogBaslik.setTypeface(YaziFontu, Typeface.BOLD);
+		lblDialogBaslik.setText(new SpannableStringBuilder(Html.fromHtml(Baslik)));
+
+		TextView lblDialogIcerik = ViewDialogCustom.findViewById(R.id.lblDialogIcerik);
+		lblDialogIcerik.setTypeface(YaziFontu, Typeface.NORMAL);
+		lblDialogIcerik.setText(new SpannableStringBuilder(Html.fromHtml(Mesaj)));
+
+		Button btnDialogIptalButton = ViewDialogCustom.findViewById(R.id.btnDialogIptalButton);
+		btnDialogIptalButton.setTypeface(YaziFontu, Typeface.BOLD);
+		btnDialogIptalButton.setText(IptalButtonMsjText);
+		btnDialogIptalButton.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				AsyncResponse.AsyncTaskReturnValue("{\"Islem\":\"" + IslemIptal + "\"}");
+			}
+		});
+
+		Button btnDialogOnayButton = ViewDialogCustom.findViewById(R.id.btnDialogOnayButton);
+		btnDialogOnayButton.setTypeface(YaziFontu, Typeface.BOLD);
+		btnDialogOnayButton.setText(OnayButtonMsjText);
+		btnDialogOnayButton.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				AsyncResponse.AsyncTaskReturnValue("{\"Islem\":\"" + IslemOnay + "\"}");
+			}
+		});
+
+		return new AlertDialog.Builder(activity)
+				.setView(ViewDialogCustom)
+				.setCancelable(false)
+				.create();
+	}
+
+	@SuppressLint("InflateParams")
 	public AlertDialog CustomAlertDialog(Activity activity, int Icon, String Baslik, View DialogLayoutContent, String OnayButtonMsjText, String IptalButtonMsjText, Boolean KapanabilirMi) {
 		LayoutInflater inflater = activity.getLayoutInflater();
 		View ViewDialogBaslik;
@@ -1063,10 +1114,10 @@ public class AkorDefterimSys {
 
 		ViewDialogBaslik = inflater.inflate(R.layout.dialog_custom_baslik, null);
 
-		ImageView ImgDialogIcon = (ImageView) ViewDialogBaslik.findViewById(R.id.ImgDialogIcon);
+		ImageView ImgDialogIcon = ViewDialogBaslik.findViewById(R.id.ImgDialogIcon);
 		ImgDialogIcon.setImageDrawable(res.getDrawable(Icon));
 
-		TextView lblDialogBaslik = (TextView) ViewDialogBaslik.findViewById(R.id.lblDialogBaslik);
+		TextView lblDialogBaslik = ViewDialogBaslik.findViewById(R.id.lblDialogBaslik);
 		lblDialogBaslik.setTypeface(YaziFontu, Typeface.BOLD);
 		lblDialogBaslik.setText(new SpannableStringBuilder(Html.fromHtml(Baslik)));
 
@@ -1090,10 +1141,10 @@ public class AkorDefterimSys {
 
 		ViewDialogBaslik = inflater.inflate(R.layout.dialog_custom_baslik, null);
 
-		ImageView ImgDialogIcon = (ImageView) ViewDialogBaslik.findViewById(R.id.ImgDialogIcon);
+		ImageView ImgDialogIcon = ViewDialogBaslik.findViewById(R.id.ImgDialogIcon);
 		ImgDialogIcon.setImageDrawable(res.getDrawable(Icon));
 
-		TextView lblDialogBaslik = (TextView) ViewDialogBaslik.findViewById(R.id.lblDialogBaslik);
+		TextView lblDialogBaslik = ViewDialogBaslik.findViewById(R.id.lblDialogBaslik);
 		lblDialogBaslik.setTypeface(YaziFontu, Typeface.BOLD);
 		lblDialogBaslik.setText(new SpannableStringBuilder(Html.fromHtml(Baslik)));
 
@@ -1118,10 +1169,10 @@ public class AkorDefterimSys {
 
 		ViewDialogBaslik = inflater.inflate(R.layout.dialog_custom_baslik, null);
 
-		ImageView ImgDialogIcon = (ImageView) ViewDialogBaslik.findViewById(R.id.ImgDialogIcon);
+		ImageView ImgDialogIcon = ViewDialogBaslik.findViewById(R.id.ImgDialogIcon);
 		ImgDialogIcon.setImageDrawable(res.getDrawable(Icon));
 
-		TextView lblDialogBaslik = (TextView) ViewDialogBaslik.findViewById(R.id.lblDialogBaslik);
+		TextView lblDialogBaslik = ViewDialogBaslik.findViewById(R.id.lblDialogBaslik);
 		lblDialogBaslik.setTypeface(YaziFontu, Typeface.BOLD);
 		lblDialogBaslik.setText(new SpannableStringBuilder(Html.fromHtml(Baslik)));
 
@@ -1145,10 +1196,10 @@ public class AkorDefterimSys {
 
 		View ViewDialogBaslik = inflater.inflate(R.layout.dialog_custom_baslik, null);
 
-		ImageView ImgDialogIcon = (ImageView) ViewDialogBaslik.findViewById(R.id.ImgDialogIcon);
+		ImageView ImgDialogIcon = ViewDialogBaslik.findViewById(R.id.ImgDialogIcon);
 		ImgDialogIcon.setImageDrawable(res.getDrawable(Icon));
 
-		TextView lblDialogBaslik = (TextView) ViewDialogBaslik.findViewById(R.id.lblDialogBaslik);
+		TextView lblDialogBaslik = ViewDialogBaslik.findViewById(R.id.lblDialogBaslik);
 		lblDialogBaslik.setTypeface(YaziFontu, Typeface.BOLD);
 		lblDialogBaslik.setText(new SpannableStringBuilder(Html.fromHtml(Baslik)));
 
@@ -1172,10 +1223,10 @@ public class AkorDefterimSys {
 
 		ViewDialogBaslik = inflater.inflate(R.layout.dialog_custom_baslik, null);
 
-		ImageView ImgDialogIcon = (ImageView) ViewDialogBaslik.findViewById(R.id.ImgDialogIcon);
+		ImageView ImgDialogIcon = ViewDialogBaslik.findViewById(R.id.ImgDialogIcon);
 		ImgDialogIcon.setImageDrawable(res.getDrawable(Icon));
 
-		TextView lblDialogBaslik = (TextView) ViewDialogBaslik.findViewById(R.id.lblDialogBaslik);
+		TextView lblDialogBaslik = ViewDialogBaslik.findViewById(R.id.lblDialogBaslik);
 		lblDialogBaslik.setTypeface(YaziFontu, Typeface.BOLD);
 		lblDialogBaslik.setText(new SpannableStringBuilder(Html.fromHtml(Baslik)));
 
@@ -1379,14 +1430,15 @@ public class AkorDefterimSys {
 
         if (SecilenProfilResmiFile.exists()) { //Cihazda bu dosya var mı kontrol ediyoruz..
             double SecilenProfilResimBoyutuMB = ((double) SecilenProfilResmiFile.length()/1024)/1024;
+            int ProfilResimYuklemeBoyutu = activity.getResources().getInteger(R.integer.ProfilResimYuklemeBoyutu);
 
-            if(SecilenProfilResimBoyutuMB > ProfilResmiResimBoyutuMB) {
+            if(SecilenProfilResimBoyutuMB > ProfilResimYuklemeBoyutu) {
                 SecilenProfilResmiFile.delete();
                 SecilenProfilResmiFile = null;
 
                 CImgResim.setImageDrawable(activity.getResources().getDrawable(R.drawable.com_facebook_profile_picture_blank_square));
 
-                StandartSnackBarMsj(mCoordinatorLayout, activity.getString(R.string.buyuk_profil_resim_hatasi, String.valueOf(ProfilResmiResimBoyutuMB)));
+                StandartSnackBarMsj(mCoordinatorLayout, activity.getString(R.string.buyuk_profil_resim_hatasi, String.valueOf(ProfilResimYuklemeBoyutu)));
             } else CImgResim.setImageURI(SecilenResimUri);
         } else StandartSnackBarMsj(mCoordinatorLayout, activity.getString(R.string.dosya_bulunamadi));
 
@@ -2645,7 +2697,24 @@ public class AkorDefterimSys {
 		return UlkeKodlari;
 	}
 
+	public String EPostaSifrele(String EPosta) {
+    	return EPosta.substring(0,1) + "*******" + EPosta.substring(EPosta.indexOf("@") - 1, EPosta.length());
+	}
 
+	public String CepTelefonSifrele(String TelKodu, String CepTelefon) {
+		return TelKodu + " " +  CepTelefon.substring(0,3) + " *** ** " + CepTelefon.substring(CepTelefon.length() - 2, CepTelefon.length());
+	}
+
+	public String ParolaUret(int Uzunluk, Boolean Sayi, Boolean Kucukharf, Boolean Buyukharf, Boolean Semboller) {
+    	String Karakterler = "";
+
+    	if(Sayi) Karakterler = Karakterler.concat("1234567890");
+		if(Kucukharf) Karakterler = Karakterler.concat("abcdefghijklmnopqrstuvwxyz");
+		if(Buyukharf) Karakterler = Karakterler.concat("ABCDEFGHIJKLMNOPQRSTUVWXYZ");
+		if(Semboller) Karakterler = Karakterler.concat("/*-+!%&()=_#$½{[]}");
+
+		return RandomStringUtils.random(Uzunluk, Karakterler);
+	}
 
 	// PHP İŞLEMLERİ - Retrofit 2
 
@@ -2686,7 +2755,7 @@ public class AkorDefterimSys {
 					SnfIslemSonuc snfIslemSonuc = response.body();
 
 					// getHata'nin false olması durumu hata yok demektir..
-					if(!snfIslemSonuc.getHata()) AsyncResponse.AsyncTaskReturnValue("{\"Islem\":\"EPostaGonder\", \"Sonuc\":" + String.valueOf(snfIslemSonuc.getSonuc()) + "}");
+					if(!snfIslemSonuc.getHata()) AsyncResponse.AsyncTaskReturnValue("{\"Islem\":\"EPostaGonder\", \"Sonuc\":" + snfIslemSonuc.getSonuc() + "}");
 					else AsyncResponse.AsyncTaskReturnValue("{\"Islem\":\"EPostaGonder\", \"Sonuc\":false}");
 				} else AsyncResponse.AsyncTaskReturnValue("{\"Islem\":\"EPostaGonder\", \"Sonuc\":false}");
 			}
@@ -2694,6 +2763,30 @@ public class AkorDefterimSys {
 			@Override
 			public void onFailure(Call<SnfIslemSonuc> call, Throwable t) {
 				AsyncResponse.AsyncTaskReturnValue("{\"Islem\":\"EPostaGonder\", \"Sonuc\":false}");
+			}
+		});
+	}
+
+	public void SMSGonder(String mTelKodu, String mCepTelefon, String mMesaj) {
+		RetrofitInterface retrofitInterface = RetrofitServiceGenerator.createService(activity, RetrofitInterface.class);
+		final Interface_AsyncResponse AsyncResponse = (Interface_AsyncResponse) activity;
+
+		Call<SnfIslemSonuc> snfIslemSonucCall = retrofitInterface.SMSGonder(mTelKodu, mCepTelefon, mMesaj);
+		snfIslemSonucCall.enqueue(new Callback<SnfIslemSonuc>() {
+			@Override
+			public void onResponse(Call<SnfIslemSonuc> call, Response<SnfIslemSonuc> response) {
+				if(response.isSuccessful()) {
+					SnfIslemSonuc snfIslemSonuc = response.body();
+
+					// getHata'nin false olması durumu hata yok demektir..
+					if(!snfIslemSonuc.getHata()) AsyncResponse.AsyncTaskReturnValue("{\"Islem\":\"SMSGonder\", \"Sonuc\":" + snfIslemSonuc.getSonuc() + "}");
+					else AsyncResponse.AsyncTaskReturnValue("{\"Islem\":\"SMSGonder\", \"Sonuc\":false}");
+				} else AsyncResponse.AsyncTaskReturnValue("{\"Islem\":\"SMSGonder\", \"Sonuc\":false}");
+			}
+
+			@Override
+			public void onFailure(Call<SnfIslemSonuc> call, Throwable t) {
+				AsyncResponse.AsyncTaskReturnValue("{\"Islem\":\"SMSGonder\", \"Sonuc\":false}");
 			}
 		});
 	}
@@ -2746,11 +2839,11 @@ public class AkorDefterimSys {
 		});
 	}
 
-	public void HesapBilgiGetir(final Fragment fragment, String mEPostaKullaniciAdi) {
+	public void HesapBilgiGetir(final Fragment fragment, String mTelKodu, String mEPostaKullaniciAdiTelefon) {
 		RetrofitInterface retrofitInterface = RetrofitServiceGenerator.createService(activity, RetrofitInterface.class);
 		final Interface_AsyncResponse AsyncResponse = (Interface_AsyncResponse) activity;
 
-		Call<SnfHesapBilgiGetir> snfHesapBilgiGetirCall = retrofitInterface.HesapBilgiGetir(mEPostaKullaniciAdi);
+		Call<SnfHesapBilgiGetir> snfHesapBilgiGetirCall = retrofitInterface.HesapBilgiGetir(mTelKodu, mEPostaKullaniciAdiTelefon);
 		snfHesapBilgiGetirCall.enqueue(new Callback<SnfHesapBilgiGetir>() {
 			@Override
 			public void onResponse(Call<SnfHesapBilgiGetir> call, Response<SnfHesapBilgiGetir> response) {
@@ -2763,11 +2856,14 @@ public class AkorDefterimSys {
 								((fragment != null) ? "\"Fragment\":\"" + fragment.getTag() + "\", ":"\"Fragment\":\"\", ") +
 								"\"Sonuc\":" + snfHesapBilgiGetir.getSonuc() + ", " +
 								"\"HesapID\":\"" + snfHesapBilgiGetir.getHesapID() + "\", " +
+								"\"FacebookID\":\"" + snfHesapBilgiGetir.getFacebookID() + "\", " +
+								"\"GoogleID\":\"" + snfHesapBilgiGetir.getGoogleID() + "\", " +
 								"\"AdSoyad\":\"" + snfHesapBilgiGetir.getAdSoyad() + "\", " +
 								"\"DogumTarih\":\"" + snfHesapBilgiGetir.getDogumTarih() + "\", " +
 								"\"ResimURL\":\"" + snfHesapBilgiGetir.getResimURL() + "\", " +
 								"\"EPosta\":\"" + snfHesapBilgiGetir.getEPosta() + "\", " +
 								"\"EPostaOnay\":\"" + snfHesapBilgiGetir.getEPostaOnay() + "\", " +
+								"\"Parola\":\"" + snfHesapBilgiGetir.getParola() + "\", " +
 								"\"ParolaSHA1\":\"" + snfHesapBilgiGetir.getParolaSHA1() + "\", " +
 								"\"KullaniciAdi\":\"" + snfHesapBilgiGetir.getKullaniciAdi() + "\", " +
 								"\"TelKodu\":\"" + snfHesapBilgiGetir.getTelKodu() + "\", " +
@@ -2776,8 +2872,7 @@ public class AkorDefterimSys {
 								"\"KayitTarih\":\"" + snfHesapBilgiGetir.getKayitTarih() + "\", " +
 								"\"SonOturumTarih\":\"" + snfHesapBilgiGetir.getSonOturumTarih() + "\", " +
 								"\"HesapDurum\":\"" + snfHesapBilgiGetir.getHesapDurum() + "\", " +
-								"\"HesapDurumBilgi\":\"" + snfHesapBilgiGetir.getHesapDurumBilgi() + "\", " +
-								"\"BulunanHesaplar\":" + snfHesapBilgiGetir.getBulunanHesaplar() + "}");
+								"\"HesapDurumBilgi\":\"" + snfHesapBilgiGetir.getHesapDurumBilgi() + "\"}");
 					else AsyncResponse.AsyncTaskReturnValue("{\"Islem\":\"HesapBilgiGetir\", \"Sonuc\":false}");
 				} else AsyncResponse.AsyncTaskReturnValue("{\"Islem\":\"HesapBilgiGetir\", \"Sonuc\":false}");
 			}
@@ -2789,11 +2884,11 @@ public class AkorDefterimSys {
 		});
 	}
 
-	public void HesapBilgiGuncelle(String mFirebaseToken, String mOSID, String mOSVersiyon, String mAdSoyad, String mDogumTarih, String mResimURL, String mEPosta, String mEPostaOnay, String mParola, String mParolaSHA1, String mKullaniciAdi, String mUygulamaVersiyon) {
+	public void HesapBilgiGuncelle(String mFirebaseToken, String mOSID, String mOSVersiyon, String mAdSoyad, String mDogumTarih, String mResimURL, String mEPosta, String mParola, String mParolaSHA1, String mKullaniciAdi, String mTelKodu, String mCepTelefon, String mUygulamaVersiyon) {
 		RetrofitInterface retrofitInterface = RetrofitServiceGenerator.createService(activity, RetrofitInterface.class);
 		final Interface_AsyncResponse AsyncResponse = (Interface_AsyncResponse) activity;
 
-		Call<SnfIslemSonuc> snfIslemSonucCall = retrofitInterface.HesapBilgiGuncelle(mFirebaseToken, mOSID, mOSVersiyon, mAdSoyad, mDogumTarih, mResimURL, mEPosta, mEPostaOnay, mParola, mParolaSHA1, mKullaniciAdi, mUygulamaVersiyon);
+		Call<SnfIslemSonuc> snfIslemSonucCall = retrofitInterface.HesapBilgiGuncelle(mFirebaseToken, mOSID, mOSVersiyon, mAdSoyad, mDogumTarih, mResimURL, mEPosta, mParola, mParolaSHA1, mKullaniciAdi, mTelKodu, mCepTelefon, mUygulamaVersiyon);
 		snfIslemSonucCall.enqueue(new Callback<SnfIslemSonuc>() {
 			@Override
 			public void onResponse(Call<SnfIslemSonuc> call, Response<SnfIslemSonuc> response) {
@@ -2814,7 +2909,7 @@ public class AkorDefterimSys {
 		});
 	}
 
-	public void HesapParolaDegistir(String mEPosta, String mParola, String mParolaSHA1) {
+	/*public void HesapParolaDegistir(String mEPosta, String mParola, String mParolaSHA1) {
 		RetrofitInterface retrofitInterface = RetrofitServiceGenerator.createService(activity, RetrofitInterface.class);
 		final Interface_AsyncResponse AsyncResponse = (Interface_AsyncResponse) activity;
 
@@ -2837,7 +2932,7 @@ public class AkorDefterimSys {
 				AsyncResponse.AsyncTaskReturnValue("{\"Islem\":\"HesapParolaDegistir\", \"Sonuc\":false}");
 			}
 		});
-	}
+	}*/
 
 
 
@@ -3011,14 +3106,14 @@ public class AkorDefterimSys {
 			ADDialog = CustomAlertDialog(activity, R.mipmap.ic_launcher, activity.getString(R.string.yenilikler), ViewDialogContent, activity.getString(R.string.tamam));
 			ADDialog.getWindow().getAttributes().windowAnimations = R.style.DialogAnimation;
 
-			TextView Dialog_lblVersiyonNo = (TextView) ViewDialogContent.findViewById(R.id.Dialog_lblVersiyonNo);
+			TextView Dialog_lblVersiyonNo = ViewDialogContent.findViewById(R.id.Dialog_lblVersiyonNo);
 			Dialog_lblVersiyonNo.setTypeface(YaziFontu);
 			Dialog_lblVersiyonNo.setText(String.valueOf("v").concat(GecerliVersiyonAdi));
 
-			TextView Dialog_lblYenilikler = (TextView) ViewDialogContent.findViewById(R.id.Dialog_lblYenilikler);
+			TextView Dialog_lblYenilikler = ViewDialogContent.findViewById(R.id.Dialog_lblYenilikler);
 			Dialog_lblYenilikler.setTypeface(YaziFontu);
 
-			TextView Dialog_lblYenilikler_Icerik = (TextView) ViewDialogContent.findViewById(R.id.Dialog_lblYenilikler_Icerik);
+			TextView Dialog_lblYenilikler_Icerik = ViewDialogContent.findViewById(R.id.Dialog_lblYenilikler_Icerik);
 			Dialog_lblYenilikler_Icerik.setTypeface(YaziFontu);
 			Dialog_lblYenilikler_Icerik.setText(activity.getString(R.string.yenilikler_icerik));
 			Dialog_lblYenilikler_Icerik.setMovementMethod(ScrollingMovementMethod.getInstance());
@@ -3117,11 +3212,11 @@ public class AkorDefterimSys {
 							case "Yazi":
 								ViewDialogContent = inflater.inflate(R.layout.dialog_reklam_duyuru_yazi, null);
 
-								TextView Dialog_lblVersiyonNo = (TextView) ViewDialogContent.findViewById(R.id.Dialog_lblVersiyonNo);
+								TextView Dialog_lblVersiyonNo = ViewDialogContent.findViewById(R.id.Dialog_lblVersiyonNo);
 								Dialog_lblVersiyonNo.setTypeface(YaziFontu, Typeface.BOLD);
 								Dialog_lblVersiyonNo.setText(String.valueOf("v").concat(activity.getPackageManager().getPackageInfo(activity.getPackageName(), 0).versionName));
 
-								TextView Dialog_lblDuyuru_Reklam_Icerik = (TextView) ViewDialogContent.findViewById(R.id.Dialog_lblDuyuru_Reklam_Icerik);
+								TextView Dialog_lblDuyuru_Reklam_Icerik = ViewDialogContent.findViewById(R.id.Dialog_lblDuyuru_Reklam_Icerik);
 								Dialog_lblDuyuru_Reklam_Icerik.setTypeface(YaziFontu);
 								Dialog_lblDuyuru_Reklam_Icerik.setText(new SpannableString(Html.fromHtml(JSONGelenVeri.getString("Icerik"))));
 								Dialog_lblDuyuru_Reklam_Icerik.setMovementMethod(ScrollingMovementMethod.getInstance());
@@ -3143,7 +3238,7 @@ public class AkorDefterimSys {
 									}
 								});*/
 
-								Dialog_chkBirDahaGosterme = (CheckBox) ViewDialogContent.findViewById(R.id.Dialog_chkBirDahaGosterme);
+								Dialog_chkBirDahaGosterme = ViewDialogContent.findViewById(R.id.Dialog_chkBirDahaGosterme);
 								Dialog_chkBirDahaGosterme.setTypeface(YaziFontu);
 								Dialog_chkBirDahaGosterme.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
 									@Override
@@ -3156,10 +3251,10 @@ public class AkorDefterimSys {
 							case "Resim":
 								ViewDialogContent = inflater.inflate(R.layout.dialog_reklam_duyuru_resim, null);
 
-								ImageView Dialog_ImgResim = (ImageView) ViewDialogContent.findViewById(R.id.Dialog_ImgResim);
+								ImageView Dialog_ImgResim = ViewDialogContent.findViewById(R.id.Dialog_ImgResim);
 								Dialog_ImgResim.setImageBitmap(ResimBitmap);
 
-								Dialog_chkBirDahaGosterme = (CheckBox) ViewDialogContent.findViewById(R.id.Dialog_chkBirDahaGosterme);
+								Dialog_chkBirDahaGosterme = ViewDialogContent.findViewById(R.id.Dialog_chkBirDahaGosterme);
 								Dialog_chkBirDahaGosterme.setTypeface(YaziFontu);
 								Dialog_chkBirDahaGosterme.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
 									@Override
@@ -3420,26 +3515,19 @@ public class AkorDefterimSys {
 	}
 
 	public boolean EditTextisMatching(EditText txt1, EditText txt2) {
-		if (txt1.getText().toString().equals(txt2.getText().toString())) {
-			return true;
-		} else {
-			return false;
-		}
+		return txt1.getText().toString().equals(txt2.getText().toString());
 	}
 
 	public boolean EditTextKarakterKontrolMIN(String txt, int MinKarakterSayisi) {
-		if(txt.length() < MinKarakterSayisi) return true;
-		else return false;
+		return txt.length() < MinKarakterSayisi;
 	}
 
 	public boolean EditTextKarakterKontrolMAX(String txt, int MaxKarakterSayisi) {
-		if(txt.length() > MaxKarakterSayisi) return true;
-		else return false;
+		return txt.length() > MaxKarakterSayisi;
 	}
 
 	public boolean EditTextKarakterKontrol(String txt, int MinKarakterSayisi, int MaxKarakterSayisi) {
-		if(txt.length() < MinKarakterSayisi || txt.length() > MaxKarakterSayisi) return true;
-		else return false;
+		return txt.length() < MinKarakterSayisi || txt.length() > MaxKarakterSayisi;
 	}
 
 	public boolean isValid(String txt, String ValidTipi) {
@@ -3826,15 +3914,15 @@ public class AkorDefterimSys {
         final AlertDialog ADDialogAkorGosterici = CustomAlertDialog(activity, R.mipmap.ic_launcher, activity.getString(R.string.akor_cetveli, SecilenAkor.equals("") ? "" : " - " + SecilenAkor + " " + activity.getString(R.string.akoru)), ViewDialogContent, activity.getString(R.string.kapat));
         ADDialogAkorGosterici.getWindow().getAttributes().windowAnimations = R.style.DialogAnimation;
 
-		TextView Dialog_txtTon = (TextView) ViewDialogContent.findViewById(R.id.Dialog_txtTon);
+		TextView Dialog_txtTon = ViewDialogContent.findViewById(R.id.Dialog_txtTon);
 		Dialog_txtTon.setTypeface(YaziFontu, Typeface.BOLD);
 
-		TextView Dialog_txtAkor = (TextView) ViewDialogContent.findViewById(R.id.Dialog_txtAkor);
+		TextView Dialog_txtAkor = ViewDialogContent.findViewById(R.id.Dialog_txtAkor);
 		Dialog_txtAkor.setTypeface(YaziFontu, Typeface.BOLD);
 
-        final ListView Dialog_lstTonlar = (ListView) ViewDialogContent.findViewById(R.id.Dialog_lstTonlar);
-        final ListView Dialog_lstAkorlar = (ListView) ViewDialogContent.findViewById(R.id.Dialog_lstAkorlar);
-        final ImageView Dialog_ImgGitarKlavye = (ImageView) ViewDialogContent.findViewById(R.id.Dialog_ImgGitarKlavye);
+        final ListView Dialog_lstTonlar = ViewDialogContent.findViewById(R.id.Dialog_lstTonlar);
+        final ListView Dialog_lstAkorlar = ViewDialogContent.findViewById(R.id.Dialog_lstAkorlar);
+        final ImageView Dialog_ImgGitarKlavye = ViewDialogContent.findViewById(R.id.Dialog_ImgGitarKlavye);
 		
 		String SecilenTon;
 		final String[] SecilenAkorDizisi = {"0,0,0,0,0,0"};

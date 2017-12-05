@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/Beyaz">
+
+    <android.support.constraint.Guideline
+        android:id="@+id/v_guideline1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.5" />
+
+    <TextView
+        android:id="@+id/lblDialogBaslik"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="8dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:text="@string/labeltire"
+        android:textColor="@color/KoyuYazi"
+        android:textSize="@dimen/yazi_boyutu18"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <View
+        android:id="@+id/view1"
+        android:layout_width="0dp"
+        android:layout_height="1dp"
+        android:layout_marginTop="8dp"
+        android:background="@drawable/line2"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/lblDialogBaslik" />
+
+    <TextView
+        android:id="@+id/lblDialogIcerik"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="24dp"
+        android:layout_marginStart="24dp"
+        android:layout_marginTop="24dp"
+        android:text="@string/labeltire"
+        android:textColor="@color/KoyuYazi"
+        android:textSize="@dimen/yazi_boyutu16"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/view1" />
+
+    <View
+        android:id="@+id/view2"
+        android:layout_width="0dp"
+        android:layout_height="1dp"
+        android:layout_marginTop="32dp"
+        android:background="@drawable/line2"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/lblDialogIcerik" />
+
+    <Button
+        android:id="@+id/btnDialogIptalButton"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:background="@drawable/custom_button2"
+        android:gravity="center"
+        android:stateListAnimator="@null"
+        android:text="@string/labeltire"
+        android:textAppearance="@style/TextAppearance.AppCompat"
+        android:textColor="@color/KoyuYazi"
+        app:layout_constraintEnd_toStartOf="@+id/v_guideline1"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/view2" />
+
+    <Button
+        android:id="@+id/btnDialogOnayButton"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:background="@drawable/custom_button2"
+        android:gravity="center"
+        android:stateListAnimator="@null"
+        android:text="@string/labeltire"
+        android:textAppearance="@style/TextAppearance.AppCompat"
+        android:textColor="@color/KoyuYazi"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="@+id/v_guideline1"
+        app:layout_constraintTop_toBottomOf="@+id/view2" />
+
+</android.support.constraint.ConstraintLayout>

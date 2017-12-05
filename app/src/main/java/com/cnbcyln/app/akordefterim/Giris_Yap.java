@@ -35,7 +35,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 @SuppressWarnings({"deprecation", "ResultOfMethodCallIgnored", "ConstantConditions"})
-public class Giris_Yap extends AppCompatActivity implements Interface_AsyncResponse {
+public class Giris_Yap extends AppCompatActivity implements Interface_AsyncResponse, OnClickListener {
 
 	private Activity activity;
 	private AkorDefterimSys AkorDefterimSys;
@@ -43,7 +43,7 @@ public class Giris_Yap extends AppCompatActivity implements Interface_AsyncRespo
 	Typeface YaziFontu;
     SharedPreferences.Editor sharedPrefEditor;
 	ProgressDialog PDGirisYap;
-	AlertDialog ADDialog_HesapDurumu, ADDialog_GirisHata;
+	AlertDialog ADDialog_HesapDurumu;
 
 	CoordinatorLayout coordinatorLayout;
 	ImageButton btnGeri;
@@ -148,12 +148,7 @@ public class Giris_Yap extends AppCompatActivity implements Interface_AsyncRespo
 
 		btnGirisYap = findViewById(R.id.btnGirisYap);
 		btnGirisYap.setTypeface(YaziFontu, Typeface.NORMAL);
-		btnGirisYap.setOnClickListener(new OnClickListener() {
-			@Override
-			public void onClick(View v) {
-				Giris();
-			}
-		});
+		btnGirisYap.setOnClickListener(this);
 	}
 
 	@Override
@@ -162,7 +157,6 @@ public class Giris_Yap extends AppCompatActivity implements Interface_AsyncRespo
 
 		AkorDefterimSys.DismissProgressDialog(PDGirisYap);
 		AkorDefterimSys.DismissAlertDialog(ADDialog_HesapDurumu);
-		AkorDefterimSys.DismissAlertDialog(ADDialog_GirisHata);
 	}
 
 	@Override
@@ -171,15 +165,25 @@ public class Giris_Yap extends AppCompatActivity implements Interface_AsyncRespo
 
 		AkorDefterimSys.DismissProgressDialog(PDGirisYap);
 		AkorDefterimSys.DismissAlertDialog(ADDialog_HesapDurumu);
-		AkorDefterimSys.DismissAlertDialog(ADDialog_GirisHata);
 
 		super.onBackPressed();
+	}
+
+	@Override
+	public void onClick(View v) {
+		switch (v.getId()) {
+			case R.id.btnGirisYap:
+				Giris();
+				break;
+		}
 	}
 
     @Override
     public void AsyncTaskReturnValue(String sonuc) {
         try {
             JSONObject JSONSonuc = new JSONObject(sonuc);
+
+			btnGirisYap.setEnabled(true);
 
             switch (JSONSonuc.getString("Islem")) {
 				case "Giris_Yardimi":
@@ -208,39 +212,31 @@ public class Giris_Yap extends AppCompatActivity implements Interface_AsyncRespo
 
 						switch (JSONSonuc.getString("HesapDurum")) {
 							case "Ban":
-								ADDialog_HesapDurumu = AkorDefterimSys.CustomAlertDialog(activity, R.mipmap.ic_launcher,
+								ADDialog_HesapDurumu = AkorDefterimSys.CustomAlertDialog(activity,
 										getString(R.string.hesap_durumu),
 										getString(R.string.hesap_banlandi, JSONSonuc.getString("HesapDurumBilgi"), getString(R.string.uygulama_yapimci_site)),
-										activity.getString(R.string.tamam));
+										activity.getString(R.string.tamam),
+										"ADDialog_HesapDurumu_Kapat");
 								ADDialog_HesapDurumu.getWindow().getAttributes().windowAnimations = R.style.DialogAnimation;
 								ADDialog_HesapDurumu.show();
 
-								ADDialog_HesapDurumu.getButton(AlertDialog.BUTTON_POSITIVE).setOnClickListener(new View.OnClickListener() {
-									@Override
-									public void onClick(View v) {
-										ADDialog_HesapDurumu.dismiss();
-									}
-								});
-
 								break;
 							default:
-								ADDialog_GirisHata = AkorDefterimSys.CustomAlertDialog(activity, R.mipmap.ic_launcher,
+								ADDialog_HesapDurumu = AkorDefterimSys.CustomAlertDialog(activity,
 										getString(R.string.giris_yapilamadi),
 										getString(R.string.giris_yapilamadi_bilgilerinizi_kontrol_edin),
-										activity.getString(R.string.tamam));
-								ADDialog_GirisHata.getWindow().getAttributes().windowAnimations = R.style.DialogAnimation;
-								ADDialog_GirisHata.show();
+										activity.getString(R.string.tamam),
+										"ADDialog_HesapDurumu_Kapat");
+								ADDialog_HesapDurumu.getWindow().getAttributes().windowAnimations = R.style.DialogAnimation;
+								ADDialog_HesapDurumu.show();
 
-								ADDialog_GirisHata.getButton(AlertDialog.BUTTON_POSITIVE).setOnClickListener(new View.OnClickListener() {
-									@Override
-									public void onClick(View v) {
-										ADDialog_GirisHata.dismiss();
-									}
-								});
 								break;
 						}
 					}
 
+					break;
+				case "ADDialog_HesapDurumu_Kapat":
+					AkorDefterimSys.DismissAlertDialog(ADDialog_HesapDurumu);
 					break;
             }
 
@@ -250,6 +246,7 @@ public class Giris_Yap extends AppCompatActivity implements Interface_AsyncRespo
     }
 
     private void Giris() {
+		btnGirisYap.setEnabled(false);
 		AkorDefterimSys.KlavyeKapat();
 
 		txtEPostaKullaniciAdi.setText(txtEPostaKullaniciAdi.getText().toString().trim());
@@ -278,10 +275,10 @@ public class Giris_Yap extends AppCompatActivity implements Interface_AsyncRespo
 
 		if(TextUtils.isEmpty(Parola))
 			txtILParola.setError(getString(R.string.hata_bos_alan));
-		else if(AkorDefterimSys.EditTextKarakterKontrolMIN(Parola, getResources().getInteger(R.integer.SifreKarakterSayisi_MIN)))
-			txtILParola.setError(getString(R.string.hata_en_az_karakter, String.valueOf(getResources().getInteger(R.integer.SifreKarakterSayisi_MIN))));
-		else if(AkorDefterimSys.EditTextKarakterKontrolMAX(Parola, getResources().getInteger(R.integer.SifreKarakterSayisi_MAX)))
-			txtILParola.setError(getString(R.string.hata_en_fazla_karakter, String.valueOf(getResources().getInteger(R.integer.SifreKarakterSayisi_MAX))));
+		else if(AkorDefterimSys.EditTextKarakterKontrolMIN(Parola, getResources().getInteger(R.integer.ParolaKarakterSayisi_MIN)))
+			txtILParola.setError(getString(R.string.hata_en_az_karakter, String.valueOf(getResources().getInteger(R.integer.ParolaKarakterSayisi_MIN))));
+		else if(AkorDefterimSys.EditTextKarakterKontrolMAX(Parola, getResources().getInteger(R.integer.ParolaKarakterSayisi_MAX)))
+			txtILParola.setError(getString(R.string.hata_en_fazla_karakter, String.valueOf(getResources().getInteger(R.integer.ParolaKarakterSayisi_MAX))));
 		else txtILParola.setError(null);
 
 		AkorDefterimSys.UnFocusEditText(txtEPostaKullaniciAdi);
@@ -306,7 +303,10 @@ public class Giris_Yap extends AppCompatActivity implements Interface_AsyncRespo
 				}
 
 				AkorDefterimSys.HesapGirisYap("Normal", FirebaseToken, OSID, OSVersiyon, UygulamaVersiyon, EPostaKullaniciAdi, ParolaSHA1,"", "");
-			} else AkorDefterimSys.StandartSnackBarMsj(coordinatorLayout, getString(R.string.internet_baglantisi_saglanamadi));
-		}
+			} else {
+				btnGirisYap.setEnabled(true);
+				AkorDefterimSys.StandartSnackBarMsj(coordinatorLayout, getString(R.string.internet_baglantisi_saglanamadi));
+			}
+		} else btnGirisYap.setEnabled(true);
 	}
 }

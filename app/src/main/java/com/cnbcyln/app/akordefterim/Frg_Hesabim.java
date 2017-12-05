@@ -148,8 +148,8 @@ public class Frg_Hesabim extends Fragment implements OnClickListener {
 		RES = activity.getResources();
 		rnd = new Random();
 		FragmentDataConn = (Interface_FragmentDataConn) activity;
-		CepOnayKoduKalanSure = AkorDefterimSys.CepOnayKoduKalanSure;
-		EPostaOnayKoduKalanSure = AkorDefterimSys.EPostaOnayKoduKalanSure;
+		CepOnayKoduKalanSure = AkorDefterimSys.SMSGondermeToplamSure;
+		EPostaOnayKoduKalanSure = AkorDefterimSys.EPostaGondermeToplamSure;
 
 		imm = (InputMethodManager) activity.getSystemService(Context.INPUT_METHOD_SERVICE); // İstenildiği zaman klavyeyi gizlemeye yarayan kod tanımlayıcısı
 
@@ -165,29 +165,29 @@ public class Frg_Hesabim extends Fragment implements OnClickListener {
 
 		YaziFontu = AkorDefterimSys.FontGetir(activity, "anivers_regular");
 
-		ImgBuyukProfilResim = (ImageView) activity.findViewById(R.id.ImgBuyukProfilResim);
+		ImgBuyukProfilResim = activity.findViewById(R.id.ImgBuyukProfilResim);
 
-		CImgKucukProfilResim = (CircleImageView) activity.findViewById(R.id.CImgKucukProfilResim);
+		CImgKucukProfilResim = activity.findViewById(R.id.CImgKucukProfilResim);
 		CImgKucukProfilResim.setOnClickListener(this);
 		registerForContextMenu(CImgKucukProfilResim);
 
-		ImgKameraIcon = (ImageView) activity.findViewById(R.id.ImgKameraIcon);
+		ImgKameraIcon = activity.findViewById(R.id.ImgKameraIcon);
 		ImgKameraIcon.setOnClickListener(this);
 		registerForContextMenu(ImgKameraIcon);
 
-		lblHesapBilgileriBaslik = (TextView) activity.findViewById(R.id.lblHesapBilgileriBaslik);
+		lblHesapBilgileriBaslik = activity.findViewById(R.id.lblHesapBilgileriBaslik);
 		lblHesapBilgileriBaslik.setTypeface(YaziFontu);
 
-		lblAdSoyad = (TextView) activity.findViewById(R.id.lblAdSoyad);
+		lblAdSoyad = activity.findViewById(R.id.lblAdSoyad);
 		lblAdSoyad.setTypeface(YaziFontu);
 
-		EtxtAdSoyad = (EditText) activity.findViewById(R.id.EtxtAdSoyad);
+		EtxtAdSoyad = activity.findViewById(R.id.EtxtAdSoyad);
 		EtxtAdSoyad.setTypeface(YaziFontu);
 
-		lblDogumTarihi = (TextView) activity.findViewById(R.id.lblDogumTarihi);
+		lblDogumTarihi = activity.findViewById(R.id.lblDogumTarihi);
 		lblDogumTarihi.setTypeface(YaziFontu);
 
-		EtxtDogumTarih = (EditText) activity.findViewById(R.id.EtxtDogumTarih);
+		EtxtDogumTarih = activity.findViewById(R.id.EtxtDogumTarih);
 		EtxtDogumTarih.setTypeface(YaziFontu);
 		EtxtDogumTarih.setOnClickListener(new OnClickListener() {
 			@Override
@@ -289,16 +289,16 @@ public class Frg_Hesabim extends Fragment implements OnClickListener {
 			}
 		});
 
-		lblKullaniciAdi = (TextView) activity.findViewById(R.id.lblKullaniciAdi);
+		lblKullaniciAdi = activity.findViewById(R.id.lblKullaniciAdi);
 		lblKullaniciAdi.setTypeface(YaziFontu);
 
-		EtxtKullaniciAdi = (EditText) activity.findViewById(R.id.EtxtKullaniciAdi);
+		EtxtKullaniciAdi = activity.findViewById(R.id.EtxtKullaniciAdi);
 		EtxtKullaniciAdi.setTypeface(YaziFontu);
 
-		lblCepTelefon = (TextView) activity.findViewById(R.id.lblCepTelefon);
+		lblCepTelefon = activity.findViewById(R.id.lblCepTelefon);
 		lblCepTelefon.setTypeface(YaziFontu);
 
-		EtxtCepTelefon = (EditText) activity.findViewById(R.id.EtxtCepTelefon);
+		EtxtCepTelefon = activity.findViewById(R.id.EtxtCepTelefon);
 		EtxtCepTelefon.setTypeface(YaziFontu);
 		EtxtCepTelefon.addTextChangedListener(new TextWatcher() {
 			@Override
@@ -333,15 +333,15 @@ public class Frg_Hesabim extends Fragment implements OnClickListener {
 			}
 		});
 
-		ImgCepTelefonWarningIcon = (ImageView) activity.findViewById(R.id.ImgCepTelefonWarningIcon);
+		ImgCepTelefonWarningIcon = activity.findViewById(R.id.ImgCepTelefonWarningIcon);
 		ImgCepTelefonWarningIcon.setBackgroundResource(R.drawable.sari_unlem_blink);
 		ImgCepTelefonWarningIcon.setOnClickListener(this);
 		ImgCepTelefonWarningIcon.setVisibility(View.GONE);
 
-		lblEmail = (TextView) activity.findViewById(R.id.lblEmail);
+		lblEmail = activity.findViewById(R.id.lblEmail);
 		lblEmail.setTypeface(YaziFontu);
 
-		EtxtEmail = (EditText) activity.findViewById(R.id.EtxtEmail);
+		EtxtEmail = activity.findViewById(R.id.EtxtEmail);
 		EtxtEmail.setTypeface(YaziFontu);
 		EtxtEmail.setOnEditorActionListener(new OnEditorActionListener() {
 			@Override
@@ -354,12 +354,12 @@ public class Frg_Hesabim extends Fragment implements OnClickListener {
 			}
 		});
 
-		ImgEmailWarningIcon = (ImageView) activity.findViewById(R.id.ImgEmailWarningIcon);
+		ImgEmailWarningIcon = activity.findViewById(R.id.ImgEmailWarningIcon);
 		ImgEmailWarningIcon.setBackgroundResource(R.drawable.sari_unlem_blink);
 		ImgEmailWarningIcon.setOnClickListener(this);
 		ImgEmailWarningIcon.setVisibility(View.GONE);
 
-		btnKaydet = (Button) activity.findViewById(R.id.btnKaydet);
+		btnKaydet = activity.findViewById(R.id.btnKaydet);
 		btnKaydet.setTypeface(YaziFontu);
 		btnKaydet.setOnClickListener(this);
 
@@ -386,12 +386,13 @@ public class Frg_Hesabim extends Fragment implements OnClickListener {
 
 					if (SecilenProfilResim.exists()) { //Cihazda bu dosya var mı kontrol ediyoruz..
 						double SecilenProfilResimBoyutuMB = ((double) SecilenProfilResim.length()/1024)/1024;
+						int ProfilResimYuklemeBoyutu = getResources().getInteger(R.integer.ProfilResimYuklemeBoyutu);
 
-						if(SecilenProfilResimBoyutuMB <= AkorDefterimSys.ProfilResmiResimBoyutuMB) {
+						if(SecilenProfilResimBoyutuMB <= ProfilResimYuklemeBoyutu)
 							new ProfilResimYukle().execute();
-						} else {
+						else {
 							SecilenProfilResim.delete();
-							AkorDefterimSys.ToastMsj(activity, getString(R.string.buyuk_profil_resim_hatasi, String.valueOf(AkorDefterimSys.ProfilResmiResimBoyutuMB)), Toast.LENGTH_SHORT);
+							AkorDefterimSys.ToastMsj(activity, getString(R.string.buyuk_profil_resim_hatasi, String.valueOf(ProfilResimYuklemeBoyutu)), Toast.LENGTH_SHORT);
 						}
 					} else AkorDefterimSys.ToastMsj(activity, getString(R.string.dosya_bulunamadi), Toast.LENGTH_SHORT);
 
@@ -1379,12 +1380,12 @@ public class Frg_Hesabim extends Fragment implements OnClickListener {
 							if (CepOnayKoduSayac != null) {
 								CepOnayKoduSayac.cancel();
 								CepOnayKoduSayac = null;
-								CepOnayKoduKalanSure = AkorDefterimSys.CepOnayKoduKalanSure;
+								CepOnayKoduKalanSure = AkorDefterimSys.SMSGondermeToplamSure;
 							}
 
 							AkorDefterimSys.ToastMsj(activity, getString(R.string.onay_kodu_sure_bitti), Toast.LENGTH_SHORT);
 						} else {
-							Dialog_lblOnayKoduBilgilendirme.setText(getString(R.string.onay_kodu_bilgilendirme_cep, AkorDefterimSys.ZamanFormatMMSS(CepOnayKoduKalanSure)));
+							Dialog_lblOnayKoduBilgilendirme.setText(getString(R.string.onay_kodu_cep, AkorDefterimSys.ZamanFormatMMSS(CepOnayKoduKalanSure)));
 							CepOnayKoduKalanSure--;
 						}
 					}
@@ -1405,12 +1406,12 @@ public class Frg_Hesabim extends Fragment implements OnClickListener {
 							if (EmailOnayKoduSayac != null) {
 								EmailOnayKoduSayac.cancel();
 								EmailOnayKoduSayac = null;
-								EPostaOnayKoduKalanSure = AkorDefterimSys.EPostaOnayKoduKalanSure;
+								EPostaOnayKoduKalanSure = AkorDefterimSys.EPostaGondermeToplamSure;
 							}
 
 							AkorDefterimSys.ToastMsj(activity, getString(R.string.onay_kodu_sure_bitti), Toast.LENGTH_SHORT);
 						} else {
-							Dialog_lblOnayKoduBilgilendirme.setText(getString(R.string.onay_kodu_bilgilendirme_email, AkorDefterimSys.ZamanFormatMMSS(EPostaOnayKoduKalanSure)));
+							Dialog_lblOnayKoduBilgilendirme.setText(getString(R.string.onay_kodu_email, AkorDefterimSys.ZamanFormatMMSS(EPostaOnayKoduKalanSure)));
 							EPostaOnayKoduKalanSure--;
 						}
 					}
@@ -1458,8 +1459,8 @@ public class Frg_Hesabim extends Fragment implements OnClickListener {
 					case "EmailYontemi":
 						nameValuePairs.add(new BasicNameValuePair("adsoyad", AdSoyad));
 						nameValuePairs.add(new BasicNameValuePair("email", EmailTelefon));
-						nameValuePairs.add(new BasicNameValuePair("baslik", getString(R.string.uygulama_adi) + " - " + getString(R.string.mail_onayi)));
-						nameValuePairs.add(new BasicNameValuePair("icerik", getString(R.string.mail_onayi_icerik, AdSoyad, String.valueOf(OnayKodu))));
+						nameValuePairs.add(new BasicNameValuePair("baslik", getString(R.string.uygulama_adi) + " - " + getString(R.string.eposta_onayi)));
+						nameValuePairs.add(new BasicNameValuePair("icerik", getString(R.string.eposta_onayi_icerik, AdSoyad, String.valueOf(OnayKodu))));
 
 						httpPost = new HttpPost(AkorDefterimSys.PHPEMailYolla);
 
@@ -1501,11 +1502,11 @@ public class Frg_Hesabim extends Fragment implements OnClickListener {
 							ADDialog = AkorDefterimSys.CustomAlertDialog(activity, R.mipmap.ic_launcher, getString(R.string.dogrulama_kodu), ViewDialogContent, getString(R.string.dogrula), getString(R.string.iptal), getString(R.string.yeniden_gonder));
 							ADDialog.getWindow().getAttributes().windowAnimations = R.style.DialogAnimation;
 
-							Dialog_lblOnayKoduBilgilendirme = (TextView) ViewDialogContent.findViewById(R.id.Dialog_lblOnayKoduBilgilendirme);
+							Dialog_lblOnayKoduBilgilendirme = ViewDialogContent.findViewById(R.id.Dialog_lblOnayKoduBilgilendirme);
 							Dialog_lblOnayKoduBilgilendirme.setTypeface(YaziFontu);
-							Dialog_lblOnayKoduBilgilendirme.setText(getString(R.string.onay_kodu_bilgilendirme_cep, String.valueOf(CepOnayKoduKalanSure)));
+							Dialog_lblOnayKoduBilgilendirme.setText(getString(R.string.onay_kodu_cep, String.valueOf(CepOnayKoduKalanSure)));
 
-							Dialog_txtOnayKodu = (EditText) ViewDialogContent.findViewById(R.id.Dialog_txtOnayKodu);
+							Dialog_txtOnayKodu = ViewDialogContent.findViewById(R.id.Dialog_txtOnayKodu);
 							Dialog_txtOnayKodu.setTypeface(YaziFontu);
 
 							ADDialog.show();
@@ -1528,7 +1529,7 @@ public class Frg_Hesabim extends Fragment implements OnClickListener {
 										if (CepOnayKoduSayac != null) {
 											CepOnayKoduSayac.cancel();
 											CepOnayKoduSayac = null;
-											CepOnayKoduKalanSure = AkorDefterimSys.CepOnayKoduKalanSure;
+											CepOnayKoduKalanSure = AkorDefterimSys.SMSGondermeToplamSure;
 										}
 
 										new OnayVer().execute(sharedPref.getString("prefHesapEmailKullaniciAdi", ""), sharedPref.getString("prefHesapSifreSha1", ""), "CepTelefon");
@@ -1544,7 +1545,7 @@ public class Frg_Hesabim extends Fragment implements OnClickListener {
 									if (CepOnayKoduSayac != null) {
 										CepOnayKoduSayac.cancel();
 										CepOnayKoduSayac = null;
-										CepOnayKoduKalanSure = AkorDefterimSys.CepOnayKoduKalanSure;
+										CepOnayKoduKalanSure = AkorDefterimSys.SMSGondermeToplamSure;
 									}
 								}
 							});
@@ -1559,7 +1560,7 @@ public class Frg_Hesabim extends Fragment implements OnClickListener {
 											if (CepOnayKoduSayac != null) {
 												CepOnayKoduSayac.cancel();
 												CepOnayKoduSayac = null;
-												CepOnayKoduKalanSure = AkorDefterimSys.CepOnayKoduKalanSure;
+												CepOnayKoduKalanSure = AkorDefterimSys.SMSGondermeToplamSure;
 											}
 
 											EtxtCepTelefon.setText(GeciciCepTelefonBilgi);
@@ -1590,25 +1591,25 @@ public class Frg_Hesabim extends Fragment implements OnClickListener {
 								}
 							});
 
-							CepOnayKoduKalanSure = AkorDefterimSys.CepOnayKoduKalanSure;
+							CepOnayKoduKalanSure = AkorDefterimSys.SMSGondermeToplamSure;
 							CepOnayKoduSayac = new Timer();
 							CepOnayKoduDialogSayac_Ayarla();
 							CepOnayKoduSayac.schedule(CepOnayKoduDialogSayac, 10, 1000);
 						} else if (JSONGelenVeri.getInt("sonuc") == 0) {
 							if (JSONGelenVeri.getString("aciklama").equals("cepno alanı boş")) {
-								AkorDefterimSys.ToastMsj(activity, getString(R.string.sms_gonderim_hatasi), Toast.LENGTH_SHORT);
+								//AkorDefterimSys.ToastMsj(activity, getString(R.string.sms_gonderim_hatasi), Toast.LENGTH_SHORT);
 							} else if (JSONGelenVeri.getString("aciklama").equals("mesaj alanı boş")) {
-								AkorDefterimSys.ToastMsj(activity, getString(R.string.sms_gonderim_hatasi), Toast.LENGTH_SHORT);
+								//AkorDefterimSys.ToastMsj(activity, getString(R.string.sms_gonderim_hatasi), Toast.LENGTH_SHORT);
 							} else if (JSONGelenVeri.getString("aciklama").equals("hatalı mesaj metni")) {
-								AkorDefterimSys.ToastMsj(activity, getString(R.string.sms_gonderim_hatasi), Toast.LENGTH_SHORT);
+								//AkorDefterimSys.ToastMsj(activity, getString(R.string.sms_gonderim_hatasi), Toast.LENGTH_SHORT);
 							} else if (JSONGelenVeri.getString("aciklama").equals("hatalı api ip hatası")) {
-								AkorDefterimSys.ToastMsj(activity, getString(R.string.sms_gonderim_hatasi), Toast.LENGTH_SHORT);
+								//AkorDefterimSys.ToastMsj(activity, getString(R.string.sms_gonderim_hatasi), Toast.LENGTH_SHORT);
 							} else if (JSONGelenVeri.getString("aciklama").equals("hatalı gönderici adı")) {
-								AkorDefterimSys.ToastMsj(activity, getString(R.string.sms_gonderim_hatasi), Toast.LENGTH_SHORT);
+								//AkorDefterimSys.ToastMsj(activity, getString(R.string.sms_gonderim_hatasi), Toast.LENGTH_SHORT);
 							} else if (JSONGelenVeri.getString("aciklama").equals("hatalı sorgu parametresi")) {
-								AkorDefterimSys.ToastMsj(activity, getString(R.string.sms_gonderim_hatasi), Toast.LENGTH_SHORT);
+								//AkorDefterimSys.ToastMsj(activity, getString(R.string.sms_gonderim_hatasi), Toast.LENGTH_SHORT);
 							} else if (JSONGelenVeri.getString("aciklama").equals("hatalı işlem")) {
-								AkorDefterimSys.ToastMsj(activity, getString(R.string.islem_yapilirken_bir_hata_olustu), Toast.LENGTH_SHORT);
+								//AkorDefterimSys.ToastMsj(activity, getString(R.string.islem_yapilirken_bir_hata_olustu), Toast.LENGTH_SHORT);
 							}
 						}
 
@@ -1619,11 +1620,11 @@ public class Frg_Hesabim extends Fragment implements OnClickListener {
 							ADDialog = AkorDefterimSys.CustomAlertDialog(activity, R.mipmap.ic_launcher, getString(R.string.dogrulama_kodu), ViewDialogContent, getString(R.string.dogrula), getString(R.string.iptal), getString(R.string.yeniden_gonder));
 							ADDialog.getWindow().getAttributes().windowAnimations = R.style.DialogAnimation;
 
-							Dialog_lblOnayKoduBilgilendirme = (TextView) ViewDialogContent.findViewById(R.id.Dialog_lblOnayKoduBilgilendirme);
+							Dialog_lblOnayKoduBilgilendirme = ViewDialogContent.findViewById(R.id.Dialog_lblOnayKoduBilgilendirme);
 							Dialog_lblOnayKoduBilgilendirme.setTypeface(YaziFontu);
-							Dialog_lblOnayKoduBilgilendirme.setText(getString(R.string.onay_kodu_bilgilendirme_email, String.valueOf(EPostaOnayKoduKalanSure)));
+							Dialog_lblOnayKoduBilgilendirme.setText(getString(R.string.onay_kodu_email, String.valueOf(EPostaOnayKoduKalanSure)));
 
-							Dialog_txtOnayKodu = (EditText) ViewDialogContent.findViewById(R.id.Dialog_txtOnayKodu);
+							Dialog_txtOnayKodu = ViewDialogContent.findViewById(R.id.Dialog_txtOnayKodu);
 							Dialog_txtOnayKodu.setTypeface(YaziFontu);
 
 							ADDialog.show();
@@ -1646,7 +1647,7 @@ public class Frg_Hesabim extends Fragment implements OnClickListener {
 										if (EmailOnayKoduSayac != null) {
 											EmailOnayKoduSayac.cancel();
 											EmailOnayKoduSayac = null;
-											EPostaOnayKoduKalanSure = AkorDefterimSys.EPostaOnayKoduKalanSure;
+											EPostaOnayKoduKalanSure = AkorDefterimSys.EPostaGondermeToplamSure;
 										}
 
 										new OnayVer().execute(sharedPref.getString("prefHesapEmailKullaniciAdi", ""), sharedPref.getString("prefHesapSifreSha1", ""), "Email");
@@ -1662,7 +1663,7 @@ public class Frg_Hesabim extends Fragment implements OnClickListener {
 									if (EmailOnayKoduSayac != null) {
 										EmailOnayKoduSayac.cancel();
 										EmailOnayKoduSayac = null;
-										EPostaOnayKoduKalanSure = AkorDefterimSys.EPostaOnayKoduKalanSure;
+										EPostaOnayKoduKalanSure = AkorDefterimSys.EPostaGondermeToplamSure;
 									}
 								}
 							});
@@ -1675,7 +1676,7 @@ public class Frg_Hesabim extends Fragment implements OnClickListener {
 									if (EmailOnayKoduSayac != null) {
 										EmailOnayKoduSayac.cancel();
 										EmailOnayKoduSayac = null;
-										EPostaOnayKoduKalanSure = AkorDefterimSys.EPostaOnayKoduKalanSure;
+										EPostaOnayKoduKalanSure = AkorDefterimSys.EPostaGondermeToplamSure;
 									}
 
 									if(AkorDefterimSys.InternetErisimKontrolu()) { //İnternet kontrolü yap
@@ -1706,23 +1707,23 @@ public class Frg_Hesabim extends Fragment implements OnClickListener {
 								}
 							});
 
-							EPostaOnayKoduKalanSure = AkorDefterimSys.EPostaOnayKoduKalanSure;
+							EPostaOnayKoduKalanSure = AkorDefterimSys.EPostaGondermeToplamSure;
 							EmailOnayKoduSayac = new Timer();
 							EmailOnayKoduDialogSayac_Ayarla();
 							EmailOnayKoduSayac.schedule(EmailOnayKoduDialogSayac, 10, 1000);
 						} else if (JSONGelenVeri.getInt("sonuc") == 0) {
 							if (JSONGelenVeri.getString("aciklama").equals("adsoyad alanı boş")) {
-								AkorDefterimSys.ToastMsj(activity, getString(R.string.mail_gonderim_hatasi), Toast.LENGTH_SHORT);
+								//AkorDefterimSys.ToastMsj(activity, getString(R.string.eposta_gonderim_hatasi), Toast.LENGTH_SHORT);
 							} else if (JSONGelenVeri.getString("aciklama").equals("email alanı boş")) {
-								AkorDefterimSys.ToastMsj(activity, getString(R.string.mail_gonderim_hatasi), Toast.LENGTH_SHORT);
+								//AkorDefterimSys.ToastMsj(activity, getString(R.string.eposta_gonderim_hatasi), Toast.LENGTH_SHORT);
 							} else if (JSONGelenVeri.getString("aciklama").equals("baslik alanı boş")) {
-								AkorDefterimSys.ToastMsj(activity, getString(R.string.mail_gonderim_hatasi), Toast.LENGTH_SHORT);
+								//AkorDefterimSys.ToastMsj(activity, getString(R.string.eposta_gonderim_hatasi), Toast.LENGTH_SHORT);
 							} else if (JSONGelenVeri.getString("aciklama").equals("icerik alanı boş")) {
-								AkorDefterimSys.ToastMsj(activity, getString(R.string.mail_gonderim_hatasi), Toast.LENGTH_SHORT);
+								//AkorDefterimSys.ToastMsj(activity, getString(R.string.mail_gonderim_hatasi), Toast.LENGTH_SHORT);
 							} else if (JSONGelenVeri.getString("aciklama").equals("email gönderilemedi")) {
-								AkorDefterimSys.ToastMsj(activity, getString(R.string.mail_gonderim_hatasi), Toast.LENGTH_SHORT);
+								//AkorDefterimSys.ToastMsj(activity, getString(R.string.mail_gonderim_hatasi), Toast.LENGTH_SHORT);
 							} else if (JSONGelenVeri.getString("aciklama").equals("hatalı işlem")) {
-								AkorDefterimSys.ToastMsj(activity, getString(R.string.islem_yapilirken_bir_hata_olustu), Toast.LENGTH_SHORT);
+								//AkorDefterimSys.ToastMsj(activity, getString(R.string.islem_yapilirken_bir_hata_olustu), Toast.LENGTH_SHORT);
 							}
 						}
 
@@ -1873,7 +1874,7 @@ public class Frg_Hesabim extends Fragment implements OnClickListener {
 					if (CepOnayKoduSayac != null) {
 						CepOnayKoduSayac.cancel();
 						CepOnayKoduSayac = null;
-						CepOnayKoduKalanSure = AkorDefterimSys.CepOnayKoduKalanSure;
+						CepOnayKoduKalanSure = AkorDefterimSys.SMSGondermeToplamSure;
 					}
 
 					new OnayVer().execute(sharedPref.getString("prefHesapEmailKullaniciAdi", ""), sharedPref.getString("prefHesapSifreSha1", ""), "CepTelefon");

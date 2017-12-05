@@ -2,10 +2,10 @@
 <android.support.design.widget.CoordinatorLayout
 	xmlns:android="http://schemas.android.com/apk/res/android"
 	xmlns:app="http://schemas.android.com/apk/res-auto"
-	xmlns:tools="http://schemas.android.com/tools"
 	android:id="@+id/coordinatorLayout"
 	android:layout_width="match_parent"
-	android:layout_height="match_parent">
+	android:layout_height="match_parent"
+	android:background="@color/Beyaz">
 
 	<android.support.constraint.ConstraintLayout
 		android:layout_width="match_parent"
@@ -19,59 +19,90 @@
 			android:layout_width="wrap_content"
 			android:layout_height="wrap_content"
 			android:orientation="vertical"
-			app:layout_constraintGuide_percent="0.05"
-			tools:layout_editor_absoluteY="0dp"
-			tools:layout_editor_absoluteX="21dp" />
+			app:layout_constraintGuide_percent="0.05" />
 
 		<android.support.constraint.Guideline
 			android:id="@+id/v_guideline2"
 			android:layout_width="wrap_content"
 			android:layout_height="wrap_content"
 			android:orientation="vertical"
-			app:layout_constraintGuide_percent="0.95"
-			tools:layout_editor_absoluteY="0dp"
-			tools:layout_editor_absoluteX="391dp" />
+			app:layout_constraintGuide_percent="0.95" />
 
-		<Button
+		<android.support.constraint.Guideline
+			android:id="@+id/h_guideline1"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:orientation="horizontal"
+			app:layout_constraintGuide_percent="0.085" />
+
+		<ImageButton
 			android:id="@+id/btnGeri"
-			android:layout_width="24dp"
-			android:layout_height="24dp"
-			android:layout_marginLeft="0dp"
-			android:layout_marginStart="0dp"
-			android:background="@drawable/ic_arrow_back_siyah"
-			app:layout_constraintLeft_toLeftOf="@+id/v_guideline1"
-			app:layout_constraintBaseline_toBaselineOf="@+id/lblBaslik" />
+			android:layout_width="60dp"
+			android:layout_height="0dp"
+			android:background="@drawable/custom_button2"
+			app:layout_constraintBottom_toTopOf="@+id/view1"
+			app:layout_constraintStart_toStartOf="parent"
+			app:layout_constraintTop_toTopOf="parent"
+			app:srcCompat="@drawable/ic_arrow_back_siyah"
+			android:contentDescription="@string/imageDesc" />
 
 		<TextView
 			android:id="@+id/lblBaslik"
 			android:layout_width="wrap_content"
 			android:layout_height="wrap_content"
-			android:layout_marginLeft="8dp"
-			android:layout_marginRight="8dp"
+			android:layout_marginLeft="12dp"
+			android:layout_marginStart="12dp"
 			android:text="@string/kaydol"
 			android:textColor="@color/KoyuYazi"
-			android:textSize="@dimen/yazi_boyutu22"
-			app:layout_constraintLeft_toLeftOf="@+id/v_guideline1"
-			app:layout_constraintRight_toLeftOf="@+id/v_guideline2"
+			android:textSize="@dimen/yazi_boyutu18"
+			app:layout_constraintBottom_toTopOf="@+id/view1"
+			app:layout_constraintStart_toEndOf="@+id/btnGeri"
+			app:layout_constraintTop_toTopOf="parent" />
+
+		<TextView
+			android:id="@+id/lblVazgec"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:layout_marginEnd="16dp"
+			android:layout_marginRight="16dp"
+			android:text="@string/vazgec"
+			android:textAppearance="@style/TextAppearance.AppCompat.Button"
+			android:textColor="@color/AcikMavi3"
+			app:layout_constraintBottom_toTopOf="@+id/h_guideline1"
+			app:layout_constraintEnd_toEndOf="parent"
+			app:layout_constraintTop_toTopOf="parent" />
+
+		<View
+			android:id="@+id/view1"
+			android:layout_width="0dp"
+			android:layout_height="1dp"
+			android:background="@drawable/line2"
+			app:layout_constraintTop_toTopOf="@+id/h_guideline1" />
+
+		<ImageView
+			android:id="@+id/ImgEmail"
+			android:layout_width="wrap_content"
+			android:layout_height="0dp"
+			android:layout_marginBottom="8dp"
 			android:layout_marginStart="8dp"
-			android:layout_marginEnd="8dp"
-			app:layout_constraintTop_toTopOf="parent"
-			android:layout_marginTop="35dp" />
+			android:layout_marginLeft="8dp"
+			android:contentDescription="@string/imageDesc"
+			app:layout_constraintBottom_toBottomOf="@+id/txtILEPosta"
+			app:layout_constraintStart_toStartOf="@+id/v_guideline1"
+			app:srcCompat="@drawable/ic_email" />
 
 		<android.support.design.widget.TextInputLayout
 			android:id="@+id/txtILEPosta"
 			android:layout_width="0dp"
 			android:layout_height="wrap_content"
-			android:layout_marginLeft="0dp"
-			android:layout_marginRight="0dp"
-			android:layout_marginStart="0dp"
-			android:layout_marginEnd="0dp"
-			android:layout_marginTop="32dp"
+			android:layout_marginStart="8dp"
+			android:layout_marginLeft="8dp"
+			android:layout_marginTop="16dp"
 			android:textColorHint="@color/KoyuGri"
-			app:layout_constraintHorizontal_bias="0.0"
 			app:layout_constraintLeft_toLeftOf="@+id/v_guideline1"
 			app:layout_constraintRight_toLeftOf="@+id/v_guideline2"
-			app:layout_constraintTop_toBottomOf="@+id/lblBaslik">
+			app:layout_constraintStart_toEndOf="@+id/ImgEmail"
+			app:layout_constraintTop_toTopOf="@+id/h_guideline1">
 
 			<EditText
 				android:id="@+id/txtEPosta"
@@ -114,7 +145,6 @@
 			android:layout_marginRight="0dp"
 			android:layout_marginTop="16dp"
 			app:layout_constraintTop_toBottomOf="@+id/lblEPostaAciklama" />
-
 
 	</android.support.constraint.ConstraintLayout>
 </android.support.design.widget.CoordinatorLayout>

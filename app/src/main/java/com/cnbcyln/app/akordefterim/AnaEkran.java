@@ -48,6 +48,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
+import java.util.Objects;
 
 public class AnaEkran extends AppCompatActivity implements Interface_FragmentDataConn, Interface_AsyncResponse {
 
@@ -114,7 +115,7 @@ public class AnaEkran extends AppCompatActivity implements Interface_FragmentDat
         View ViewSlidingSagMenuContainer = layoutInflater.inflate(R.layout.menu_sag, null, false);
         ViewSlidingSagMenuContainer.setTag("R.layout.menu_sag");
 
-        Button button2 = (Button) ViewSlidingSagMenuContainer.findViewById(R.id.button2);
+        Button button2 = ViewSlidingSagMenuContainer.findViewById(R.id.button2);
         button2.setOnClickListener(new View.OnClickListener() {
             @SuppressLint("InflateParams")
             @Override
@@ -141,7 +142,7 @@ public class AnaEkran extends AppCompatActivity implements Interface_FragmentDat
         View ViewSlidingSolMenuContainer = layoutInflater.inflate(R.layout.menu_sol, null, false);
         ViewSlidingSolMenuContainer.setTag("R.layout.menu_sol");
 
-        TextView lblVersiyonNo = (TextView) ViewSlidingSolMenuContainer.findViewById(R.id.lblVersiyonNo);
+        TextView lblVersiyonNo = ViewSlidingSolMenuContainer.findViewById(R.id.lblVersiyonNo);
         lblVersiyonNo.setTypeface(YaziFontu, Typeface.BOLD);
         lblVersiyonNo.setText(String.valueOf("v").concat(UygulamaVersiyon));
 
@@ -160,9 +161,9 @@ public class AnaEkran extends AppCompatActivity implements Interface_FragmentDat
            ***                                ***
            **************************************/
 
-        coordinatorLayout = (CoordinatorLayout) activity.findViewById(R.id.coordinatorLayout);
+        coordinatorLayout = activity.findViewById(R.id.coordinatorLayout);
 
-        btnSolMenu = (Button) findViewById(R.id.btnSolMenu);
+        btnSolMenu = findViewById(R.id.btnSolMenu);
         btnSolMenu.setOnClickListener(new View.OnClickListener() {
             @SuppressLint("InflateParams")
             @Override
@@ -172,7 +173,7 @@ public class AnaEkran extends AppCompatActivity implements Interface_FragmentDat
             }
         });
 
-        btnSagMenu = (Button) findViewById(R.id.btnSagMenu);
+        btnSagMenu = findViewById(R.id.btnSagMenu);
         btnSagMenu.setOnClickListener(new View.OnClickListener() {
             @SuppressLint("InflateParams")
             @Override
@@ -182,12 +183,12 @@ public class AnaEkran extends AppCompatActivity implements Interface_FragmentDat
             }
         });
 
-        lblSayfaBaslik = (TextView) findViewById(R.id.lblSayfaBaslik);
+        lblSayfaBaslik = findViewById(R.id.lblSayfaBaslik);
         lblSayfaBaslik.setTypeface(YaziFontu, Typeface.NORMAL);
 
-        LLSayfa = (LinearLayout) findViewById(R.id.LLSayfa);
+        LLSayfa = findViewById(R.id.LLSayfa);
 
-        VPSolMenuPager = (ViewPager) findViewById(R.id.VPSolMenuPager);
+        VPSolMenuPager = findViewById(R.id.VPSolMenuPager);
 
         PagerAdapter = new PagerAdapter(activity, getSupportFragmentManager());
 
@@ -196,7 +197,7 @@ public class AnaEkran extends AppCompatActivity implements Interface_FragmentDat
         final int pageMargin = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 4, getResources().getDisplayMetrics());
         VPSolMenuPager.setPageMargin(pageMargin);
 
-        PSTTabs = (PagerSlidingTabStrip) findViewById(R.id.PSTTabs);
+        PSTTabs = findViewById(R.id.PSTTabs);
         PSTTabs.setViewPager(VPSolMenuPager);
         PSTTabs.setTextColor(R.color.KoyuYazi);
         PSTTabs.setTypeface(YaziFontu, Typeface.BOLD);
@@ -244,7 +245,7 @@ public class AnaEkran extends AppCompatActivity implements Interface_FragmentDat
         //super.onBackPressed();
     }
 
-    @SuppressLint("CommitTransaction")
+    @SuppressLint({"CommitTransaction", "Assert"})
     @Override
     public void FragmentSayfaGetir(String SayfaAdi) {
         switch (SayfaAdi) {

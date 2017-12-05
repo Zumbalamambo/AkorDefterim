@@ -137,9 +137,9 @@ public class Giris extends AppCompatActivity implements Interface_AsyncResponse 
 	protected void onResume() {
 		super.onResume();
 
-		if(AkorDefterimSys.PrefAyarlar().getString("Action", "").equals("Giris_Yap")) {
+		if(AkorDefterimSys.PrefAyarlar().getString("prefAction", "").equals("Giris_Yap")) {
 			sharedPrefEditor = AkorDefterimSys.PrefAyarlar().edit();
-			sharedPrefEditor.remove("Action");
+			sharedPrefEditor.remove("prefAction");
 			sharedPrefEditor.apply();
 
 			VPGirisEkranPager.setCurrentItem(1);
@@ -264,7 +264,7 @@ public class Giris extends AppCompatActivity implements Interface_AsyncResponse 
 					btnKaydol.setOnClickListener(new OnClickListener() {
 						@Override
 						public void onClick(View v) {
-							AkorDefterimSys.EkranGetir(new Intent(activity, KayitEkran_EPosta.class), "Explode");
+							AkorDefterimSys.EkranGetir(new Intent(activity, KayitEkran_EPosta.class), "Normal");
 						}
 					});
 
@@ -318,7 +318,7 @@ public class Giris extends AppCompatActivity implements Interface_AsyncResponse 
 					btnNormalLogin.setOnClickListener(new OnClickListener() {
 						@Override
 						public void onClick(View v) {
-                            AkorDefterimSys.EkranGetir(new Intent(activity, Giris_Yap.class), "Slide");
+                            AkorDefterimSys.EkranGetir(new Intent(activity, Giris_Yap.class), "Normal");
 						}
 					});
 

@@ -173,36 +173,6 @@ public class SplashEkran extends Activity implements Interface_AsyncResponse {
 		//mGoogleLoginApiClient.disconnect();
 	}
 
-	/**@Override
-	protected void onActivityResult(final int requestCode, final int resultCode, final Intent data) {
-		super.onActivityResult(requestCode, resultCode, data);
-        mFacebookCallbackManager.onActivityResult(requestCode, resultCode, data);
-
-		switch (resultCode) {
-			case Activity.RESULT_OK: //Second activity normal olarak sonlanirsa RESULT_OK degeri döner.
-				if (requestCode == AkorDefterimSys.RC_GOOGLE_LOGIN) {
-					GoogleSignInResult result = Auth.GoogleSignInApi.getSignInResultFromIntent(data);
-
-					if (result.isSuccess()) {
-						GoogleSignInAccount acct = result.getSignInAccount();
-
-						//String ResimURL = (acct.getPhotoUrl() == null ? "":acct.getPhotoUrl().toString());
-
-						AkorDefterimSys.HesapGirisYap("Google", FirebaseToken, OSID, OSVersiyon, UygulamaVersiyon, acct.getEmail(), "", acct.getId(), acct.getDisplayName());
-					}
-				}
-
-				break;
-			case Activity.RESULT_CANCELED: //Second activity beklendmedik sekilde kapanirsa(Mesela cihazdaki back buttonuna tikalnirsa) RESULT_CANCELED degeri doner.
-				//Toast.makeText(activity, "Beklenmedik sekilde second activity sonlandi", Toast.LENGTH_SHORT).show();
-
-				break;
-			default:
-
-				break;
-		}
-	}*/
-
 	@Override
 	public void AsyncTaskReturnValue(String Sonuc) {
 		try {
@@ -352,64 +322,4 @@ public class SplashEkran extends Activity implements Interface_AsyncResponse {
 			e.printStackTrace();
 		}
 	}
-
-	/*private void GoogleAPIInit() {
-		GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
-				.requestEmail()
-				.build();
-
-		mGoogleLoginApiClient = new GoogleApiClient.Builder(this)
-				.addApi(Auth.GOOGLE_SIGN_IN_API, gso)
-				.build();
-	}
-
-    @SuppressLint("HardwareIds")
-    private void FacebookLoginInit() {
-        LoginManager.getInstance().registerCallback(mFacebookCallbackManager, new FacebookCallback<LoginResult>() {
-            @Override
-            public void onSuccess(LoginResult loginResult) {
-                GraphRequest request = GraphRequest.newMeRequest(loginResult.getAccessToken(), new GraphRequest.GraphJSONObjectCallback() {
-                    @Override
-                    public void onCompleted(JSONObject JSONFacebookGelenVeri, GraphResponse response) {
-                        if (response.getError() != null) {
-
-                        } else {
-                            try {
-								PDGirisYap = AkorDefterimSys.CustomProgressDialog(getString(R.string.giris_yapiliyor), false, AkorDefterimSys.ProgressBarTimeoutSuresi);
-								PDGirisYap.show();
-
-								String HesapID = JSONFacebookGelenVeri.getString("id");
-								String AdSoyad = JSONFacebookGelenVeri.getString("name");
-								//final String ResimURL = new URL("https://graph.facebook.com/" + HesapID + "/picture?width=300&height=300").toString();
-								String EPosta = JSONFacebookGelenVeri.getString("email");
-
-								AkorDefterimSys.HesapGirisYap("Facebook", FirebaseToken, OSID, OSVersiyon, UygulamaVersiyon, EPosta, "", HesapID, AdSoyad);
-                            } catch (JSONException e) {
-                                e.printStackTrace();
-                            }
-                        }
-                    }
-                });
-
-                Bundle parameters = new Bundle();
-                parameters.putString("fields", "id,name,email");
-                request.setParameters(parameters);
-                request.executeAsync();
-            }
-
-            @Override
-            public void onCancel() {
-				AkorDefterimSys.HesapPrefSifirla();
-				AkorDefterimSys.EkranGetir(new Intent(activity, Giris.class), "Normal");
-				finish();
-            }
-
-            @Override
-            public void onError(FacebookException error) {
-				AkorDefterimSys.HesapPrefSifirla();
-				AkorDefterimSys.EkranGetir(new Intent(activity, Giris.class), "Normal");
-				finish();
-            }
-        });
-    }*/
 }

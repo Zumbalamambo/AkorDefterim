@@ -1,14 +1,11 @@
 package com.cnbcyln.app.akordefterim;
 
 import android.app.Activity;
-import android.app.AlertDialog;
-import android.app.ProgressDialog;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
-import android.text.TextUtils;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
@@ -21,10 +18,8 @@ import com.cnbcyln.app.akordefterim.util.AkorDefterimSys;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.util.Random;
-
 @SuppressWarnings({"deprecation", "ResultOfMethodCallIgnored", "ConstantConditions"})
-public class Giris_Yardimi extends AppCompatActivity implements Interface_AsyncResponse {
+public class Giris_Yardimi extends AppCompatActivity implements Interface_AsyncResponse, OnClickListener {
 
 	private Activity activity;
 	private AkorDefterimSys AkorDefterimSys;
@@ -66,22 +61,11 @@ public class Giris_Yardimi extends AppCompatActivity implements Interface_AsyncR
 
 		btnKullaniciAdiVeyaEPostaKullan = findViewById(R.id.btnKullaniciAdiVeyaEPostaKullan);
 		btnKullaniciAdiVeyaEPostaKullan.setTypeface(YaziFontu, Typeface.BOLD);
-		btnKullaniciAdiVeyaEPostaKullan.setOnClickListener(new OnClickListener() {
-			@Override
-			public void onClick(View v) {
-				AkorDefterimSys.KlavyeKapat();
-				AkorDefterimSys.EkranGetir(new Intent(activity, Hesabini_Bul.class), "Slide");
-			}
-		});
+		btnKullaniciAdiVeyaEPostaKullan.setOnClickListener(this);
 
 		btnSmsGonder = findViewById(R.id.btnSmsGonder);
 		btnSmsGonder.setTypeface(YaziFontu, Typeface.BOLD);
-		btnSmsGonder.setOnClickListener(new OnClickListener() {
-			@Override
-			public void onClick(View v) {
-
-			}
-		});
+		btnSmsGonder.setOnClickListener(this);
 
 		lblYardimMerkezi = findViewById(R.id.lblYardimMerkezi);
 		lblYardimMerkezi.setTypeface(YaziFontu, Typeface.BOLD);
@@ -90,74 +74,7 @@ public class Giris_Yardimi extends AppCompatActivity implements Interface_AsyncR
 		btnAkorDefterimYardimMerkezi = findViewById(R.id.btnAkorDefterimYardimMerkezi);
 		btnAkorDefterimYardimMerkezi.setTypeface(YaziFontu, Typeface.BOLD);
 		btnAkorDefterimYardimMerkezi.setText(getString(R.string.s_yardim_merkezi, getString(R.string.uygulama_adi)));
-		btnAkorDefterimYardimMerkezi.setOnClickListener(new OnClickListener() {
-			@Override
-			public void onClick(View v) {
-
-			}
-		});
-
-		/*txtILEPostaKullaniciAdi = findViewById(R.id.txtILEPostaKullaniciAdi);
-		txtILEPostaKullaniciAdi.setTypeface(YaziFontu);
-
-		txtEPostaKullaniciAdi = findViewById(R.id.txtEPostaKullaniciAdi);
-		txtEPostaKullaniciAdi.setTypeface(YaziFontu, Typeface.NORMAL);
-        txtEPostaKullaniciAdi.setOnEditorActionListener(new TextView.OnEditorActionListener() {
-            @Override
-            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
-                if ((event != null && (event.getKeyCode() == KeyEvent.KEYCODE_ENTER)) || (actionId == EditorInfo.IME_ACTION_DONE)) {
-                    IleriIslem();
-                }
-
-                return false;
-            }
-        });
-		txtEPostaKullaniciAdi.addTextChangedListener(new TextWatcher() {
-			@Override
-			public void onTextChanged(CharSequence s, int start, int before, int count) {
-
-			}
-
-			@Override
-			public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
-			}
-
-			@Override
-			public void afterTextChanged(Editable s) {
-				txtILEPostaKullaniciAdi.setError(null);
-			}
-		});
-
-		btnIleri = findViewById(R.id.btnIleri);
-		btnIleri.setTypeface(YaziFontu, Typeface.NORMAL);
-		btnIleri.setOnClickListener(new OnClickListener() {
-			@Override
-			public void onClick(View v) {
-                IleriIslem();
-			}
-		});*/
-	}
-
-	@Override
-	protected void onStart() {
-		super.onStart();
-
-		/*if(AkorDefterimSys.PrefAyarlar().getString("Action", "").equals("Vazgec")) {
-			sharedPrefEditor = AkorDefterimSys.PrefAyarlar().edit();
-			sharedPrefEditor.remove("Action");
-			sharedPrefEditor.apply();
-
-			onBackPressed();
-		}*/
-	}
-
-	@Override
-	protected void onDestroy() {
-		super.onDestroy();
-
-		//AkorDefterimSys.DismissProgressDialog(PDParolamiUnuttum);
-		//AkorDefterimSys.DismissAlertDialog(ADDialog_HesapDurumu);
+		btnAkorDefterimYardimMerkezi.setOnClickListener(this);
 	}
 
 	@Override
@@ -168,6 +85,23 @@ public class Giris_Yardimi extends AppCompatActivity implements Interface_AsyncR
 		//AkorDefterimSys.DismissAlertDialog(ADDialog_HesapDurumu);
 
 		super.onBackPressed();
+	}
+
+	@Override
+	public void onClick(View v) {
+		switch (v.getId()) {
+			case R.id.btnKullaniciAdiVeyaEPostaKullan:
+				AkorDefterimSys.KlavyeKapat();
+				AkorDefterimSys.EkranGetir(new Intent(activity, Hesabina_Eris_Hesabini_Bul.class), "Slide");
+				break;
+			case R.id.btnSmsGonder:
+				AkorDefterimSys.KlavyeKapat();
+				AkorDefterimSys.EkranGetir(new Intent(activity, Hesabina_Eris_Sms_Gonder.class), "Slide");
+				break;
+			case R.id.btnAkorDefterimYardimMerkezi:
+
+				break;
+		}
 	}
 
     @Override

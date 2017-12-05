@@ -22,6 +22,7 @@ import android.view.View.OnClickListener;
 import android.view.inputmethod.EditorInfo;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.TextView;
 
 import org.json.JSONException;
@@ -30,7 +31,7 @@ import org.json.JSONObject;
 import java.util.Random;
 
 @SuppressWarnings({"deprecation", "ResultOfMethodCallIgnored", "ConstantConditions"})
-public class KayitEkran_EPosta extends AppCompatActivity implements Interface_AsyncResponse {
+public class KayitEkran_EPosta extends AppCompatActivity implements Interface_AsyncResponse, OnClickListener {
 
 	private Activity activity;
 	private AkorDefterimSys AkorDefterimSys;
@@ -39,11 +40,12 @@ public class KayitEkran_EPosta extends AppCompatActivity implements Interface_As
     SharedPreferences.Editor sharedPrefEditor;
     Random rnd;
 	ProgressDialog PDEPosta;
-	AlertDialog ADHesapKontrol;
+	AlertDialog ADDialog_EPosta;
 
 	CoordinatorLayout coordinatorLayout;
-	Button btnGeri, btnIleri;
-	TextView lblBaslik, lblEPostaAciklama;
+	ImageButton btnGeri;
+	Button btnIleri;
+	TextView lblBaslik, lblVazgec, lblEPostaAciklama;
 	TextInputLayout txtILEPosta;
 	EditText txtEPosta;
 
@@ -60,29 +62,22 @@ public class KayitEkran_EPosta extends AppCompatActivity implements Interface_As
         rnd = new Random();
 
 		AkorDefterimSys.GenelAyarlar(); // Uygulama için genel ayarları uyguladık.
-		AkorDefterimSys.TransparanNotifyBar(); // Notification Bar'ı transparan yapıyoruz.
-		AkorDefterimSys.NotifyIkonParlakligi(); // Notification Bar'daki simgelerin parlaklığını aldık.
-		AkorDefterimSys.EkranAnimasyon("Explode");
+		//AkorDefterimSys.TransparanNotifyBar(); // Notification Bar'ı transparan yapıyoruz.
+		//AkorDefterimSys.NotifyIkonParlakligi(); // Notification Bar'daki simgelerin parlaklığını aldık.
+		//AkorDefterimSys.EkranAnimasyon("Explode");
 
 		coordinatorLayout = activity.findViewById(R.id.coordinatorLayout);
-		coordinatorLayout.setOnClickListener(new OnClickListener() {
-			@Override
-			public void onClick(View v) {
-				txtILEPosta.setError(null);
-                AkorDefterimSys.UnFocusEditText(txtEPosta);
-			}
-		});
+		coordinatorLayout.setOnClickListener(this);
 
 		btnGeri = findViewById(R.id.btnGeri);
-		btnGeri.setOnClickListener(new OnClickListener() {
-			@Override
-			public void onClick(View v) {
-				onBackPressed();
-			}
-		});
+		btnGeri.setOnClickListener(this);
 
 		lblBaslik = findViewById(R.id.lblBaslik);
 		lblBaslik.setTypeface(YaziFontu, Typeface.BOLD);
+
+		lblVazgec = findViewById(R.id.lblVazgec);
+		lblVazgec.setTypeface(YaziFontu, Typeface.BOLD);
+		lblVazgec.setOnClickListener(this);
 
 		txtILEPosta = findViewById(R.id.txtILEPosta);
 		txtILEPosta.setTypeface(YaziFontu);
@@ -122,21 +117,16 @@ public class KayitEkran_EPosta extends AppCompatActivity implements Interface_As
 
 		btnIleri = findViewById(R.id.btnIleri);
 		btnIleri.setTypeface(YaziFontu, Typeface.NORMAL);
-		btnIleri.setOnClickListener(new OnClickListener() {
-			@Override
-			public void onClick(View v) {
-				IleriIslem();
-			}
-		});
+		btnIleri.setOnClickListener(this);
 	}
 
     @Override
     protected void onStart() {
         super.onStart();
 
-        if(AkorDefterimSys.PrefAyarlar().getString("Action", "").equals("Vazgec")) {
+        if(AkorDefterimSys.PrefAyarlar().getString("prefAction", "").equals("Vazgec")) {
             sharedPrefEditor = AkorDefterimSys.PrefAyarlar().edit();
-			sharedPrefEditor.remove("Action");
+			sharedPrefEditor.remove("prefAction");
             sharedPrefEditor.apply();
 
             onBackPressed();
@@ -148,6 +138,25 @@ public class KayitEkran_EPosta extends AppCompatActivity implements Interface_As
 		AkorDefterimSys.KlavyeKapat();
 
 		super.onBackPressed();
+	}
+
+	@Override
+	public void onClick(View v) {
+		switch (v.getId()) {
+			case R.id.coordinatorLayout:
+				txtILEPosta.setError(null);
+				AkorDefterimSys.UnFocusEditText(txtEPosta);
+				break;
+			case R.id.btnGeri:
+				onBackPressed();
+				break;
+			case R.id.lblVazgec:
+				onBackPressed();
+				break;
+			case R.id.btnIleri:
+				IleriIslem();
+				break;
+		}
 	}
 
     @Override
@@ -163,56 +172,42 @@ public class KayitEkran_EPosta extends AppCompatActivity implements Interface_As
 						OnayKodu = String.valueOf((100000 + rnd.nextInt(900000)));
 
 						// Onay kodu belirtilen eposta adresine gönderiliyor
-						AkorDefterimSys.EPostaGonder(txtEPosta.getText().toString().trim(), "", getString(R.string.dogrulama_kodu), getString(R.string.mail_onayi_icerik2, getString(R.string.uygulama_adi), OnayKodu));
+						AkorDefterimSys.EPostaGonder(txtEPosta.getText().toString().trim(), "", getString(R.string.dogrulama_kodu), getString(R.string.eposta_onayi_icerik2, getString(R.string.uygulama_adi), OnayKodu));
 					} else {
+						btnIleri.setEnabled(true);
 						// PDEPosta Progress Dialog'u kapattık
 						AkorDefterimSys.DismissProgressDialog(PDEPosta);
 
-						String BulunanHesaplar = new JSONObject(JSONSonuc.getString("BulunanHesaplar")).getString("Hesaplar");
-
-						// String'in eğer başında "," var ise siliyoruz..
-						BulunanHesaplar = (BulunanHesaplar.startsWith(",") ? BulunanHesaplar.substring(1, BulunanHesaplar.length()):BulunanHesaplar);
-
-						// String'i dizi yapıyoruz
-						String[] HesapListesi = BulunanHesaplar.split(",");
-
-						ADHesapKontrol = AkorDefterimSys.CustomAlertDialog(activity, R.mipmap.ic_launcher,
-								getString(R.string.hesap_durumu),
-								getString(R.string.hata_hesap_durum, txtEPosta.getText().toString().trim(), (HesapListesi.length > 1?"(lar)<br>(" + BulunanHesaplar + ")":"<br>(" + BulunanHesaplar + ")")),
-								getString(R.string.giris_yap),
-								getString(R.string.tamam));
-						ADHesapKontrol.getWindow().getAttributes().windowAnimations = R.style.DialogAnimation;
-						ADHesapKontrol.show();
-
-						ADHesapKontrol.getButton(AlertDialog.BUTTON_POSITIVE).setOnClickListener(new View.OnClickListener() {
-							@Override
-							public void onClick(View v) {
-								ADHesapKontrol.dismiss();
-
-								sharedPrefEditor = AkorDefterimSys.PrefAyarlar().edit();
-								sharedPrefEditor.putString("Action", "Giris_Yap");
-								sharedPrefEditor.apply();
-
-								onBackPressed();
-							}
-						});
-
-						ADHesapKontrol.getButton(AlertDialog.BUTTON_NEGATIVE).setOnClickListener(new View.OnClickListener() {
-							@Override
-							public void onClick(View v) {
-								ADHesapKontrol.dismiss();
-							}
-						});
+						if(!AkorDefterimSys.AlertDialogisShowing(ADDialog_EPosta)) { // Eğer ADDialog_EPosta açık değilse
+							ADDialog_EPosta = AkorDefterimSys.CustomAlertDialog(activity,
+									getString(R.string.hata),
+									getString(R.string.hata_hesap_durum2, txtEPosta.getText().toString().trim()),
+									activity.getString(R.string.tamam),
+									"ADDialog_EPosta");
+							ADDialog_EPosta.getWindow().getAttributes().windowAnimations = R.style.DialogAnimation;
+							ADDialog_EPosta.show();
+						}
 					}
 
 					break;
+				case "ADDialog_EPosta":
+					AkorDefterimSys.DismissAlertDialog(ADDialog_EPosta);
+					break;
                 case "EPostaGonder":
+					btnIleri.setEnabled(true);
 					// PDEPosta Progress Dialog'u kapattık
 					AkorDefterimSys.DismissProgressDialog(PDEPosta);
 
                 	// Eğer EPosta gönderildiyse sonuç true döner..
-                    if(JSONSonuc.getBoolean("Sonuc")) SonrakiEkran();
-					else AkorDefterimSys.StandartSnackBarMsj(coordinatorLayout, getString(R.string.islem_yapilirken_bir_hata_olustu));
+                    if(JSONSonuc.getBoolean("Sonuc")) {
+						// Yeni açılacak olan intent'e gönderilecek bilgileri tanımlıyoruz
+						Intent mIntent = new Intent(activity, Onaykodu.class);
+						mIntent.putExtra("Islem", "Kayit");
+						mIntent.putExtra("EPosta", txtEPosta.getText().toString().trim());
+						mIntent.putExtra("OnayKodu", String.valueOf(OnayKodu));
+
+						AkorDefterimSys.EkranGetir(mIntent, "Slide");
+					} else AkorDefterimSys.StandartSnackBarMsj(coordinatorLayout, getString(R.string.islem_yapilirken_bir_hata_olustu));
 
                     break;
             }
@@ -223,33 +218,33 @@ public class KayitEkran_EPosta extends AppCompatActivity implements Interface_As
     }
 
     private void IleriIslem() {
+		btnIleri.setEnabled(false);
+		AkorDefterimSys.UnFocusEditText(txtEPosta);
 		AkorDefterimSys.KlavyeKapat();
 
-		String EPosta = txtEPosta.getText().toString().trim();
+		txtEPosta.setText(txtEPosta.getText().toString().trim());
+		String EPosta = txtEPosta.getText().toString();
 
 		if(TextUtils.isEmpty(EPosta))
 			txtILEPosta.setError(getString(R.string.hata_bos_alan));
 		else if(!AkorDefterimSys.isValid(EPosta, "EPosta"))
 			txtILEPosta.setError(getString(R.string.hata_format_eposta));
-		else txtILEPosta.setError(null);
+		else if(AkorDefterimSys.isValid(EPosta, "FakeEPosta")) {
+			txtILEPosta.setError(getString(R.string.hata_format_eposta));
+		} else txtILEPosta.setError(null);
 
 		if(txtILEPosta.getError() == null) {
 			if(AkorDefterimSys.InternetErisimKontrolu()) {
-				PDEPosta = AkorDefterimSys.CustomProgressDialog(getString(R.string.islem_yapiliyor), false, AkorDefterimSys.ProgressBarTimeoutSuresi);
-				PDEPosta.show();
+				if(!AkorDefterimSys.ProgressDialogisShowing(PDEPosta)) { // Eğer progress dialog açık değilse
+					PDEPosta = AkorDefterimSys.CustomProgressDialog(getString(R.string.islem_yapiliyor), false, AkorDefterimSys.ProgressBarTimeoutSuresi);
+					PDEPosta.show();
+				}
 
-				AkorDefterimSys.HesapBilgiGetir(null, txtEPosta.getText().toString().trim());
-			} else AkorDefterimSys.StandartSnackBarMsj(coordinatorLayout, getString(R.string.internet_baglantisi_saglanamadi));
-		}
-	}
-
-	private void SonrakiEkran() {
-		// Yeni açılacak olan intent'e gönderilecek bilgileri tanımlıyoruz
-		Intent mIntent = new Intent(activity, Onaykodu.class);
-		mIntent.putExtra("Islem", "Kayit");
-		mIntent.putExtra("EPosta", txtEPosta.getText().toString().trim());
-		mIntent.putExtra("OnayKodu", String.valueOf(OnayKodu));
-
-		AkorDefterimSys.EkranGetir(mIntent, "Slide");
+				AkorDefterimSys.HesapBilgiGetir(null, "", EPosta);
+			} else {
+				btnIleri.setEnabled(true);
+				AkorDefterimSys.StandartSnackBarMsj(coordinatorLayout, getString(R.string.internet_baglantisi_saglanamadi));
+			}
+		} else btnIleri.setEnabled(true);
 	}
 }

@@ -9,6 +9,10 @@ public class SnfHesapBilgiGetir extends SnfHata {
     private String Aciklama;
     @SerializedName("HesapID")
     private String HesapID;
+    @SerializedName("FacebookID")
+    private String FacebookID;
+    @SerializedName("GoogleID")
+    private String GoogleID;
     @SerializedName("AdSoyad")
     private String AdSoyad;
     @SerializedName("DogumTarih")
@@ -19,6 +23,8 @@ public class SnfHesapBilgiGetir extends SnfHata {
     private String EPosta;
     @SerializedName("EPostaOnay")
     private String EPostaOnay;
+    @SerializedName("Parola")
+    private String Parola;
     @SerializedName("ParolaSHA1")
     private String ParolaSHA1;
     @SerializedName("KullaniciAdi")
@@ -37,8 +43,6 @@ public class SnfHesapBilgiGetir extends SnfHata {
     private String HesapDurum;
     @SerializedName("HesapDurumBilgi")
     private String HesapDurumBilgi;
-    @SerializedName("BulunanHesaplar")
-    private String BulunanHesaplar;
 
     public Boolean getSonuc() {
         return Sonuc;
@@ -50,6 +54,14 @@ public class SnfHesapBilgiGetir extends SnfHata {
 
     public String getHesapID() {
         return HesapID;
+    }
+
+    public String getFacebookID() {
+        return FacebookID;
+    }
+
+    public String getGoogleID() {
+        return GoogleID;
     }
 
     public String getAdSoyad() {
@@ -70,6 +82,10 @@ public class SnfHesapBilgiGetir extends SnfHata {
 
     public String getEPostaOnay() {
         return EPostaOnay;
+    }
+
+    public String getParola() {
+        return Parola;
     }
 
     public String getParolaSHA1() {
@@ -106,9 +122,5 @@ public class SnfHesapBilgiGetir extends SnfHata {
 
     public String getHesapDurumBilgi() {
         return HesapDurumBilgi;
-    }
-
-    public String getBulunanHesaplar() {
-        return BulunanHesaplar;
     }
 }

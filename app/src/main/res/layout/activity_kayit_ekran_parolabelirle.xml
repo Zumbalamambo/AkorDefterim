@@ -2,10 +2,10 @@
 <android.support.design.widget.CoordinatorLayout
 	xmlns:android="http://schemas.android.com/apk/res/android"
 	xmlns:app="http://schemas.android.com/apk/res-auto"
-	xmlns:tools="http://schemas.android.com/tools"
 	android:id="@+id/coordinatorLayout"
 	android:layout_width="match_parent"
-	android:layout_height="match_parent">
+	android:layout_height="match_parent"
+	android:background="@color/Beyaz">
 
 	<android.support.constraint.ConstraintLayout
 		android:layout_width="match_parent"
@@ -19,73 +19,101 @@
 			android:layout_width="wrap_content"
 			android:layout_height="wrap_content"
 			android:orientation="vertical"
-			app:layout_constraintGuide_percent="0.05"
-			tools:layout_editor_absoluteY="25dp"
-			tools:layout_editor_absoluteX="21dp" />
+			app:layout_constraintGuide_percent="0.05" />
 
 		<android.support.constraint.Guideline
 			android:id="@+id/v_guideline2"
 			android:layout_width="wrap_content"
 			android:layout_height="wrap_content"
 			android:orientation="vertical"
-			app:layout_constraintGuide_percent="0.95"
-			tools:layout_editor_absoluteY="25dp"
-			tools:layout_editor_absoluteX="391dp" />
+			app:layout_constraintGuide_percent="0.95" />
 
-		<Button
+		<android.support.constraint.Guideline
+			android:id="@+id/h_guideline1"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:orientation="horizontal"
+			app:layout_constraintGuide_percent="0.085" />
+
+		<ImageButton
 			android:id="@+id/btnGeri"
-			android:layout_width="24dp"
-			android:layout_height="24dp"
-			android:layout_marginLeft="0dp"
-			android:layout_marginStart="0dp"
-			android:layout_marginTop="35dp"
-			android:background="@drawable/ic_arrow_back_siyah"
-			app:layout_constraintLeft_toLeftOf="@+id/v_guideline1"
+			android:layout_width="60dp"
+			android:layout_height="0dp"
+			android:background="@drawable/custom_button2"
+			app:layout_constraintBottom_toTopOf="@+id/view1"
+			app:layout_constraintStart_toStartOf="parent"
+			app:layout_constraintTop_toTopOf="parent"
+			app:srcCompat="@drawable/ic_arrow_back_siyah"
+			android:contentDescription="@string/imageDesc" />
+
+		<TextView
+			android:id="@+id/lblBaslik"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:layout_marginStart="12dp"
+			android:layout_marginLeft="12dp"
+			android:text="@string/parolani_belirle"
+			android:textColor="@color/KoyuYazi"
+			android:textSize="@dimen/yazi_boyutu18"
+			app:layout_constraintBottom_toTopOf="@+id/view1"
+			app:layout_constraintStart_toEndOf="@+id/btnGeri"
 			app:layout_constraintTop_toTopOf="parent" />
 
 		<TextView
 			android:id="@+id/lblVazgec"
 			android:layout_width="wrap_content"
 			android:layout_height="wrap_content"
+			android:layout_marginEnd="16dp"
+			android:layout_marginRight="16dp"
 			android:text="@string/vazgec"
 			android:textAppearance="@style/TextAppearance.AppCompat.Button"
 			android:textColor="@color/AcikMavi3"
-			app:layout_constraintBaseline_toBaselineOf="@+id/btnGeri"
-			app:layout_constraintRight_toLeftOf="@+id/v_guideline2" />
+			app:layout_constraintBottom_toTopOf="@+id/h_guideline1"
+			app:layout_constraintEnd_toEndOf="parent"
+			app:layout_constraintTop_toTopOf="parent" />
+
+		<View
+			android:id="@+id/view1"
+			android:layout_width="0dp"
+			android:layout_height="1dp"
+			android:background="@drawable/line2"
+			app:layout_constraintTop_toTopOf="@+id/h_guideline1" />
 
 		<TextView
-			android:id="@+id/lblBaslik"
+			android:id="@+id/lblParolaAciklama"
 			android:layout_width="0dp"
 			android:layout_height="wrap_content"
-			android:layout_marginTop="24dp"
-			android:text="@string/parolani_belirle"
-			android:textColor="@color/KoyuYazi"
-			android:textSize="@dimen/yazi_boyutu22"
+			android:layout_marginTop="16dp"
+			android:text="@string/parola_ekran_aciklama"
+			android:textColor="@color/KoyuGri"
 			app:layout_constraintLeft_toLeftOf="@+id/v_guideline1"
-			app:layout_constraintTop_toBottomOf="@+id/btnGeri" />
+			app:layout_constraintRight_toLeftOf="@+id/v_guideline2"
+			app:layout_constraintTop_toTopOf="@+id/h_guideline1" />
 
-        <TextView
-            android:id="@+id/lblParolaAciklama"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="0dp"
-            android:layout_marginRight="0dp"
-            android:layout_marginTop="16dp"
-            android:text="@string/parola_ekran_aciklama"
-            android:textColor="@color/KoyuGri"
-            app:layout_constraintLeft_toLeftOf="@+id/v_guideline1"
-            app:layout_constraintRight_toLeftOf="@+id/v_guideline2"
-            app:layout_constraintTop_toBottomOf="@+id/lblBaslik" />
+		<ImageView
+			android:id="@+id/ImgKey1"
+			android:layout_width="wrap_content"
+			android:layout_height="0dp"
+			android:layout_marginBottom="8dp"
+			android:layout_marginStart="8dp"
+			android:layout_marginLeft="8dp"
+			android:contentDescription="@string/imageDesc"
+			app:layout_constraintBottom_toBottomOf="@+id/txtILParola"
+			app:layout_constraintStart_toStartOf="@+id/v_guideline1"
+			app:srcCompat="@drawable/ic_key" />
 
 		<android.support.design.widget.TextInputLayout
 			android:id="@+id/txtILParola"
 			android:layout_width="0dp"
 			android:layout_height="wrap_content"
+			android:layout_marginStart="8dp"
+			android:layout_marginLeft="8dp"
 			android:layout_marginTop="16dp"
 			android:textColorHint="@color/KoyuGri"
 			app:layout_constraintHorizontal_bias="0.0"
 			app:layout_constraintLeft_toLeftOf="@+id/v_guideline1"
 			app:layout_constraintRight_toLeftOf="@+id/v_guideline2"
+			app:layout_constraintStart_toEndOf="@+id/ImgKey1"
 			app:layout_constraintTop_toBottomOf="@+id/lblParolaAciklama">
 
 			<com.cnbcyln.app.akordefterim.util.PasswordView
@@ -94,21 +122,19 @@
 				android:layout_height="match_parent"
 				android:hint="@string/parola"
 				android:textColor="@color/KoyuYazi"
-				app:useStrikeThrough="true"/>
+				app:useStrikeThrough="true" />
 		</android.support.design.widget.TextInputLayout>
 
 		<LinearLayout
 			android:id="@+id/LLParolaGuvenligi"
 			android:layout_width="0dp"
 			android:layout_height="5dp"
-			android:layout_marginEnd="4dp"
 			android:layout_marginLeft="4dp"
 			android:layout_marginRight="4dp"
-			android:layout_marginStart="4dp"
-			android:layout_marginTop="0dp"
 			android:weightSum="1"
 			app:layout_constraintLeft_toLeftOf="@+id/v_guideline1"
 			app:layout_constraintRight_toLeftOf="@+id/v_guideline2"
+			app:layout_constraintStart_toStartOf="@+id/txtILParola"
 			app:layout_constraintTop_toBottomOf="@+id/txtILParola">
 
 			<LinearLayout
@@ -136,28 +162,31 @@
 				android:orientation="horizontal" />
 		</LinearLayout>
 
-		<TextView
-			android:id="@+id/lblParolaGuvenligi"
+		<ImageView
+			android:id="@+id/ImgKey2"
 			android:layout_width="wrap_content"
-			android:layout_height="wrap_content"
-			android:layout_marginLeft="4dp"
-			android:layout_marginTop="8dp"
-			android:text="@string/labeltire"
-			android:textColor="@color/KoyuYazi"
-			android:textSize="@dimen/yazi_boyutu18"
-			app:layout_constraintLeft_toLeftOf="@+id/v_guideline1"
-			app:layout_constraintTop_toBottomOf="@+id/LLParolaGuvenligi" />
+			android:layout_height="0dp"
+			android:layout_marginBottom="8dp"
+			android:layout_marginStart="8dp"
+			android:layout_marginLeft="8dp"
+			android:contentDescription="@string/imageDesc"
+			app:layout_constraintBottom_toBottomOf="@+id/txtILParolaTekrar"
+			app:layout_constraintStart_toStartOf="@+id/v_guideline1"
+			app:srcCompat="@drawable/ic_key" />
 
 		<android.support.design.widget.TextInputLayout
 			android:id="@+id/txtILParolaTekrar"
 			android:layout_width="0dp"
 			android:layout_height="wrap_content"
-			android:layout_marginTop="8dp"
+			android:layout_marginStart="8dp"
+			android:layout_marginLeft="8dp"
+			android:layout_marginTop="16dp"
 			android:textColorHint="@color/KoyuGri"
 			app:layout_constraintHorizontal_bias="0.0"
 			app:layout_constraintLeft_toLeftOf="@+id/v_guideline1"
 			app:layout_constraintRight_toLeftOf="@+id/v_guideline2"
-			app:layout_constraintTop_toBottomOf="@+id/lblParolaGuvenligi">
+			app:layout_constraintStart_toEndOf="@+id/ImgKey2"
+			app:layout_constraintTop_toBottomOf="@+id/LLParolaGuvenligi">
 
 			<com.cnbcyln.app.akordefterim.util.PasswordView
 				android:id="@+id/txtParolaTekrar"
@@ -165,28 +194,26 @@
 				android:layout_height="match_parent"
 				android:hint="@string/parola_tekrar"
 				android:textColor="@color/KoyuYazi"
-				app:useStrikeThrough="true"/>
+				app:useStrikeThrough="true" />
 		</android.support.design.widget.TextInputLayout>
 
 		<Button
 			android:id="@+id/btnIleri"
 			android:layout_width="wrap_content"
 			android:layout_height="48dp"
+			android:layout_marginTop="16dp"
 			android:background="@drawable/custom_button_mavi"
 			android:drawableEnd="@drawable/ic_btn_arrow_forward"
 			android:drawableRight="@drawable/ic_btn_arrow_forward"
-			android:layout_marginRight="0dp"
-			android:layout_marginEnd="0dp"
-			android:paddingRight="15dp"
 			android:paddingEnd="5dp"
-			android:paddingStart="15dp"
 			android:paddingLeft="15dp"
+			android:paddingRight="15dp"
+			android:paddingStart="15dp"
 			android:text="@string/ileri"
 			android:textAppearance="@style/TextAppearance.AppCompat"
 			android:textColor="@color/Beyaz"
 			app:layout_constraintRight_toLeftOf="@+id/v_guideline2"
-            android:layout_marginTop="8dp"
-            app:layout_constraintTop_toBottomOf="@+id/txtILParolaTekrar" />
+			app:layout_constraintTop_toBottomOf="@+id/txtILParolaTekrar" />
 
 	</android.support.constraint.ConstraintLayout>
 </android.support.design.widget.CoordinatorLayout>

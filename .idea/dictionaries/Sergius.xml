@@ -22,12 +22,14 @@
       <w>bilgi</w>
       <w>bilgileri</w>
       <w>bitis</w>
+      <w>bosluklu</w>
       <w>btnsolmenu</w>
       <w>btntwitter</w>
       <w>bulunan</w>
       <w>bulundu</w>
       <w>buttonlar</w>
       <w>buyuk</w>
+      <w>buyukharf</w>
       <w>cevrimdisi</w>
       <w>cevrimici</w>
       <w>cift</w>
@@ -47,6 +49,7 @@
       <w>eposta</w>
       <w>erisim</w>
       <w>etiketleyici</w>
+      <w>fazla</w>
       <w>foto</w>
       <w>galeriden</w>
       <w>gelinen</w>
@@ -55,9 +58,12 @@
       <w>girildi</w>
       <w>girilen</w>
       <w>giriş</w>
+      <w>gonderilemedi</w>
+      <w>gonderme</w>
       <w>gormeyecek</w>
       <w>guncelleme</w>
       <w>guvenligi</w>
+      <w>gönderildi</w>
       <w>gösterilmeyecek</w>
       <w>güncelle</w>
       <w>güncelleme</w>
@@ -74,7 +80,9 @@
       <w>icin</w>
       <w>ikon</w>
       <w>ileri</w>
+      <w>iptal</w>
       <w>islem</w>
+      <w>isleme</w>
       <w>izin</w>
       <w>için</w>
       <w>işlem</w>
@@ -85,6 +93,7 @@
       <w>kapat</w>
       <w>kapatıyoruz</w>
       <w>karakter</w>
+      <w>karakterler</w>
       <w>karaktersiz</w>
       <w>kaydol</w>
       <w>kayit</w>
@@ -96,12 +105,14 @@
       <w>klavye</w>
       <w>klavyeyi</w>
       <w>kodlari</w>
+      <w>kodlarini</w>
       <w>kodu</w>
       <w>kontrolu</w>
       <w>korumasi</w>
       <w>kosullari</w>
       <w>koyu</w>
       <w>kucuk</w>
+      <w>kucukharf</w>
       <w>kullan</w>
       <w>kullanici</w>
       <w>kullaniciadi</w>
@@ -143,8 +154,10 @@
       <w>sayisi</w>
       <w>secici</w>
       <w>secilen</w>
+      <w>semboller</w>
       <w>servisi</w>
       <w>sifirla</w>
+      <w>sifrele</w>
       <w>sifremi</w>
       <w>sistemdurum</w>
       <w>siyah</w>
@@ -154,20 +167,25 @@
       <w>sosyal</w>
       <w>soyad</w>
       <w>standart</w>
+      <w>sıfırlama</w>
+      <w>tamam</w>
       <w>tamamla</w>
       <w>tamamlandı</w>
       <w>tanımlamalar</w>
       <w>tasarruf</w>
       <w>tekrar</w>
       <w>telefon</w>
+      <w>telefonu</w>
       <w>textis</w>
       <w>tiklanabilir</w>
       <w>tiklandi</w>
       <w>turkce</w>
       <w>ulke</w>
       <w>unuttum</w>
+      <w>uret</w>
       <w>uygulama</w>
       <w>uygulamadan</w>
+      <w>uzunluk</w>
       <w>varmi</w>
       <w>vazgec</w>
       <w>veritabani</w>
@@ -177,9 +195,11 @@
       <w>yapıyoruz</w>
       <w>yardim</w>
       <w>yardimi</w>
+      <w>yardım</w>
       <w>yedek</w>
       <w>yeniden</w>
       <w>yukle</w>
+      <w>yukleme</w>
       <w>zaman</w>
       <w>çalışıyor</w>
       <w>çevrimdışı</w>
