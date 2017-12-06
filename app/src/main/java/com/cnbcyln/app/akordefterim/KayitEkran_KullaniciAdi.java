@@ -4,6 +4,7 @@ import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
@@ -24,6 +25,7 @@ import android.view.KeyEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.inputmethod.EditorInfo;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
@@ -35,6 +37,7 @@ import com.cnbcyln.app.akordefterim.util.AndroidMultiPartEntity;
 import com.cnbcyln.app.akordefterim.util.Strings;
 import com.google.firebase.iid.FirebaseInstanceId;
 
+import org.apache.commons.lang3.StringUtils;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpPost;
@@ -64,6 +67,7 @@ public class KayitEkran_KullaniciAdi extends AppCompatActivity implements Interf
 	File SecilenProfilResmiFile;
 	ProgressDialog PDKayitIslem;
 	AlertDialog ADDialog_HesapKayitHata;
+	InputMethodManager imm;
 
 	CoordinatorLayout coordinatorLayout;
 	ImageButton btnGeri;
@@ -73,7 +77,7 @@ public class KayitEkran_KullaniciAdi extends AppCompatActivity implements Interf
 	EditText txtKullaniciAdi;
 
 	String EPosta, Parola, AdSoyad, DogumTarih, EklenenHesapID;
-	int KullaniciAdiKarakterSayisiMIN, KullaniciAdiKarakterSayisiMAX;
+	int KullaniciAdiKarakterSayisiMIN, KullaniciAdiKarakterSayisiMAX, KullaniciAdiBastakiHarfKarakterSayisi;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -88,8 +92,11 @@ public class KayitEkran_KullaniciAdi extends AppCompatActivity implements Interf
 		//AkorDefterimSys.TransparanNotifyBar(); // Notification Bar'ı transparan yapıyoruz.
 		//AkorDefterimSys.NotifyIkonParlakligi(); // Notification Bar'daki simgelerin parlaklığını aldık.
 
+		imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE); // İstenildiği zaman klavyeyi gizlemeye yarayan kod tanımlayıcısı
+
 		KullaniciAdiKarakterSayisiMIN = getResources().getInteger(R.integer.KullaniciAdiKarakterSayisi_MIN);
 		KullaniciAdiKarakterSayisiMAX = getResources().getInteger(R.integer.KullaniciAdiKarakterSayisi_MAX);
+		KullaniciAdiBastakiHarfKarakterSayisi = getResources().getInteger(R.integer.KullaniciAdiBastakiHarfKarakterSayisi);
 
 		Bundle mBundle = getIntent().getExtras();
 		EPosta = mBundle.getString("EPosta");
@@ -230,6 +237,8 @@ public class KayitEkran_KullaniciAdi extends AppCompatActivity implements Interf
 
 					break;
 				case "HesapEkle":
+					btnTamamla.setEnabled(true);
+
 					if(JSONSonuc.getBoolean("Sonuc")) { // Kayıt yapıldıysa
 						EklenenHesapID = JSONSonuc.getString("EklenenHesapID");
 
@@ -262,17 +271,36 @@ public class KayitEkran_KullaniciAdi extends AppCompatActivity implements Interf
 		txtKullaniciAdi.setText(txtKullaniciAdi.getText().toString().trim());
 		String KullaniciAdi = txtKullaniciAdi.getText().toString().trim();
 
-		if (TextUtils.isEmpty(KullaniciAdi))
+		if (TextUtils.isEmpty(KullaniciAdi)) {
 			txtILKullaniciAdi.setError(getString(R.string.hata_bos_alan));
-		else if (KullaniciAdi.length() < getResources().getInteger(R.integer.KullaniciAdiKarakterSayisi_MIN))
-			txtILKullaniciAdi.setError(getString(R.string.hata_en_az_karakter, String.valueOf(getResources().getInteger(R.integer.KullaniciAdiKarakterSayisi_MIN))));
-		else if(!AkorDefterimSys.isValid(KullaniciAdi, "KullaniciAdi"))
+			txtKullaniciAdi.requestFocus();
+			txtKullaniciAdi.setSelection(txtKullaniciAdi.length());
+			imm.showSoftInput(txtKullaniciAdi, 0);
+		} else if (KullaniciAdi.length() < KullaniciAdiKarakterSayisiMIN) {
+			txtILKullaniciAdi.setError(getString(R.string.hata_en_az_karakter, String.valueOf(KullaniciAdiKarakterSayisiMIN)));
+			txtKullaniciAdi.requestFocus();
+			txtKullaniciAdi.setSelection(txtKullaniciAdi.length());
+			imm.showSoftInput(txtKullaniciAdi, 0);
+		} else if (KullaniciAdi.length() > KullaniciAdiKarakterSayisiMAX) {
+			txtILKullaniciAdi.setError(getString(R.string.hata_en_fazla_karakter, String.valueOf(KullaniciAdiKarakterSayisiMAX)));
+			txtKullaniciAdi.requestFocus();
+			txtKullaniciAdi.setSelection(txtKullaniciAdi.length());
+			imm.showSoftInput(txtKullaniciAdi, 0);
+		} else if(!AkorDefterimSys.isValid(KullaniciAdi, "KullaniciAdi")) {
 			txtILKullaniciAdi.setError(getString(R.string.hata_format_sadece_sayi_kucukharf));
-		else txtILKullaniciAdi.setError(null);
-
-		AkorDefterimSys.UnFocusEditText(txtKullaniciAdi);
+			txtKullaniciAdi.requestFocus();
+			txtKullaniciAdi.setSelection(txtKullaniciAdi.length());
+			imm.showSoftInput(txtKullaniciAdi, 0);
+		} else if(!StringUtils.isAlpha(KullaniciAdi.substring(0, KullaniciAdiBastakiHarfKarakterSayisi))) {
+			txtILKullaniciAdi.setError(getString(R.string.hata_format_bastaki_karakterler_harf_olmak_zorunda, String.valueOf(KullaniciAdiBastakiHarfKarakterSayisi)));
+			txtKullaniciAdi.requestFocus();
+			txtKullaniciAdi.setSelection(txtKullaniciAdi.length());
+			imm.showSoftInput(txtKullaniciAdi, 0);
+		} else txtILKullaniciAdi.setError(null);
 
 		if(txtILKullaniciAdi.getError() == null) {
+			AkorDefterimSys.UnFocusEditText(txtKullaniciAdi);
+
 			if(AkorDefterimSys.InternetErisimKontrolu()) {
 				if(!AkorDefterimSys.ProgressDialogisShowing(PDKayitIslem)) {
 					PDKayitIslem = AkorDefterimSys.CustomProgressDialog(getString(R.string.profiliniz_olusturuluyor_lutfen_bekleyiniz), false, AkorDefterimSys.ProgressBarTimeoutSuresi);
@@ -427,10 +455,11 @@ public class KayitEkran_KullaniciAdi extends AppCompatActivity implements Interf
 		AkorDefterimSys.DismissProgressDialog(PDKayitIslem);
 
 		Intent mIntent = new Intent(activity, AnaEkran.class);
+		//mIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
 		mIntent.putExtra("Islem", "");
 
 		AkorDefterimSys.EkranGetir(mIntent, "Normal");
 
-		finish();
+		finishAffinity(); // Bu komut altta açık olan tüm etkinlikleri sonlandırmaya yarar..
 	}
 }

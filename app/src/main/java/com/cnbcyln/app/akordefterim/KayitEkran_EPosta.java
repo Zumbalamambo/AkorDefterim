@@ -172,7 +172,7 @@ public class KayitEkran_EPosta extends AppCompatActivity implements Interface_As
 						OnayKodu = String.valueOf((100000 + rnd.nextInt(900000)));
 
 						// Onay kodu belirtilen eposta adresine gönderiliyor
-						AkorDefterimSys.EPostaGonder(txtEPosta.getText().toString().trim(), "", getString(R.string.dogrulama_kodu), getString(R.string.eposta_onayi_icerik2, getString(R.string.uygulama_adi), OnayKodu));
+						AkorDefterimSys.EPostaGonder(txtEPosta.getText().toString().trim(), "", getString(R.string.dogrulama_kodu), getString(R.string.eposta_onayi_icerik2, OnayKodu, getString(R.string.uygulama_adi)));
 					} else {
 						btnIleri.setEnabled(true);
 						// PDEPosta Progress Dialog'u kapattık
@@ -201,7 +201,7 @@ public class KayitEkran_EPosta extends AppCompatActivity implements Interface_As
                 	// Eğer EPosta gönderildiyse sonuç true döner..
                     if(JSONSonuc.getBoolean("Sonuc")) {
 						// Yeni açılacak olan intent'e gönderilecek bilgileri tanımlıyoruz
-						Intent mIntent = new Intent(activity, Onaykodu.class);
+						Intent mIntent = new Intent(activity, Dogrulama_Kodu.class);
 						mIntent.putExtra("Islem", "Kayit");
 						mIntent.putExtra("EPosta", txtEPosta.getText().toString().trim());
 						mIntent.putExtra("OnayKodu", String.valueOf(OnayKodu));
@@ -234,6 +234,8 @@ public class KayitEkran_EPosta extends AppCompatActivity implements Interface_As
 		} else txtILEPosta.setError(null);
 
 		if(txtILEPosta.getError() == null) {
+			AkorDefterimSys.UnFocusEditText(txtEPosta);
+
 			if(AkorDefterimSys.InternetErisimKontrolu()) {
 				if(!AkorDefterimSys.ProgressDialogisShowing(PDEPosta)) { // Eğer progress dialog açık değilse
 					PDEPosta = AkorDefterimSys.CustomProgressDialog(getString(R.string.islem_yapiliyor), false, AkorDefterimSys.ProgressBarTimeoutSuresi);

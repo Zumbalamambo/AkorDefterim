@@ -27,7 +27,7 @@ import java.util.Timer;
 import java.util.TimerTask;
 
 @SuppressWarnings({"deprecation", "ResultOfMethodCallIgnored", "ConstantConditions"})
-public class Onaykodu extends AppCompatActivity implements Interface_AsyncResponse, OnClickListener {
+public class Dogrulama_Kodu extends AppCompatActivity implements Interface_AsyncResponse, OnClickListener {
 
 	private Activity activity;
 	private AkorDefterimSys AkorDefterimSys;
@@ -38,11 +38,11 @@ public class Onaykodu extends AppCompatActivity implements Interface_AsyncRespon
 	TimerTask EPostaOnayKoduDialogSayac;
 	Handler EPostaOnayKoduHandler = new Handler();
 	Random rnd;
-	AlertDialog ADDialog_Sonuc;
+	AlertDialog ADDialog_EPosta_OnayKodu;
 
 	CoordinatorLayout coordinatorLayout;
 	ImageButton btnGeri;
-	Button btnIleri;
+	Button btnDogrula;
 	TextView lblVazgec, lblBaslik, lblOnayKoduAciklama, lblOnayKoduKalanSure, lblYenidenGonder;
 	PasscodeView txtOnayKodu;
 
@@ -52,7 +52,7 @@ public class Onaykodu extends AppCompatActivity implements Interface_AsyncRespon
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.activity_onaykodu);
+		setContentView(R.layout.activity_dogrulama_kodu);
 
 		activity = this;
 		AkorDefterimSys = new AkorDefterimSys(activity);
@@ -107,9 +107,9 @@ public class Onaykodu extends AppCompatActivity implements Interface_AsyncRespon
 		lblYenidenGonder.setTypeface(YaziFontu, Typeface.BOLD);
 		lblYenidenGonder.setOnClickListener(this);
 
-		btnIleri = findViewById(R.id.btnIleri);
-		btnIleri.setTypeface(YaziFontu, Typeface.NORMAL);
-		btnIleri.setOnClickListener(this);
+		btnDogrula = findViewById(R.id.btnDogrula);
+		btnDogrula.setTypeface(YaziFontu, Typeface.NORMAL);
+		btnDogrula.setOnClickListener(this);
 	}
 
 	@Override
@@ -122,7 +122,7 @@ public class Onaykodu extends AppCompatActivity implements Interface_AsyncRespon
 	@Override
 	protected void onDestroy() {
 		AkorDefterimSys.KlavyeKapat();
-		AkorDefterimSys.DismissAlertDialog(ADDialog_Sonuc);
+		AkorDefterimSys.DismissAlertDialog(ADDialog_EPosta_OnayKodu);
 
 		super.onDestroy();
 	}
@@ -130,7 +130,7 @@ public class Onaykodu extends AppCompatActivity implements Interface_AsyncRespon
 	@Override
 	public void onBackPressed() {
 		AkorDefterimSys.KlavyeKapat();
-		AkorDefterimSys.DismissAlertDialog(ADDialog_Sonuc);
+		AkorDefterimSys.DismissAlertDialog(ADDialog_EPosta_OnayKodu);
 
 		super.onBackPressed();
 	}
@@ -165,7 +165,7 @@ public class Onaykodu extends AppCompatActivity implements Interface_AsyncRespon
 						OnayKodu = String.valueOf((100000 + rnd.nextInt(900000)));
 
 						// Onay kodu belirtilen eposta adresine gönderiliyor
-						AkorDefterimSys.EPostaGonder(EPosta, "", getString(R.string.dogrulama_kodu), getString(R.string.eposta_onayi_icerik2, getString(R.string.uygulama_adi), OnayKodu));
+						AkorDefterimSys.EPostaGonder(EPosta, "", getString(R.string.dogrulama_kodu), getString(R.string.eposta_onayi_icerik2, OnayKodu, getString(R.string.uygulama_adi)));
 					}
 				} else {
 					lblYenidenGonder.setEnabled(true);
@@ -195,20 +195,14 @@ public class Onaykodu extends AppCompatActivity implements Interface_AsyncRespon
 						EmailOnayKoduDialogSayac_Ayarla();
 						EPostaOnayKoduSayac.schedule(EPostaOnayKoduDialogSayac, 10, 1000);
 
-						if(AkorDefterimSys.AlertDialogisShowing(ADDialog_Sonuc)) {
-							ADDialog_Sonuc = AkorDefterimSys.CustomAlertDialog(activity, R.mipmap.ic_launcher,
+						if(!AkorDefterimSys.AlertDialogisShowing(ADDialog_EPosta_OnayKodu)) {
+							ADDialog_EPosta_OnayKodu = AkorDefterimSys.CustomAlertDialog(activity,
 									getString(R.string.onay_kodu),
 									getString(R.string.onay_kodu_email, EPosta),
-									activity.getString(R.string.tamam));
-							ADDialog_Sonuc.getWindow().getAttributes().windowAnimations = R.style.DialogAnimation;
-							ADDialog_Sonuc.show();
-
-							ADDialog_Sonuc.getButton(AlertDialog.BUTTON_POSITIVE).setOnClickListener(new View.OnClickListener() {
-								@Override
-								public void onClick(View v) {
-									ADDialog_Sonuc.dismiss();
-								}
-							});
+									activity.getString(R.string.tamam),
+									"ADDialog_EPosta_OnayKodu");
+							ADDialog_EPosta_OnayKodu.getWindow().getAttributes().windowAnimations = R.style.DialogAnimation;
+							ADDialog_EPosta_OnayKodu.show();
 						}
 					} else {
 						if (EPostaOnayKoduSayac != null) {
@@ -220,23 +214,20 @@ public class Onaykodu extends AppCompatActivity implements Interface_AsyncRespon
 
 						AkorDefterimSys.KlavyeKapat();
 
-						if(AkorDefterimSys.AlertDialogisShowing(ADDialog_Sonuc)) {
-							ADDialog_Sonuc = AkorDefterimSys.CustomAlertDialog(activity, R.mipmap.ic_launcher,
+						if(!AkorDefterimSys.AlertDialogisShowing(ADDialog_EPosta_OnayKodu)) {
+							ADDialog_EPosta_OnayKodu = AkorDefterimSys.CustomAlertDialog(activity,
 									getString(R.string.onay_kodu),
 									getString(R.string.islem_yapilirken_bir_hata_olustu),
-									activity.getString(R.string.tamam));
-							ADDialog_Sonuc.getWindow().getAttributes().windowAnimations = R.style.DialogAnimation;
-							ADDialog_Sonuc.show();
-
-							ADDialog_Sonuc.getButton(AlertDialog.BUTTON_POSITIVE).setOnClickListener(new View.OnClickListener() {
-								@Override
-								public void onClick(View v) {
-									ADDialog_Sonuc.dismiss();
-								}
-							});
+									activity.getString(R.string.tamam),
+									"ADDialog_EPosta_OnayKodu");
+							ADDialog_EPosta_OnayKodu.getWindow().getAttributes().windowAnimations = R.style.DialogAnimation;
+							ADDialog_EPosta_OnayKodu.show();
 						}
 					}
 
+					break;
+				case "ADDialog_EPosta_OnayKodu":
+					AkorDefterimSys.DismissAlertDialog(ADDialog_EPosta_OnayKodu);
 					break;
 			}
 
@@ -246,7 +237,7 @@ public class Onaykodu extends AppCompatActivity implements Interface_AsyncRespon
 	}
 
 	private void IleriIslem() {
-		btnIleri.setEnabled(false);
+		btnDogrula.setEnabled(false);
 		AkorDefterimSys.KlavyeKapat();
 
 		if(AkorDefterimSys.InternetErisimKontrolu()) {
@@ -257,17 +248,17 @@ public class Onaykodu extends AppCompatActivity implements Interface_AsyncRespon
 					mIntent.putExtra("EPosta", EPosta);
 
 					AkorDefterimSys.EkranGetir(mIntent, "Slide");
-					btnIleri.setEnabled(true);
+					btnDogrula.setEnabled(true);
 				} else {
-					btnIleri.setEnabled(true);
+					btnDogrula.setEnabled(true);
 					AkorDefterimSys.StandartSnackBarMsj(coordinatorLayout, getString(R.string.girilen_onay_kodu_hata2));
 				}
 			} else {
-				btnIleri.setEnabled(true);
+				btnDogrula.setEnabled(true);
 				AkorDefterimSys.StandartSnackBarMsj(coordinatorLayout, getString(R.string.onay_kodu_sure_bitti));
 			}
 		} else {
-			btnIleri.setEnabled(true);
+			btnDogrula.setEnabled(true);
 			AkorDefterimSys.StandartSnackBarMsj(coordinatorLayout, getString(R.string.internet_baglantisi_saglanamadi));
 		}
 	}

@@ -59,11 +59,11 @@
     <string name="eposta_yeni_hesap_icerik">Merhaba %1$s %2$s. %3$s uygulamasına hoşgeldiniz. Doğrulama kodunu android uygulamasındaki onay kodu alanına yazarak üyeliğinizi tamamlayınız. Doğrulama Kodu: %4$s</string>
     <string name="eposta_onayi">Email Doğrulama</string>
     <string name="eposta_onayi_icerik">Merhaba %1$s. Email onay işlemini tamamlamak için kullanacağınız doğrulama kodunuz: %2$s</string>
-    <string name="eposta_onayi_icerik2">Merhaba. %1$s doğrulama kodunuz: %2$s</string>
+    <string name="eposta_onayi_icerik2">Merhaba. Doğrulama kodunuz: %2$s&lt;br&gt;&lt;br&gt;&lt;b&gt;%2$s Ekibi&lt;/b&gt;</string>
     <string name="eposta_sifremiunuttum">Sifremi Unuttum</string>
     <string name="eposta_sifremiunuttum_icerik">Merhaba %1$s. Sifrenizi sıfırlamak için kullanacağınız doğrulama kodunuz: %2$s</string>
     <string name="eposta_gonderildi">E-posta Gönderildi</string>
-    <string name="eposta_parola_gonderildi_icerik">Merhaba &lt;b&gt;%1$s&lt;/b&gt;,&lt;br&gt;&lt;br&gt;İsteğin üzerine hesabına ait parolanı gönderdik.&lt;br&gt;&lt;b&gt;Parolan:&lt;/b&gt; %2$s&lt;br&gt;&lt;br&gt;&lt;b&gt;%3$s Ekibi&lt;/b&gt;</string>
+    <string name="eposta_parola_gonderildi_icerik">Merhaba &lt;b&gt;%1$s&lt;/b&gt;,&lt;br&gt;&lt;br&gt;İsteğin üzerine hesabına ait parolanı gönderdik.&lt;br&gt;&lt;b&gt;Parola:&lt;/b&gt; %2$s&lt;br&gt;&lt;br&gt;&lt;b&gt;%3$s Ekibi&lt;/b&gt;</string>
     <string name="eposta_parola_gonderildi_mesaj">&lt;b&gt;%s&lt;/b&gt; adresine, hesabına ait parolayı içeren e-posta gönderdik.</string>
     <string name="eposta_gonderilemedi">E-posta Gönderilmedi</string>
     <string name="eposta_gonderilemedi_mesaj">&lt;b&gt;%s&lt;/b&gt; adresine e-posta gönderilemedi. Daha sonra yeniden deneyin.</string>
@@ -119,6 +119,7 @@
     <string name="uygulama_izinleri">Uygulama İzinleri</string>
     <string name="duyuru">Duyuru</string>
     <string name="reklam">Reklam</string>
+    <string name="profil_resmi">Profil Resmi</string>
 
     <!-- Dialog Mesajlar -->
     <string name="hesap_cikis_mesaji">Hesabınızdan çıkış yapmak istiyor musunuz?</string>
@@ -177,7 +178,7 @@
     <string name="uygulama_izni_dosya_yazma_hata">İşlemi tamamlayabilmek için uygulamaya cihazınızdaki fotoğraflara, medyaya ve dosyalara erişme izni vermelisiniz.</string>
     <string name="uygulama_izni_konum_hata">İşlemi tamamlayabilmek için uygulamaya cihazın konumuna erişme izni vermelisiniz.</string>
     <string name="resim_guncelleme_icerik">Sosyal ağ hesabınızdaki profil resminin &lt;b&gt;%s&lt;/b&gt; hesabınıza eklenmesiniz ister misiniz?</string>
-
+    <string name="profil_resmi_secmemissin_devam_etmek_istiyormusun">Profil resmi seçmemişsin. Yine de devam etmek istiyor musun?</string>
 
     <!-- Button'lar -->
     <string name="listele">Listele</string>
@@ -299,7 +300,7 @@
     <string name="giris_ekran_aciklama">Kolayca giriş yap..</string>
     <string name="kayit_ekran_aciklama">Nasıl başlayalım?</string>
     <string name="veya">veya</string>
-    <string name="eposta_adresini_kimseye_gormeyecek">&lt;b&gt;Not:&lt;/b&gt; E-Posta adresin kimseye gösterilmeyecek.</string>
+    <string name="eposta_adresini_kimseye_gormeyecek">Merak etme. E-Posta adresin kimseye gösterilmeyecek. ;)</string>
     <string name="kalan_sure">Kalan süre: %s</string>
     <string name="parolani_belirle">Parolanı belirle</string>
     <string name="parola">Parola</string>
@@ -309,7 +310,7 @@
     <string name="profilini_olustur">Profilini oluştur</string>
     <string name="adsoyad_dogumtarih_resim_ekran_aciklama">Adını soyadını, doğum tarihini yaz ve profil resmini &lt;b&gt;(en fazla %sMB)&lt;/b&gt; belirle.</string>
     <string name="kullanici_adini_belirle">Kullanıcı adını belirle</string>
-    <string name="kullaniciadi_ekran_belirle">En az &lt;b&gt;%1$s&lt;/b&gt; karakter, en fazla &lt;b&gt;%2$s&lt;/b&gt; karakter, boşluk bırakmadan, yalnızca sayı ve Türkçe harf &lt;b&gt;(ı,ğ,ü,ş,ö,ç)&lt;/b&gt; kullanmadan bir kullanıdı adı belirlemelisin.</string>
+    <string name="kullaniciadi_ekran_belirle">En az &lt;b&gt;%1$s&lt;/b&gt; karakter, en fazla &lt;b&gt;%2$s&lt;/b&gt; karakter, boşluk bırakmadan, Türkçe harf &lt;b&gt;(ı,ğ,ü,ş,ö,ç)&lt;/b&gt; kullanmadan bir kullanıdı adı belirlemelisin.</string>
     <string name="kullanim_kosullari_aciklama" tools:ignore="Typos">Kayıt olduğunda &lt;b&gt;%1$s&lt;/b&gt; &lt;b&gt;%2$s&lt;/b&gt; ve &lt;b&gt;%3$s&lt;/b&gt;\'nı kabul etmiş olursun.</string>
     <string name="kullanici_sozlesmesi" tools:ignore="Typos">&lt;a href=\"https://www.cbcapp.net\"&gt;Kullanıcı Sözleşmesi&lt;/a&gt;</string>
     <string name="gizlilik_sartlari">&lt;a href=\"https://www.cbcapp.net/gizlilikpolitikasi.html\"&gt;Gizlilik Şartları&lt;/a&gt;</string>
@@ -335,6 +336,7 @@
     <string name="hata_en_fazla_karakter">En fazla %s karakter olmalıdır.</string>
     <string name="hata_format_sadece_sayi_kucukharf">Yalnızca sayı ve küçük harf (Türkçe hariç) kullanabilirsin.</string>
     <string name="hata_format_sadece_sayi_kucukharf_buyukharf_bosluklu">Yalnızca küçük ve büyük harf kullanabilirsin.</string>
+    <string name="hata_format_bastaki_karakterler_harf_olmak_zorunda">Baştaki %s karakter harf olmak zorunda.</string>
     <string name="hata_format_eposta">Lütfen geçerli bir E-Posta adresi gir.</string>
     <string name="hata_hesap_durum">&lt;b&gt;%1$s&lt;/b&gt;&lt;br&gt;E-Posta adresine kayıtlı hesap&lt;b&gt;%2$s&lt;/b&gt; mevcut.&lt;br&gt;&lt;br&gt;Giriş yap ya da farklı bir E-Posta adresi dene.</string>
     <string name="hata_hesap_durum2">&lt;b&gt;%s&lt;/b&gt;&lt;br&gt;E-Posta adresine kayıtlı hesap mevcut.&lt;br&gt;&lt;br&gt;Giriş yap ya da farklı bir E-Posta adresi dene.</string>

@@ -52,7 +52,7 @@
 			android:layout_height="wrap_content"
 			android:layout_marginStart="12dp"
 			android:layout_marginLeft="12dp"
-			android:text="@string/onay_kodu"
+			android:text="@string/dogrulama_kodu"
 			android:textColor="@color/KoyuYazi"
 			android:textSize="@dimen/yazi_boyutu18"
 			app:layout_constraintBottom_toTopOf="@+id/view1"
@@ -131,7 +131,7 @@
 			app:layout_constraintTop_toBottomOf="@+id/lblOnayKoduKalanSure" />
 
 		<Button
-			android:id="@+id/btnIleri"
+			android:id="@+id/btnDogrula"
 			android:layout_width="wrap_content"
 			android:layout_height="48dp"
 			android:layout_marginTop="24dp"
@@ -140,7 +140,7 @@
 			android:drawableRight="@drawable/ic_btn_arrow_forward"
 			android:paddingEnd="5dp"
 			android:paddingRight="5dp"
-			android:text="@string/ileri"
+			android:text="@string/dogrula"
 			android:textAppearance="@style/TextAppearance.AppCompat"
 			android:textColor="@color/Beyaz"
 			app:layout_constraintRight_toLeftOf="@+id/v_guideline2"

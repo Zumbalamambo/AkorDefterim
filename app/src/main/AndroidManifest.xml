@@ -119,14 +119,14 @@
         </activity>
         <activity android:name=".Hesabina_Eris_Hesabini_Bul" >
             <intent-filter>
-                <action android:name="android.intent.action.HESABINI_BUL" />
+                <action android:name="android.intent.action.HESABINA_ERIS_HESABINI_BUL" />
 
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>
         <activity android:name=".Hesabina_Eris_Hesabini_Bul2" >
             <intent-filter>
-                <action android:name="android.intent.action.HESABINI_BUL2" />
+                <action android:name="android.intent.action.HESABINA_ERIS_HESABINI_BUL2" />
 
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
@@ -145,16 +145,16 @@
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>
-        <activity android:name=".Onaykodu">
+        <activity android:name=".Dogrulama_Kodu">
             <intent-filter>
-                <action android:name="android.intent.action.ONAYKODU" />
+                <action android:name="android.intent.action.DOGRULAMA_KODU" />
 
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>
         <activity android:name=".KayitEkran_Parola_Belirle">
             <intent-filter>
-                <action android:name="android.intent.action.PAROLA_BELIRLE" />
+                <action android:name="android.intent.action.KAYITEKRAN_PAROLA_BELIRLE" />
 
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>

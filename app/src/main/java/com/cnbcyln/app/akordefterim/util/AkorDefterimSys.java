@@ -3612,7 +3612,7 @@ public class AkorDefterimSys {
 		return false;
 	}
 
-	private boolean isNumeric(String string) {
+	public boolean isNumeric(String string) {
 		return string.matches("^\\d+$");
 	}
 

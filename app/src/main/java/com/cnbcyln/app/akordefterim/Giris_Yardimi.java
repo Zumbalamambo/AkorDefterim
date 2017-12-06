@@ -152,7 +152,7 @@ public class Giris_Yardimi extends AppCompatActivity implements Interface_AsyncR
 
                     if(JSONSonuc.getBoolean("Sonuc")) {
 						// Yeni açılacak olan intent'e gönderilecek bilgileri tanımlıyoruz
-						Intent mIntent = new Intent(activity, Onaykodu.class);
+						Intent mIntent = new Intent(activity, Dogrulama_Kodu.class);
 						mIntent.putExtra("Islem", "Giris_Yardimi");
 						mIntent.putExtra("EPosta", BulunanEPosta);
 						mIntent.putExtra("OnayKodu", String.valueOf(OnayKodu));
