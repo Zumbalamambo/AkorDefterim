@@ -246,6 +246,7 @@ public class KayitEkran_KullaniciAdi extends AppCompatActivity implements Interf
 						sharedPrefEditor.putString("prefHesapID", EklenenHesapID);
 						sharedPrefEditor.putString("prefEPosta", EPosta);
 						sharedPrefEditor.putString("prefParolaSHA1", Strings.getSHA1(Parola));
+						sharedPrefEditor.putString("prefOturumTipi", "Cevrimici");
 						sharedPrefEditor.apply();
 
 						// Profil resmi seçilmediyse

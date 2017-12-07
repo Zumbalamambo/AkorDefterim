@@ -61,21 +61,7 @@
         app:layout_constraintTop_toBottomOf="@+id/lblDialogIcerik" />
 
     <Button
-        android:id="@+id/btnDialogIptalButton"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:background="@drawable/custom_button2"
-        android:gravity="center"
-        android:stateListAnimator="@null"
-        android:text="@string/labeltire"
-        android:textAppearance="@style/TextAppearance.AppCompat"
-        android:textColor="@color/KoyuYazi"
-        app:layout_constraintEnd_toStartOf="@+id/v_guideline1"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/view2" />
-
-    <Button
-        android:id="@+id/btnDialogOnayButton"
+        android:id="@+id/btnDialogButton1"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:background="@drawable/custom_button2"
@@ -85,7 +71,35 @@
         android:textAppearance="@style/TextAppearance.AppCompat"
         android:textColor="@color/KoyuYazi"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="@+id/v_guideline1"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/view2" />
+
+    <Button
+        android:id="@+id/btnDialogButton2"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:background="@drawable/custom_button2"
+        android:gravity="center"
+        android:stateListAnimator="@null"
+        android:text="@string/labeltire"
+        android:textAppearance="@style/TextAppearance.AppCompat"
+        android:textColor="@color/KoyuYazi"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/btnDialogButton1" />
+
+    <Button
+        android:id="@+id/btnDialogButton3"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:background="@drawable/custom_button2"
+        android:gravity="center"
+        android:stateListAnimator="@null"
+        android:text="@string/labeltire"
+        android:textAppearance="@style/TextAppearance.AppCompat"
+        android:textColor="@color/KoyuYazi"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/btnDialogButton2" />
 
 </android.support.constraint.ConstraintLayout>

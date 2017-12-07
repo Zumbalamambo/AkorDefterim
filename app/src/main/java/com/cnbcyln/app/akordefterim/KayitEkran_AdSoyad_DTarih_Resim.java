@@ -328,7 +328,7 @@ public class KayitEkran_AdSoyad_DTarih_Resim extends AppCompatActivity implement
 			if(AkorDefterimSys.InternetErisimKontrolu()) {
 				if(SecilenProfilResmiFile == null) {
 					if(!AkorDefterimSys.AlertDialogisShowing(ADDialog_Profil_Resim)) {
-						ADDialog_Profil_Resim = AkorDefterimSys.CustomAlertDialog(activity,
+						ADDialog_Profil_Resim = AkorDefterimSys.HButtonCustomAlertDialog(activity,
 								getString(R.string.profil_resmi),
 								getString(R.string.profil_resmi_secmemissin_devam_etmek_istiyormusun),
 								activity.getString(R.string.hayir),

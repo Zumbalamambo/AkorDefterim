@@ -13,7 +13,6 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.Process;
 import android.provider.Settings;
-import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.RelativeLayout;
@@ -37,6 +36,7 @@ public class SplashEkran extends Activity implements Interface_AsyncResponse {
 	Animation anim;
 	ProgressDialog PDSistemKontrol, PDGuncellemeKontrol, PDGirisYap;
 	AlertDialog ADDialog_PlayGoogleServisi, ADDialog_SistemDurum, ADDialog_Guncelleme, ADDialog_InternetErisimSorunu, ADDialog_HesapDurumu;
+	Intent mIntent;
 
 	//private GoogleApiClient mGoogleLoginApiClient;
 
@@ -100,58 +100,34 @@ public class SplashEkran extends Activity implements Interface_AsyncResponse {
 			//GoogleAPIInit();
 
 			if (AkorDefterimSys.InternetErisimKontrolu()) { // İnternet bağlantısı var ise
-				PDSistemKontrol = AkorDefterimSys.CustomProgressDialog(getString(R.string.lutfen_bekleyiniz), false, AkorDefterimSys.ProgressBarTimeoutSuresi);
-				PDSistemKontrol.show();
+				if(!AkorDefterimSys.ProgressDialogisShowing(PDSistemKontrol)) {
+					PDSistemKontrol = AkorDefterimSys.CustomProgressDialog(getString(R.string.lutfen_bekleyiniz), false, AkorDefterimSys.ProgressBarTimeoutSuresi);
+					PDSistemKontrol.show();
+				}
 
 				AkorDefterimSys.SistemDurumKontrol();
 			} else { // İnternet bağlantısı yok ise
-				ADDialog_InternetErisimSorunu = AkorDefterimSys.CustomAlertDialog(activity, R.mipmap.ic_launcher,
-						getString(R.string.internet_baglantisi),
-						getString(R.string.internet_baglantisi_saglanamadi),
-						activity.getString(R.string.cevrimdisi_devam_et),
-						activity.getString(R.string.uygulamadan_cik));
-				ADDialog_InternetErisimSorunu.getWindow().getAttributes().windowAnimations = R.style.DialogAnimation;
-				ADDialog_InternetErisimSorunu.show();
-
-				ADDialog_InternetErisimSorunu.getButton(AlertDialog.BUTTON_POSITIVE).setOnClickListener(new View.OnClickListener() {
-					@Override
-					public void onClick(View v) {
-						ADDialog_InternetErisimSorunu.dismiss();
-
-						AkorDefterimSys.HesapPrefSifirla();
-
-						Intent mIntent = new Intent(activity, AnaEkran.class);
-						mIntent.putExtra("Islem", "");
-						startActivity(mIntent);
-
-						finish();
-					}
-				});
-
-				ADDialog_InternetErisimSorunu.getButton(AlertDialog.BUTTON_NEGATIVE).setOnClickListener(new View.OnClickListener() {
-					@Override
-					public void onClick(View v) {
-						ADDialog_InternetErisimSorunu.dismiss();
-						Process.killProcess(Process.myPid());
-					}
-				});
+				if(!AkorDefterimSys.AlertDialogisShowing(ADDialog_InternetErisimSorunu)) {
+					ADDialog_InternetErisimSorunu = AkorDefterimSys.VButtonCustomAlertDialog(activity,
+							getString(R.string.internet_baglantisi),
+							getString(R.string.internet_baglantisi_saglanamadi),
+							activity.getString(R.string.cevrimdisi_devam_et),
+							"ADDialog_InternetErisimSorunu_Cevrimdisi_Giris_Yap",
+							activity.getString(R.string.uygulamadan_cik),
+							"ADDialog_InternetErisimSorunu_Uygulamadan_Cik");
+					ADDialog_InternetErisimSorunu.getWindow().getAttributes().windowAnimations = R.style.DialogAnimation;
+					ADDialog_InternetErisimSorunu.show();
+				}
 			}
 		} else {
 			if(!AkorDefterimSys.AlertDialogisShowing(ADDialog_PlayGoogleServisi)) {
-				ADDialog_PlayGoogleServisi = AkorDefterimSys.CustomAlertDialog(activity, R.mipmap.ic_launcher,
+				ADDialog_PlayGoogleServisi = AkorDefterimSys.CustomAlertDialog(activity,
 						getString(R.string.google_play_servis_baslik),
 						getString(R.string.google_play_servis_hata1),
-						activity.getString(R.string.tamam));
+						activity.getString(R.string.tamam),
+						"ADDialog_PlayGoogleServisi_Tamam");
 				ADDialog_PlayGoogleServisi.getWindow().getAttributes().windowAnimations = R.style.DialogAnimation;
 				ADDialog_PlayGoogleServisi.show();
-
-				ADDialog_PlayGoogleServisi.getButton(AlertDialog.BUTTON_POSITIVE).setOnClickListener(new View.OnClickListener() {
-					@Override
-					public void onClick(View v) {
-						ADDialog_PlayGoogleServisi.dismiss();
-						Process.killProcess(Process.myPid());
-					}
-				});
 			}
 		}
 	}
@@ -168,9 +144,6 @@ public class SplashEkran extends Activity implements Interface_AsyncResponse {
 		AkorDefterimSys.DismissAlertDialog(ADDialog_Guncelleme);
 		AkorDefterimSys.DismissAlertDialog(ADDialog_InternetErisimSorunu);
 		AkorDefterimSys.DismissAlertDialog(ADDialog_HesapDurumu);
-
-		//if (mGoogleLoginApiClient.isConnected())
-		//mGoogleLoginApiClient.disconnect();
 	}
 
 	@Override
@@ -184,25 +157,22 @@ public class SplashEkran extends Activity implements Interface_AsyncResponse {
 					AkorDefterimSys.DismissProgressDialog(PDSistemKontrol);
 
 					if(JSONSonuc.getBoolean("Durum")) { // Sistem çalışıyor ise
-						PDGuncellemeKontrol = AkorDefterimSys.CustomProgressDialog(getString(R.string.guncellemeler_denetleniyor), false, AkorDefterimSys.ProgressBarTimeoutSuresi);
-						PDGuncellemeKontrol.show();
+						if(!AkorDefterimSys.ProgressDialogisShowing(PDGuncellemeKontrol)) {
+							PDGuncellemeKontrol = AkorDefterimSys.CustomProgressDialog(getString(R.string.guncellemeler_denetleniyor), false, AkorDefterimSys.ProgressBarTimeoutSuresi);
+							PDGuncellemeKontrol.show();
+						}
 
 						AkorDefterimSys.YeniGuncellemeKontrol(); // Yeni güncelleme kontrolü yap
 					} else { // Sistem kapalı ise
-						ADDialog_SistemDurum = AkorDefterimSys.CustomAlertDialog(activity, R.mipmap.ic_launcher,
-								JSONSonuc.getString("Baslik"),
-								JSONSonuc.getString("Icerik"),
-								activity.getString(R.string.tamam));
-						ADDialog_SistemDurum.getWindow().getAttributes().windowAnimations = R.style.DialogAnimation;
-						ADDialog_SistemDurum.show();
-
-						ADDialog_SistemDurum.getButton(AlertDialog.BUTTON_POSITIVE).setOnClickListener(new View.OnClickListener() {
-							@Override
-							public void onClick(View v) {
-								ADDialog_SistemDurum.dismiss();
-								Process.killProcess(Process.myPid());
-							}
-						});
+						if(!AkorDefterimSys.AlertDialogisShowing(ADDialog_SistemDurum)) {
+							ADDialog_SistemDurum = AkorDefterimSys.CustomAlertDialog(activity,
+									JSONSonuc.getString("Baslik"),
+									JSONSonuc.getString("Icerik"),
+									activity.getString(R.string.tamam),
+									"ADDialog_SistemDurum_Tamam");
+							ADDialog_SistemDurum.getWindow().getAttributes().windowAnimations = R.style.DialogAnimation;
+							ADDialog_SistemDurum.show();
+						}
 					}
 
 					break;
@@ -212,57 +182,30 @@ public class SplashEkran extends Activity implements Interface_AsyncResponse {
 
 					// Durum => false (Eğer güncelleme yok ise false dönüyor)
 					if(JSONSonuc.getBoolean("Durum")) { // Güncelleme var ise
-						ADDialog_Guncelleme = AkorDefterimSys.CustomAlertDialog(activity, R.mipmap.ic_launcher,
-								activity.getString(R.string.yeni_guncelleme),
-								activity.getString(R.string.yeni_guncelleme_icerik, JSONSonuc.getString("GecerliVersiyonAdi"), JSONSonuc.getString("YeniVersiyonAdi")),
-								activity.getString(R.string.cevrimdisi_devam_et),
-								activity.getString(R.string.guncelle),
-								activity.getString(R.string.uygulamadan_cik));
-						ADDialog_Guncelleme.getWindow().getAttributes().windowAnimations = R.style.DialogAnimation;
-						ADDialog_Guncelleme.show();
-
-						// Çevrimdışı devam et
-						ADDialog_Guncelleme.getButton(AlertDialog.BUTTON_POSITIVE).setOnClickListener(new View.OnClickListener() {
-							@Override
-							public void onClick(View v) {
-								ADDialog_Guncelleme.dismiss();
-
-								AkorDefterimSys.HesapPrefSifirla();
-
-								Intent myIntent = new Intent(activity, AnaEkran.class);
-								myIntent.putExtra("Islem", "");
-								startActivity(myIntent);
-								finish();
-							}
-						});
-
-						// Güncelle
-						ADDialog_Guncelleme.getButton(AlertDialog.BUTTON_NEGATIVE).setOnClickListener(new View.OnClickListener() {
-							@Override
-							public void onClick(View v) {
-								ADDialog_Guncelleme.dismiss();
-								startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("https://play.google.com/store/apps/details?id=" + activity.getPackageName())));
-								Process.killProcess(Process.myPid());
-							}
-						});
-
-						// Uygulamadan çık
-						ADDialog_Guncelleme.getButton(AlertDialog.BUTTON_NEUTRAL).setOnClickListener(new View.OnClickListener() {
-							@Override
-							public void onClick(View v) {
-								ADDialog_Guncelleme.dismiss();
-								Process.killProcess(Process.myPid());
-							}
-						});
+						if(!AkorDefterimSys.AlertDialogisShowing(ADDialog_SistemDurum)) {
+							ADDialog_Guncelleme = AkorDefterimSys.VButtonCustomAlertDialog(activity,
+									activity.getString(R.string.yeni_guncelleme),
+									activity.getString(R.string.yeni_guncelleme_icerik, JSONSonuc.getString("GecerliVersiyonAdi"), JSONSonuc.getString("YeniVersiyonAdi")),
+									activity.getString(R.string.cevrimdisi_devam_et),
+									"ADDialog_Guncelleme_Cevrimdisi_Devam_Et",
+									activity.getString(R.string.guncelle),
+									"ADDialog_Guncelleme_Guncelle",
+									activity.getString(R.string.uygulamadan_cik),
+									"ADDialog_Guncelleme_Uygulamadan_Cik");
+							ADDialog_Guncelleme.getWindow().getAttributes().windowAnimations = R.style.DialogAnimation;
+							ADDialog_Guncelleme.show();
+						}
 					} else { // Güncelleme yok ise
-						if (AkorDefterimSys.PrefAyarlar().getString("prefHesapID", "").equals("")) {
+						if (AkorDefterimSys.PrefAyarlar().getString("prefHesapID", "").equals("") && AkorDefterimSys.PrefAyarlar().getString("prefEPosta", "").equals("") && AkorDefterimSys.PrefAyarlar().getString("prefParolaSHA1", "").equals("")) {
 							AkorDefterimSys.HesapPrefSifirla();
 
 							AkorDefterimSys.EkranGetir(new Intent(activity, Giris.class), "Normal");
-							finish();
+							finishAffinity();
 						} else {
-							PDGirisYap = AkorDefterimSys.CustomProgressDialog(getString(R.string.giris_yapiliyor), false, AkorDefterimSys.ProgressBarTimeoutSuresi);
-							PDGirisYap.show();
+							if(!AkorDefterimSys.ProgressDialogisShowing(PDGirisYap)) {
+								PDGirisYap = AkorDefterimSys.CustomProgressDialog(getString(R.string.giris_yapiliyor), false, AkorDefterimSys.ProgressBarTimeoutSuresi);
+								PDGirisYap.show();
+							}
 
 							AkorDefterimSys.HesapGirisYap("Normal", FirebaseToken, OSID, OSVersiyon, UygulamaVersiyon, AkorDefterimSys.PrefAyarlar().getString("prefEPosta", ""), AkorDefterimSys.PrefAyarlar().getString("prefParolaSHA1", ""),"", "");
 						}
@@ -274,10 +217,13 @@ public class SplashEkran extends Activity implements Interface_AsyncResponse {
 					AkorDefterimSys.DismissProgressDialog(PDGirisYap);
 
 					if(JSONSonuc.getBoolean("Sonuc")) {
+						AkorDefterimSys.HesapPrefSifirla();
+
 						sharedPrefEditor = AkorDefterimSys.PrefAyarlar().edit();
 						sharedPrefEditor.putString("prefHesapID", JSONSonuc.getString("HesapID"));
 						sharedPrefEditor.putString("prefEPosta", JSONSonuc.getString("HesapEPosta"));
 						sharedPrefEditor.putString("prefParolaSHA1", JSONSonuc.getString("HesapParolaSHA1"));
+						sharedPrefEditor.putString("prefOturumTipi", "Cevrimici");
                         sharedPrefEditor.apply();
 
 						Intent mIntent = new Intent(activity, AnaEkran.class);
@@ -285,36 +231,91 @@ public class SplashEkran extends Activity implements Interface_AsyncResponse {
 
 						AkorDefterimSys.EkranGetir(mIntent, "Normal");
 
-						finish();
+						finishAffinity();
 					} else {
 						AkorDefterimSys.HesapPrefSifirla();
 
 						switch (JSONSonuc.getString("HesapDurum")) {
 							case "Ban":
-                                ADDialog_HesapDurumu = AkorDefterimSys.CustomAlertDialog(activity, R.mipmap.ic_launcher,
-                                        getString(R.string.hesap_durumu),
-                                        getString(R.string.hesap_banlandi, JSONSonuc.getString("HesapDurumBilgi"), getString(R.string.uygulama_yapimci_site)),
-                                        activity.getString(R.string.tamam));
-                                ADDialog_HesapDurumu.getWindow().getAttributes().windowAnimations = R.style.DialogAnimation;
-                                ADDialog_HesapDurumu.show();
-
-                                ADDialog_HesapDurumu.getButton(AlertDialog.BUTTON_POSITIVE).setOnClickListener(new View.OnClickListener() {
-                                    @Override
-                                    public void onClick(View v) {
-                                        ADDialog_HesapDurumu.dismiss();
-										AkorDefterimSys.EkranGetir(new Intent(activity, Giris.class), "Normal");
-										finish();
-                                    }
-                                });
+                                if(!AkorDefterimSys.AlertDialogisShowing(ADDialog_HesapDurumu)) {
+									ADDialog_HesapDurumu = AkorDefterimSys.CustomAlertDialog(activity,
+											getString(R.string.hesap_durumu),
+											getString(R.string.hesap_banlandi, JSONSonuc.getString("HesapDurumBilgi"), getString(R.string.uygulama_yapimci_site)),
+											activity.getString(R.string.tamam),
+											"ADDialog_HesapDurumu_Tamam");
+									ADDialog_HesapDurumu.getWindow().getAttributes().windowAnimations = R.style.DialogAnimation;
+									ADDialog_HesapDurumu.show();
+								}
 
 								break;
 							default:
 								AkorDefterimSys.EkranGetir(new Intent(activity, Giris.class), "Normal");
-								finish();
+								finishAffinity();
 								break;
 						}
 					}
 
+					break;
+				case "ADDialog_InternetErisimSorunu_Cevrimdisi_Giris_Yap":
+					AkorDefterimSys.DismissAlertDialog(ADDialog_InternetErisimSorunu);
+
+					AkorDefterimSys.HesapPrefSifirla();
+
+					sharedPrefEditor = AkorDefterimSys.PrefAyarlar().edit();
+					sharedPrefEditor.putString("prefOturumTipi", JSONSonuc.getString("Cevrimdisi"));
+					sharedPrefEditor.apply();
+
+					mIntent = new Intent(activity, AnaEkran.class);
+					mIntent.putExtra("Islem", "");
+
+					AkorDefterimSys.EkranGetir(mIntent, "Normal");
+
+					finishAffinity();
+					break;
+				case "ADDialog_InternetErisimSorunu_Uygulamadan_Cik":
+					AkorDefterimSys.DismissAlertDialog(ADDialog_InternetErisimSorunu);
+					Process.killProcess(Process.myPid());
+					break;
+				case "ADDialog_PlayGoogleServisi_Tamam":
+					AkorDefterimSys.DismissAlertDialog(ADDialog_PlayGoogleServisi);
+					Process.killProcess(Process.myPid());
+					break;
+				case "ADDialog_SistemDurum_Tamam":
+					AkorDefterimSys.DismissAlertDialog(ADDialog_SistemDurum);
+					Process.killProcess(Process.myPid());
+					break;
+				case "ADDialog_Guncelleme_Cevrimdisi_Devam_Et":
+					AkorDefterimSys.DismissAlertDialog(ADDialog_Guncelleme);
+
+					AkorDefterimSys.HesapPrefSifirla();
+
+					sharedPrefEditor = AkorDefterimSys.PrefAyarlar().edit();
+					sharedPrefEditor.putString("prefOturumTipi", JSONSonuc.getString("Cevrimdisi"));
+					sharedPrefEditor.apply();
+
+					mIntent = new Intent(activity, AnaEkran.class);
+					mIntent.putExtra("Islem", "");
+
+					AkorDefterimSys.EkranGetir(mIntent, "Normal");
+
+					finishAffinity();
+					break;
+				case "ADDialog_Guncelleme_Guncelle":
+					AkorDefterimSys.DismissAlertDialog(ADDialog_Guncelleme);
+
+					startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("https://play.google.com/store/apps/details?id=" + activity.getPackageName())));
+					Process.killProcess(Process.myPid());
+					break;
+				case "ADDialog_Guncelleme_Uygulamadan_Cik":
+					AkorDefterimSys.DismissAlertDialog(ADDialog_Guncelleme);
+
+					Process.killProcess(Process.myPid());
+					break;
+				case "ADDialog_HesapDurumu_Tamam":
+					AkorDefterimSys.DismissAlertDialog(ADDialog_HesapDurumu);
+
+					AkorDefterimSys.EkranGetir(new Intent(activity, Giris.class), "Normal");
+					finishAffinity();
 					break;
 			}
 

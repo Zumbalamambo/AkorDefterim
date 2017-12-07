@@ -199,6 +199,7 @@ public class Giris_Yap extends AppCompatActivity implements Interface_AsyncRespo
 						sharedPrefEditor.putString("prefHesapID", JSONSonuc.getString("HesapID"));
 						sharedPrefEditor.putString("prefEPosta", JSONSonuc.getString("HesapEPosta"));
 						sharedPrefEditor.putString("prefParolaSHA1", JSONSonuc.getString("HesapParolaSHA1"));
+						sharedPrefEditor.putString("prefOturumTipi", "Cevrimici");
 						sharedPrefEditor.apply();
 
 						Intent mIntent = new Intent(activity, AnaEkran.class);
@@ -206,29 +207,33 @@ public class Giris_Yap extends AppCompatActivity implements Interface_AsyncRespo
 
 						AkorDefterimSys.EkranGetir(mIntent, "Normal");
 
-						finish();
+						finishAffinity();
 					} else {
 						AkorDefterimSys.HesapPrefSifirla();
 
 						switch (JSONSonuc.getString("HesapDurum")) {
 							case "Ban":
-								ADDialog_HesapDurumu = AkorDefterimSys.CustomAlertDialog(activity,
-										getString(R.string.hesap_durumu),
-										getString(R.string.hesap_banlandi, JSONSonuc.getString("HesapDurumBilgi"), getString(R.string.uygulama_yapimci_site)),
-										activity.getString(R.string.tamam),
-										"ADDialog_HesapDurumu_Kapat");
-								ADDialog_HesapDurumu.getWindow().getAttributes().windowAnimations = R.style.DialogAnimation;
-								ADDialog_HesapDurumu.show();
+								if(!AkorDefterimSys.AlertDialogisShowing(ADDialog_HesapDurumu)) {
+									ADDialog_HesapDurumu = AkorDefterimSys.CustomAlertDialog(activity,
+											getString(R.string.hesap_durumu),
+											getString(R.string.hesap_banlandi, JSONSonuc.getString("HesapDurumBilgi"), getString(R.string.uygulama_yapimci_site)),
+											activity.getString(R.string.tamam),
+											"ADDialog_HesapDurumu_Kapat");
+									ADDialog_HesapDurumu.getWindow().getAttributes().windowAnimations = R.style.DialogAnimation;
+									ADDialog_HesapDurumu.show();
+								}
 
 								break;
 							default:
-								ADDialog_HesapDurumu = AkorDefterimSys.CustomAlertDialog(activity,
-										getString(R.string.giris_yapilamadi),
-										getString(R.string.giris_yapilamadi_bilgilerinizi_kontrol_edin),
-										activity.getString(R.string.tamam),
-										"ADDialog_HesapDurumu_Kapat");
-								ADDialog_HesapDurumu.getWindow().getAttributes().windowAnimations = R.style.DialogAnimation;
-								ADDialog_HesapDurumu.show();
+								if(!AkorDefterimSys.AlertDialogisShowing(ADDialog_HesapDurumu)) {
+									ADDialog_HesapDurumu = AkorDefterimSys.CustomAlertDialog(activity,
+											getString(R.string.giris_yapilamadi),
+											getString(R.string.giris_yapilamadi_bilgilerinizi_kontrol_edin),
+											activity.getString(R.string.tamam),
+											"ADDialog_HesapDurumu_Kapat");
+									ADDialog_HesapDurumu.getWindow().getAttributes().windowAnimations = R.style.DialogAnimation;
+									ADDialog_HesapDurumu.show();
+								}
 
 								break;
 						}
@@ -281,13 +286,15 @@ public class Giris_Yap extends AppCompatActivity implements Interface_AsyncRespo
 			txtILParola.setError(getString(R.string.hata_en_fazla_karakter, String.valueOf(getResources().getInteger(R.integer.ParolaKarakterSayisi_MAX))));
 		else txtILParola.setError(null);
 
-		AkorDefterimSys.UnFocusEditText(txtEPostaKullaniciAdi);
-		AkorDefterimSys.UnFocusEditText(txtParola);
-
 		if(txtILEPostaKullaniciAdi.getError() == null && txtILParola.getError() == null) {
+			AkorDefterimSys.UnFocusEditText(txtEPostaKullaniciAdi);
+			AkorDefterimSys.UnFocusEditText(txtParola);
+
 			if(AkorDefterimSys.InternetErisimKontrolu()) {
-				PDGirisYap = AkorDefterimSys.CustomProgressDialog(getString(R.string.giris_yapiliyor), false, AkorDefterimSys.ProgressBarTimeoutSuresi);
-				PDGirisYap.show();
+				if(!AkorDefterimSys.ProgressDialogisShowing(PDGirisYap)) {
+					PDGirisYap = AkorDefterimSys.CustomProgressDialog(getString(R.string.giris_yapiliyor), false, AkorDefterimSys.ProgressBarTimeoutSuresi);
+					PDGirisYap.show();
+				}
 
 				String FirebaseToken = FirebaseInstanceId.getInstance().getToken();
 				@SuppressLint("HardwareIds")

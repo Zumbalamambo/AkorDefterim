@@ -40,6 +40,7 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.VideoView;
@@ -107,8 +108,7 @@ public class Giris extends AppCompatActivity implements Interface_AsyncResponse 
 		VPGirisEkranPager.setAdapter(ViewPagerAdapter);
 
 		sharedPrefEditor = AkorDefterimSys.PrefAyarlar().edit();
-		sharedPrefEditor.remove("Action");
-		sharedPrefEditor.remove("GelinenEkran");
+		sharedPrefEditor.remove("prefAction");
 		sharedPrefEditor.apply();
 	}
 
@@ -272,8 +272,7 @@ public class Giris extends AppCompatActivity implements Interface_AsyncResponse 
 				case 1:
 					YaziFontu = AkorDefterimSys.FontGetir(activity, "anivers_regular");
 
-					Button btnGeri = (Button) view.findViewById(R.id.btnGeri);
-					btnGeri.setTypeface(YaziFontu, Typeface.BOLD);
+					ImageButton btnGeri = (ImageButton) view.findViewById(R.id.btnGeri);
 					btnGeri.setOnClickListener(new OnClickListener() {
 						@Override
 						public void onClick(View v) {
@@ -281,11 +280,11 @@ public class Giris extends AppCompatActivity implements Interface_AsyncResponse 
 						}
 					});
 
-					TextView lblGirisBaslik = (TextView) view.findViewById(R.id.lblGirisBaslik);
-					lblGirisBaslik.setTypeface(YaziFontu, Typeface.BOLD);
+					TextView lblBaslik = (TextView) view.findViewById(R.id.lblBaslik);
+					lblBaslik.setTypeface(YaziFontu, Typeface.BOLD);
 
-					TextView lblGirisAciklama = (TextView) view.findViewById(R.id.lblGirisAciklama);
-					lblGirisAciklama.setTypeface(YaziFontu, Typeface.NORMAL);
+					TextView lblAciklama = (TextView) view.findViewById(R.id.lblAciklama);
+					lblAciklama.setTypeface(YaziFontu, Typeface.NORMAL);
 
 					Button btnFacebookLogin = (Button) view.findViewById(R.id.btnFacebookLogin);
 					btnFacebookLogin.setTypeface(YaziFontu, Typeface.BOLD);
@@ -319,6 +318,25 @@ public class Giris extends AppCompatActivity implements Interface_AsyncResponse 
 						@Override
 						public void onClick(View v) {
                             AkorDefterimSys.EkranGetir(new Intent(activity, Giris_Yap.class), "Normal");
+						}
+					});
+
+					TextView lblInternetYoksa = (TextView) view.findViewById(R.id.lblInternetYoksa);
+					lblInternetYoksa.setTypeface(YaziFontu, Typeface.NORMAL);
+
+					Button btnCevrimdisiLogin = (Button) view.findViewById(R.id.btnCevrimdisiLogin);
+					btnCevrimdisiLogin.setTypeface(YaziFontu, Typeface.BOLD);
+					btnCevrimdisiLogin.setOnClickListener(new OnClickListener() {
+						@Override
+						public void onClick(View v) {
+							AkorDefterimSys.HesapPrefSifirla();
+
+							Intent mIntent = new Intent(activity, AnaEkran.class);
+							mIntent.putExtra("Islem", "");
+
+							AkorDefterimSys.EkranGetir(mIntent, "Normal");
+
+							finishAffinity();
 						}
 					});
 
@@ -611,6 +629,7 @@ public class Giris extends AppCompatActivity implements Interface_AsyncResponse 
 						sharedPrefEditor.putString("prefHesapID", JSONSonuc.getString("HesapID"));
 						sharedPrefEditor.putString("prefEPosta", JSONSonuc.getString("HesapEPosta"));
 						sharedPrefEditor.putString("prefParolaSHA1", JSONSonuc.getString("HesapParolaSHA1"));
+						sharedPrefEditor.putString("prefOturumTipi", "Cevrimici");
 						sharedPrefEditor.apply();
 
 						Intent mIntent = new Intent(activity, AnaEkran.class);
@@ -618,30 +637,29 @@ public class Giris extends AppCompatActivity implements Interface_AsyncResponse 
 
 						AkorDefterimSys.EkranGetir(mIntent, "Normal");
 
-						finish();
+						finishAffinity();
 					} else {
 						AkorDefterimSys.HesapPrefSifirla();
 
 						switch (JSONSonuc.getString("HesapDurum")) {
 							case "Ban":
-								ADDialog_HesapDurumu = AkorDefterimSys.CustomAlertDialog(activity, R.mipmap.ic_launcher,
-										getString(R.string.hesap_durumu),
-										getString(R.string.hesap_banlandi, JSONSonuc.getString("HesapDurumBilgi"), getString(R.string.uygulama_yapimci_site)),
-										activity.getString(R.string.tamam));
-								ADDialog_HesapDurumu.getWindow().getAttributes().windowAnimations = R.style.DialogAnimation;
-								ADDialog_HesapDurumu.show();
-
-								ADDialog_HesapDurumu.getButton(AlertDialog.BUTTON_POSITIVE).setOnClickListener(new View.OnClickListener() {
-									@Override
-									public void onClick(View v) {
-										ADDialog_HesapDurumu.dismiss();
-									}
-								});
+								if(!AkorDefterimSys.AlertDialogisShowing(ADDialog_HesapDurumu)) {
+									ADDialog_HesapDurumu = AkorDefterimSys.CustomAlertDialog(activity,
+											getString(R.string.hesap_durumu),
+											getString(R.string.hesap_banlandi, JSONSonuc.getString("HesapDurumBilgi"), getString(R.string.uygulama_yapimci_site)),
+											activity.getString(R.string.tamam),
+											"ADDialog_HesapDurumu_Tamam");
+									ADDialog_HesapDurumu.getWindow().getAttributes().windowAnimations = R.style.DialogAnimation;
+									ADDialog_HesapDurumu.show();
+								}
 
 								break;
 						}
 					}
 
+					break;
+				case "ADDialog_HesapDurumu_Tamam":
+					AkorDefterimSys.DismissAlertDialog(ADDialog_HesapDurumu);
 					break;
 			}
 

@@ -40,8 +40,6 @@ import java.util.Locale;
 
 import com.cnbcyln.app.akordefterim.Adaptorler.AdpAkorlar;
 import com.cnbcyln.app.akordefterim.Adaptorler.AdpTonlar;
-import com.cnbcyln.app.akordefterim.Frg_Anasayfa;
-import com.cnbcyln.app.akordefterim.Frg_SosyalHesabim;
 import com.cnbcyln.app.akordefterim.Interface.Interface_AsyncResponse;
 import com.cnbcyln.app.akordefterim.Interface.Interface_FragmentDataConn;
 import com.cnbcyln.app.akordefterim.R;
@@ -67,7 +65,6 @@ import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.DatePickerDialog;
-import android.app.Dialog;
 import android.app.Fragment;
 import android.app.Notification;
 import android.app.NotificationManager;
@@ -186,7 +183,7 @@ public class AkorDefterimSys {
 	// PHP AYARLARI (MAİL VE SMS GÖNDERİMİ)
 	public String CBCAPP_HttpsAdres = "https://www.cbcapp.net";
 	private String AkorDefterimHttpAdres = "http://akordefterim.cbcapp.net/";
-	public List<String> SMSGondericiAdi = Arrays.asList("+908503042567", "C.B.CEYLAN");
+	List<String> SMSGondericiAdi = Arrays.asList("+908503042567", "C.B.CEYLAN");
 
 	public String AnaKlasorDizini = Environment.getExternalStorageDirectory() + File.separator + "Akor Defterim" + File.separator;
 	public int WebBaglantiIstegiToplamSure = 30;
@@ -353,6 +350,7 @@ public class AkorDefterimSys {
 					activity.getWindow().setEnterTransition(explode);
 					activity.getWindow().setExitTransition(explode);
 
+					@SuppressWarnings("unchecked")
 					ActivityOptionsCompat AOC = ActivityOptionsCompat.makeSceneTransitionAnimation(activity);
 					activity.startActivity(mIntent, AOC.toBundle());
 				} else {
@@ -424,14 +422,22 @@ public class AkorDefterimSys {
 		View view = activity.getCurrentFocus();
 
 		// Klavyeyi kapatıyoruz.
-		if (view != null) imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
+		if (view != null) if (imm != null) {
+			imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
+		}
 	}
 
 	public int ParolaGuvenligi(String Parola) {
 		int Skor = 0;
 		System.out.println("Girilen Parola : " + Parola);
 
-		int length = 0, uppercase = 0, lowercase = 0, digits = 0, symbols = 0, bonus = 0, requirements = 0;
+		int length = 0;
+		int uppercase = 0;
+		int lowercase = 0;
+		int digits = 0;
+		int symbols = 0;
+		int bonus = 0;
+		int requirements = 0;
 		int lettersonly = 0, numbersonly = 0, cuc = 0, clc = 0;
 
 		length = Parola.length();
@@ -557,9 +563,8 @@ public class AkorDefterimSys {
 		double dLong = (LokasyonLng2 - LokasyonLng1) * Math.PI / 180;
 		double a = Math.sin(dLat / 2) * Math.sin(dLat / 2) + Math.cos(LokasyonLat1 * Math.PI / 180) * Math.cos(LokasyonLat2 * Math.PI / 180) * Math.sin(dLong / 2) * Math.sin(dLong / 2);
 		double c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
-		double d = DunyaninYariCapiOrtalama * c;
 
-		return d;
+		return DunyaninYariCapiOrtalama * c;
 	}
 
 	public boolean WifiErisimKontrolu() {
@@ -958,6 +963,178 @@ public class AkorDefterimSys {
 	}
 
 	@SuppressLint("InflateParams")
+	public AlertDialog CustomAlertDialog(Activity activity, String Baslik, String Mesaj, String ButtonMsjText, final String ButtonIslem) {
+		final Interface_AsyncResponse AsyncResponse = (Interface_AsyncResponse) activity;
+		LayoutInflater inflater = activity.getLayoutInflater();
+		View ViewDialogCustom;
+		Typeface YaziFontu = FontGetir(activity, "anivers_regular");
+
+		ViewDialogCustom = inflater.inflate(R.layout.dialog_custom_1tus, null);
+
+		TextView lblDialogBaslik = ViewDialogCustom.findViewById(R.id.lblDialogBaslik);
+		lblDialogBaslik.setTypeface(YaziFontu, Typeface.BOLD);
+		lblDialogBaslik.setText(new SpannableStringBuilder(Html.fromHtml(Baslik)));
+
+		TextView lblDialogIcerik = ViewDialogCustom.findViewById(R.id.lblDialogIcerik);
+		lblDialogIcerik.setTypeface(YaziFontu, Typeface.NORMAL);
+		lblDialogIcerik.setText(new SpannableStringBuilder(Html.fromHtml(Mesaj)));
+
+		Button btnDialogButton = ViewDialogCustom.findViewById(R.id.btnDialogButton);
+		btnDialogButton.setTypeface(YaziFontu, Typeface.BOLD);
+		btnDialogButton.setText(ButtonMsjText);
+		btnDialogButton.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				AsyncResponse.AsyncTaskReturnValue("{\"Islem\":\"" + ButtonIslem + "\"}");
+			}
+		});
+
+		return new AlertDialog.Builder(activity)
+				.setView(ViewDialogCustom)
+				.setCancelable(false)
+				.create();
+	}
+
+	@SuppressLint("InflateParams")
+	public AlertDialog HButtonCustomAlertDialog(Activity activity, String Baslik, String Mesaj, String Button1MsjText, final String Button1Islem, String Button2MsjText, final String Button2Islem) {
+		final Interface_AsyncResponse AsyncResponse = (Interface_AsyncResponse) activity;
+		LayoutInflater inflater = activity.getLayoutInflater();
+		View ViewDialogCustom;
+		Typeface YaziFontu = FontGetir(activity, "anivers_regular");
+
+		ViewDialogCustom = inflater.inflate(R.layout.dialog_custom_yanyana_2tus, null);
+
+		TextView lblDialogBaslik = ViewDialogCustom.findViewById(R.id.lblDialogBaslik);
+		lblDialogBaslik.setTypeface(YaziFontu, Typeface.BOLD);
+		lblDialogBaslik.setText(new SpannableStringBuilder(Html.fromHtml(Baslik)));
+
+		TextView lblDialogIcerik = ViewDialogCustom.findViewById(R.id.lblDialogIcerik);
+		lblDialogIcerik.setTypeface(YaziFontu, Typeface.NORMAL);
+		lblDialogIcerik.setText(new SpannableStringBuilder(Html.fromHtml(Mesaj)));
+
+		Button btnDialogButton1 = ViewDialogCustom.findViewById(R.id.btnDialogButton1);
+		btnDialogButton1.setTypeface(YaziFontu, Typeface.BOLD);
+		btnDialogButton1.setText(Button1MsjText);
+		btnDialogButton1.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				AsyncResponse.AsyncTaskReturnValue("{\"Islem\":\"" + Button1Islem + "\"}");
+			}
+		});
+
+		Button btnDialogButton2 = ViewDialogCustom.findViewById(R.id.btnDialogButton2);
+		btnDialogButton2.setTypeface(YaziFontu, Typeface.BOLD);
+		btnDialogButton2.setText(Button2MsjText);
+		btnDialogButton2.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				AsyncResponse.AsyncTaskReturnValue("{\"Islem\":\"" + Button2Islem + "\"}");
+			}
+		});
+
+		return new AlertDialog.Builder(activity)
+				.setView(ViewDialogCustom)
+				.setCancelable(false)
+				.create();
+	}
+
+	@SuppressLint("InflateParams")
+	public AlertDialog VButtonCustomAlertDialog(Activity activity, String Baslik, String Mesaj, String Button1MsjText, final String Button1Islem, String Button2MsjText, final String Button2Islem) {
+		final Interface_AsyncResponse AsyncResponse = (Interface_AsyncResponse) activity;
+		LayoutInflater inflater = activity.getLayoutInflater();
+		View ViewDialogCustom;
+		Typeface YaziFontu = FontGetir(activity, "anivers_regular");
+
+		ViewDialogCustom = inflater.inflate(R.layout.dialog_custom_altalta_2tus, null);
+
+		TextView lblDialogBaslik = ViewDialogCustom.findViewById(R.id.lblDialogBaslik);
+		lblDialogBaslik.setTypeface(YaziFontu, Typeface.BOLD);
+		lblDialogBaslik.setText(new SpannableStringBuilder(Html.fromHtml(Baslik)));
+
+		TextView lblDialogIcerik = ViewDialogCustom.findViewById(R.id.lblDialogIcerik);
+		lblDialogIcerik.setTypeface(YaziFontu, Typeface.NORMAL);
+		lblDialogIcerik.setText(new SpannableStringBuilder(Html.fromHtml(Mesaj)));
+
+		Button btnDialogButton1 = ViewDialogCustom.findViewById(R.id.btnDialogButton1);
+		btnDialogButton1.setTypeface(YaziFontu, Typeface.BOLD);
+		btnDialogButton1.setText(Button1MsjText);
+		btnDialogButton1.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				AsyncResponse.AsyncTaskReturnValue("{\"Islem\":\"" + Button1Islem + "\"}");
+			}
+		});
+
+		Button btnDialogButton2 = ViewDialogCustom.findViewById(R.id.btnDialogButton2);
+		btnDialogButton2.setTypeface(YaziFontu, Typeface.BOLD);
+		btnDialogButton2.setText(Button2MsjText);
+		btnDialogButton2.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				AsyncResponse.AsyncTaskReturnValue("{\"Islem\":\"" + Button2Islem + "\"}");
+			}
+		});
+
+		return new AlertDialog.Builder(activity)
+				.setView(ViewDialogCustom)
+				.setCancelable(false)
+				.create();
+	}
+
+	@SuppressLint("InflateParams")
+	public AlertDialog VButtonCustomAlertDialog(Activity activity, String Baslik, String Mesaj, String Button1MsjText, final String Button1Islem, String Button2MsjText, final String Button2Islem, String Button3MsjText, final String Button3Islem) {
+		final Interface_AsyncResponse AsyncResponse = (Interface_AsyncResponse) activity;
+		LayoutInflater inflater = activity.getLayoutInflater();
+		View ViewDialogCustom;
+		Typeface YaziFontu = FontGetir(activity, "anivers_regular");
+
+		ViewDialogCustom = inflater.inflate(R.layout.dialog_custom_altalta_2tus, null);
+
+		TextView lblDialogBaslik = ViewDialogCustom.findViewById(R.id.lblDialogBaslik);
+		lblDialogBaslik.setTypeface(YaziFontu, Typeface.BOLD);
+		lblDialogBaslik.setText(new SpannableStringBuilder(Html.fromHtml(Baslik)));
+
+		TextView lblDialogIcerik = ViewDialogCustom.findViewById(R.id.lblDialogIcerik);
+		lblDialogIcerik.setTypeface(YaziFontu, Typeface.NORMAL);
+		lblDialogIcerik.setText(new SpannableStringBuilder(Html.fromHtml(Mesaj)));
+
+		Button btnDialogButton1 = ViewDialogCustom.findViewById(R.id.btnDialogButton1);
+		btnDialogButton1.setTypeface(YaziFontu, Typeface.BOLD);
+		btnDialogButton1.setText(Button1MsjText);
+		btnDialogButton1.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				AsyncResponse.AsyncTaskReturnValue("{\"Islem\":\"" + Button1Islem + "\"}");
+			}
+		});
+
+		Button btnDialogButton2 = ViewDialogCustom.findViewById(R.id.btnDialogButton2);
+		btnDialogButton2.setTypeface(YaziFontu, Typeface.BOLD);
+		btnDialogButton2.setText(Button2MsjText);
+		btnDialogButton2.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				AsyncResponse.AsyncTaskReturnValue("{\"Islem\":\"" + Button2Islem + "\"}");
+			}
+		});
+
+		Button btnDialogButton3 = ViewDialogCustom.findViewById(R.id.btnDialogButton3);
+		btnDialogButton3.setTypeface(YaziFontu, Typeface.BOLD);
+		btnDialogButton3.setText(Button3MsjText);
+		btnDialogButton3.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				AsyncResponse.AsyncTaskReturnValue("{\"Islem\":\"" + Button3Islem + "\"}");
+			}
+		});
+
+		return new AlertDialog.Builder(activity)
+				.setView(ViewDialogCustom)
+				.setCancelable(false)
+				.create();
+	}
+
+	@SuppressLint("InflateParams")
 	public AlertDialog CustomAlertDialog(Activity activity, View DialogLayoutContent) {
 		AlertDialog Dialog = new AlertDialog.Builder(activity)
 				.setView(DialogLayoutContent)
@@ -1029,81 +1206,6 @@ public class AkorDefterimSys {
 		return Dialog;
 	}
 
-	@SuppressLint("InflateParams")
-	public AlertDialog CustomAlertDialog(Activity activity, String Baslik, String Mesaj, String OnayButtonMsjText, final String Islem) {
-		final Interface_AsyncResponse AsyncResponse = (Interface_AsyncResponse) activity;
-		LayoutInflater inflater = activity.getLayoutInflater();
-		View ViewDialogCustom;
-		Typeface YaziFontu = FontGetir(activity, "anivers_regular");
-
-		ViewDialogCustom = inflater.inflate(R.layout.dialog_custom, null);
-
-		TextView lblDialogBaslik = ViewDialogCustom.findViewById(R.id.lblDialogBaslik);
-		lblDialogBaslik.setTypeface(YaziFontu, Typeface.BOLD);
-		lblDialogBaslik.setText(new SpannableStringBuilder(Html.fromHtml(Baslik)));
-
-		TextView lblDialogIcerik = ViewDialogCustom.findViewById(R.id.lblDialogIcerik);
-		lblDialogIcerik.setTypeface(YaziFontu, Typeface.NORMAL);
-		lblDialogIcerik.setText(new SpannableStringBuilder(Html.fromHtml(Mesaj)));
-
-		Button btnDialogOnayButton = ViewDialogCustom.findViewById(R.id.btnDialogOnayButton);
-		btnDialogOnayButton.setTypeface(YaziFontu, Typeface.BOLD);
-		btnDialogOnayButton.setText(OnayButtonMsjText);
-		btnDialogOnayButton.setOnClickListener(new View.OnClickListener() {
-			@Override
-			public void onClick(View v) {
-				AsyncResponse.AsyncTaskReturnValue("{\"Islem\":\"" + Islem + "\"}");
-			}
-		});
-
-		return new AlertDialog.Builder(activity)
-				.setView(ViewDialogCustom)
-				.setCancelable(false)
-				.create();
-	}
-
-	@SuppressLint("InflateParams")
-	public AlertDialog CustomAlertDialog(Activity activity, String Baslik, String Mesaj, String IptalButtonMsjText, final String IslemIptal, String OnayButtonMsjText, final String IslemOnay) {
-		final Interface_AsyncResponse AsyncResponse = (Interface_AsyncResponse) activity;
-		LayoutInflater inflater = activity.getLayoutInflater();
-		View ViewDialogCustom;
-		Typeface YaziFontu = FontGetir(activity, "anivers_regular");
-
-		ViewDialogCustom = inflater.inflate(R.layout.dialog_custom2, null);
-
-		TextView lblDialogBaslik = ViewDialogCustom.findViewById(R.id.lblDialogBaslik);
-		lblDialogBaslik.setTypeface(YaziFontu, Typeface.BOLD);
-		lblDialogBaslik.setText(new SpannableStringBuilder(Html.fromHtml(Baslik)));
-
-		TextView lblDialogIcerik = ViewDialogCustom.findViewById(R.id.lblDialogIcerik);
-		lblDialogIcerik.setTypeface(YaziFontu, Typeface.NORMAL);
-		lblDialogIcerik.setText(new SpannableStringBuilder(Html.fromHtml(Mesaj)));
-
-		Button btnDialogIptalButton = ViewDialogCustom.findViewById(R.id.btnDialogIptalButton);
-		btnDialogIptalButton.setTypeface(YaziFontu, Typeface.BOLD);
-		btnDialogIptalButton.setText(IptalButtonMsjText);
-		btnDialogIptalButton.setOnClickListener(new View.OnClickListener() {
-			@Override
-			public void onClick(View v) {
-				AsyncResponse.AsyncTaskReturnValue("{\"Islem\":\"" + IslemIptal + "\"}");
-			}
-		});
-
-		Button btnDialogOnayButton = ViewDialogCustom.findViewById(R.id.btnDialogOnayButton);
-		btnDialogOnayButton.setTypeface(YaziFontu, Typeface.BOLD);
-		btnDialogOnayButton.setText(OnayButtonMsjText);
-		btnDialogOnayButton.setOnClickListener(new View.OnClickListener() {
-			@Override
-			public void onClick(View v) {
-				AsyncResponse.AsyncTaskReturnValue("{\"Islem\":\"" + IslemOnay + "\"}");
-			}
-		});
-
-		return new AlertDialog.Builder(activity)
-				.setView(ViewDialogCustom)
-				.setCancelable(false)
-				.create();
-	}
 
 	@SuppressLint("InflateParams")
 	public AlertDialog CustomAlertDialog(Activity activity, int Icon, String Baslik, View DialogLayoutContent, String OnayButtonMsjText, String IptalButtonMsjText, Boolean KapanabilirMi) {

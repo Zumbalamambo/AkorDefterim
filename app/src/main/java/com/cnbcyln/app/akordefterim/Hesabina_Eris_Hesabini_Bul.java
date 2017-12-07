@@ -16,6 +16,7 @@ import android.view.KeyEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.inputmethod.EditorInfo;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.TextView;
@@ -38,8 +39,9 @@ public class Hesabina_Eris_Hesabini_Bul extends AppCompatActivity implements Int
 	AlertDialog ADDialog_HesapDurumu;
 
 	CoordinatorLayout coordinatorLayout;
-	ImageButton btnGeri, btnIleri;
-	SpinKitView SKVIleri;
+	ImageButton btnGeri;
+	Button btnIleri;
+	SpinKitView SKVLoader;
 	TextInputLayout txtILEPostaKullaniciAdi;
 	EditText txtEPostaKullaniciAdi;
 	TextView lblBaslik, lblHesabiniBul, lblHesabiniBulAciklama;
@@ -80,7 +82,7 @@ public class Hesabina_Eris_Hesabini_Bul extends AppCompatActivity implements Int
 		btnIleri = findViewById(R.id.btnIleri);
 		btnIleri.setOnClickListener(this);
 
-		SKVIleri = findViewById(R.id.SKVIleri);
+		SKVLoader = findViewById(R.id.SKVLoader);
 
 		lblHesabiniBul = findViewById(R.id.lblHesabiniBul);
 		lblHesabiniBul.setTypeface(YaziFontu, Typeface.BOLD);
@@ -145,8 +147,8 @@ public class Hesabina_Eris_Hesabini_Bul extends AppCompatActivity implements Int
         try {
             JSONObject JSONSonuc = new JSONObject(sonuc);
 
-			SKVIleri.setVisibility(View.GONE);
-			btnIleri.setVisibility(View.VISIBLE);
+			btnIleri.setEnabled(true);
+			SKVLoader.setVisibility(View.GONE);
 
             switch (JSONSonuc.getString("Islem")) {
 				case "HesapBilgiGetir":
@@ -156,7 +158,7 @@ public class Hesabina_Eris_Hesabini_Bul extends AppCompatActivity implements Int
 									getString(R.string.hesap_durumu),
 									getString(R.string.hesap_banlandi, JSONSonuc.getString("HesapDurumBilgi"), getString(R.string.uygulama_yapimci_site)),
 									activity.getString(R.string.tamam),
-									"ADDialog_HesapDurumu_Kapat");
+									"ADDialog_HesapDurumu_Tamam");
 							ADDialog_HesapDurumu.getWindow().getAttributes().windowAnimations = R.style.DialogAnimation;
 							ADDialog_HesapDurumu.show();
                         } else {
@@ -178,7 +180,7 @@ public class Hesabina_Eris_Hesabini_Bul extends AppCompatActivity implements Int
 					} else AkorDefterimSys.StandartSnackBarMsj(coordinatorLayout, getString(R.string.hesap_bilgileri_bulunamadi));
 
                     break;
-				case "ADDialog_HesapDurumu_Kapat":
+				case "ADDialog_HesapDurumu_Tamam":
 					AkorDefterimSys.DismissAlertDialog(ADDialog_HesapDurumu);
 					break;
             }
@@ -188,6 +190,8 @@ public class Hesabina_Eris_Hesabini_Bul extends AppCompatActivity implements Int
     }
 
     private void IleriIslem() {
+		btnIleri.setEnabled(false);
+		SKVLoader.setVisibility(View.VISIBLE);
 		AkorDefterimSys.KlavyeKapat();
 
 		txtEPostaKullaniciAdi.setText(txtEPostaKullaniciAdi.getText().toString().trim());
@@ -211,15 +215,19 @@ public class Hesabina_Eris_Hesabini_Bul extends AppCompatActivity implements Int
 			}
 		}
 
-		AkorDefterimSys.UnFocusEditText(txtEPostaKullaniciAdi);
-
 		if(txtILEPostaKullaniciAdi.getError() == null) {
-			if(AkorDefterimSys.InternetErisimKontrolu()) {
-				SKVIleri.setVisibility(View.VISIBLE);
-				btnIleri.setVisibility(View.GONE);
+			AkorDefterimSys.UnFocusEditText(txtEPostaKullaniciAdi);
 
+			if(AkorDefterimSys.InternetErisimKontrolu())
 				AkorDefterimSys.HesapBilgiGetir(null, "", EPostaKullaniciAdi);
-			} else AkorDefterimSys.StandartSnackBarMsj(coordinatorLayout, getString(R.string.internet_baglantisi_saglanamadi));
+			else {
+				btnIleri.setEnabled(true);
+				SKVLoader.setVisibility(View.GONE);
+				AkorDefterimSys.StandartSnackBarMsj(coordinatorLayout, getString(R.string.internet_baglantisi_saglanamadi));
+			}
+		} else {
+			btnIleri.setEnabled(true);
+			SKVLoader.setVisibility(View.GONE);
 		}
 	}
 }

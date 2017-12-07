@@ -17,6 +17,7 @@ import android.view.KeyEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.inputmethod.EditorInfo;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.Spinner;
@@ -50,11 +51,12 @@ public class Hesabina_Eris_Sms_Gonder extends AppCompatActivity implements Inter
 	Handler SMSGondermeHandler = new Handler();
 
 	CoordinatorLayout coordinatorLayout;
-	ImageButton btnGeri, btnIleri;
-	SpinKitView SKVIleri;
+	ImageButton btnGeri;
+	Button btnIleri;
+	SpinKitView SKVLoader;
 	TextInputLayout txtILCepTelefon;
 	EditText txtCepTelefon;
-	TextView lblBaslik, lblCepTelefon, lblHesabiniBulSmsGonderAciklama;
+	TextView lblBaslik, lblSmsGonder, lblHesabiniBulSmsGonderAciklama;
 	Spinner spnUlkeKodlari;
 
 	int SMSGondermeKalanSure = 0;
@@ -108,11 +110,11 @@ public class Hesabina_Eris_Sms_Gonder extends AppCompatActivity implements Inter
 		btnIleri = findViewById(R.id.btnIleri);
 		btnIleri.setOnClickListener(this);
 
-		SKVIleri = findViewById(R.id.SKVIleri);
+		SKVLoader = findViewById(R.id.SKVLoader);
 
-		lblCepTelefon = findViewById(R.id.lblCepTelefon);
-		lblCepTelefon.setTypeface(YaziFontu, Typeface.BOLD);
-		lblCepTelefon.setText(lblCepTelefon.getText().toString().toUpperCase());
+		lblSmsGonder = findViewById(R.id.lblSmsGonder);
+		lblSmsGonder.setTypeface(YaziFontu, Typeface.BOLD);
+		lblSmsGonder.setText(lblSmsGonder.getText().toString().toUpperCase());
 
 		spnUlkeKodlari = findViewById(R.id.spnUlkeKodlari);
 		snfUlkeKodlari = AkorDefterimSys.UlkeKodlariniGetir();
@@ -190,15 +192,15 @@ public class Hesabina_Eris_Sms_Gonder extends AppCompatActivity implements Inter
 							ADDialog_HesapDurumu.getWindow().getAttributes().windowAnimations = R.style.DialogAnimation;
 							ADDialog_HesapDurumu.show();
 
-							SKVIleri.setVisibility(View.GONE);
-							btnIleri.setVisibility(View.VISIBLE);
+							btnIleri.setEnabled(true);
+							SKVLoader.setVisibility(View.GONE);
                         } else {
 							if (JSONSonuc.getString("CepTelefonOnay").equals("1")) {
 								if(SMSGondermeKalanSure > 0 && SMSGondermeKalanSure < AkorDefterimSys.SMSGondermeToplamSure) {
-									SKVIleri.setVisibility(View.GONE);
-									btnIleri.setVisibility(View.VISIBLE);
-
 									AkorDefterimSys.StandartSnackBarMsj(coordinatorLayout, getString(R.string.sure_bitmeden_yeni_sms_telebinde_bulunamazsiniz));
+
+									btnIleri.setEnabled(true);
+									SKVLoader.setVisibility(View.GONE);
 								} else AkorDefterimSys.SMSGonder(TelKodu, CepTelefon, getString(R.string.sms_parola_gonderildi_icerik, JSONSonuc.getString("AdSoyad"), JSONSonuc.getString("Parola"), getString(R.string.uygulama_adi)));
 							} else {
 								ADDialog_SMS_Gonder = AkorDefterimSys.CustomAlertDialog(activity,
@@ -209,13 +211,13 @@ public class Hesabina_Eris_Sms_Gonder extends AppCompatActivity implements Inter
 								ADDialog_SMS_Gonder.getWindow().getAttributes().windowAnimations = R.style.DialogAnimation;
 								ADDialog_SMS_Gonder.show();
 
-								SKVIleri.setVisibility(View.GONE);
-								btnIleri.setVisibility(View.VISIBLE);
+								btnIleri.setEnabled(true);
+								SKVLoader.setVisibility(View.GONE);
 							}
                         }
 					} else {
-						SKVIleri.setVisibility(View.GONE);
-						btnIleri.setVisibility(View.VISIBLE);
+						btnIleri.setEnabled(true);
+						SKVLoader.setVisibility(View.GONE);
 
 						AkorDefterimSys.StandartSnackBarMsj(coordinatorLayout, getString(R.string.hesap_bilgileri_bulunamadi));
 					}
@@ -225,8 +227,8 @@ public class Hesabina_Eris_Sms_Gonder extends AppCompatActivity implements Inter
 					AkorDefterimSys.DismissAlertDialog(ADDialog_HesapDurumu);
 					break;
 				case "SMSGonder":
-					SKVIleri.setVisibility(View.GONE);
-					btnIleri.setVisibility(View.VISIBLE);
+					btnIleri.setEnabled(true);
+					SKVLoader.setVisibility(View.GONE);
 
 					if(JSONSonuc.getBoolean("Sonuc")) {
 						ADDialog_SMS_Gonder = AkorDefterimSys.CustomAlertDialog(activity,
@@ -263,6 +265,8 @@ public class Hesabina_Eris_Sms_Gonder extends AppCompatActivity implements Inter
     }
 
     private void IleriIslem() {
+		btnIleri.setEnabled(false);
+		SKVLoader.setVisibility(View.VISIBLE);
 		AkorDefterimSys.KlavyeKapat();
 
 		txtCepTelefon.setText(txtCepTelefon.getText().toString().trim());
@@ -282,15 +286,19 @@ public class Hesabina_Eris_Sms_Gonder extends AppCompatActivity implements Inter
 			txtILCepTelefon.setError(null);
 		}
 
-		AkorDefterimSys.UnFocusEditText(txtCepTelefon);
-
 		if(txtILCepTelefon.getError() == null) {
-			if(AkorDefterimSys.InternetErisimKontrolu()) {
-				SKVIleri.setVisibility(View.VISIBLE);
-				btnIleri.setVisibility(View.GONE);
+			AkorDefterimSys.UnFocusEditText(txtCepTelefon);
 
+			if(AkorDefterimSys.InternetErisimKontrolu())
 				AkorDefterimSys.HesapBilgiGetir(null, TelKodu, CepTelefon);
-			} else AkorDefterimSys.StandartSnackBarMsj(coordinatorLayout, getString(R.string.internet_baglantisi_saglanamadi));
+			else {
+				btnIleri.setEnabled(true);
+				SKVLoader.setVisibility(View.GONE);
+				AkorDefterimSys.StandartSnackBarMsj(coordinatorLayout, getString(R.string.internet_baglantisi_saglanamadi));
+			}
+		} else {
+			btnIleri.setEnabled(true);
+			SKVLoader.setVisibility(View.GONE);
 		}
 	}
 
@@ -310,13 +318,13 @@ public class Hesabina_Eris_Sms_Gonder extends AppCompatActivity implements Inter
 							sharedPrefEditor.remove("prefSMSGondermeKalanSure");
 							sharedPrefEditor.apply();
 
-							lblCepTelefon.setText(getString(R.string.telefon_numarasi));
+							lblSmsGonder.setText(getString(R.string.telefon_numarasi));
 						} else {
 							sharedPrefEditor = AkorDefterimSys.PrefAyarlar().edit();
 							sharedPrefEditor.putInt("prefSMSGondermeKalanSure", SMSGondermeKalanSure);
 							sharedPrefEditor.apply();
 
-							lblCepTelefon.setText(getString(R.string.telefon_numarasi2, AkorDefterimSys.ZamanFormatMMSS(SMSGondermeKalanSure)));
+							lblSmsGonder.setText(getString(R.string.telefon_numarasi2, AkorDefterimSys.ZamanFormatMMSS(SMSGondermeKalanSure)));
 							SMSGondermeKalanSure--;
 						}
 					}

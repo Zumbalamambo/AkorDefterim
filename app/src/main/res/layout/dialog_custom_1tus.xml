@@ -54,7 +54,7 @@
         app:layout_constraintTop_toBottomOf="@+id/lblDialogIcerik" />
 
     <Button
-        android:id="@+id/btnDialogOnayButton"
+        android:id="@+id/btnDialogButton"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:background="@drawable/custom_button2"

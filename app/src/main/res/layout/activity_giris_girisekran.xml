@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.constraint.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:keepScreenOn="true">
@@ -25,27 +25,21 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        app:layout_constraintGuide_percent="0.29947916"
-        tools:layout_editor_absoluteX="123dp"
-        tools:layout_editor_absoluteY="0dp" />
+        app:layout_constraintGuide_percent="0.30" />
 
     <android.support.constraint.Guideline
         android:id="@+id/v_guideline4"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        app:layout_constraintGuide_percent="0.7"
-        tools:layout_editor_absoluteX="288dp"
-        tools:layout_editor_absoluteY="0dp" />
+        app:layout_constraintGuide_percent="0.7" />
 
     <android.support.constraint.Guideline
         android:id="@+id/h_guideline1"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        app:layout_constraintGuide_percent="0.06"
-        tools:layout_editor_absoluteX="0dp"
-        tools:layout_editor_absoluteY="26dp" />
+        app:layout_constraintGuide_percent="0.06" />
 
     <android.support.constraint.Guideline
         android:id="@+id/h_guideline2"
@@ -55,9 +49,10 @@
         app:layout_constraintGuide_percent="0.25" />
 
     <TextView
-        android:id="@+id/lblGirisBaslik"
+        android:id="@+id/lblBaslik"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginTop="12dp"
         android:text="@string/giris_yap"
         android:textColor="@color/Beyaz"
         android:textSize="@dimen/yazi_boyutu22"
@@ -65,17 +60,20 @@
         app:layout_constraintRight_toLeftOf="@+id/v_guideline4"
         app:layout_constraintTop_toTopOf="@+id/h_guideline1" />
 
-    <Button
+    <ImageButton
         android:id="@+id/btnGeri"
-        android:layout_width="24dp"
-        android:layout_height="24dp"
-        android:background="@drawable/ic_arrow_back"
-        app:layout_constraintRight_toLeftOf="@+id/v_guideline1"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
+        android:layout_marginStart="24dp"
+        android:layout_marginLeft="24dp"
+        android:background="@drawable/transparan"
+        android:contentDescription="@string/imageDesc"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="@+id/h_guideline1"
-        android:layout_marginTop="0dp" />
+        app:srcCompat="@drawable/ic_arrow_back" />
 
     <TextView
-        android:id="@+id/lblGirisAciklama"
+        android:id="@+id/lblAciklama"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginLeft="0dp"
@@ -94,7 +92,7 @@
         android:layout_height="50dp"
         android:layout_marginLeft="0dp"
         android:layout_marginRight="0dp"
-        android:layout_marginTop="34dp"
+        android:layout_marginTop="16dp"
         android:background="@drawable/custom_button_gri"
         android:drawableLeft="@drawable/layers_fb_icon"
         android:drawableStart="@drawable/layers_fb_icon"
@@ -107,7 +105,7 @@
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintLeft_toLeftOf="@+id/v_guideline1"
         app:layout_constraintRight_toLeftOf="@+id/v_guideline2"
-        app:layout_constraintTop_toBottomOf="@+id/lblGirisAciklama" />
+        app:layout_constraintTop_toBottomOf="@+id/lblAciklama" />
 
     <Button
         android:id="@+id/btnGoogleLogin"
@@ -157,7 +155,7 @@
         android:layout_height="wrap_content"
         android:layout_marginLeft="0dp"
         android:layout_marginRight="0dp"
-        android:layout_marginTop="32dp"
+        android:layout_marginTop="24dp"
         android:text="@string/veya"
         android:textColor="@color/Beyaz"
         android:textSize="@dimen/yazi_boyutu18"
@@ -172,7 +170,7 @@
         android:layout_height="50dp"
         android:layout_marginLeft="0dp"
         android:layout_marginRight="0dp"
-        android:layout_marginTop="32dp"
+        android:layout_marginTop="24dp"
         android:background="@drawable/custom_button_gri"
         android:text="@string/eposta_yada_kullaniciadi_giris_yap"
         android:textAppearance="@style/TextAppearance.AppCompat"
@@ -182,5 +180,37 @@
         app:layout_constraintLeft_toLeftOf="@+id/v_guideline1"
         app:layout_constraintRight_toLeftOf="@+id/v_guideline2"
         app:layout_constraintTop_toBottomOf="@+id/lblVeya" />
+
+    <TextView
+        android:id="@+id/lblInternetYoksa"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="0dp"
+        android:layout_marginRight="0dp"
+        android:layout_marginTop="16dp"
+        android:text="@string/interneti_yoksa"
+        android:textColor="@color/Beyaz"
+        android:textSize="@dimen/yazi_boyutu18"
+        app:layout_constraintHorizontal_bias="0.494"
+        app:layout_constraintLeft_toLeftOf="@+id/v_guideline1"
+        app:layout_constraintRight_toLeftOf="@+id/v_guideline2"
+        app:layout_constraintTop_toBottomOf="@+id/btnNormalLogin" />
+
+    <Button
+        android:id="@+id/btnCevrimdisiLogin"
+        android:layout_width="0dp"
+        android:layout_height="50dp"
+        android:layout_marginLeft="0dp"
+        android:layout_marginRight="0dp"
+        android:layout_marginTop="16dp"
+        android:background="@drawable/custom_button_gri"
+        android:text="@string/cevrimdisi_giris_yap"
+        android:textAppearance="@style/TextAppearance.AppCompat"
+        android:textColor="@color/KoyuYazi"
+        android:textSize="@dimen/button_yazi_boyutu16"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintLeft_toLeftOf="@+id/v_guideline1"
+        app:layout_constraintRight_toLeftOf="@+id/v_guideline2"
+        app:layout_constraintTop_toBottomOf="@+id/lblInternetYoksa" />
 
 </android.support.constraint.ConstraintLayout>
