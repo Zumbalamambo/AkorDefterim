@@ -180,6 +180,34 @@
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>
+        <activity android:name=".Hesabim" >
+            <intent-filter>
+                <action android:name="android.intent.action.HESABIM" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
+        <activity android:name=".Profil_Duzenle" >
+            <intent-filter>
+                <action android:name="android.intent.action.PROFIL_DUZENLE" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
+        <activity android:name=".EPosta_Degistir" >
+            <intent-filter>
+                <action android:name="android.intent.action.EPOSTA_DEGISTIR" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
+        <activity android:name=".CepTelefonu_Degistir" >
+            <intent-filter>
+                <action android:name="android.intent.action.CEPTELEFONU_DEGISTIR" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
         <activity android:name="com.facebook.FacebookActivity"
             android:configChanges="keyboard|keyboardHidden|screenLayout|screenSize|orientation"
             android:label="@string/uygulama_adi"

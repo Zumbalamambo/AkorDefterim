@@ -72,11 +72,22 @@
 			app:layout_constraintEnd_toEndOf="parent"
 			app:layout_constraintTop_toTopOf="parent" />
 
+		<ImageButton
+			android:id="@+id/btnKaydet"
+			android:layout_width="60dp"
+			android:layout_height="0dp"
+			android:background="@drawable/custom_button2"
+			app:layout_constraintBottom_toTopOf="@+id/view1"
+			app:layout_constraintEnd_toEndOf="parent"
+			app:layout_constraintTop_toTopOf="parent"
+			app:srcCompat="@drawable/ic_check_mavi"
+			android:contentDescription="@string/imageDesc" />
+
 		<View
 			android:id="@+id/view1"
 			android:layout_width="0dp"
 			android:layout_height="1dp"
-			android:background="@drawable/line2"
+			android:background="@drawable/cizgi_ortagri"
 			app:layout_constraintTop_toTopOf="@+id/h_guideline1" />
 
 		<TextView
@@ -84,7 +95,7 @@
 			android:layout_width="0dp"
 			android:layout_height="wrap_content"
 			android:layout_marginTop="16dp"
-			android:text="@string/onay_kodu_email"
+			android:text="@string/dogrulama_kodu_eposta"
 			android:textColor="@color/KoyuGri"
 			app:layout_constraintEnd_toStartOf="@+id/v_guideline2"
 			app:layout_constraintLeft_toLeftOf="@+id/v_guideline1"

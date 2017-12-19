@@ -1,0 +1,436 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.design.widget.CoordinatorLayout
+	xmlns:android="http://schemas.android.com/apk/res/android"
+	xmlns:app="http://schemas.android.com/apk/res-auto"
+	xmlns:tools="http://schemas.android.com/tools"
+	android:id="@+id/coordinatorLayout"
+	android:layout_width="match_parent"
+	android:layout_height="match_parent"
+	android:background="@color/Beyaz">
+
+	<android.support.constraint.ConstraintLayout
+		android:id="@+id/ConstraintLayout1"
+		android:layout_width="match_parent"
+		android:layout_height="match_parent"
+		android:descendantFocusability="beforeDescendants"
+		android:focusableInTouchMode="true"
+		android:keepScreenOn="true">
+
+		<android.support.constraint.Guideline
+			android:id="@+id/v_guideline1"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:orientation="vertical"
+			app:layout_constraintGuide_percent="0.05" />
+
+		<android.support.constraint.Guideline
+			android:id="@+id/v_guideline2"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:orientation="vertical"
+			app:layout_constraintGuide_percent="0.95" />
+
+		<android.support.constraint.Guideline
+			android:id="@+id/h_guideline1"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:orientation="horizontal"
+			app:layout_constraintGuide_percent="0.085" />
+
+		<ImageButton
+			android:id="@+id/btnGeri"
+			android:layout_width="60dp"
+			android:layout_height="0dp"
+			android:background="@drawable/custom_button2"
+			app:layout_constraintBottom_toTopOf="@+id/view1"
+			app:layout_constraintStart_toStartOf="parent"
+			app:layout_constraintTop_toTopOf="parent"
+			app:srcCompat="@drawable/ic_close_siyah"
+			android:contentDescription="@string/imageDesc" />
+
+		<TextView
+			android:id="@+id/lblBaslik"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:layout_marginLeft="12dp"
+			android:layout_marginStart="12dp"
+			android:text="@string/profili_duzenle"
+			android:textColor="@color/KoyuYazi"
+			style="@style/TextAppearance.AppCompat.Medium.Inverse"
+			app:layout_constraintBottom_toTopOf="@+id/view1"
+			app:layout_constraintStart_toEndOf="@+id/btnGeri"
+			app:layout_constraintTop_toTopOf="parent" />
+
+		<ImageButton
+			android:id="@+id/btnKaydet"
+			android:layout_width="60dp"
+			android:layout_height="0dp"
+			android:background="@drawable/custom_button2"
+			app:layout_constraintBottom_toTopOf="@+id/view1"
+			app:layout_constraintEnd_toEndOf="parent"
+			app:layout_constraintTop_toTopOf="parent"
+			app:srcCompat="@drawable/ic_check_mavi"
+			android:contentDescription="@string/imageDesc" />
+
+		<View
+			android:id="@+id/view1"
+			android:layout_width="0dp"
+			android:layout_height="1dp"
+			android:background="@drawable/cizgi_ortagri"
+			app:layout_constraintTop_toTopOf="@+id/h_guideline1" />
+
+		<ScrollView
+			android:id="@+id/scroll_view"
+			android:layout_width="0dp"
+			android:layout_height="0dp"
+			android:fillViewport="true"
+			app:layout_constraintBottom_toBottomOf="parent"
+			app:layout_constraintEnd_toEndOf="parent"
+			app:layout_constraintStart_toStartOf="parent"
+			app:layout_constraintTop_toTopOf="@+id/view1">
+
+			<android.support.constraint.ConstraintLayout
+				android:id="@+id/ConstraintLayout2"
+				android:layout_width="match_parent"
+				android:layout_height="wrap_content">
+
+				<android.support.constraint.Guideline
+					android:id="@+id/v_guideline3"
+					android:layout_width="wrap_content"
+					android:layout_height="wrap_content"
+					android:orientation="vertical"
+					app:layout_constraintGuide_percent="0.05" />
+
+				<android.support.constraint.Guideline
+					android:id="@+id/v_guideline4"
+					android:layout_width="wrap_content"
+					android:layout_height="wrap_content"
+					android:orientation="vertical"
+					app:layout_constraintGuide_percent="0.95" />
+
+				<android.support.constraint.ConstraintLayout
+					android:id="@+id/RLBuyukProfilResim"
+					android:layout_width="0dp"
+					android:layout_height="wrap_content"
+					app:layout_constraintEnd_toEndOf="parent"
+					app:layout_constraintStart_toStartOf="parent"
+					app:layout_constraintTop_toTopOf="parent">
+
+					<ImageView
+						android:id="@+id/ImgBuyukProfilResim"
+						android:layout_width="0dp"
+						android:layout_height="0dp"
+						android:contentDescription="@string/imageDesc"
+						android:scaleType="centerCrop"
+						android:src="@drawable/bos_profil"
+						app:layout_constraintBottom_toBottomOf="parent"
+						app:layout_constraintEnd_toEndOf="parent"
+						app:layout_constraintStart_toStartOf="parent"
+						app:layout_constraintTop_toTopOf="parent" />
+
+					<LinearLayout
+						android:id="@+id/LLBuyukProfilResim"
+						android:layout_width="0dp"
+						android:layout_height="0dp"
+						android:alpha="0.6"
+						android:background="#094c67"
+						android:orientation="vertical"
+						app:layout_constraintBottom_toBottomOf="parent"
+						app:layout_constraintEnd_toEndOf="parent"
+						app:layout_constraintStart_toStartOf="parent"
+						app:layout_constraintTop_toTopOf="parent" />
+
+					<com.cnbcyln.app.akordefterim.util.CircleImageView
+						android:id="@+id/CImgProfilResim"
+						android:layout_width="@dimen/profil_resim_width_height"
+						android:layout_height="@dimen/profil_resim_width_height"
+						android:layout_centerHorizontal="true"
+						android:layout_centerVertical="true"
+						android:layout_marginTop="16dp"
+						android:src="@drawable/bos_profil"
+						app:civ_border_color="@color/profil_resim_border_color"
+						app:civ_border_width="@dimen/profil_resim_border_width"
+						app:layout_constraintEnd_toEndOf="parent"
+						app:layout_constraintStart_toStartOf="parent"
+						app:layout_constraintTop_toTopOf="parent" />
+
+
+					<TextView
+						android:id="@+id/lblFotografiDegistir"
+						android:layout_width="wrap_content"
+						android:layout_height="wrap_content"
+						android:layout_marginBottom="16dp"
+						android:layout_marginEnd="8dp"
+						android:layout_marginLeft="12dp"
+						android:layout_marginRight="8dp"
+						android:layout_marginStart="12dp"
+						android:layout_marginTop="16dp"
+						android:text="@string/fotografi_degistir"
+						android:textColor="@color/KoyuYazi"
+						style="@style/TextAppearance.AppCompat.Medium.Inverse"
+						app:layout_constraintBottom_toBottomOf="parent"
+						app:layout_constraintEnd_toEndOf="@+id/LLBuyukProfilResim"
+						app:layout_constraintStart_toStartOf="@+id/LLBuyukProfilResim"
+						app:layout_constraintTop_toBottomOf="@+id/CImgProfilResim" />
+
+					<TextView
+						android:id="@+id/lblFotografiDegistir2"
+						android:layout_width="wrap_content"
+						android:layout_height="wrap_content"
+						android:layout_marginBottom="16dp"
+						android:layout_marginEnd="8dp"
+						android:layout_marginStart="8dp"
+						android:layout_marginTop="16dp"
+						android:text="@string/fotografi_degistir"
+						android:textColor="@color/AcikMavi"
+						style="@style/TextAppearance.AppCompat.Medium.Inverse"
+						app:layout_constraintBottom_toBottomOf="parent"
+						app:layout_constraintEnd_toEndOf="@+id/LLBuyukProfilResim"
+						app:layout_constraintStart_toStartOf="@+id/LLBuyukProfilResim"
+						app:layout_constraintTop_toBottomOf="@+id/CImgProfilResim" />
+				</android.support.constraint.ConstraintLayout>
+
+				<View
+					android:id="@+id/view2"
+					android:layout_width="0dp"
+					android:layout_height="1dp"
+					android:background="@drawable/cizgi_ortagri"
+					app:layout_constraintEnd_toEndOf="parent"
+					app:layout_constraintStart_toStartOf="parent"
+					app:layout_constraintTop_toBottomOf="@+id/RLBuyukProfilResim" />
+
+				<TextView
+					android:id="@+id/lblGenelBilgiler"
+					android:layout_width="wrap_content"
+					android:layout_height="wrap_content"
+					android:layout_marginLeft="3dp"
+					android:layout_marginStart="3dp"
+					android:layout_marginTop="24dp"
+					android:text="@string/genel_bilgiler"
+					android:textColor="@color/KoyuYazi"
+					style="@style/TextAppearance.AppCompat.Small.Inverse"
+					app:layout_constraintStart_toStartOf="@+id/v_guideline3"
+					app:layout_constraintTop_toBottomOf="@+id/view2" />
+
+				<View
+					android:id="@+id/view4"
+					android:layout_width="0dp"
+					android:layout_height="1dp"
+					android:background="@drawable/cizgi_koyugri"
+					android:layout_marginTop="8dp"
+					app:layout_constraintEnd_toStartOf="@+id/v_guideline4"
+					app:layout_constraintStart_toStartOf="@+id/v_guideline3"
+					app:layout_constraintTop_toBottomOf="@+id/lblGenelBilgiler" />
+
+				<android.support.design.widget.TextInputLayout
+					android:id="@+id/txtILAdSoyad"
+					android:layout_width="0dp"
+					android:layout_height="wrap_content"
+					android:layout_marginLeft="8dp"
+					android:layout_marginStart="8dp"
+					android:layout_marginRight="8dp"
+					android:layout_marginEnd="8dp"
+					android:layout_marginTop="16dp"
+					android:textColorHint="@color/KoyuGri"
+					app:hintTextAppearance="@style/TextAppearance.AppCompat.Small.Inverse"
+					app:layout_constraintEnd_toStartOf="@+id/v_guideline4"
+					app:layout_constraintStart_toStartOf="@+id/v_guideline3"
+					app:layout_constraintTop_toBottomOf="@+id/view4">
+
+					<EditText
+						android:id="@+id/txtAdSoyad"
+						android:layout_width="match_parent"
+						android:layout_height="match_parent"
+						android:hint="@string/ad_soyad"
+						android:text="@string/labeltire"
+						android:textColor="@color/KoyuYazi"
+						android:inputType="textPersonName"
+						android:importantForAutofill="noExcludeDescendants"
+						tools:ignore="UnusedAttribute"
+						style="@style/TextAppearance.AppCompat.Small.Inverse"/>
+				</android.support.design.widget.TextInputLayout>
+
+				<android.support.design.widget.TextInputLayout
+					android:id="@+id/txtILDogumTarih"
+					android:layout_width="0dp"
+					android:layout_height="wrap_content"
+					android:layout_marginLeft="8dp"
+					android:layout_marginStart="8dp"
+					android:layout_marginRight="8dp"
+					android:layout_marginEnd="8dp"
+					android:layout_marginTop="8dp"
+					android:textColorHint="@color/KoyuGri"
+					app:hintTextAppearance="@style/TextAppearance.AppCompat.Small.Inverse"
+					app:layout_constraintEnd_toStartOf="@+id/v_guideline4"
+					app:layout_constraintStart_toStartOf="@+id/v_guideline3"
+					app:layout_constraintTop_toBottomOf="@+id/txtILAdSoyad">
+
+					<EditText
+						android:id="@+id/txtDogumTarih"
+						android:layout_width="match_parent"
+						android:layout_height="match_parent"
+						android:hint="@string/dogumtarihi"
+						android:text="@string/labeltire"
+						android:textColor="@color/KoyuYazi"
+						android:inputType="date"
+						android:importantForAutofill="noExcludeDescendants"
+						tools:ignore="UnusedAttribute"
+						style="@style/TextAppearance.AppCompat.Small.Inverse"/>
+				</android.support.design.widget.TextInputLayout>
+
+				<android.support.design.widget.TextInputLayout
+					android:id="@+id/txtILKullaniciAdi"
+					android:layout_width="0dp"
+					android:layout_height="wrap_content"
+					android:layout_marginLeft="8dp"
+					android:layout_marginStart="8dp"
+					android:layout_marginRight="8dp"
+					android:layout_marginEnd="8dp"
+					android:layout_marginTop="8dp"
+					android:textColorHint="@color/KoyuGri"
+					app:hintTextAppearance="@style/TextAppearance.AppCompat.Small.Inverse"
+					app:layout_constraintEnd_toStartOf="@+id/v_guideline4"
+					app:layout_constraintStart_toStartOf="@+id/v_guideline3"
+					app:layout_constraintTop_toBottomOf="@+id/txtILDogumTarih">
+
+					<EditText
+						android:id="@+id/txtKullaniciAdi"
+						android:layout_width="match_parent"
+						android:layout_height="match_parent"
+						android:hint="@string/kullaniciadi"
+						android:text="@string/labeltire"
+						android:textColor="@color/KoyuYazi"
+						android:inputType="textPersonName"
+						android:importantForAutofill="noExcludeDescendants"
+						tools:ignore="UnusedAttribute"
+						style="@style/TextAppearance.AppCompat.Small.Inverse"/>
+				</android.support.design.widget.TextInputLayout>
+
+				<TextView
+					android:id="@+id/lblGizliBilgiler"
+					android:layout_width="wrap_content"
+					android:layout_height="wrap_content"
+					android:layout_marginLeft="3dp"
+					android:layout_marginStart="3dp"
+					android:layout_marginTop="24dp"
+					android:text="@string/gizli_bilgiler"
+					android:textColor="@color/KoyuYazi"
+					style="@style/TextAppearance.AppCompat.Small.Inverse"
+					app:layout_constraintStart_toStartOf="@+id/v_guideline3"
+					app:layout_constraintTop_toBottomOf="@+id/txtILKullaniciAdi" />
+
+				<View
+					android:id="@+id/view3"
+					android:layout_width="0dp"
+					android:layout_height="1dp"
+					android:background="@drawable/cizgi_koyugri"
+					android:layout_marginTop="8dp"
+					app:layout_constraintEnd_toStartOf="@+id/v_guideline4"
+					app:layout_constraintStart_toStartOf="@+id/v_guideline3"
+					app:layout_constraintTop_toBottomOf="@+id/lblGizliBilgiler" />
+
+				<LinearLayout
+					android:id="@+id/LLEPostaAdresi"
+					android:layout_width="0dp"
+					android:layout_height="wrap_content"
+					android:layout_marginLeft="11dp"
+					android:layout_marginStart="11dp"
+					android:layout_marginRight="11dp"
+					android:layout_marginEnd="11dp"
+					android:layout_marginTop="18dp"
+					android:orientation="vertical"
+					app:layout_constraintStart_toStartOf="@+id/v_guideline3"
+					app:layout_constraintEnd_toStartOf="@+id/v_guideline4"
+					app:layout_constraintTop_toBottomOf="@+id/view3">
+
+					<TextView
+						android:id="@+id/lblEPostaAdresi"
+						android:layout_width="wrap_content"
+						android:layout_height="wrap_content"
+						android:text="@string/eposta_adresi"
+						android:textColor="@color/KoyuGri"
+						style="@style/TextAppearance.AppCompat.Small.Inverse" />
+
+					<TextView
+						android:id="@+id/lblEPostaAdresi2"
+						android:layout_width="wrap_content"
+						android:layout_height="wrap_content"
+						android:layout_marginTop="2dp"
+						android:text="@string/labeltire"
+						android:textColor="@color/KoyuYazi"
+						style="@style/TextAppearance.AppCompat.Small.Inverse" />
+				</LinearLayout>
+
+				<View
+					android:id="@+id/view5"
+					android:layout_width="0dp"
+					android:layout_height="1dp"
+					android:background="@drawable/cizgi_koyugri"
+					android:layout_marginLeft="11dp"
+					android:layout_marginStart="11dp"
+					android:layout_marginRight="11dp"
+					android:layout_marginEnd="11dp"
+					android:layout_marginTop="8dp"
+					app:layout_constraintEnd_toStartOf="@+id/v_guideline4"
+					app:layout_constraintStart_toStartOf="@+id/v_guideline3"
+					app:layout_constraintTop_toBottomOf="@+id/LLEPostaAdresi" />
+
+				<LinearLayout
+					android:id="@+id/LLTelefonNumarasi"
+					android:layout_width="0dp"
+					android:layout_height="wrap_content"
+					android:layout_marginLeft="11dp"
+					android:layout_marginStart="11dp"
+					android:layout_marginRight="11dp"
+					android:layout_marginEnd="11dp"
+					android:layout_marginTop="18dp"
+					android:orientation="vertical"
+					app:layout_constraintStart_toStartOf="@+id/v_guideline3"
+					app:layout_constraintEnd_toStartOf="@+id/v_guideline4"
+					app:layout_constraintTop_toBottomOf="@+id/view5">
+
+					<TextView
+						android:id="@+id/lblTelefonNumarasi"
+						android:layout_width="wrap_content"
+						android:layout_height="wrap_content"
+						android:text="@string/telefon_numarasi"
+						android:textColor="@color/KoyuGri"
+						style="@style/TextAppearance.AppCompat.Small.Inverse" />
+
+					<TextView
+						android:id="@+id/lblTelefonNumarasi2"
+						android:layout_width="wrap_content"
+						android:layout_height="wrap_content"
+						android:layout_marginTop="2dp"
+						android:text="@string/labeltire"
+						android:textColor="@color/KoyuYazi"
+						style="@style/TextAppearance.AppCompat.Small.Inverse" />
+				</LinearLayout>
+
+				<View
+					android:id="@+id/view6"
+					android:layout_width="0dp"
+					android:layout_height="1dp"
+					android:background="@drawable/cizgi_koyugri"
+					android:layout_marginLeft="11dp"
+					android:layout_marginStart="11dp"
+					android:layout_marginRight="11dp"
+					android:layout_marginEnd="11dp"
+					android:layout_marginTop="8dp"
+					app:layout_constraintEnd_toStartOf="@+id/v_guideline4"
+					app:layout_constraintStart_toStartOf="@+id/v_guideline3"
+					app:layout_constraintTop_toBottomOf="@+id/LLTelefonNumarasi" />
+
+				<View
+					android:id="@+id/view_bosluk"
+					android:layout_width="0dp"
+					android:layout_height="1dp"
+					android:layout_marginTop="20dp"
+					app:layout_constraintEnd_toStartOf="@+id/v_guideline4"
+					app:layout_constraintStart_toStartOf="@+id/v_guideline3"
+					app:layout_constraintTop_toBottomOf="@+id/view6" />
+			</android.support.constraint.ConstraintLayout>
+		</ScrollView>
+
+	</android.support.constraint.ConstraintLayout>
+</android.support.design.widget.CoordinatorLayout>

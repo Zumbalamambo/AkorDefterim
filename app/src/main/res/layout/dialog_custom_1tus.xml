@@ -13,7 +13,7 @@
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
         android:textColor="@color/KoyuYazi"
-        android:textSize="@dimen/yazi_boyutu18"
+        style="@style/TextAppearance.AppCompat.Medium.Inverse"
         android:text="@string/labeltire"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -24,7 +24,7 @@
         android:layout_width="0dp"
         android:layout_height="1dp"
         android:layout_marginTop="8dp"
-        android:background="@drawable/line2"
+        android:background="@drawable/cizgi_ortagri"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/lblDialogBaslik" />
@@ -38,7 +38,7 @@
         android:layout_marginTop="24dp"
         android:text="@string/labeltire"
         android:textColor="@color/KoyuYazi"
-        android:textSize="@dimen/yazi_boyutu14"
+        style="@style/TextAppearance.AppCompat.Small.Inverse"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/view1" />
@@ -48,7 +48,7 @@
         android:layout_width="0dp"
         android:layout_height="1dp"
         android:layout_marginTop="32dp"
-        android:background="@drawable/line2"
+        android:background="@drawable/cizgi_ortagri"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/lblDialogIcerik" />
@@ -62,7 +62,7 @@
         android:text="@string/labeltire"
         android:textAppearance="@style/TextAppearance.AppCompat"
         android:textColor="@color/KoyuYazi"
-        android:stateListAnimator="@null"
+        style="@style/TextAppearance.AppCompat.Medium.Inverse"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/view2" />

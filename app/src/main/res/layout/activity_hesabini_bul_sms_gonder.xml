@@ -54,7 +54,7 @@
 			android:layout_marginStart="12dp"
 			android:text="@string/hesabina_eris"
 			android:textColor="@color/KoyuYazi"
-			android:textSize="@dimen/yazi_boyutu18"
+			style="@style/TextAppearance.AppCompat.Medium.Inverse"
 			app:layout_constraintBottom_toTopOf="@+id/view1"
 			app:layout_constraintStart_toEndOf="@+id/btnGeri"
 			app:layout_constraintTop_toTopOf="parent" />
@@ -79,7 +79,7 @@
 			android:id="@+id/view1"
 			android:layout_width="0dp"
 			android:layout_height="1dp"
-			android:background="@drawable/line2"
+			android:background="@drawable/cizgi_ortagri"
 			app:layout_constraintTop_toTopOf="@+id/h_guideline1" />
 
 		<TextView
@@ -91,7 +91,7 @@
 			android:layout_marginTop="24dp"
 			android:text="@string/sms_gonder"
 			android:textColor="@color/KoyuYazi"
-			android:textSize="@dimen/yazi_boyutu18"
+			style="@style/TextAppearance.AppCompat.Medium.Inverse"
 			app:layout_constraintStart_toStartOf="@+id/v_guideline1"
 			app:layout_constraintTop_toBottomOf="@+id/view1" />
 
@@ -99,7 +99,7 @@
 			android:id="@+id/view2"
 			android:layout_width="0dp"
 			android:layout_height="1dp"
-			android:background="@drawable/line2"
+			android:background="@drawable/cizgi_ortagri"
 			android:layout_marginTop="8dp"
 			app:layout_constraintEnd_toStartOf="@+id/v_guideline2"
 			app:layout_constraintStart_toStartOf="@+id/v_guideline1"
@@ -114,6 +114,7 @@
 			android:layout_marginLeft="8dp"
 			android:layout_marginTop="8dp"
 			android:background="@drawable/custom_spinner"
+			style="@style/TextAppearance.AppCompat.Small.Inverse"
 			app:layout_constraintBottom_toTopOf="@+id/lblHesabiniBulSmsGonderAciklama"
 			app:layout_constraintStart_toStartOf="@+id/v_guideline1"
 			app:layout_constraintTop_toTopOf="@+id/view2" />
@@ -126,6 +127,7 @@
 			android:layout_marginStart="8dp"
 			android:layout_marginTop="8dp"
 			android:textColorHint="@color/KoyuGri"
+			app:hintTextAppearance="@style/TextAppearance.AppCompat.Small.Inverse"
 			app:layout_constraintEnd_toStartOf="@+id/v_guideline2"
 			app:layout_constraintStart_toEndOf="@+id/spnUlkeKodlari"
 			app:layout_constraintTop_toBottomOf="@+id/view2">
@@ -137,7 +139,8 @@
 				android:hint="@string/telefon_numarasi"
 				android:inputType="phone"
 				android:maxLines="1"
-				android:textColor="@color/KoyuYazi" />
+				android:textColor="@color/KoyuYazi"
+				style="@style/TextAppearance.AppCompat.Small.Inverse"/>
 		</android.support.design.widget.TextInputLayout>
 
 		<TextView
@@ -147,6 +150,7 @@
 			android:layout_marginTop="8dp"
 			android:text="@string/hesabini_bul_sms_gonder_aciklama"
 			android:textColor="@color/KoyuYazi"
+			style="@style/TextAppearance.AppCompat.Small.Inverse"
 			app:layout_constraintEnd_toStartOf="@+id/v_guideline2"
 			app:layout_constraintStart_toStartOf="@+id/v_guideline1"
 			app:layout_constraintTop_toBottomOf="@+id/txtILCepTelefon" />
@@ -164,6 +168,7 @@
 			android:text="@string/ileri"
 			android:textAppearance="@style/TextAppearance.AppCompat"
 			android:textColor="@color/Beyaz"
+			style="@style/TextAppearance.AppCompat.Small.Inverse"
 			app:layout_constraintEnd_toStartOf="@+id/v_guideline2"
 			app:layout_constraintRight_toLeftOf="@+id/v_guideline2"
 			app:layout_constraintTop_toBottomOf="@+id/lblHesabiniBulSmsGonderAciklama" />

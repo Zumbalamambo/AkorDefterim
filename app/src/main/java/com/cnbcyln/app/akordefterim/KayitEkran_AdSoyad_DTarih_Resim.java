@@ -40,9 +40,9 @@ public class KayitEkran_AdSoyad_DTarih_Resim extends AppCompatActivity implement
 
 	private Activity activity;
 	private AkorDefterimSys AkorDefterimSys;
-
-	Typeface YaziFontu;
+    SharedPreferences sharedPref;
     SharedPreferences.Editor sharedPrefEditor;
+	Typeface YaziFontu;
 	File SecilenProfilResmiFile;
 	AlertDialog ADDialog_Hata, ADDialog_Profil_Resim;
 	InputMethodManager imm;
@@ -56,8 +56,8 @@ public class KayitEkran_AdSoyad_DTarih_Resim extends AppCompatActivity implement
     CircleImageView CImgProfilResim;
     ImageView ImgSilIcon, ImgKameraIcon;
 
-	String EPosta, Parola;
-	int ProfilResimYuklemeBoyutu;
+	String EPosta = "", Parola = "";
+	int ProfilResimYuklemeBoyutu = 0;
 	Boolean DogumTarihAlaninaGirildiMi = false;
     private static final int DOSYAOKUMAYAZMA_IZIN = 1;
 	private static final int RESIMSEC = 2;
@@ -70,6 +70,8 @@ public class KayitEkran_AdSoyad_DTarih_Resim extends AppCompatActivity implement
 		activity = this;
 		AkorDefterimSys = new AkorDefterimSys(activity);
 		YaziFontu = AkorDefterimSys.FontGetir(activity, "anivers_regular"); // Genel yazı fontunu belirttik
+
+        sharedPref = activity.getSharedPreferences(AkorDefterimSys.PrefAdi, Context.MODE_PRIVATE);
 
 		AkorDefterimSys.GenelAyarlar(); // Uygulama için genel ayarları uyguladık.
 		//AkorDefterimSys.TransparanNotifyBar(); // Notification Bar'ı transparan yapıyoruz.
@@ -105,7 +107,7 @@ public class KayitEkran_AdSoyad_DTarih_Resim extends AppCompatActivity implement
 		txtILAdSoyad.setTypeface(YaziFontu);
 
 		txtAdSoyad = findViewById(R.id.txtAdSoyad);
-		txtAdSoyad.setTypeface(YaziFontu, Typeface.NORMAL);
+		txtAdSoyad.setTypeface(YaziFontu, Typeface.BOLD);
 		txtAdSoyad.addTextChangedListener(new TextWatcher() {
 			@Override
 			public void onTextChanged(CharSequence s, int start, int before, int count) {
@@ -127,6 +129,7 @@ public class KayitEkran_AdSoyad_DTarih_Resim extends AppCompatActivity implement
 		txtILDogumTarih.setTypeface(YaziFontu);
 
 		txtDogumTarih = findViewById(R.id.txtDogumTarih);
+		txtDogumTarih.setTypeface(YaziFontu, Typeface.BOLD);
 		txtDogumTarih.setInputType(InputType.TYPE_NULL);
 		txtDogumTarih.addTextChangedListener(new TextWatcher() {
 			@Override
@@ -174,7 +177,7 @@ public class KayitEkran_AdSoyad_DTarih_Resim extends AppCompatActivity implement
 	protected void onStart() {
 		super.onStart();
 
-		if(AkorDefterimSys.PrefAyarlar().getString("prefAction", "").equals("Vazgec")) onBackPressed();
+		if(sharedPref.getString("prefAction", "").equals("Vazgec")) onBackPressed();
 	}
 
 	@Override
@@ -198,7 +201,7 @@ public class KayitEkran_AdSoyad_DTarih_Resim extends AppCompatActivity implement
 				onBackPressed();
 				break;
 			case R.id.lblVazgec:
-				sharedPrefEditor = AkorDefterimSys.PrefAyarlar().edit();
+				sharedPrefEditor = sharedPref.edit();
 				sharedPrefEditor.putString("prefAction", "Vazgec");
 				sharedPrefEditor.apply();
 
@@ -232,19 +235,12 @@ public class KayitEkran_AdSoyad_DTarih_Resim extends AppCompatActivity implement
 					AkorDefterimSys.IntentGetir(new String[]{"GaleridenResimGetir", String.valueOf(DOSYAOKUMAYAZMA_IZIN), String.valueOf(RESIMSEC)});
 				else {
 					if(AkorDefterimSys.AlertDialogisShowing(ADDialog_Hata)) {
-						ADDialog_Hata = AkorDefterimSys.CustomAlertDialog(activity, R.mipmap.ic_launcher,
+						ADDialog_Hata = AkorDefterimSys.CustomAlertDialog(activity,
 								getString(R.string.uygulama_izinleri),
 								getString(R.string.uygulama_izni_dosya_yazma_hata),
-								getString(R.string.tamam));
+								getString(R.string.tamam), "ADDialog_Hata_Kapat");
 						ADDialog_Hata.getWindow().getAttributes().windowAnimations = R.style.DialogAnimation;
 						ADDialog_Hata.show();
-
-						ADDialog_Hata.getButton(AlertDialog.BUTTON_NEUTRAL).setOnClickListener(new View.OnClickListener() {
-							@Override
-							public void onClick(View v) {
-								ADDialog_Hata.cancel();
-							}
-						});
 					}
 				}
 
@@ -275,6 +271,9 @@ public class KayitEkran_AdSoyad_DTarih_Resim extends AppCompatActivity implement
 			JSONObject JSONSonuc = new JSONObject(sonuc);
 
 			switch (JSONSonuc.getString("Islem")) {
+				case "ADDialog_Hata_Kapat":
+					AkorDefterimSys.DismissAlertDialog(ADDialog_Hata);
+					break;
 				case "ADDialog_Profil_Resim_Hayir":
 					AkorDefterimSys.DismissAlertDialog(ADDialog_Profil_Resim);
 					break;

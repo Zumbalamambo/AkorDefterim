@@ -4,6 +4,7 @@ import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager.NameNotFoundException;
@@ -30,7 +31,7 @@ public class SplashEkran extends Activity implements Interface_AsyncResponse {
 
 	private Activity activity;
 	private AkorDefterimSys AkorDefterimSys;
-
+	SharedPreferences sharedPref;
 	SharedPreferences.Editor sharedPrefEditor;
 	Typeface YaziFontu;
 	Animation anim;
@@ -60,6 +61,8 @@ public class SplashEkran extends Activity implements Interface_AsyncResponse {
 		activity = this;
 		AkorDefterimSys = new AkorDefterimSys(activity);
 		YaziFontu = AkorDefterimSys.FontGetir(activity, "anivers_regular");
+
+		sharedPref = activity.getSharedPreferences(AkorDefterimSys.PrefAdi, Context.MODE_PRIVATE);
 
 		AkorDefterimSys.GenelAyarlar(); // Uygulama için genel ayarları uyguladık.
 		AkorDefterimSys.TransparanNotifyBar(); // Notification Bar'ı transparan yapıyoruz.
@@ -101,7 +104,7 @@ public class SplashEkran extends Activity implements Interface_AsyncResponse {
 
 			if (AkorDefterimSys.InternetErisimKontrolu()) { // İnternet bağlantısı var ise
 				if(!AkorDefterimSys.ProgressDialogisShowing(PDSistemKontrol)) {
-					PDSistemKontrol = AkorDefterimSys.CustomProgressDialog(getString(R.string.lutfen_bekleyiniz), false, AkorDefterimSys.ProgressBarTimeoutSuresi);
+					PDSistemKontrol = AkorDefterimSys.CustomProgressDialog(getString(R.string.lutfen_bekleyiniz), false, AkorDefterimSys.ProgressBarTimeoutSuresi, "PDSistemKontrol_Timeout");
 					PDSistemKontrol.show();
 				}
 
@@ -158,7 +161,7 @@ public class SplashEkran extends Activity implements Interface_AsyncResponse {
 
 					if(JSONSonuc.getBoolean("Durum")) { // Sistem çalışıyor ise
 						if(!AkorDefterimSys.ProgressDialogisShowing(PDGuncellemeKontrol)) {
-							PDGuncellemeKontrol = AkorDefterimSys.CustomProgressDialog(getString(R.string.guncellemeler_denetleniyor), false, AkorDefterimSys.ProgressBarTimeoutSuresi);
+							PDGuncellemeKontrol = AkorDefterimSys.CustomProgressDialog(getString(R.string.guncellemeler_denetleniyor), false, AkorDefterimSys.ProgressBarTimeoutSuresi, "PDGuncellemeKontrol_Timeout");
 							PDGuncellemeKontrol.show();
 						}
 
@@ -196,18 +199,18 @@ public class SplashEkran extends Activity implements Interface_AsyncResponse {
 							ADDialog_Guncelleme.show();
 						}
 					} else { // Güncelleme yok ise
-						if (AkorDefterimSys.PrefAyarlar().getString("prefHesapID", "").equals("") && AkorDefterimSys.PrefAyarlar().getString("prefEPosta", "").equals("") && AkorDefterimSys.PrefAyarlar().getString("prefParolaSHA1", "").equals("")) {
+						if (AkorDefterimSys.GirisYapildiMi()) {
+							if(!AkorDefterimSys.ProgressDialogisShowing(PDGirisYap)) {
+								PDGirisYap = AkorDefterimSys.CustomProgressDialog(getString(R.string.giris_yapiliyor), false, AkorDefterimSys.ProgressBarTimeoutSuresi, "PDGirisYap_Timeout");
+								PDGirisYap.show();
+							}
+
+							AkorDefterimSys.HesapGirisYap("Normal", FirebaseToken, OSID, OSVersiyon, UygulamaVersiyon, sharedPref.getString("prefEPosta", ""), sharedPref.getString("prefParolaSHA1", ""),"", "");
+						} else {
 							AkorDefterimSys.HesapPrefSifirla();
 
 							AkorDefterimSys.EkranGetir(new Intent(activity, Giris.class), "Normal");
 							finishAffinity();
-						} else {
-							if(!AkorDefterimSys.ProgressDialogisShowing(PDGirisYap)) {
-								PDGirisYap = AkorDefterimSys.CustomProgressDialog(getString(R.string.giris_yapiliyor), false, AkorDefterimSys.ProgressBarTimeoutSuresi);
-								PDGirisYap.show();
-							}
-
-							AkorDefterimSys.HesapGirisYap("Normal", FirebaseToken, OSID, OSVersiyon, UygulamaVersiyon, AkorDefterimSys.PrefAyarlar().getString("prefEPosta", ""), AkorDefterimSys.PrefAyarlar().getString("prefParolaSHA1", ""),"", "");
 						}
 					}
 
@@ -219,7 +222,7 @@ public class SplashEkran extends Activity implements Interface_AsyncResponse {
 					if(JSONSonuc.getBoolean("Sonuc")) {
 						AkorDefterimSys.HesapPrefSifirla();
 
-						sharedPrefEditor = AkorDefterimSys.PrefAyarlar().edit();
+						sharedPrefEditor = sharedPref.edit();
 						sharedPrefEditor.putString("prefHesapID", JSONSonuc.getString("HesapID"));
 						sharedPrefEditor.putString("prefEPosta", JSONSonuc.getString("HesapEPosta"));
 						sharedPrefEditor.putString("prefParolaSHA1", JSONSonuc.getString("HesapParolaSHA1"));
@@ -261,8 +264,8 @@ public class SplashEkran extends Activity implements Interface_AsyncResponse {
 
 					AkorDefterimSys.HesapPrefSifirla();
 
-					sharedPrefEditor = AkorDefterimSys.PrefAyarlar().edit();
-					sharedPrefEditor.putString("prefOturumTipi", JSONSonuc.getString("Cevrimdisi"));
+					sharedPrefEditor = sharedPref.edit();
+					sharedPrefEditor.putString("prefOturumTipi", "Cevrimdisi");
 					sharedPrefEditor.apply();
 
 					mIntent = new Intent(activity, AnaEkran.class);
@@ -289,8 +292,8 @@ public class SplashEkran extends Activity implements Interface_AsyncResponse {
 
 					AkorDefterimSys.HesapPrefSifirla();
 
-					sharedPrefEditor = AkorDefterimSys.PrefAyarlar().edit();
-					sharedPrefEditor.putString("prefOturumTipi", JSONSonuc.getString("Cevrimdisi"));
+					sharedPrefEditor = sharedPref.edit();
+					sharedPrefEditor.putString("prefOturumTipi", "Cevrimdisi");
 					sharedPrefEditor.apply();
 
 					mIntent = new Intent(activity, AnaEkran.class);
@@ -313,6 +316,24 @@ public class SplashEkran extends Activity implements Interface_AsyncResponse {
 					break;
 				case "ADDialog_HesapDurumu_Tamam":
 					AkorDefterimSys.DismissAlertDialog(ADDialog_HesapDurumu);
+
+					AkorDefterimSys.EkranGetir(new Intent(activity, Giris.class), "Normal");
+					finishAffinity();
+					break;
+				case "PDSistemKontrol_Timeout":
+					AkorDefterimSys.DismissProgressDialog(PDSistemKontrol);
+
+					AkorDefterimSys.EkranGetir(new Intent(activity, Giris.class), "Normal");
+					finishAffinity();
+					break;
+				case "PDGuncellemeKontrol_Timeout":
+					AkorDefterimSys.DismissAlertDialog(PDGuncellemeKontrol);
+
+					AkorDefterimSys.EkranGetir(new Intent(activity, Giris.class), "Normal");
+					finishAffinity();
+					break;
+				case "PDGirisYap_Timeout":
+					AkorDefterimSys.DismissAlertDialog(PDGirisYap);
 
 					AkorDefterimSys.EkranGetir(new Intent(activity, Giris.class), "Normal");
 					finishAffinity();

@@ -50,15 +50,32 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/view1" />
 
+    <com.mhk.android.passcodeview.PasscodeView
+        android:id="@+id/txtDialogOnayKodu"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="18dp"
+        android:layout_marginLeft="0dp"
+        android:layout_marginStart="0dp"
+        android:layout_marginRight="0dp"
+        android:layout_marginEnd="0dp"
+        app:digitColorBorder="@color/KoyuYazi"
+        app:digitColorFilled="@color/AcikMavi3"
+        app:numDigits="6"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/lblDialogIcerik" />
+
     <View
         android:id="@+id/view2"
         android:layout_width="0dp"
         android:layout_height="1dp"
-        android:layout_marginTop="32dp"
+        android:layout_marginTop="24dp"
         android:background="@drawable/cizgi_ortagri"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/lblDialogIcerik" />
+        app:layout_constraintTop_toBottomOf="@+id/txtDialogOnayKodu" />
 
     <Button
         android:id="@+id/btnDialogButton1"
@@ -87,5 +104,19 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/btnDialogButton1" />
+
+    <Button
+        android:id="@+id/btnDialogButton3"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:background="@drawable/custom_button2"
+        android:gravity="center"
+        android:text="@string/labeltire"
+        android:textAppearance="@style/TextAppearance.AppCompat"
+        android:textColor="@color/KoyuYazi"
+        style="@style/TextAppearance.AppCompat.Medium.Inverse"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/btnDialogButton2" />
 
 </android.support.constraint.ConstraintLayout>

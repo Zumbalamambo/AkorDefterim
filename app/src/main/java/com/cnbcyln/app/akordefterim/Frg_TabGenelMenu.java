@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.cnbcyln.app.akordefterim.Adaptorler.AdpGenelMenu;
+import com.cnbcyln.app.akordefterim.Interface.Interface_AsyncResponse;
 import com.cnbcyln.app.akordefterim.Interface.Interface_FragmentDataConn;
 import com.cnbcyln.app.akordefterim.Siniflar.SnfGenelMenu;
 import com.cnbcyln.app.akordefterim.util.AkorDefterimSys;
@@ -25,12 +26,16 @@ import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 @SuppressLint("DefaultLocale")
 @SuppressWarnings("unused")
-public class Frg_TabGenelMenu extends Fragment {
+public class Frg_TabGenelMenu extends Fragment implements Interface_AsyncResponse {
 
 	private Activity activity;
 	private AkorDefterimSys AkorDefterimSys;
+	SharedPreferences sharedPref;
 	//Typeface YaziFontu;
 	ListView lstGenelMenu;
 	private ArrayAdapter<String> listAdapter;
@@ -51,22 +56,17 @@ public class Frg_TabGenelMenu extends Fragment {
 		activity = getActivity();
 		AkorDefterimSys = new AkorDefterimSys(activity);
 		FragmentDataConn = (Interface_FragmentDataConn) activity;
-		SharedPreferences sharedPref = activity.getSharedPreferences(AkorDefterimSys.PrefAdi, Context.MODE_PRIVATE);
+
+		sharedPref = activity.getSharedPreferences(AkorDefterimSys.PrefAdi, Context.MODE_PRIVATE);
 		//YaziFontu = AkorDefterimSys.FontGetir(activity, "anivers_regular");
 
-		lstGenelMenu = (ListView) activity.findViewById(R.id.lstGenelMenu);
+		lstGenelMenu = activity.findViewById(R.id.lstGenelMenu);
 
 		String[] StrArrayGenelMenuListe = null;
 
 		switch (sharedPref.getString("prefOturumTipi", "Cevrimdisi")){
-			case "Normal":
-				StrArrayGenelMenuListe = getResources().getStringArray(R.array.GenelMenu_Normal);
-				break;
-			case "Google":
-				StrArrayGenelMenuListe = getResources().getStringArray(R.array.GenelMenu_Google);
-				break;
-			case "Facebook":
-				StrArrayGenelMenuListe = getResources().getStringArray(R.array.GenelMenu_Facebook);
+			case "Cevrimici":
+				StrArrayGenelMenuListe = getResources().getStringArray(R.array.GenelMenu_Cevrimici);
 				break;
 			case "Cevrimdisi":
 				StrArrayGenelMenuListe = getResources().getStringArray(R.array.GenelMenu_Cevrimdisi);
@@ -92,31 +92,11 @@ public class Frg_TabGenelMenu extends Fragment {
 				String SayfaAdi = SnfGenelMenu.get(position).getGenelMenuSembolAdi();
 
 				switch (SayfaAdi) {
+					case "hesabim": // Hesabım
+						AkorDefterimSys.EkranGetir(new Intent(activity, Hesabim.class), "Slide");
+						break;
 					case "oyla": // Oyla
-						if(AkorDefterimSys.InternetErisimKontrolu()) { //İnternet kontrolü yap
-							String appPackageName = activity.getPackageName(); // getPackageName() from Context or Activity object
-
-							try {
-								startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("market://details?id=" + appPackageName)));
-							} catch (android.content.ActivityNotFoundException e) {
-								startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("https://play.google.com/store/apps/details?id=" + appPackageName)));
-							}
-						} else {
-							ADDialog_InternetBaglantisi = AkorDefterimSys.CustomAlertDialog(activity, R.mipmap.ic_launcher,
-									getString(R.string.internet_baglantisi),
-									getString(R.string.internet_baglantisi_saglanamadi),
-									getString(R.string.tamam));
-							ADDialog_InternetBaglantisi.getWindow().getAttributes().windowAnimations = R.style.DialogAnimation;
-							ADDialog_InternetBaglantisi.show();
-
-							ADDialog_InternetBaglantisi.getButton(AlertDialog.BUTTON_POSITIVE).setOnClickListener(new View.OnClickListener() {
-								@Override
-								public void onClick(View v) {
-									ADDialog_InternetBaglantisi.cancel();
-								}
-							});
-						}
-
+						FragmentDataConn.FragmentSayfaGetir(SayfaAdi);
 						break;
 					case "egitim":
 						FragmentDataConn.EgitimEkraniGetir();
@@ -126,7 +106,6 @@ public class Frg_TabGenelMenu extends Fragment {
 						FragmentDataConn.FragmentSayfaGetir(SayfaAdi);
 						break;
 					case "cikisyap":
-						Fragment_SayfaTag = "Frg_" + SayfaAdi;
 						FragmentDataConn.FragmentSayfaGetir(SayfaAdi);
 						break;
 					default:
@@ -137,5 +116,20 @@ public class Frg_TabGenelMenu extends Fragment {
 				}
 			}
 		});
+	}
+
+	@Override
+	public void AsyncTaskReturnValue(String sonuc) {
+		try {
+			JSONObject JSONSonuc = new JSONObject(sonuc);
+
+			switch (JSONSonuc.getString("Islem")) {
+				case "":
+
+					break;
+			}
+		} catch (JSONException e) {
+			e.printStackTrace();
+		}
 	}
 }

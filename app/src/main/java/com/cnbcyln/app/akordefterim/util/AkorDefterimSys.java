@@ -27,6 +27,7 @@ import java.net.URL;
 import java.nio.charset.Charset;
 import java.security.cert.CertificateException;
 import java.security.cert.X509Certificate;
+import java.sql.Time;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -40,6 +41,7 @@ import java.util.Locale;
 
 import com.cnbcyln.app.akordefterim.Adaptorler.AdpAkorlar;
 import com.cnbcyln.app.akordefterim.Adaptorler.AdpTonlar;
+import com.cnbcyln.app.akordefterim.Giris;
 import com.cnbcyln.app.akordefterim.Interface.Interface_AsyncResponse;
 import com.cnbcyln.app.akordefterim.Interface.Interface_FragmentDataConn;
 import com.cnbcyln.app.akordefterim.R;
@@ -59,6 +61,7 @@ import com.cnbcyln.app.akordefterim.util.SlideNav.SlidingRootNavBuilder;
 import com.cnbcyln.app.akordefterim.util.SlideNav.callback.DragListener;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GooglePlayServicesUtil;
+import com.mhk.android.passcodeview.PasscodeView;
 import com.theartofdev.edmodo.cropper.CropImage;
 
 import android.annotation.SuppressLint;
@@ -178,7 +181,7 @@ public class AkorDefterimSys {
 	private SharedPreferences sharedPref;
 	private SharedPreferences.Editor sharedPrefEditor;
 	private SharedPreferences.OnSharedPreferenceChangeListener sharedPrefChanged;
-	private AlertDialog ADDialog, ADDialog_SistemDurum;
+	private AlertDialog ADDialog;
 
 	// PHP AYARLARI (MAİL VE SMS GÖNDERİMİ)
 	public String CBCAPP_HttpsAdres = "https://www.cbcapp.net";
@@ -189,7 +192,7 @@ public class AkorDefterimSys {
 	public int WebBaglantiIstegiToplamSure = 30;
 	public int SMSGondermeToplamSure = 180;
 	public int EPostaGondermeToplamSure = 180;
-	public int ProgressBarTimeoutSuresi = 30 * 1000;
+	public int ProgressBarTimeoutSuresi = 30 * 1000; // 30 Saniye
 	private static final int PLAY_SERVICES_RESOLUTION_REQUEST = 1000;
 	public int RC_GOOGLE_LOGIN = 9001;
 	public int RC_TWITTER_LOGIN = 9002;
@@ -197,6 +200,7 @@ public class AkorDefterimSys {
 	public long FirebaseRemoteConfigCacheExpiration = 3600;
 	public String PrefAdi = "AkorDefterim";
 	public String IstekWebSitesi = "IstekBudur.Com";
+	public String TarihGunAyYilAyiracREGEX = "/";
 
 	/** Google API Lokasyon İşlem Değişkenleri **/
 	public int UPDATE_INTERVAL = 4000; // 4 saniye
@@ -293,10 +297,6 @@ public class AkorDefterimSys {
 		// Ekran ışığını eğer prefEkranIsigiAydinligi değeri ayarlanmamışsa en parlak olan 255'e ayarlıyoruz. Aksi halde ayar ne ise o ayarlanıyor..
 		layoutpars.screenBrightness = sharedPref.getInt("prefEkranIsigiAydinligi", 255) / (float)255;
 		activity.getWindow().setAttributes(layoutpars); // Yeni değerler ekrana uygulanıyor
-	}
-
-	public SharedPreferences PrefAyarlar() {
-		return sharedPref;
 	}
 
 	public void NotifyIkonParlakligi() {
@@ -557,6 +557,17 @@ public class AkorDefterimSys {
 		sharedPrefEditor.apply();
 	}
 
+	public Boolean GirisYapildiMi() {
+		return !sharedPref.getString("prefHesapID", "").equals("") && !sharedPref.getString("prefEPosta", "").equals("") && !sharedPref.getString("prefParolaSHA1", "").equals("");
+	}
+
+	public void CikisYap() {
+		HesapPrefSifirla();
+
+		EkranGetir(new Intent(activity, Giris.class), "Normal");
+		activity.finishAffinity();
+	}
+
 	public double LokasyonlarArasiMetreHesaplayici(double LokasyonLat1, double LokasyonLng1, double LokasyonLat2, double LokasyonLng2) {
 		int DunyaninYariCapiOrtalama = 6378137;
 		double dLat = (LokasyonLat2 - LokasyonLat1) * Math.PI / 180;
@@ -726,17 +737,17 @@ public class AkorDefterimSys {
 		if(!TextUtils.isEmpty(txtTarih.getText().toString())) {
 			String Tarih = txtTarih.getText().toString();
 
-			if(Tarih.split("/")[0].substring(0,1).equals("0"))
-				Gun = Integer.parseInt(Tarih.split("/")[0].substring(1, Tarih.split("/")[0].length()));
+			if(Tarih.split(TarihGunAyYilAyiracREGEX)[0].substring(0,1).equals("0"))
+				Gun = Integer.parseInt(Tarih.split(TarihGunAyYilAyiracREGEX)[0].substring(1, Tarih.split(TarihGunAyYilAyiracREGEX)[0].length()));
 			else
-				Gun = Integer.parseInt(Tarih.split("/")[0]);
+				Gun = Integer.parseInt(Tarih.split(TarihGunAyYilAyiracREGEX)[0]);
 
-			if(Tarih.split("/")[1].substring(0,1).equals("0"))
-				Ay = Integer.parseInt(Tarih.split("/")[1].substring(1, Tarih.split("/")[1].length())) - 1;
+			if(Tarih.split(TarihGunAyYilAyiracREGEX)[1].substring(0,1).equals("0"))
+				Ay = Integer.parseInt(Tarih.split(TarihGunAyYilAyiracREGEX)[1].substring(1, Tarih.split(TarihGunAyYilAyiracREGEX)[1].length())) - 1;
 			else
-				Ay = Integer.parseInt(Tarih.split("/")[1]) - 1;
+				Ay = Integer.parseInt(Tarih.split(TarihGunAyYilAyiracREGEX)[1]) - 1;
 
-			Yil = Integer.parseInt(Tarih.split("/")[2]);
+			Yil = Integer.parseInt(Tarih.split(TarihGunAyYilAyiracREGEX)[2]);
 		} else {
 			Calendar mcurrentTime = Calendar.getInstance();
 
@@ -758,7 +769,7 @@ public class AkorDefterimSys {
 				if(String.valueOf(monthOfYear+1).length() == 1) Ay = "0" + String.valueOf(monthOfYear+1);
 				else Ay = String.valueOf(monthOfYear+1);
 
-				txtTarih.setText(Gun + "/" + Ay + "/" + year); // Ayarla butonu tıklandığında textview'a yazdırıyoruz
+				txtTarih.setText(String.format("%s%s%s%s%s", String.valueOf(Gun), TarihGunAyYilAyiracREGEX, String.valueOf(Ay), TarihGunAyYilAyiracREGEX, String.valueOf(year))); // Ayarla butonu tıklandığında textview'a yazdırıyoruz
 
                 UnFocusEditText(txtTarih);
 			}
@@ -1135,6 +1146,67 @@ public class AkorDefterimSys {
 	}
 
 	@SuppressLint("InflateParams")
+	public AlertDialog VButtonCustomOnayKoduAlertDialog(Activity activity, String Baslik, String Mesaj, String Button1MsjText, final String Button1Islem, String Button2MsjText, final String Button2Islem, String Button3MsjText, final String Button3Islem) {
+		final Interface_AsyncResponse AsyncResponse = (Interface_AsyncResponse) activity;
+		LayoutInflater inflater = activity.getLayoutInflater();
+		View ViewDialogCustom;
+		Typeface YaziFontu = FontGetir(activity, "anivers_regular");
+
+		ViewDialogCustom = inflater.inflate(R.layout.dialog_custom_onay_altalta_3tus, null);
+
+		TextView lblDialogBaslik = ViewDialogCustom.findViewById(R.id.lblDialogBaslik);
+		lblDialogBaslik.setTypeface(YaziFontu, Typeface.BOLD);
+		lblDialogBaslik.setText(new SpannableStringBuilder(Html.fromHtml(Baslik)));
+
+		TextView lblDialogIcerik = ViewDialogCustom.findViewById(R.id.lblDialogIcerik);
+		lblDialogIcerik.setTypeface(YaziFontu, Typeface.NORMAL);
+		lblDialogIcerik.setText(new SpannableStringBuilder(Html.fromHtml(Mesaj)));
+
+		PasscodeView txtDialogOnayKodu = ViewDialogCustom.findViewById(R.id.txtDialogOnayKodu);
+		txtDialogOnayKodu.setPasscodeEntryListener(new PasscodeView.PasscodeEntryListener() {
+			@Override
+			public void onPasscodeEntered(String GirilenOnayKodu) {
+				AsyncResponse.AsyncTaskReturnValue("{\"Islem\":\"DialogOnayIslem\", \"GirilenOnayKodu\":\"" + GirilenOnayKodu + "\"}");
+			}
+		});
+
+		Button btnDialogButton1 = ViewDialogCustom.findViewById(R.id.btnDialogButton1);
+		btnDialogButton1.setTypeface(YaziFontu, Typeface.BOLD);
+		btnDialogButton1.setText(Button1MsjText);
+		btnDialogButton1.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				AsyncResponse.AsyncTaskReturnValue("{\"Islem\":\"" + Button1Islem + "\"}");
+			}
+		});
+
+		Button btnDialogButton2 = ViewDialogCustom.findViewById(R.id.btnDialogButton2);
+		btnDialogButton2.setTypeface(YaziFontu, Typeface.BOLD);
+		btnDialogButton2.setText(Button2MsjText);
+		btnDialogButton2.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				AsyncResponse.AsyncTaskReturnValue("{\"Islem\":\"" + Button2Islem + "\"}");
+			}
+		});
+
+		Button btnDialogButton3 = ViewDialogCustom.findViewById(R.id.btnDialogButton3);
+		btnDialogButton3.setTypeface(YaziFontu, Typeface.BOLD);
+		btnDialogButton3.setText(Button3MsjText);
+		btnDialogButton3.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				AsyncResponse.AsyncTaskReturnValue("{\"Islem\":\"" + Button3Islem + "\"}");
+			}
+		});
+
+		return new AlertDialog.Builder(activity)
+				.setView(ViewDialogCustom)
+				.setCancelable(false)
+				.create();
+	}
+
+	@SuppressLint("InflateParams")
 	public AlertDialog CustomAlertDialog(Activity activity, View DialogLayoutContent) {
 		AlertDialog Dialog = new AlertDialog.Builder(activity)
 				.setView(DialogLayoutContent)
@@ -1205,7 +1277,6 @@ public class AkorDefterimSys {
 
 		return Dialog;
 	}
-
 
 	@SuppressLint("InflateParams")
 	public AlertDialog CustomAlertDialog(Activity activity, int Icon, String Baslik, View DialogLayoutContent, String OnayButtonMsjText, String IptalButtonMsjText, Boolean KapanabilirMi) {
@@ -1393,7 +1464,8 @@ public class AkorDefterimSys {
 		notificationManager.notify(1, notification);
 	}
 
-	public ProgressDialog CustomProgressDialog(String Mesaj, Boolean KapanabilirMi, int Timeout) {
+	public ProgressDialog CustomProgressDialog(String Mesaj, Boolean KapanabilirMi, int Timeout, final String TimeoutIslem) {
+		final Interface_AsyncResponse AsyncResponse = (Interface_AsyncResponse) activity;
 		final ProgressDialog mProgressDialog = new ProgressDialog(activity);
 		mProgressDialog.setMessage(Mesaj);
 		mProgressDialog.setCancelable(KapanabilirMi);
@@ -1403,7 +1475,10 @@ public class AkorDefterimSys {
 				@Override
 				public void handleMessage(Message message) {
 					// Progress Dialog'u kapattık
-					DismissProgressDialog(mProgressDialog);
+					if(ProgressDialogisShowing(mProgressDialog)) {
+						DismissProgressDialog(mProgressDialog);
+						if(!TimeoutIslem.equals("")) AsyncResponse.AsyncTaskReturnValue("{\"Islem\":\"" + TimeoutIslem + "\"}");
+					}
 				}
 			};
 			h.sendMessageDelayed(new Message(), Timeout);
@@ -2941,11 +3016,11 @@ public class AkorDefterimSys {
 		});
 	}
 
-	public void HesapBilgiGetir(final Fragment fragment, String mTelKodu, String mEPostaKullaniciAdiTelefon) {
+	public void HesapBilgiGetir(final Fragment fragment, String mHesapID, String mTelKodu, String mEPostaKullaniciAdiTelefon, final String Islem) {
 		RetrofitInterface retrofitInterface = RetrofitServiceGenerator.createService(activity, RetrofitInterface.class);
 		final Interface_AsyncResponse AsyncResponse = (Interface_AsyncResponse) activity;
 
-		Call<SnfHesapBilgiGetir> snfHesapBilgiGetirCall = retrofitInterface.HesapBilgiGetir(mTelKodu, mEPostaKullaniciAdiTelefon);
+		Call<SnfHesapBilgiGetir> snfHesapBilgiGetirCall = retrofitInterface.HesapBilgiGetir(mHesapID, mTelKodu, mEPostaKullaniciAdiTelefon);
 		snfHesapBilgiGetirCall.enqueue(new Callback<SnfHesapBilgiGetir>() {
 			@Override
 			public void onResponse(Call<SnfHesapBilgiGetir> call, Response<SnfHesapBilgiGetir> response) {
@@ -2954,7 +3029,7 @@ public class AkorDefterimSys {
 
 					// getHata'nin false olması durumu hata yok demektir..
 					if(!snfHesapBilgiGetir.getHata())
-						AsyncResponse.AsyncTaskReturnValue("{\"Islem\":\"HesapBilgiGetir\", " +
+						AsyncResponse.AsyncTaskReturnValue("{\"Islem\":\"" + Islem + "\", " +
 								((fragment != null) ? "\"Fragment\":\"" + fragment.getTag() + "\", ":"\"Fragment\":\"\", ") +
 								"\"Sonuc\":" + snfHesapBilgiGetir.getSonuc() + ", " +
 								"\"HesapID\":\"" + snfHesapBilgiGetir.getHesapID() + "\", " +
@@ -2964,13 +3039,11 @@ public class AkorDefterimSys {
 								"\"DogumTarih\":\"" + snfHesapBilgiGetir.getDogumTarih() + "\", " +
 								"\"ResimURL\":\"" + snfHesapBilgiGetir.getResimURL() + "\", " +
 								"\"EPosta\":\"" + snfHesapBilgiGetir.getEPosta() + "\", " +
-								"\"EPostaOnay\":\"" + snfHesapBilgiGetir.getEPostaOnay() + "\", " +
 								"\"Parola\":\"" + snfHesapBilgiGetir.getParola() + "\", " +
 								"\"ParolaSHA1\":\"" + snfHesapBilgiGetir.getParolaSHA1() + "\", " +
 								"\"KullaniciAdi\":\"" + snfHesapBilgiGetir.getKullaniciAdi() + "\", " +
 								"\"TelKodu\":\"" + snfHesapBilgiGetir.getTelKodu() + "\", " +
 								"\"CepTelefon\":\"" + snfHesapBilgiGetir.getCepTelefon() + "\", " +
-								"\"CepTelefonOnay\":\"" + snfHesapBilgiGetir.getCepTelefonOnay() + "\", " +
 								"\"KayitTarih\":\"" + snfHesapBilgiGetir.getKayitTarih() + "\", " +
 								"\"SonOturumTarih\":\"" + snfHesapBilgiGetir.getSonOturumTarih() + "\", " +
 								"\"HesapDurum\":\"" + snfHesapBilgiGetir.getHesapDurum() + "\", " +
@@ -2986,11 +3059,11 @@ public class AkorDefterimSys {
 		});
 	}
 
-	public void HesapBilgiGuncelle(String mFirebaseToken, String mOSID, String mOSVersiyon, String mAdSoyad, String mDogumTarih, String mResimURL, String mEPosta, String mParola, String mParolaSHA1, String mKullaniciAdi, String mTelKodu, String mCepTelefon, String mUygulamaVersiyon) {
+	public void HesapBilgiGuncelle(String mHesapID, String mFirebaseToken, String mOSID, String mOSVersiyon, String mAdSoyad, String mDogumTarih, String mEPosta, String mParola, String mParolaSHA1, String mKullaniciAdi, String mTelKodu, String mCepTelefon, String mUygulamaVersiyon, final String mIslem) {
 		RetrofitInterface retrofitInterface = RetrofitServiceGenerator.createService(activity, RetrofitInterface.class);
 		final Interface_AsyncResponse AsyncResponse = (Interface_AsyncResponse) activity;
 
-		Call<SnfIslemSonuc> snfIslemSonucCall = retrofitInterface.HesapBilgiGuncelle(mFirebaseToken, mOSID, mOSVersiyon, mAdSoyad, mDogumTarih, mResimURL, mEPosta, mParola, mParolaSHA1, mKullaniciAdi, mTelKodu, mCepTelefon, mUygulamaVersiyon);
+		Call<SnfIslemSonuc> snfIslemSonucCall = retrofitInterface.HesapBilgiGuncelle(mHesapID, mFirebaseToken, mOSID, mOSVersiyon, mAdSoyad, mDogumTarih, mEPosta, mParola, mParolaSHA1, mKullaniciAdi, mTelKodu, mCepTelefon, mUygulamaVersiyon);
 		snfIslemSonucCall.enqueue(new Callback<SnfIslemSonuc>() {
 			@Override
 			public void onResponse(Call<SnfIslemSonuc> call, Response<SnfIslemSonuc> response) {
@@ -2999,9 +3072,9 @@ public class AkorDefterimSys {
 
 					// getHata'nin false olması durumu hata yok demektir..
 					if(!snfIslemSonuc.getHata())
-						AsyncResponse.AsyncTaskReturnValue("{\"Islem\":\"HesapBilgiGuncelle\", \"Sonuc\":" + snfIslemSonuc.getSonuc() + "}");
-					else AsyncResponse.AsyncTaskReturnValue("{\"Islem\":\"HesapBilgiGuncelle\", \"Sonuc\":false}");
-				} else AsyncResponse.AsyncTaskReturnValue("{\"Islem\":\"HesapBilgiGuncelle\", \"Sonuc\":false}");
+						AsyncResponse.AsyncTaskReturnValue("{\"Islem\":\"" + mIslem + "\", \"Sonuc\":" + snfIslemSonuc.getSonuc() + ", \"Aciklama\":\"" + snfIslemSonuc.getAciklama() + "\"}");
+					else AsyncResponse.AsyncTaskReturnValue("{\"Islem\":\"" + mIslem + "\", \"Sonuc\":false, \"Aciklama\":\"\"}");
+				} else AsyncResponse.AsyncTaskReturnValue("{\"Islem\":\"" + mIslem + "\", \"Sonuc\":false, \"Aciklama\":\"\"}");
 			}
 
 			@Override

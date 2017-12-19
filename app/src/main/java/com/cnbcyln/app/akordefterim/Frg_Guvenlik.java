@@ -102,7 +102,7 @@ public class Frg_Guvenlik extends Fragment implements OnClickListener {
 		switch (v.getId()) {
 			case R.id.btnSifreDegistir:
 				View ViewDialogContent = inflater.inflate(R.layout.dialog_sifre_degistir, null);
-				ADDialog_SifreDegistirme = AkorDefterimSys.CustomAlertDialog(activity, R.mipmap.ic_launcher, getString(R.string.sifreni_degistir), ViewDialogContent, getString(R.string.degistir), getString(R.string.web_iptal), false);
+				ADDialog_SifreDegistirme = AkorDefterimSys.CustomAlertDialog(activity, R.mipmap.ic_launcher, getString(R.string.parolani_degistir), ViewDialogContent, getString(R.string.degistir), getString(R.string.web_iptal), false);
 				ADDialog_SifreDegistirme.getWindow().getAttributes().windowAnimations = R.style.DialogAnimation;
 
 				final TextView Dialog_lblSifreDegistirmeBilgi = (TextView) ViewDialogContent.findViewById(R.id.Dialog_lblSifreDegistirmeBilgi);

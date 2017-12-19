@@ -6,6 +6,7 @@ import com.cnbcyln.app.akordefterim.util.AkorDefterimSys;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Typeface;
@@ -35,9 +36,9 @@ public class KayitEkran_EPosta extends AppCompatActivity implements Interface_As
 
 	private Activity activity;
 	private AkorDefterimSys AkorDefterimSys;
-
+	SharedPreferences sharedPref;
+	SharedPreferences.Editor sharedPrefEditor;
 	Typeface YaziFontu;
-    SharedPreferences.Editor sharedPrefEditor;
     Random rnd;
 	ProgressDialog PDEPosta;
 	AlertDialog ADDialog_EPosta;
@@ -49,7 +50,7 @@ public class KayitEkran_EPosta extends AppCompatActivity implements Interface_As
 	TextInputLayout txtILEPosta;
 	EditText txtEPosta;
 
-	String OnayKodu;
+	String OnayKodu = "";
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -60,6 +61,8 @@ public class KayitEkran_EPosta extends AppCompatActivity implements Interface_As
 		AkorDefterimSys = new AkorDefterimSys(activity);
 		YaziFontu = AkorDefterimSys.FontGetir(activity, "anivers_regular"); // Genel yazı fontunu belirttik
         rnd = new Random();
+
+		sharedPref = activity.getSharedPreferences(AkorDefterimSys.PrefAdi, Context.MODE_PRIVATE);
 
 		AkorDefterimSys.GenelAyarlar(); // Uygulama için genel ayarları uyguladık.
 		//AkorDefterimSys.TransparanNotifyBar(); // Notification Bar'ı transparan yapıyoruz.
@@ -124,8 +127,8 @@ public class KayitEkran_EPosta extends AppCompatActivity implements Interface_As
     protected void onStart() {
         super.onStart();
 
-        if(AkorDefterimSys.PrefAyarlar().getString("prefAction", "").equals("Vazgec")) {
-            sharedPrefEditor = AkorDefterimSys.PrefAyarlar().edit();
+        if(sharedPref.getString("prefAction", "").equals("Vazgec")) {
+            sharedPrefEditor = sharedPref.edit();
 			sharedPrefEditor.remove("prefAction");
             sharedPrefEditor.apply();
 
@@ -172,7 +175,7 @@ public class KayitEkran_EPosta extends AppCompatActivity implements Interface_As
 						OnayKodu = String.valueOf((100000 + rnd.nextInt(900000)));
 
 						// Onay kodu belirtilen eposta adresine gönderiliyor
-						AkorDefterimSys.EPostaGonder(txtEPosta.getText().toString().trim(), "", getString(R.string.dogrulama_kodu), getString(R.string.eposta_onayi_icerik2, OnayKodu, getString(R.string.uygulama_adi)));
+						AkorDefterimSys.EPostaGonder(txtEPosta.getText().toString().trim(), "", getString(R.string.dogrulama_kodu), getString(R.string.eposta_dosrulama_kodu_icerik, OnayKodu, getString(R.string.uygulama_adi)));
 					} else {
 						btnIleri.setEnabled(true);
 						// PDEPosta Progress Dialog'u kapattık
@@ -238,11 +241,11 @@ public class KayitEkran_EPosta extends AppCompatActivity implements Interface_As
 
 			if(AkorDefterimSys.InternetErisimKontrolu()) {
 				if(!AkorDefterimSys.ProgressDialogisShowing(PDEPosta)) { // Eğer progress dialog açık değilse
-					PDEPosta = AkorDefterimSys.CustomProgressDialog(getString(R.string.islem_yapiliyor), false, AkorDefterimSys.ProgressBarTimeoutSuresi);
+					PDEPosta = AkorDefterimSys.CustomProgressDialog(getString(R.string.islem_yapiliyor), false, AkorDefterimSys.ProgressBarTimeoutSuresi, "");
 					PDEPosta.show();
 				}
 
-				AkorDefterimSys.HesapBilgiGetir(null, "", EPosta);
+				AkorDefterimSys.HesapBilgiGetir(null, "", "", EPosta, "HesapBilgiGetir");
 			} else {
 				btnIleri.setEnabled(true);
 				AkorDefterimSys.StandartSnackBarMsj(coordinatorLayout, getString(R.string.internet_baglantisi_saglanamadi));

@@ -4,6 +4,7 @@ import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
@@ -39,9 +40,9 @@ public class Giris_Yap extends AppCompatActivity implements Interface_AsyncRespo
 
 	private Activity activity;
 	private AkorDefterimSys AkorDefterimSys;
-
-	Typeface YaziFontu;
+    SharedPreferences sharedPref;
     SharedPreferences.Editor sharedPrefEditor;
+	Typeface YaziFontu;
 	ProgressDialog PDGirisYap;
 	AlertDialog ADDialog_HesapDurumu;
 
@@ -60,6 +61,8 @@ public class Giris_Yap extends AppCompatActivity implements Interface_AsyncRespo
 		activity = this;
 		AkorDefterimSys = new AkorDefterimSys(activity);
 		YaziFontu = AkorDefterimSys.FontGetir(activity, "anivers_regular"); // Genel yazı fontunu belirttik
+
+        sharedPref = activity.getSharedPreferences(AkorDefterimSys.PrefAdi, Context.MODE_PRIVATE);
 
 		AkorDefterimSys.GenelAyarlar(); // Uygulama için genel ayarları uyguladık.
 		//AkorDefterimSys.TransparanNotifyBar(); // Notification Bar'ı transparan yapıyoruz.
@@ -195,7 +198,7 @@ public class Giris_Yap extends AppCompatActivity implements Interface_AsyncRespo
 					AkorDefterimSys.DismissProgressDialog(PDGirisYap);
 
 					if(JSONSonuc.getBoolean("Sonuc")) {
-						sharedPrefEditor = AkorDefterimSys.PrefAyarlar().edit();
+						sharedPrefEditor = sharedPref.edit();
 						sharedPrefEditor.putString("prefHesapID", JSONSonuc.getString("HesapID"));
 						sharedPrefEditor.putString("prefEPosta", JSONSonuc.getString("HesapEPosta"));
 						sharedPrefEditor.putString("prefParolaSHA1", JSONSonuc.getString("HesapParolaSHA1"));
@@ -251,48 +254,48 @@ public class Giris_Yap extends AppCompatActivity implements Interface_AsyncRespo
     }
 
     private void Giris() {
-		btnGirisYap.setEnabled(false);
-		AkorDefterimSys.KlavyeKapat();
+		if(AkorDefterimSys.InternetErisimKontrolu()) {
+			btnGirisYap.setEnabled(false);
+			AkorDefterimSys.KlavyeKapat();
 
-		txtEPostaKullaniciAdi.setText(txtEPostaKullaniciAdi.getText().toString().trim());
-		String EPostaKullaniciAdi = txtEPostaKullaniciAdi.getText().toString();
+			txtEPostaKullaniciAdi.setText(txtEPostaKullaniciAdi.getText().toString().trim());
+			String EPostaKullaniciAdi = txtEPostaKullaniciAdi.getText().toString();
 
-		if(TextUtils.isEmpty(EPostaKullaniciAdi)) // EPostaKullaniciAdi alanı boş ise
-			txtILEPostaKullaniciAdi.setError(getString(R.string.hata_bos_alan));
-		else { // EPostaKullaniciAdi alanı dolu ise
-			if(AkorDefterimSys.isValid(EPostaKullaniciAdi, "EPosta")) { // Girilen bilgi EPosta ise
-				if(AkorDefterimSys.isValid(EPostaKullaniciAdi, "FakeEPosta")) // Girilen EPosta fake ise
-					txtILEPostaKullaniciAdi.setError(getString(R.string.hata_format_eposta));
-				else
-					txtILEPostaKullaniciAdi.setError(null);
-			} else {
-				if(EPostaKullaniciAdi.length() < getResources().getInteger(R.integer.KullaniciAdiKarakterSayisi_MIN))
-					txtILEPostaKullaniciAdi.setError(getString(R.string.hata_en_az_karakter, String.valueOf(getResources().getInteger(R.integer.KullaniciAdiKarakterSayisi_MIN))));
-				else if(!AkorDefterimSys.isValid(EPostaKullaniciAdi, "KullaniciAdi"))
-					txtILEPostaKullaniciAdi.setError(getString(R.string.hata_format_sadece_sayi_kucukharf));
-				else
-					txtILEPostaKullaniciAdi.setError(null);
+			if(TextUtils.isEmpty(EPostaKullaniciAdi)) // EPostaKullaniciAdi alanı boş ise
+				txtILEPostaKullaniciAdi.setError(getString(R.string.hata_bos_alan));
+			else { // EPostaKullaniciAdi alanı dolu ise
+				if(AkorDefterimSys.isValid(EPostaKullaniciAdi, "EPosta")) { // Girilen bilgi EPosta ise
+					if(AkorDefterimSys.isValid(EPostaKullaniciAdi, "FakeEPosta")) // Girilen EPosta fake ise
+						txtILEPostaKullaniciAdi.setError(getString(R.string.hata_format_eposta));
+					else
+						txtILEPostaKullaniciAdi.setError(null);
+				} else {
+					if(EPostaKullaniciAdi.length() < getResources().getInteger(R.integer.KullaniciAdiKarakterSayisi_MIN))
+						txtILEPostaKullaniciAdi.setError(getString(R.string.hata_en_az_karakter, String.valueOf(getResources().getInteger(R.integer.KullaniciAdiKarakterSayisi_MIN))));
+					else if(!AkorDefterimSys.isValid(EPostaKullaniciAdi, "KullaniciAdi"))
+						txtILEPostaKullaniciAdi.setError(getString(R.string.hata_format_sadece_sayi_kucukharf));
+					else
+						txtILEPostaKullaniciAdi.setError(null);
+				}
 			}
-		}
 
-		txtParola.setText(txtParola.getText().toString().trim());
-		String Parola = txtParola.getText().toString();
+			txtParola.setText(txtParola.getText().toString().trim());
+			String Parola = txtParola.getText().toString();
 
-		if(TextUtils.isEmpty(Parola))
-			txtILParola.setError(getString(R.string.hata_bos_alan));
-		else if(AkorDefterimSys.EditTextKarakterKontrolMIN(Parola, getResources().getInteger(R.integer.ParolaKarakterSayisi_MIN)))
-			txtILParola.setError(getString(R.string.hata_en_az_karakter, String.valueOf(getResources().getInteger(R.integer.ParolaKarakterSayisi_MIN))));
-		else if(AkorDefterimSys.EditTextKarakterKontrolMAX(Parola, getResources().getInteger(R.integer.ParolaKarakterSayisi_MAX)))
-			txtILParola.setError(getString(R.string.hata_en_fazla_karakter, String.valueOf(getResources().getInteger(R.integer.ParolaKarakterSayisi_MAX))));
-		else txtILParola.setError(null);
+			if(TextUtils.isEmpty(Parola))
+				txtILParola.setError(getString(R.string.hata_bos_alan));
+			else if(AkorDefterimSys.EditTextKarakterKontrolMIN(Parola, getResources().getInteger(R.integer.ParolaKarakterSayisi_MIN)))
+				txtILParola.setError(getString(R.string.hata_en_az_karakter, String.valueOf(getResources().getInteger(R.integer.ParolaKarakterSayisi_MIN))));
+			else if(AkorDefterimSys.EditTextKarakterKontrolMAX(Parola, getResources().getInteger(R.integer.ParolaKarakterSayisi_MAX)))
+				txtILParola.setError(getString(R.string.hata_en_fazla_karakter, String.valueOf(getResources().getInteger(R.integer.ParolaKarakterSayisi_MAX))));
+			else txtILParola.setError(null);
 
-		if(txtILEPostaKullaniciAdi.getError() == null && txtILParola.getError() == null) {
-			AkorDefterimSys.UnFocusEditText(txtEPostaKullaniciAdi);
-			AkorDefterimSys.UnFocusEditText(txtParola);
+			if(txtILEPostaKullaniciAdi.getError() == null && txtILParola.getError() == null) {
+				AkorDefterimSys.UnFocusEditText(txtEPostaKullaniciAdi);
+				AkorDefterimSys.UnFocusEditText(txtParola);
 
-			if(AkorDefterimSys.InternetErisimKontrolu()) {
 				if(!AkorDefterimSys.ProgressDialogisShowing(PDGirisYap)) {
-					PDGirisYap = AkorDefterimSys.CustomProgressDialog(getString(R.string.giris_yapiliyor), false, AkorDefterimSys.ProgressBarTimeoutSuresi);
+					PDGirisYap = AkorDefterimSys.CustomProgressDialog(getString(R.string.giris_yapiliyor), false, AkorDefterimSys.ProgressBarTimeoutSuresi, "");
 					PDGirisYap.show();
 				}
 
@@ -310,10 +313,10 @@ public class Giris_Yap extends AppCompatActivity implements Interface_AsyncRespo
 				}
 
 				AkorDefterimSys.HesapGirisYap("Normal", FirebaseToken, OSID, OSVersiyon, UygulamaVersiyon, EPostaKullaniciAdi, ParolaSHA1,"", "");
-			} else {
-				btnGirisYap.setEnabled(true);
-				AkorDefterimSys.StandartSnackBarMsj(coordinatorLayout, getString(R.string.internet_baglantisi_saglanamadi));
-			}
-		} else btnGirisYap.setEnabled(true);
+			} else btnGirisYap.setEnabled(true);
+		} else {
+			btnGirisYap.setEnabled(true);
+			AkorDefterimSys.StandartSnackBarMsj(coordinatorLayout, getString(R.string.internet_baglantisi_saglanamadi));
+		}
 	}
 }

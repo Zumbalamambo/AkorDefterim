@@ -36,9 +36,9 @@ public class KayitEkran_Parola_Belirle extends AppCompatActivity implements Inte
 
 	private Activity activity;
 	private AkorDefterimSys AkorDefterimSys;
-
+	SharedPreferences sharedPref;
+	SharedPreferences.Editor sharedPrefEditor;
 	Typeface YaziFontu;
-    SharedPreferences.Editor sharedPrefEditor;
 	AlertDialog ADDialog_ParolaBelirle;
 	ProgressDialog PDParolaBelirle;
 	InputMethodManager imm;
@@ -51,8 +51,8 @@ public class KayitEkran_Parola_Belirle extends AppCompatActivity implements Inte
 	PasswordView txtParola, txtParolaTekrar;
 	LinearLayout LLParolaGuvenligi1, LLParolaGuvenligi2, LLParolaGuvenligi3;
 
-	String Islem, EPosta;
-	int ParolaKarakterSayisiMIN, ParolaKarakterSayisiMAX;
+	String Islem = "", EPosta = "";
+	int ParolaKarakterSayisiMIN = 0, ParolaKarakterSayisiMAX = 0;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -62,6 +62,8 @@ public class KayitEkran_Parola_Belirle extends AppCompatActivity implements Inte
 		activity = this;
 		AkorDefterimSys = new AkorDefterimSys(activity);
 		YaziFontu = AkorDefterimSys.FontGetir(activity, "anivers_regular"); // Genel yazı fontunu belirttik
+
+		sharedPref = activity.getSharedPreferences(AkorDefterimSys.PrefAdi, Context.MODE_PRIVATE);
 
 		AkorDefterimSys.GenelAyarlar(); // Uygulama için genel ayarları uyguladık.
 		//AkorDefterimSys.TransparanNotifyBar(); // Notification Bar'ı transparan yapıyoruz.
@@ -170,7 +172,7 @@ public class KayitEkran_Parola_Belirle extends AppCompatActivity implements Inte
 	protected void onStart() {
 		super.onStart();
 
-		if(AkorDefterimSys.PrefAyarlar().getString("prefAction", "").equals("Vazgec")) onBackPressed();
+		if(sharedPref.getString("prefAction", "").equals("Vazgec")) onBackPressed();
 	}
 
 	@Override
@@ -194,7 +196,7 @@ public class KayitEkran_Parola_Belirle extends AppCompatActivity implements Inte
 				onBackPressed();
 				break;
 			case R.id.lblVazgec:
-				sharedPrefEditor = AkorDefterimSys.PrefAyarlar().edit();
+				sharedPrefEditor = sharedPref.edit();
 				sharedPrefEditor.putString("prefAction", "Vazgec");
 				sharedPrefEditor.apply();
 
@@ -229,7 +231,7 @@ public class KayitEkran_Parola_Belirle extends AppCompatActivity implements Inte
 							public void onClick(View v) {
 								ADDialog_ParolaBelirle.dismiss();
 
-								sharedPrefEditor = AkorDefterimSys.PrefAyarlar().edit();
+								sharedPrefEditor = sharedPref.edit();
 								sharedPrefEditor.putString("Action", "Vazgec");
 								sharedPrefEditor.apply();
 

@@ -7,26 +7,25 @@ import android.app.AlertDialog;
 import android.app.Fragment;
 import android.app.FragmentTransaction;
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.graphics.Typeface;
+import android.media.Image;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Process;
-import android.support.constraint.ConstraintLayout;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewAnimationUtils;
-import android.view.WindowManager;
-import android.view.animation.Animation;
-import android.view.animation.AnimationUtils;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -36,19 +35,10 @@ import com.cnbcyln.app.akordefterim.Interface.Interface_AsyncResponse;
 import com.cnbcyln.app.akordefterim.Interface.Interface_FragmentDataConn;
 import com.cnbcyln.app.akordefterim.util.AkorDefterimSys;
 import com.cnbcyln.app.akordefterim.util.SlideNav.SlidingRootNav;
-import com.cnbcyln.app.akordefterim.util.SlideNav.SlidingRootNavBuilder;
 import com.cnbcyln.app.akordefterim.util.SlideNav.SlidingRootNavLayout;
-import com.cnbcyln.app.akordefterim.util.SlideNav.callback.DragListener;
-import com.cnbcyln.app.akordefterim.util.SlideNav.callback.DragStateListener;
 
 import org.json.JSONException;
 import org.json.JSONObject;
-
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.Locale;
-import java.util.Objects;
 
 public class AnaEkran extends AppCompatActivity implements Interface_FragmentDataConn, Interface_AsyncResponse {
 
@@ -61,8 +51,9 @@ public class AnaEkran extends AppCompatActivity implements Interface_FragmentDat
 	SharedPreferences.Editor sharedPrefEditor;
     SlidingRootNav mSlidingRootNavSol, mSlidingRootNavSag;
     Typeface YaziFontu;
+    AlertDialog ADDialog_InternetBaglantisi, ADDialog_CikisYap;
 
-    Button btnSolMenu, btnSagMenu;
+    ImageButton btnSolMenu, btnSagMenu;
     LinearLayout LLSayfa;
     TextView lblSayfaBaslik;
     ViewPager VPSolMenuPager;
@@ -270,32 +261,6 @@ public class AnaEkran extends AppCompatActivity implements Interface_FragmentDat
                 }
 
                 break;
-            case "hesabim": // Hesabım
-                if (AkorDefterimSys.InternetErisimKontrolu()) { //İnternet kontrolü yap
-                    if(sharedPref.getString("prefOturumTipi", "Normal").equals("Normal")) {
-                        Fragment_Sayfa = new Frg_Hesabim();// Fragment sayfa belirle
-                        Fragment_SayfaAdi = "Frg_Hesabim";
-                    } else if(sharedPref.getString("prefOturumTipi", "Google").equals("Google") || sharedPref.getString("prefOturumTipi", "Facebook").equals("Facebook")) {
-                        Fragment_Sayfa = new Frg_SosyalHesabim();// Fragment sayfa belirle
-                        Fragment_SayfaAdi = "Frg_SosyalHesabim";
-                    }
-
-                    lblSayfaBaslik.setText(getString(R.string.hesabim));
-
-                    if(FT == null && Fragment_Sayfa == null)
-                        FT.add(R.id.LLSayfa, Fragment_Sayfa, Fragment_SayfaAdi); // FT.add(<Hangi layout içinde çağırılacaksa id'si>, <Çağırılan Fragment>, <Çağırılan Fragment Takma Adı>);
-                    else {
-                        assert FT != null;
-                        FT.remove(Fragment_Sayfa); // Geçerli fragment'i sil
-                        FT = activity.getFragmentManager().beginTransaction(); // Fragment methodunu kullanmak için sabit nesne
-                        FT.replace(R.id.LLSayfa, Fragment_Sayfa, Fragment_SayfaAdi); // FT.add(<Hangi layout içinde çağırılacaksa id'si>, <Çağırılan Fragment>, <Çağırılan Fragment Takma Adı>);
-                    }
-
-                    FT.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
-                    FT.commit();// Çağırma işlemini yaptırıyoruz..
-                } else AkorDefterimSys.StandartSnackBarMsj(coordinatorLayout, getString(R.string.internet_baglantisi_saglanamadi));
-
-                break;
             /*case "istatistik": // İstatistik
                 FT.remove(Fragment_Sayfa); // Geçerli fragment'i sil
 
@@ -319,8 +284,30 @@ public class AnaEkran extends AppCompatActivity implements Interface_FragmentDat
                 FT.replace(R.id.LLSayfa, Fragment_Sayfa, Fragment_SayfaAdi); // FT.add(<Hangi layout içinde çağırılacaksa id'si>, <Çağırılan Fragment>, <Çağırılan Fragment Takma Adı>);
                 FT.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
                 FT.commit();// Çağırma işlemini yaptırıyoruz..
+                break;*/
+            case "oyla": // Oyla
+                if(AkorDefterimSys.InternetErisimKontrolu()) { // İnternet kontrolü yap
+                    String appPackageName = activity.getPackageName(); // getPackageName() from Context or Activity object
+
+                    try {
+                        startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("market://details?id=" + appPackageName)));
+                    } catch (android.content.ActivityNotFoundException e) {
+                        startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("https://play.google.com/store/apps/details?id=" + appPackageName)));
+                    }
+                } else {
+                    if(!AkorDefterimSys.AlertDialogisShowing(ADDialog_InternetBaglantisi)) {
+                        ADDialog_InternetBaglantisi = AkorDefterimSys.CustomAlertDialog(activity,
+                                getString(R.string.internet_baglantisi),
+                                getString(R.string.internet_baglantisi_saglanamadi),
+                                getString(R.string.tamam),
+                                "ADDialog_InternetBaglantisi_Kapat");
+                        ADDialog_InternetBaglantisi.getWindow().getAttributes().windowAnimations = R.style.DialogAnimation;
+                        ADDialog_InternetBaglantisi.show();
+                    }
+                }
+
                 break;
-            case "ayarlar": // Ayarlar
+            /*case "ayarlar": // Ayarlar
                 FT.remove(Fragment_Sayfa); // Geçerli fragment'i sil
 
                 Fragment_Sayfa = new Frg_Ayarlar();// Fragment sayfa belirle
@@ -331,61 +318,25 @@ public class AnaEkran extends AppCompatActivity implements Interface_FragmentDat
                 FT.replace(R.id.LLSayfa, Fragment_Sayfa, Fragment_SayfaAdi); // FT.add(<Hangi layout içinde çağırılacaksa id'si>, <Çağırılan Fragment>, <Çağırılan Fragment Takma Adı>);
                 FT.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
                 FT.commit();// Çağırma işlemini yaptırıyoruz..
-                break;
+                break;*/
             case "girisyap": // Giriş Yap
-                try {
-                    JSONObject CikisData = new JSONObject("{\"Islem\":\"HesapCikis\"}");
-
-                    HesapCikisYap(CikisData);
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
+                AkorDefterimSys.CikisYap();
 
                 break;
             case "cikisyap": // Giriş Yap
-                ADDialog = AkorDefterimSys.CustomAlertDialog(activity, R.mipmap.ic_launcher,
-                        getString(R.string.cikis_yap),
-                        getString(R.string.hesap_cikis_mesaji),
-                        getString(R.string.evet),
-                        getString(R.string.vazgec));
-                ADDialog.getWindow().getAttributes().windowAnimations = R.style.DialogAnimation;
-                ADDialog.show();
+                if(!AkorDefterimSys.AlertDialogisShowing(ADDialog_CikisYap)) {
+                    ADDialog_CikisYap = AkorDefterimSys.HButtonCustomAlertDialog(activity,
+                            getString(R.string.cikis_yap),
+                            getString(R.string.hesap_cikis_mesaji),
+                            getString(R.string.iptal),
+                            "ADDialog_CikisYap_Iptal",
+                            getString(R.string.cikis_yap),
+                            "ADDialog_CikisYap_CikisYap");
+                    ADDialog_CikisYap.getWindow().getAttributes().windowAnimations = R.style.DialogAnimation;
+                    ADDialog_CikisYap.show();
+                }
 
-                ADDialog.getButton(AlertDialog.BUTTON_POSITIVE).setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        ADDialog.cancel();
-
-                        JSONObject CikisData = null;
-
-                        try {
-                            switch (sharedPref.getString("prefOturumTipi", "Normal")) {
-                                case "Normal":
-                                    CikisData = new JSONObject("{\"Islem\":\"HesapCikis\"}");
-                                    break;
-                                case "Google":
-                                    CikisData = new JSONObject("{\"Islem\":\"GoogleHesapCikis\"}");
-                                    break;
-                                case "Facebook":
-                                    CikisData = new JSONObject("{\"Islem\":\"FacebookHesapCikis\"}");
-                                    break;
-                            }
-
-                            HesapCikisYap(CikisData);
-                        } catch (JSONException e) {
-                            e.printStackTrace();
-                        }
-                    }
-                });
-
-                ADDialog.getButton(AlertDialog.BUTTON_NEGATIVE).setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        ADDialog.cancel();
-                    }
-                });
-
-                break;*/
+                break;
             /*case "istekyap": // İstek Yap
                 if (AkorDefterimSys.InternetErisimKontrolu()) { //İnternet kontrolü yap
                     FT.remove(Fragment_Sayfa); // Geçerli fragment'i sil
@@ -566,14 +517,17 @@ public class AnaEkran extends AppCompatActivity implements Interface_FragmentDat
         try {
             JSONObject JSONSonuc = new JSONObject(sonuc);
 
-            switch (JSONSonuc.getString("Fragment")) {
-                case "Frg_SosyalHesabim":
-                    Frg_SosyalHesabim Frg_SosyalHesabim = (Frg_SosyalHesabim) activity.getFragmentManager().findFragmentByTag("Frg_SosyalHesabim");
-                    Frg_SosyalHesabim.AsyncTaskReturnValue(JSONSonuc);
-
+            switch (JSONSonuc.getString("Islem")) {
+                case "ADDialog_InternetBaglantisi_Kapat":
+                    AkorDefterimSys.DismissAlertDialog(ADDialog_InternetBaglantisi);
                     break;
-                default:
+                case "ADDialog_CikisYap_Iptal":
+                    AkorDefterimSys.DismissAlertDialog(ADDialog_CikisYap);
+                    break;
+                case "ADDialog_CikisYap_CikisYap":
+                    AkorDefterimSys.DismissAlertDialog(ADDialog_CikisYap);
 
+                    AkorDefterimSys.CikisYap();
                     break;
             }
         } catch (JSONException e) {

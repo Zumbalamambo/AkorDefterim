@@ -115,7 +115,7 @@
                     android:layout_width="fill_parent"
                     android:layout_height="1dp"
                     android:layout_marginBottom="10dp"
-                    android:background="@drawable/line" />
+                    android:background="@drawable/cizgi_gradient" />
 
                 <LinearLayout
                     android:id="@+id/LLWebYonetimSayfasi_PortNo"
@@ -148,7 +148,7 @@
                     android:layout_width="fill_parent"
                     android:layout_height="1dp"
                     android:layout_marginBottom="10dp"
-                    android:background="@drawable/line" />
+                    android:background="@drawable/cizgi_gradient" />
 
                 <LinearLayout
                     android:id="@+id/LLWebYonetimSayfasi_BaslangictaCalistir"
@@ -357,7 +357,7 @@
                     android:layout_width="fill_parent"
                     android:layout_height="1dp"
                     android:layout_marginBottom="10dp"
-                    android:background="@drawable/line" />
+                    android:background="@drawable/cizgi_gradient" />
 
                 <LinearLayout
                     android:id="@+id/LLIstekAyarlari_CanliIstek"
@@ -423,7 +423,7 @@
                     android:layout_width="fill_parent"
                     android:layout_height="1dp"
                     android:layout_marginBottom="10dp"
-                    android:background="@drawable/line" />
+                    android:background="@drawable/cizgi_gradient" />
 
                 <LinearLayout
                     android:id="@+id/LLIstekAyarlari_ClientIstekSuresi"
@@ -507,7 +507,7 @@
                     android:layout_width="fill_parent"
                     android:layout_height="1dp"
                     android:layout_marginBottom="10dp"
-                    android:background="@drawable/line" />
+                    android:background="@drawable/cizgi_gradient" />
 
                 <LinearLayout
                     android:id="@+id/LLYerelRepertuvarIslemleri_RepertuvarGeriYukle"
@@ -540,7 +540,7 @@
                     android:layout_width="fill_parent"
                     android:layout_height="1dp"
                     android:layout_marginBottom="10dp"
-                    android:background="@drawable/line" />
+                    android:background="@drawable/cizgi_gradient" />
 
                 <LinearLayout
                     android:id="@+id/LLYerelRepertuvarIslemleri_RepertuvarSifirla"

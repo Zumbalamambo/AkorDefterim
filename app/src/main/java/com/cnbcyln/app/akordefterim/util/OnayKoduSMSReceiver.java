@@ -12,8 +12,7 @@ public class OnayKoduSMSReceiver extends BroadcastReceiver {
 	@Override
 	public void onReceive(Context context, Intent intent) {
 		AkorDefterimSys AkorDefterimSys = new AkorDefterimSys(context);
-		Intent Intent_FrgHesabim = new Intent("com.cnbcyln.app.akordefterim.Frg_Hesabim");
-		Intent Intent_SifremiUnuttum = new Intent("com.cnbcyln.app.akordefterim.SifremiUnuttum");
+		Intent Intent_Dogrulama_Kodu = new Intent("com.cnbcyln.app.akordefterim.Dogrulama_Kodu");
 		
 		Bundle bundle = intent.getExtras();
 		
@@ -35,16 +34,10 @@ public class OnayKoduSMSReceiver extends BroadcastReceiver {
 			
 			if(AkorDefterimSys.SMSGondericiAdi.contains(Kimden)) {
 				switch (sharedPref.getString("prefSMSOnayKoduSayfaAdi", "")) {
-				case "Frg_Hesabim":
-					Intent_FrgHesabim.putExtra("Kimden", Kimden);
-					Intent_FrgHesabim.putExtra("OnayKodu", Icerik.substring(Icerik.length() - 6, Icerik.length()));
-					context.sendBroadcast(Intent_FrgHesabim);
-					
-					break;
-				case "SifremiUnuttum":
-					Intent_SifremiUnuttum.putExtra("Kimden", Kimden);
-					Intent_SifremiUnuttum.putExtra("OnayKodu", Icerik.substring(Icerik.length() - 6, Icerik.length()));
-					context.sendBroadcast(Intent_SifremiUnuttum);
+				case "Dogrulama_Kodu":
+					Intent_Dogrulama_Kodu.putExtra("Kimden", Kimden);
+					Intent_Dogrulama_Kodu.putExtra("OnayKodu", Icerik.substring(Icerik.indexOf(":") + 2, Icerik.indexOf(":") + 8));
+					context.sendBroadcast(Intent_Dogrulama_Kodu);
 					
 					break;
 				}

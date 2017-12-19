@@ -61,9 +61,9 @@ public class KayitEkran_KullaniciAdi extends AppCompatActivity implements Interf
 
 	private Activity activity;
 	private AkorDefterimSys AkorDefterimSys;
-
+	SharedPreferences sharedPref;
+	SharedPreferences.Editor sharedPrefEditor;
 	Typeface YaziFontu;
-    SharedPreferences.Editor sharedPrefEditor;
 	File SecilenProfilResmiFile;
 	ProgressDialog PDKayitIslem;
 	AlertDialog ADDialog_HesapKayitHata;
@@ -76,8 +76,8 @@ public class KayitEkran_KullaniciAdi extends AppCompatActivity implements Interf
 	TextView lblVazgec, lblBaslik, lblKullaniciAdiAciklama, lblKullanimKosullariAciklama;
 	EditText txtKullaniciAdi;
 
-	String EPosta, Parola, AdSoyad, DogumTarih, EklenenHesapID;
-	int KullaniciAdiKarakterSayisiMIN, KullaniciAdiKarakterSayisiMAX, KullaniciAdiBastakiHarfKarakterSayisi;
+	String EPosta = "", Parola = "", AdSoyad = "", DogumTarih = "", EklenenHesapID = "";
+	int KullaniciAdiKarakterSayisiMIN = 0, KullaniciAdiKarakterSayisiMAX = 0, KullaniciAdiBastakiHarfKarakterSayisi = 0;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -87,6 +87,8 @@ public class KayitEkran_KullaniciAdi extends AppCompatActivity implements Interf
 		activity = this;
 		AkorDefterimSys = new AkorDefterimSys(activity);
 		YaziFontu = AkorDefterimSys.FontGetir(activity, "anivers_regular"); // Genel yazı fontunu belirttik
+
+		sharedPref = activity.getSharedPreferences(AkorDefterimSys.PrefAdi, Context.MODE_PRIVATE);
 
 		AkorDefterimSys.GenelAyarlar(); // Uygulama için genel ayarları uyguladık.
 		//AkorDefterimSys.TransparanNotifyBar(); // Notification Bar'ı transparan yapıyoruz.
@@ -184,7 +186,7 @@ public class KayitEkran_KullaniciAdi extends AppCompatActivity implements Interf
 				onBackPressed();
 				break;
 			case R.id.lblVazgec:
-				sharedPrefEditor = AkorDefterimSys.PrefAyarlar().edit();
+				sharedPrefEditor = sharedPref.edit();
 				sharedPrefEditor.putString("prefAction", "Vazgec");
 				sharedPrefEditor.apply();
 
@@ -232,7 +234,7 @@ public class KayitEkran_KullaniciAdi extends AppCompatActivity implements Interf
 						btnTamamla.setEnabled(true);
 						// PDKayitIslem Progress Dialog'u kapattık
 						AkorDefterimSys.DismissProgressDialog(PDKayitIslem);
-						AkorDefterimSys.StandartSnackBarMsj(coordinatorLayout, getString(R.string.txtkullaniciadi_hata5));
+						AkorDefterimSys.StandartSnackBarMsj(coordinatorLayout, getString(R.string.kullaniciadi_kayitli));
 					}
 
 					break;
@@ -242,7 +244,7 @@ public class KayitEkran_KullaniciAdi extends AppCompatActivity implements Interf
 					if(JSONSonuc.getBoolean("Sonuc")) { // Kayıt yapıldıysa
 						EklenenHesapID = JSONSonuc.getString("EklenenHesapID");
 
-						sharedPrefEditor = AkorDefterimSys.PrefAyarlar().edit();
+						sharedPrefEditor = sharedPref.edit();
 						sharedPrefEditor.putString("prefHesapID", EklenenHesapID);
 						sharedPrefEditor.putString("prefEPosta", EPosta);
 						sharedPrefEditor.putString("prefParolaSHA1", Strings.getSHA1(Parola));
@@ -304,11 +306,11 @@ public class KayitEkran_KullaniciAdi extends AppCompatActivity implements Interf
 
 			if(AkorDefterimSys.InternetErisimKontrolu()) {
 				if(!AkorDefterimSys.ProgressDialogisShowing(PDKayitIslem)) {
-					PDKayitIslem = AkorDefterimSys.CustomProgressDialog(getString(R.string.profiliniz_olusturuluyor_lutfen_bekleyiniz), false, AkorDefterimSys.ProgressBarTimeoutSuresi);
+					PDKayitIslem = AkorDefterimSys.CustomProgressDialog(getString(R.string.profiliniz_olusturuluyor_lutfen_bekleyiniz), false, AkorDefterimSys.ProgressBarTimeoutSuresi, "");
 					PDKayitIslem.show();
 				}
 
-				AkorDefterimSys.HesapBilgiGetir(null, "", KullaniciAdi);
+				AkorDefterimSys.HesapBilgiGetir(null, "", "", KullaniciAdi, "HesapBilgiGetir");
 			} else {
 				btnTamamla.setEnabled(true);
 				AkorDefterimSys.StandartSnackBarMsj(coordinatorLayout, getString(R.string.internet_baglantisi_saglanamadi));

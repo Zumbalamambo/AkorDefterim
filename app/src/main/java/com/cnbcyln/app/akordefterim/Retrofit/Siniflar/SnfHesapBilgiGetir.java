@@ -21,8 +21,6 @@ public class SnfHesapBilgiGetir extends SnfHata {
     private String ResimURL;
     @SerializedName("EPosta")
     private String EPosta;
-    @SerializedName("EPostaOnay")
-    private String EPostaOnay;
     @SerializedName("Parola")
     private String Parola;
     @SerializedName("ParolaSHA1")
@@ -33,8 +31,6 @@ public class SnfHesapBilgiGetir extends SnfHata {
     private String TelKodu;
     @SerializedName("CepTelefon")
     private String CepTelefon;
-    @SerializedName("CepTelefonOnay")
-    private String CepTelefonOnay;
     @SerializedName("KayitTarih")
     private String KayitTarih;
     @SerializedName("SonOturumTarih")
@@ -80,10 +76,6 @@ public class SnfHesapBilgiGetir extends SnfHata {
         return EPosta;
     }
 
-    public String getEPostaOnay() {
-        return EPostaOnay;
-    }
-
     public String getParola() {
         return Parola;
     }
@@ -102,10 +94,6 @@ public class SnfHesapBilgiGetir extends SnfHata {
 
     public String getCepTelefon() {
         return CepTelefon;
-    }
-
-    public String getCepTelefonOnay() {
-        return CepTelefonOnay;
     }
 
     public String getKayitTarih() {

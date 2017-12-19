@@ -59,7 +59,7 @@
         <item name="android:layout_gravity">center_horizontal</item>
     </style>
 
-    <style name="TextAppearance1" parent="TextAppearance.Design.Hint">
+    <style name="TextLabel" parent="TextAppearance.Design.Hint">
         <item name="android:textStyle">bold</item>
         <item name="android:textSize">@dimen/yazi_boyutu16</item>
     </style>

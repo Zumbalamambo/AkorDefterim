@@ -19,22 +19,15 @@ class PagerAdapter extends FragmentPagerAdapter {
     	this.activity = activity;
 		this.sharedPref = activity.getSharedPreferences(new AkorDefterimSys(activity).PrefAdi, Context.MODE_PRIVATE);
 
-		if(sharedPref.getString("prefHesapID", "").equals("")) // Çevrimdışı ise
-			this.PAGES = 2;
-		else // Çevrimiçi ise
+		if(sharedPref.getString("prefOturumTipi", "Cevrimdisi").equals("Cevrimici")) // Çevrimiçi ise
 			this.PAGES = 3;
+		else // Çevrimiçi ise
+			this.PAGES = 2;
     }
 
     @Override
     public Fragment getItem(int i) {
-		if (sharedPref.getString("prefHesapID", "").equals("")) { // Çevrimdışı ise
-			switch (i) {
-				case 0:
-					return new Frg_TabGenelMenu();
-				case 1:
-					return new Frg_TabRepKontrol();
-			}
-		} else { // Çevrimiçi ise
+		if (sharedPref.getString("prefOturumTipi", "Cevrimdisi").equals("Cevrimici")) { // Çevrimiçi ise
 			switch (i) {
 				case 0:
 					return new Frg_TabGenelMenu();
@@ -43,20 +36,20 @@ class PagerAdapter extends FragmentPagerAdapter {
 				case 2:
 					return new Frg_TabIstekler();
 			}
+		} else { // Çevrimdışı ise
+			switch (i) {
+				case 0:
+					return new Frg_TabGenelMenu();
+				case 1:
+					return new Frg_TabRepKontrol();
+			}
 		}
     	
     	return null;
     }
     
     public CharSequence getPageTitle(int position) {
-		if (sharedPref.getString("prefHesapID", "").equals("")) { // Çevrimdışı ise
-			switch (position) {
-				case 0:
-					return activity.getString(R.string.tabsayfa_genel_menu);
-				case 1:
-					return activity.getString(R.string.tabsayfa_repertuvar_kontrol);
-			}
-		} else { // Çevrimiçi ise
+		if (sharedPref.getString("prefOturumTipi", "Cevrimdisi").equals("Cevrimici")) { // Çevrimiçi ise
 			switch (position) {
 				case 0:
 					return activity.getString(R.string.tabsayfa_genel_menu);
@@ -64,6 +57,13 @@ class PagerAdapter extends FragmentPagerAdapter {
 					return activity.getString(R.string.tabsayfa_repertuvar_kontrol);
 				case 2:
 					return activity.getString(R.string.tabsayfa_istekler);
+			}
+		} else { // Çevrimiçi ise
+			switch (position) {
+				case 0:
+					return activity.getString(R.string.tabsayfa_genel_menu);
+				case 1:
+					return activity.getString(R.string.tabsayfa_repertuvar_kontrol);
 			}
 		}
 

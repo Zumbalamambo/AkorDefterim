@@ -51,7 +51,7 @@ public class Hesabina_Eris_Hesabini_Bul2 extends AppCompatActivity implements In
 	CircleImageView CImgKucukProfilResim, CImgSosyalAgFacebookIcon, CImgSosyalAgGoogleIcon;
 	Button btnEPostaGonder, btnSmsGonder;
 
-    String HesapID, FacebookID, GoogleID, AdSoyad, ResimURL, EPosta, Parola, TelKodu, CepTelefon, CepTelefonOnay;
+    String HesapID = "", FacebookID = "", GoogleID = "", AdSoyad = "", ResimURL = "", EPosta = "", Parola = "", TelKodu = "", CepTelefon = "";
     int EPostaGondermeKalanSure = 0;
 	int SMSGondermeKalanSure = 0;
 
@@ -80,7 +80,6 @@ public class Hesabina_Eris_Hesabini_Bul2 extends AppCompatActivity implements In
 		Parola = mBundle.getString("Parola");
 		TelKodu = mBundle.getString("TelKodu");
 		CepTelefon = mBundle.getString("CepTelefon");
-		CepTelefonOnay = mBundle.getString("CepTelefonOnay");
 
 		TEPostaGondermeSayac = new Timer();
 		TEPostaGondermeSayac_Ayarla();
@@ -178,22 +177,12 @@ public class Hesabina_Eris_Hesabini_Bul2 extends AppCompatActivity implements In
 				if(AkorDefterimSys.InternetErisimKontrolu()) {
 					btnSmsGonder.setEnabled(false);
 
-					if (CepTelefonOnay.equals("1")) {
-						if(SMSGondermeKalanSure > 0 && SMSGondermeKalanSure < AkorDefterimSys.SMSGondermeToplamSure) {
-							btnSmsGonder.setEnabled(true);
-							AkorDefterimSys.StandartSnackBarMsj(coordinatorLayout, getString(R.string.sure_bitmeden_yeni_sms_telebinde_bulunamazsiniz));
-						} else {
-							SKVLoader.setVisibility(View.VISIBLE);
-							AkorDefterimSys.SMSGonder(TelKodu, CepTelefon, getString(R.string.sms_parola_gonderildi_icerik, AdSoyad, Parola, getString(R.string.uygulama_adi)));
-						}
+					if(SMSGondermeKalanSure > 0 && SMSGondermeKalanSure < AkorDefterimSys.SMSGondermeToplamSure) {
+						btnSmsGonder.setEnabled(true);
+						AkorDefterimSys.StandartSnackBarMsj(coordinatorLayout, getString(R.string.sure_bitmeden_yeni_sms_telebinde_bulunamazsiniz));
 					} else {
-						ADDialog_SMS_Gonder = AkorDefterimSys.CustomAlertDialog(activity,
-								getString(R.string.hata),
-								getString(R.string.hesabini_bul_ceptelefon_onay_hata),
-								activity.getString(R.string.tamam),
-								"ADDialog_SMS_Gonder_Kapat");
-						ADDialog_SMS_Gonder.getWindow().getAttributes().windowAnimations = R.style.DialogAnimation;
-						ADDialog_SMS_Gonder.show();
+						SKVLoader.setVisibility(View.VISIBLE);
+						AkorDefterimSys.SMSGonder(TelKodu, CepTelefon, getString(R.string.sms_parola_gonderildi_icerik, AdSoyad, Parola, getString(R.string.uygulama_adi)));
 					}
 				} else AkorDefterimSys.StandartSnackBarMsj(coordinatorLayout, getString(R.string.internet_baglantisi_saglanamadi));
 
@@ -220,7 +209,7 @@ public class Hesabina_Eris_Hesabini_Bul2 extends AppCompatActivity implements In
 						ADDialog_EPosta_Gonder.getWindow().getAttributes().windowAnimations = R.style.DialogAnimation;
 						ADDialog_EPosta_Gonder.show();
 
-						sharedPrefEditor = AkorDefterimSys.PrefAyarlar().edit();
+						sharedPrefEditor = sharedPref.edit();
 						sharedPrefEditor.putInt("prefEPostaGondermeKalanSure", EPostaGondermeKalanSure);
 						sharedPrefEditor.apply();
 
@@ -253,7 +242,7 @@ public class Hesabina_Eris_Hesabini_Bul2 extends AppCompatActivity implements In
 						ADDialog_SMS_Gonder.getWindow().getAttributes().windowAnimations = R.style.DialogAnimation;
 						ADDialog_SMS_Gonder.show();
 
-						sharedPrefEditor = AkorDefterimSys.PrefAyarlar().edit();
+						sharedPrefEditor = sharedPref.edit();
 						sharedPrefEditor.putInt("prefSMSGondermeKalanSure", SMSGondermeKalanSure);
 						sharedPrefEditor.apply();
 
@@ -295,13 +284,13 @@ public class Hesabina_Eris_Hesabini_Bul2 extends AppCompatActivity implements In
 								TEPostaGondermeSayac = null;
 							}
 
-							sharedPrefEditor = AkorDefterimSys.PrefAyarlar().edit();
+							sharedPrefEditor = sharedPref.edit();
 							sharedPrefEditor.remove("prefEPostaGondermeKalanSure");
 							sharedPrefEditor.apply();
 
 							btnEPostaGonder.setText(getString(R.string.eposta_gonder));
 						} else {
-							sharedPrefEditor = AkorDefterimSys.PrefAyarlar().edit();
+							sharedPrefEditor = sharedPref.edit();
 							sharedPrefEditor.putInt("prefEPostaGondermeKalanSure", EPostaGondermeKalanSure);
 							sharedPrefEditor.apply();
 
@@ -326,13 +315,13 @@ public class Hesabina_Eris_Hesabini_Bul2 extends AppCompatActivity implements In
 								TSMSGondermeSayac = null;
 							}
 
-							sharedPrefEditor = AkorDefterimSys.PrefAyarlar().edit();
+							sharedPrefEditor = sharedPref.edit();
 							sharedPrefEditor.remove("prefSMSGondermeKalanSure");
 							sharedPrefEditor.apply();
 
 							btnSmsGonder.setText(getString(R.string.sms_gonder));
 						} else {
-							sharedPrefEditor = AkorDefterimSys.PrefAyarlar().edit();
+							sharedPrefEditor = sharedPref.edit();
 							sharedPrefEditor.putInt("prefSMSGondermeKalanSure", SMSGondermeKalanSure);
 							sharedPrefEditor.apply();
 

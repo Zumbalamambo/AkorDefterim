@@ -17,7 +17,9 @@
       <w>ayarlar</w>
       <w>aydinligi</w>
       <w>baglanti</w>
+      <w>baglantisi</w>
       <w>baslangic</w>
+      <w>basvuru</w>
       <w>belirle</w>
       <w>bilgi</w>
       <w>bilgileri</w>
@@ -30,11 +32,13 @@
       <w>buttonlar</w>
       <w>buyuk</w>
       <w>buyukharf</w>
+      <w>capi</w>
       <w>cevrimdisi</w>
       <w>cevrimici</w>
       <w>cift</w>
       <w>cikis</w>
       <w>cnbcyln</w>
+      <w>degisikligi</w>
       <w>degistir</w>
       <w>devam</w>
       <w>değişkenler</w>
@@ -44,7 +48,9 @@
       <w>dogum</w>
       <w>dosyaokumayazma</w>
       <w>dosyasi</w>
+      <w>dunyanin</w>
       <w>durumu</w>
+      <w>duzenle</w>
       <w>dönüyor</w>
       <w>ekle</w>
       <w>eklenen</w>
@@ -77,6 +83,7 @@
       <w>hesabim</w>
       <w>hesabina</w>
       <w>hesabini</w>
+      <w>hesabım</w>
       <w>hesapislemleri</w>
       <w>hesaplar</w>
       <w>icin</w>
@@ -97,6 +104,7 @@
       <w>karakter</w>
       <w>karakterler</w>
       <w>karaktersiz</w>
+      <w>kaydet</w>
       <w>kaydol</w>
       <w>kayit</w>
       <w>kayıt</w>
@@ -131,10 +139,12 @@
       <w>onay</w>
       <w>onaykodu</w>
       <w>orta</w>
+      <w>ortalama</w>
       <w>orıgınal</w>
       <w>osid</w>
       <w>osıd</w>
       <w>oturum</w>
+      <w>oyla</w>
       <w>parlakligi</w>
       <w>parola</w>
       <w>parolami</w>
@@ -198,6 +208,7 @@
       <w>yardim</w>
       <w>yardimi</w>
       <w>yardım</w>
+      <w>yari</w>
       <w>yedek</w>
       <w>yeniden</w>
       <w>yukle</w>

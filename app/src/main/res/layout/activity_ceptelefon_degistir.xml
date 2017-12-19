@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.design.widget.CoordinatorLayout
-	xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
 	xmlns:app="http://schemas.android.com/apk/res-auto"
+	xmlns:tools="http://schemas.android.com/tools"
 	android:id="@+id/coordinatorLayout"
 	android:layout_width="match_parent"
 	android:layout_height="match_parent"
@@ -36,14 +36,14 @@
 			app:layout_constraintGuide_percent="0.085" />
 
 		<ImageButton
-			android:id="@+id/btnGeri"
+			android:id="@+id/btnIptal"
 			android:layout_width="60dp"
 			android:layout_height="0dp"
 			android:background="@drawable/custom_button2"
 			app:layout_constraintBottom_toTopOf="@+id/view1"
 			app:layout_constraintStart_toStartOf="parent"
 			app:layout_constraintTop_toTopOf="parent"
-			app:srcCompat="@drawable/ic_arrow_back_siyah"
+			app:srcCompat="@drawable/ic_close_siyah"
 			android:contentDescription="@string/imageDesc" />
 
 		<TextView
@@ -52,26 +52,23 @@
 			android:layout_height="wrap_content"
 			android:layout_marginLeft="12dp"
 			android:layout_marginStart="12dp"
-			android:text="@string/kaydol"
+			android:text="@string/cep_telefon_degistir"
 			android:textColor="@color/KoyuYazi"
 			style="@style/TextAppearance.AppCompat.Medium.Inverse"
 			app:layout_constraintBottom_toTopOf="@+id/view1"
-			app:layout_constraintStart_toEndOf="@+id/btnGeri"
+			app:layout_constraintStart_toEndOf="@+id/btnIptal"
 			app:layout_constraintTop_toTopOf="parent" />
 
-		<TextView
-			android:id="@+id/lblVazgec"
-			android:layout_width="wrap_content"
-			android:layout_height="wrap_content"
-			android:layout_marginEnd="16dp"
-			android:layout_marginRight="16dp"
-			android:text="@string/vazgec"
-			android:textAppearance="@style/TextAppearance.AppCompat.Button"
-			android:textColor="@color/AcikMavi3"
-			style="@style/TextAppearance.AppCompat.Small.Inverse"
-			app:layout_constraintBottom_toTopOf="@+id/h_guideline1"
+		<ImageButton
+			android:id="@+id/btnKaydet"
+			android:layout_width="60dp"
+			android:layout_height="0dp"
+			android:background="@drawable/custom_button2"
+			app:layout_constraintBottom_toTopOf="@+id/view1"
 			app:layout_constraintEnd_toEndOf="parent"
-			app:layout_constraintTop_toTopOf="parent" />
+			app:layout_constraintTop_toTopOf="parent"
+			app:srcCompat="@drawable/ic_check_mavi"
+			android:contentDescription="@string/imageDesc" />
 
 		<View
 			android:id="@+id/view1"
@@ -81,44 +78,73 @@
 			app:layout_constraintTop_toTopOf="@+id/h_guideline1" />
 
 		<ImageView
-			android:id="@+id/ImgEmail"
+			android:id="@+id/ImgCepTelefon"
 			android:layout_width="wrap_content"
 			android:layout_height="0dp"
 			android:layout_marginBottom="8dp"
 			android:layout_marginStart="8dp"
 			android:layout_marginLeft="8dp"
 			android:contentDescription="@string/imageDesc"
-			app:layout_constraintBottom_toBottomOf="@+id/txtILEPosta"
+			app:layout_constraintBottom_toBottomOf="@+id/txtILCepTelefon"
 			app:layout_constraintStart_toStartOf="@+id/v_guideline1"
-			app:srcCompat="@drawable/ic_email" />
+			app:srcCompat="@drawable/ic_telefon" />
+
+		<LinearLayout
+			android:id="@+id/LLTelKodu"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:layout_marginStart="6dp"
+			android:layout_marginLeft="6dp"
+			android:layout_marginBottom="2dp"
+			app:layout_constraintBottom_toBottomOf="@+id/txtILCepTelefon"
+			app:layout_constraintStart_toEndOf="@+id/ImgCepTelefon">
+
+			<TextView
+				android:id="@+id/lblTelKodu"
+				style="@style/TextAppearance.AppCompat.Small.Inverse"
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				android:layout_marginTop="8dp"
+				android:layout_marginBottom="8dp"
+				android:layout_marginLeft="13dp"
+				android:layout_marginRight="13dp"
+				android:text="@string/labeltire"
+				android:textColor="@color/AcikMavi3"
+				app:layout_constraintLeft_toLeftOf="@+id/v_guideline1"
+				app:layout_constraintRight_toLeftOf="@+id/v_guideline2"
+				app:layout_constraintTop_toBottomOf="@+id/txtILCepTelefon" />
+		</LinearLayout>
 
 		<android.support.design.widget.TextInputLayout
-			android:id="@+id/txtILEPosta"
+			android:id="@+id/txtILCepTelefon"
 			android:layout_width="0dp"
 			android:layout_height="wrap_content"
-			android:layout_marginStart="8dp"
 			android:layout_marginLeft="8dp"
+			android:layout_marginStart="8dp"
 			android:layout_marginTop="16dp"
 			android:textColorHint="@color/KoyuGri"
 			app:hintTextAppearance="@style/TextAppearance.AppCompat.Small.Inverse"
 			app:layout_constraintLeft_toLeftOf="@+id/v_guideline1"
 			app:layout_constraintRight_toLeftOf="@+id/v_guideline2"
-			app:layout_constraintStart_toEndOf="@+id/ImgEmail"
+			app:layout_constraintStart_toEndOf="@+id/LLTelKodu"
 			app:layout_constraintTop_toTopOf="@+id/h_guideline1">
 
 			<EditText
-				android:id="@+id/txtEPosta"
+				android:id="@+id/txtCepTelefon"
+				style="@style/TextAppearance.AppCompat.Small.Inverse"
 				android:layout_width="match_parent"
 				android:layout_height="match_parent"
-				android:hint="@string/eposta"
-				android:inputType="textEmailAddress"
+				android:hint="@string/cep_telefon"
+				android:text="@string/labeltire"
+				android:importantForAutofill="noExcludeDescendants"
+				android:inputType="phone"
 				android:maxLines="1"
 				android:textColor="@color/KoyuYazi"
-				style="@style/TextAppearance.AppCompat.Small.Inverse"/>
+				tools:ignore="UnusedAttribute" />
 		</android.support.design.widget.TextInputLayout>
 
 		<TextView
-			android:id="@+id/lblEPostaAciklama"
+			android:id="@+id/lblCepTelefonBasvuruKalanSure"
 			android:layout_width="0dp"
 			android:layout_height="wrap_content"
 			android:layout_marginEnd="4dp"
@@ -126,30 +152,12 @@
 			android:layout_marginRight="4dp"
 			android:layout_marginStart="4dp"
 			android:layout_marginTop="16dp"
-			android:text="@string/eposta_adresini_kimseye_gormeyecek"
+			android:text="@string/yeni_basvuru_kalan_sure"
 			android:textColor="@color/KoyuYazi"
 			style="@style/TextAppearance.AppCompat.Small.Inverse"
 			app:layout_constraintLeft_toLeftOf="@+id/v_guideline1"
 			app:layout_constraintRight_toLeftOf="@+id/v_guideline2"
-			app:layout_constraintTop_toBottomOf="@+id/txtILEPosta" />
-
-		<Button
-			android:id="@+id/btnIleri"
-			android:layout_width="wrap_content"
-			android:layout_height="48dp"
-			android:layout_marginRight="0dp"
-			android:layout_marginTop="16dp"
-			android:background="@drawable/custom_button_mavi"
-			android:drawableEnd="@drawable/ic_btn_arrow_forward"
-			android:drawableRight="@drawable/ic_btn_arrow_forward"
-			android:paddingEnd="5dp"
-			android:paddingRight="5dp"
-			android:text="@string/ileri"
-			android:textAppearance="@style/TextAppearance.AppCompat"
-			android:textColor="@color/Beyaz"
-			style="@style/TextAppearance.AppCompat.Small.Inverse"
-			app:layout_constraintRight_toLeftOf="@+id/v_guideline2"
-			app:layout_constraintTop_toBottomOf="@+id/lblEPostaAciklama" />
+			app:layout_constraintTop_toBottomOf="@+id/txtILCepTelefon" />
 
 	</android.support.constraint.ConstraintLayout>
 </android.support.design.widget.CoordinatorLayout>

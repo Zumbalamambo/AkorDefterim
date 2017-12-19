@@ -63,15 +63,15 @@ public interface RetrofitInterface {
                                          @Query("AdSoyad") String mAdSoyad);
 
     @GET("phpscriptleri/hesapislemleri/hesap_bilgi_getir.php")
-    Call<SnfHesapBilgiGetir> HesapBilgiGetir(@Query("TelKodu") String mTelKodu, @Query("EPostaKullaniciAdiTelefon") String mEPostaKullaniciAdiTelefon);
+    Call<SnfHesapBilgiGetir> HesapBilgiGetir(@Query("HesapID") String mHesapID, @Query("TelKodu") String mTelKodu, @Query("EPostaKullaniciAdiTelefon") String mEPostaKullaniciAdiTelefon);
 
     @GET("phpscriptleri/hesapislemleri/hesap_bilgi_guncelle.php")
-    Call<SnfIslemSonuc> HesapBilgiGuncelle(@Query("FirebaseToken") String mFirebaseToken,
+    Call<SnfIslemSonuc> HesapBilgiGuncelle(@Query("HesapID") String mHesapID,
+                                           @Query("FirebaseToken") String mFirebaseToken,
                                            @Query("OSID") String mOSID,
                                            @Query("OSVersiyon") String mOSVersiyon,
                                            @Query("AdSoyad") String mAdSoyad,
                                            @Query("DogumTarih") String mDogumTarih,
-                                           @Query("ResimURL") String mResimURL,
                                            @Query("EPosta") String mEPosta,
                                            @Query("Parola") String mParola,
                                            @Query("ParolaSHA1") String mParolaSHA1,

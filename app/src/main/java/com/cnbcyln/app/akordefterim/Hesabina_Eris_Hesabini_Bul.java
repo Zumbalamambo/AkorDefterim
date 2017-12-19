@@ -154,13 +154,15 @@ public class Hesabina_Eris_Hesabini_Bul extends AppCompatActivity implements Int
 				case "HesapBilgiGetir":
 					if(JSONSonuc.getBoolean("Sonuc")) {
                         if(JSONSonuc.getString("HesapDurum").equals("Ban")) { // Eğer hesap banlanmışsa
-							ADDialog_HesapDurumu = AkorDefterimSys.CustomAlertDialog(activity,
-									getString(R.string.hesap_durumu),
-									getString(R.string.hesap_banlandi, JSONSonuc.getString("HesapDurumBilgi"), getString(R.string.uygulama_yapimci_site)),
-									activity.getString(R.string.tamam),
-									"ADDialog_HesapDurumu_Tamam");
-							ADDialog_HesapDurumu.getWindow().getAttributes().windowAnimations = R.style.DialogAnimation;
-							ADDialog_HesapDurumu.show();
+							if(!AkorDefterimSys.AlertDialogisShowing(ADDialog_HesapDurumu)) {
+								ADDialog_HesapDurumu = AkorDefterimSys.CustomAlertDialog(activity,
+										getString(R.string.hesap_durumu),
+										getString(R.string.hesap_banlandi, JSONSonuc.getString("HesapDurumBilgi"), getString(R.string.uygulama_yapimci_site)),
+										activity.getString(R.string.tamam),
+										"ADDialog_HesapDurumu_Tamam");
+								ADDialog_HesapDurumu.getWindow().getAttributes().windowAnimations = R.style.DialogAnimation;
+								ADDialog_HesapDurumu.show();
+							}
                         } else {
 							Intent mIntent = new Intent(activity, Hesabina_Eris_Hesabini_Bul2.class);
 							mIntent.putExtra("HesapID", JSONSonuc.getString("HesapID"));
@@ -172,7 +174,6 @@ public class Hesabina_Eris_Hesabini_Bul extends AppCompatActivity implements Int
 							mIntent.putExtra("Parola", JSONSonuc.getString("Parola"));
 							mIntent.putExtra("TelKodu", JSONSonuc.getString("TelKodu"));
 							mIntent.putExtra("CepTelefon", JSONSonuc.getString("CepTelefon"));
-							mIntent.putExtra("CepTelefonOnay", JSONSonuc.getString("CepTelefonOnay"));
 
 							AkorDefterimSys.KlavyeKapat();
 							AkorDefterimSys.EkranGetir(mIntent, "Slide");
@@ -219,7 +220,7 @@ public class Hesabina_Eris_Hesabini_Bul extends AppCompatActivity implements Int
 			AkorDefterimSys.UnFocusEditText(txtEPostaKullaniciAdi);
 
 			if(AkorDefterimSys.InternetErisimKontrolu())
-				AkorDefterimSys.HesapBilgiGetir(null, "", EPostaKullaniciAdi);
+				AkorDefterimSys.HesapBilgiGetir(null, "", "", EPostaKullaniciAdi, "HesapBilgiGetir");
 			else {
 				btnIleri.setEnabled(true);
 				SKVLoader.setVisibility(View.GONE);

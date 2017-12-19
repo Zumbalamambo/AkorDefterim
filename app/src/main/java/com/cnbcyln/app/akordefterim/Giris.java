@@ -55,16 +55,16 @@ public class Giris extends AppCompatActivity implements Interface_AsyncResponse 
 
 	private Activity activity;
 	private AkorDefterimSys AkorDefterimSys;
-	AlertDialog ADDialog_PlayGoogleServisi, ADDialog_InternetErisimSorunu, ADDialog_HesapDurumu;
-
-	Typeface YaziFontu;
+	SharedPreferences sharedPref;
 	SharedPreferences.Editor sharedPrefEditor;
+	Typeface YaziFontu;
 	CallbackManager mFacebookCallbackManager;
 	private GoogleApiClient mGoogleLoginApiClient;
 	VideoView VideoArkaplan;
 	ViewPager VPGirisEkranPager;
+	AlertDialog ADDialog_PlayGoogleServisi, ADDialog_InternetErisimSorunu, ADDialog_HesapDurumu;
 
-	String FirebaseToken, OSID, OSVersiyon, UygulamaVersiyon;
+	String FirebaseToken = "", OSID = "", OSVersiyon = "", UygulamaVersiyon = "";
 	boolean CikisIcinCiftTiklandiMi = false;
 
 	@Override
@@ -78,6 +78,8 @@ public class Giris extends AppCompatActivity implements Interface_AsyncResponse 
 		activity = this;
 		AkorDefterimSys = new AkorDefterimSys(activity);
 		YaziFontu = AkorDefterimSys.FontGetir(activity, "anivers_regular");
+
+		sharedPref = activity.getSharedPreferences(AkorDefterimSys.PrefAdi, Context.MODE_PRIVATE);
 
 		AkorDefterimSys.GenelAyarlar(); // Uygulama için genel ayarları uyguladık.
 		AkorDefterimSys.TransparanNotifyBar(); // Notification Bar'ı transparan yapıyoruz.
@@ -107,7 +109,7 @@ public class Giris extends AppCompatActivity implements Interface_AsyncResponse 
 		ViewPagerAdapter ViewPagerAdapter = new ViewPagerAdapter();
 		VPGirisEkranPager.setAdapter(ViewPagerAdapter);
 
-		sharedPrefEditor = AkorDefterimSys.PrefAyarlar().edit();
+		sharedPrefEditor = sharedPref.edit();
 		sharedPrefEditor.remove("prefAction");
 		sharedPrefEditor.apply();
 	}
@@ -137,8 +139,8 @@ public class Giris extends AppCompatActivity implements Interface_AsyncResponse 
 	protected void onResume() {
 		super.onResume();
 
-		if(AkorDefterimSys.PrefAyarlar().getString("prefAction", "").equals("Giris_Yap")) {
-			sharedPrefEditor = AkorDefterimSys.PrefAyarlar().edit();
+		if(sharedPref.getString("prefAction", "").equals("Giris_Yap")) {
+			sharedPrefEditor = sharedPref.edit();
 			sharedPrefEditor.remove("prefAction");
 			sharedPrefEditor.apply();
 
@@ -625,7 +627,7 @@ public class Giris extends AppCompatActivity implements Interface_AsyncResponse 
 			switch (JSONSonuc.getString("Islem")) {
 				case "HesapGirisYap":
 					if(JSONSonuc.getBoolean("Sonuc")) {
-						sharedPrefEditor = AkorDefterimSys.PrefAyarlar().edit();
+						sharedPrefEditor = sharedPref.edit();
 						sharedPrefEditor.putString("prefHesapID", JSONSonuc.getString("HesapID"));
 						sharedPrefEditor.putString("prefEPosta", JSONSonuc.getString("HesapEPosta"));
 						sharedPrefEditor.putString("prefParolaSHA1", JSONSonuc.getString("HesapParolaSHA1"));

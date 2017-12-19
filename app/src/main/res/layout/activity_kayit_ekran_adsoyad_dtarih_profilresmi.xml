@@ -54,7 +54,7 @@
 			android:layout_marginStart="12dp"
 			android:text="@string/profilini_olustur"
 			android:textColor="@color/KoyuYazi"
-			android:textSize="@dimen/yazi_boyutu18"
+			style="@style/TextAppearance.AppCompat.Medium.Inverse"
 			app:layout_constraintBottom_toTopOf="@+id/view1"
 			app:layout_constraintStart_toEndOf="@+id/btnGeri"
 			app:layout_constraintTop_toTopOf="parent" />
@@ -68,6 +68,7 @@
 			android:text="@string/vazgec"
 			android:textAppearance="@style/TextAppearance.AppCompat.Button"
 			android:textColor="@color/AcikMavi3"
+			style="@style/TextAppearance.AppCompat.Small.Inverse"
 			app:layout_constraintBottom_toTopOf="@+id/h_guideline1"
 			app:layout_constraintEnd_toEndOf="parent"
 			app:layout_constraintTop_toTopOf="parent" />
@@ -76,7 +77,7 @@
 			android:id="@+id/view1"
 			android:layout_width="0dp"
 			android:layout_height="1dp"
-			android:background="@drawable/line2"
+			android:background="@drawable/cizgi_ortagri"
 			app:layout_constraintTop_toTopOf="@+id/h_guideline1" />
 
 		<TextView
@@ -86,6 +87,7 @@
 			android:layout_marginTop="16dp"
 			android:text="@string/adsoyad_dogumtarih_resim_ekran_aciklama"
 			android:textColor="@color/KoyuGri"
+			style="@style/TextAppearance.AppCompat.Small.Inverse"
 			app:layout_constraintLeft_toLeftOf="@+id/v_guideline1"
 			app:layout_constraintRight_toLeftOf="@+id/v_guideline2"
 			app:layout_constraintTop_toBottomOf="@+id/view1" />
@@ -112,7 +114,8 @@
 					android:id="@+id/txtILAdSoyad"
 					android:layout_width="match_parent"
 					android:layout_height="wrap_content"
-					android:textColorHint="@color/KoyuGri">
+					android:textColorHint="@color/KoyuGri"
+					app:hintTextAppearance="@style/TextAppearance.AppCompat.Small.Inverse">
 
 					<EditText
 						android:id="@+id/txtAdSoyad"
@@ -120,14 +123,16 @@
 						android:layout_height="wrap_content"
 						android:hint="@string/ad_soyad"
 						android:textColor="@color/KoyuYazi"
-						android:inputType="textPersonName"/>
+						android:inputType="textPersonName"
+						style="@style/TextAppearance.AppCompat.Small.Inverse"/>
 				</android.support.design.widget.TextInputLayout>
 
 				<android.support.design.widget.TextInputLayout
 					android:id="@+id/txtILDogumTarih"
 					android:layout_width="match_parent"
 					android:layout_height="wrap_content"
-					android:textColorHint="@color/KoyuGri">
+					android:textColorHint="@color/KoyuGri"
+					app:hintTextAppearance="@style/TextAppearance.AppCompat.Small.Inverse">
 
 					<EditText
 						android:id="@+id/txtDogumTarih"
@@ -135,7 +140,8 @@
 						android:layout_height="wrap_content"
 						android:hint="@string/dogumtarihi"
 						android:textColor="@color/KoyuYazi"
-                        android:inputType="date"/>
+                        android:inputType="date"
+						style="@style/TextAppearance.AppCompat.Small.Inverse"/>
 				</android.support.design.widget.TextInputLayout>
 			</LinearLayout>
 
@@ -181,6 +187,7 @@
 			android:id="@+id/btnIleri"
 			android:layout_width="wrap_content"
 			android:layout_height="48dp"
+			android:layout_marginTop="24dp"
 			android:background="@drawable/custom_button_mavi"
 			android:drawableEnd="@drawable/ic_btn_arrow_forward"
 			android:drawableRight="@drawable/ic_btn_arrow_forward"
@@ -189,8 +196,8 @@
 			android:text="@string/ileri"
 			android:textAppearance="@style/TextAppearance.AppCompat"
 			android:textColor="@color/Beyaz"
+			style="@style/TextAppearance.AppCompat.Small.Inverse"
 			app:layout_constraintRight_toLeftOf="@+id/v_guideline2"
-			android:layout_marginTop="24dp"
 			app:layout_constraintTop_toBottomOf="@+id/LLAdSoyadResim" />
 
 	</android.support.constraint.ConstraintLayout>

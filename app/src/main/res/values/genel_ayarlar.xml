@@ -17,6 +17,8 @@
     <integer name="ParolaKarakterSayisi_MAX">25</integer>
     <integer name="AppServiceCalismaAraligi">300</integer> <!-- 300 Saniye = 5 Dakika-->
     <integer name="ProfilResimYuklemeBoyutu">5</integer>
+    <integer name="EPostaGondermeToplamSure">180</integer> <!-- 180 Saniye = 3 Dakika-->
+    <integer name="SMSGondermeToplamSure">180</integer> <!-- 180 Saniye = 3 Dakika-->
 
     <!-- Sarki Icerik Değerleri -->
     <integer name="SarkiIcerikYaziBoyutu_MIN">40</integer>

@@ -21,23 +21,16 @@
             app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintTop_toTopOf="parent">
 
-            <LinearLayout
-                android:id="@+id/LLSolButtonlar"
-                android:layout_width="wrap_content"
+            <ImageButton
+                android:id="@+id/btnSolMenu"
+                android:layout_width="60dp"
                 android:layout_height="0dp"
-                android:layout_marginLeft="8dp"
-                android:gravity="center"
-                android:orientation="horizontal"
+                android:background="@drawable/transparan"
+                android:contentDescription="@string/imageDesc"
                 app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintLeft_toLeftOf="parent"
-                app:layout_constraintTop_toTopOf="parent">
-
-                <Button
-                    android:id="@+id/btnSolMenu"
-                    android:layout_width="24dp"
-                    android:layout_height="24dp"
-                    android:background="@drawable/custom_btnsolmenu" />
-            </LinearLayout>
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:srcCompat="@drawable/custom_btnsolmenu" />
 
             <HorizontalScrollView
                 android:id="@+id/HScrollViewSayfaBaslik"
@@ -50,9 +43,15 @@
                 android:background="@color/colorPrimary"
                 android:requiresFadingEdge="horizontal"
                 android:scrollbars="none"
+
+                android:singleLine="true"
+                android:scrollHorizontally="true"
+                android:ellipsize="marquee"
+                android:marqueeRepeatLimit ="marquee_forever"
+
                 app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintLeft_toRightOf="@+id/LLSolButtonlar"
-                app:layout_constraintRight_toLeftOf="@+id/LLSagButtonlar"
+                app:layout_constraintLeft_toRightOf="@+id/btnSolMenu"
+                app:layout_constraintRight_toLeftOf="@+id/btnSagMenu"
                 app:layout_constraintTop_toTopOf="parent">
 
                 <LinearLayout
@@ -71,25 +70,16 @@
                 </LinearLayout>
             </HorizontalScrollView>
 
-            <LinearLayout
-                android:id="@+id/LLSagButtonlar"
-                android:layout_width="wrap_content"
+            <ImageButton
+                android:id="@+id/btnSagMenu"
+                android:layout_width="60dp"
                 android:layout_height="0dp"
-                android:layout_marginBottom="0dp"
-                android:layout_marginRight="8dp"
-                android:layout_marginTop="0dp"
-                android:gravity="center"
-                android:orientation="horizontal"
+                android:background="@drawable/transparan"
+                android:contentDescription="@string/imageDesc"
                 app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintRight_toRightOf="parent"
-                app:layout_constraintTop_toTopOf="parent">
-
-                <Button
-                    android:id="@+id/btnSagMenu"
-                    android:layout_width="24dp"
-                    android:layout_height="24dp"
-                    android:background="@drawable/custom_btnsolmenu" />
-            </LinearLayout>
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:srcCompat="@drawable/custom_btnsolmenu" />
 
         </android.support.constraint.ConstraintLayout>
 

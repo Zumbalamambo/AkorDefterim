@@ -45,10 +45,11 @@
     <string name="dusuk">Düşük</string>
     <string name="orta">Orta</string>
     <string name="yuksek">Yüksek</string>
+    <string name="fotografi_degistir">Fotoğrafı Değiştir</string>
 
     <!-- SMS Gönderme İşlemi -->
-    <string name="sms_onay_kodu_icerik1">Merhaba %1$s. Akor Defterim doğrulama kodunuz: %2$s</string>
-    <string name="sms_onay_kodu_icerik2">Akor Defterim doğrulama kodunuz: %s</string>
+    <string name="sms_dosrulama_kodu_icerik">Merhaba. Doğrulama kodunuz: %1$s / %2$s Ekibi</string>
+    <string name="cep_telefon_degistir">Cep Telefonu Değiştir</string>
     <string name="sms_gonderildi">SMS Gönderildi</string>
     <string name="sms_parola_gonderildi_icerik">Merhaba %1$s. İsteğin üzerine hesabına ait parolanı gönderdik. Parola: %2$s / %3$s Ekibi</string>
     <string name="sms_parola_gonderildi_mesaj">&lt;b&gt;%s&lt;/b&gt; cep telefonuna, hesabına ait parolayı içeren sms gönderdik.</string>
@@ -58,9 +59,9 @@
     <!-- E-Posta Gönderme İşlemi -->
     <string name="eposta_yeni_hesap">Yeni Hesap</string>
     <string name="eposta_yeni_hesap_icerik">Merhaba %1$s %2$s. %3$s uygulamasına hoşgeldiniz. Doğrulama kodunu android uygulamasındaki onay kodu alanına yazarak üyeliğinizi tamamlayınız. Doğrulama Kodu: %4$s</string>
+    <string name="eposta_degistir">E-posta Değiştir</string>
     <string name="eposta_onayi">Email Doğrulama</string>
-    <string name="eposta_onayi_icerik">Merhaba %1$s. Email onay işlemini tamamlamak için kullanacağınız doğrulama kodunuz: %2$s</string>
-    <string name="eposta_onayi_icerik2">Merhaba. Doğrulama kodunuz: %1$s &lt;br&gt;&lt;br&gt;&lt;b&gt;%2$s Ekibi&lt;/b&gt;</string>
+    <string name="eposta_dosrulama_kodu_icerik">Merhaba. Doğrulama kodunuz: %1$s &lt;br&gt;&lt;br&gt;&lt;b&gt;%2$s Ekibi&lt;/b&gt;</string>
     <string name="eposta_sifremiunuttum">Sifremi Unuttum</string>
     <string name="eposta_sifremiunuttum_icerik">Merhaba %1$s. Sifrenizi sıfırlamak için kullanacağınız doğrulama kodunuz: %2$s</string>
     <string name="eposta_gonderildi">E-posta Gönderildi</string>
@@ -123,7 +124,7 @@
     <string name="profil_resmi">Profil Resmi</string>
 
     <!-- Dialog Mesajlar -->
-    <string name="hesap_cikis_mesaji">Hesabınızdan çıkış yapmak istiyor musunuz?</string>
+    <string name="hesap_cikis_mesaji">Hesaptan çıkış yapmak istiyor musun?</string>
     <string name="web_baglanti_istegi_mesaji">Web bağlantı isteği var. Kabul ediyormusunuz? Kalan süre: %s</string>
     <string name="giris_yapiliyor">Giriş yapılıyor. Lütfen bekleyiniz..</string>
     <string name="guncellemeler_denetleniyor">Güncellemeler denetleniyor..</string>
@@ -154,8 +155,8 @@
     <string name="repertuvar_sifirlama_mesaji">Cihazınızdaki yerel repertuvar sıfırlanacaktır. Onaylıyor musunuz?</string>
 
     <string name="konum_listesi_aliniyor_lutfen_bekleyiniz">Konum listesi alınıyor. Lütfen bekleyiniz..</string>
-    <string name="onay_kodu_cep" tools:ignore="Typos">Birazdan cep telefonunuza gelecek olan doğrulama kodu otomatik olarak buraya yazılacaktır. Yazılmasa lütfen doğrulama kodunu elle girin. (Not: Sms gelene kadar lütfen bekleyin. Eğer sms gelmezse \"Yeniden Gönder\" e basın) Kalan süre: %s</string>
-    <string name="onay_kodu_email">E-Posta adresine doğrulama kodu gönderildi.&lt;br&gt;&lt;b&gt;(%s)&lt;/b&gt;</string>
+    <string name="dogrulama_kodu_cep" tools:ignore="Typos">Birazdan &lt;b&gt;%s&lt;/b&gt; cep telefon numarasına gelecek olan doğrulama kodu, otomatik olarak alttaki bölüme yazılacaktır. Yazılmasa lütfen doğrulama kodunu elle girin. (Not: Sms gelene kadar lütfen bekleyin. Eğer doğrulama kodu gelmezse &lt;b&gt;Yeniden Gönder&lt;/b&gt;\'e basın)</string>
+    <string name="dogrulama_kodu_eposta" tools:ignore="Typos">&lt;b&gt;%s&lt;/b&gt; adresine, doğrulama kodu içeren e-posta gönderdik. Gelen doğrulama kodunu alttaki bölüme girin. (Not: Eğer doğrulama kodu gelmezse &lt;b&gt;Yeniden Gönder&lt;/b&gt;\'e basın)</string>
     <string name="sifre_sifirlama_yontem_bilgi">Merhaba %s. Hesabınızla ilgili şifre sıfırlama yöntemlerinden birini seçin.</string>
     <string name="sifre_sifirla_bilgi">Lütfen yeni şifrenizi belirleyin.</string>
     <string name="sifre_degistirme_bilgi">Güncel şifrenizi yazdıktan sonra lütfen yeni şifrenizi belirleyin.</string>
@@ -196,6 +197,7 @@
     <string name="eposta_yada_telefon_kaydol">E-Posta ya da Telefon ile Kaydol</string>
     <string name="eposta_gonder">E-posta Gönder</string>
     <string name="eposta_gonder2">E-posta Gönder - %s</string>
+    <string name="profili_duzenle">Profili Düzenle</string>
     <string name="kullanici_adi_veya_eposta_kullan">Kullanıcı Adı veya E-posta Kullan</string>
     <string name="google_kayit_ol">Google+ ile Kaydol</string>
     <string name="facebook_kayit_ol">Facebook ile Kaydol</string>
@@ -261,6 +263,8 @@
     <string name="giris_yardimi">Giriş Yardımı</string>
     <string name="hesabina_eris">Hesabına Eriş</string>
     <string name="hesabini_bul">Hesabını Bul</string>
+    <string name="gizli_bilgiler">Gizli Bilgiler</string>
+    <string name="genel_bilgiler">Genel Bilgiler</string>
     <string name="yardim_merkezi">Yardım Merkezi</string>
     <string name="giris_detaylarini_unuttun_mu">Giriş detaylarını unuttun mu? [Giriş yapmak için yardım al.]</string>
     <string name="hesabini_bul_aciklama">%s kullanıcı adını veya hesabınla ilişkili e-posta adresini gir.</string>
@@ -273,6 +277,7 @@
     <string name="bir_kamera_secin">Bir kamera seçin</string>
     <string name="hesap_bilgileri">Hesap Bilgileri</string>
     <string name="sifre_islemleri">Şifre İşlemleri</string>
+    <string name="eposta_adresi">E-posta Adresi</string>
     <string name="liste_bos">Liste Boş</string>
     <string name="yada">ya da</string>
     <string name="ad_soyad">Ad Soyad</string>
@@ -316,13 +321,15 @@
     <string name="kullanici_sozlesmesi" tools:ignore="Typos">&lt;a href=\"https://www.cbcapp.net\"&gt;Kullanıcı Sözleşmesi&lt;/a&gt;</string>
     <string name="gizlilik_sartlari">&lt;a href=\"https://www.cbcapp.net/gizlilikpolitikasi.html\"&gt;Gizlilik Şartları&lt;/a&gt;</string>
     <string name="interneti_yoksa">internetin yoksa</string>
+    <string name="belirtilmemis">Belirtilmemiş</string>
+    <string name="onaylanmamis">Onaylanmamış</string>
 
     <!-- EditText Hint'ler -->
     <string name="sanatci_adina_gore_ara">Ara (Sanatçı adına göre)</string>
     <string name="sarki_adina_gore_ara">Ara (Şarkı adına göre)</string>
     <string name="port">Port</string>
     <string name="kullaniciadi">Kullanıcı adı</string>
-    <string name="ceptelefon">Cep telefon</string>
+    <string name="cep_telefon">Cep Telefon</string>
     <string name="email_kullaniciadi">Kullanıcı adı veya e-posta</string>
     <string name="sifre">Şifre</string>
     <string name="sifre_tekrar">Şifre tekrar</string>
@@ -336,6 +343,8 @@
     <string name="hata_bos_alan">Boş bırakamazsın.</string>
     <string name="hata_en_az_karakter">En az %s karakter olmalıdır.</string>
     <string name="hata_en_fazla_karakter">En fazla %s karakter olmalıdır.</string>
+    <string name="hata_basinda_sifir_olmadan_10_hane">Başında 0(sıfır) olmadan 10 hane olarak giriniz.</string>
+    <string name="hata_format_sadece_sayi">Yalnızca sayı kullanabilirsin.</string>
     <string name="hata_format_sadece_sayi_kucukharf">Yalnızca sayı ve küçük harf (Türkçe hariç) kullanabilirsin.</string>
     <string name="hata_format_sadece_sayi_kucukharf_buyukharf_bosluklu">Yalnızca küçük ve büyük harf kullanabilirsin.</string>
     <string name="hata_format_bastaki_karakterler_harf_olmak_zorunda">Baştaki %s karakter harf olmak zorunda.</string>
@@ -364,13 +373,15 @@
     <string name="txtkullaniciadi_hata2">İçinde Boşluk ve Türkçe harf (ı,ğ,ü,ş,ö,ç) olmamalı.</string>
     <string name="txtkullaniciadi_hata3">Kullanıcı Adı en az %1$s, en fazla %2$s karakter olmalıdır.</string>
     <string name="txtkullaniciadi_hata4">Kullanıcı Adı en az %s karakter olmalıdır.</string>
-    <string name="txtkullaniciadi_hata5">Belirlediğin kullanıcı adı mevcut. Farklı bir kullanıcı adı dene.</string>
+
+    <string name="kullaniciadi_kayitli">Belirlediğin kullanıcı adı kayıtlı. Farklı bir kullanıcı adı dene.</string>
+    <string name="eposta_kayitli">Belirlediğin e-posta adresi kayıtlı. Farklı bir e-posta adresi dene.</string>
+    <string name="ceptelefonu_kayitli">Belirlediğin cep telefonu kayıtlı. Farklı bir cep telefonu dene.</string>
 
     <!-- Toast Mesajlar -->
     <string name="txtdogumtarih_hata1">Doğum Tarihi alanını boş bırakamazsınız.</string>
     <string name="txtceptelefon_hata1">Cep Telefonu alanını boş bırakamazsınız.</string>
     <string name="txtceptelefon_hata2">Cep Telefonu alanında yalnızca sayı kullanabilirsiniz.</string>
-    <string name="txtceptelefon_hata3">Cep Telefon numaranızı başında 0(sıfır) olmadan 10 hane olarak giriniz.</string>
     <string name="txtceptelefon_hata4">Girdiğiniz Cep Telefonu sistemde kayıtlıdır. Farklı bir Cep Telefonu deneyin.</string>
     <string name="txtemail_kullaniciadi_hata1">Email / Kullanıcı Adı alanını boş bırakamazsınız.</string>
     <string name="txtemail_kullaniciadi_hata2">Email / Kullanıcı Adı / Telefon alanında yalnızca sayı, küçük ve büyük harf kullanabilirsiniz.</string>
@@ -395,14 +406,13 @@
     <string name="internet_baglantisi_saglanamadi">İnternet bağlantısı sağlanamadı.</string>
     <string name="girilen_onay_kodu_hata1">Doğrulama Kodu alanını boş bırakamazsınız.</string>
     <string name="girilen_onay_kodu_hata2">Yazdığın doğrulama kodu hatalı. Yeniden dene.</string>
-    <string name="onay_kodu_sure_bitti" tools:ignore="Typos">Süre bitti. İstersen yeni doğrulama kodu isteyebilirsin.</string>
+    <string name="sure_bitti_yeniden_basvuru_yapilabilir">Süre bitti. Başvurunu yeniden gerçekleştirebilirsin.</string>
     <string name="yeni_onay_kodu_talebi_hata">Süre bitmeden yeni doğrulama kodu talebinde bulunamazsın.</string>
+    <string name="yeni_basvuru_kalan_sure">Bir sonraki başvuru için kalan süre: &lt;b&gt;%s&lt;/b&gt;</string>
     <string name="sifre_sifirlama_yontemi_secin">Lütfen bir şifre sıfırlama yöntemi seç.</string>
     <string name="google_play_servis_hata1">Cihazınızda Google Play Servisi bulunamadı. Lütfen gerekli yüklemeleri yapın.</string>
     <string name="profil_resmi_guncellendi">Profil resmi güncellendi.</string>
     <string name="mail_gonderim_hatasi">Mail gönderim hatası. Daha sonra yeniden deneyin..</string>
-    <string name="mail_onay_verildi">Mail adresiniz başarıyla onaylandı..</string>
-    <string name="ceptelefon_onay_verildi">Cep telefonunuz başarıyla onaylandı.</string>
 
     <string name="yerel_repertuvar_guncellendi">Yerel repertuvar güncellendi.</string>
     <string name="hesap_kullanima_kisitlidir">Hesabınız kullanıma kısıtlıdır. Lütfen Hesabım sayfasından Email aktivasyonunu tamamlayınız.</string>
@@ -441,33 +451,11 @@
         <item>Eklenme tarihine göre</item>
     </string-array>
 
-    <string-array name="GenelMenu_Normal">
+    <string-array name="GenelMenu_Cevrimici">
         <item>anasayfa_Anasayfa</item>
         <item>istatistik_İstatistik</item>
         <item>hesabim_Hesabım</item>
         <item>guvenlik_Güvenlik</item>
-        <item>oyla_Oyla</item>
-        <item>ayarlar_Ayarlar</item>
-        <item>egitim_Eğitim</item>
-        <item>cikisyap_Çıkış Yap</item>
-    </string-array>
-
-    <string-array name="GenelMenu_Google">
-        <item>anasayfa_Anasayfa</item>
-        <item>istatistik_İstatistik</item>
-        <item>hesabim_Hesabım</item>
-        <!-- <item>guvenlik_Güvenlik</item> -->
-        <item>oyla_Oyla</item>
-        <item>ayarlar_Ayarlar</item>
-        <item>egitim_Eğitim</item>
-        <item>cikisyap_Çıkış Yap</item>
-    </string-array>
-
-    <string-array name="GenelMenu_Facebook">
-        <item>anasayfa_Anasayfa</item>
-        <item>istatistik_İstatistik</item>
-        <item>hesabim_Hesabım</item>
-        <!-- <item>guvenlik_Güvenlik</item> -->
         <item>oyla_Oyla</item>
         <item>ayarlar_Ayarlar</item>
         <item>egitim_Eğitim</item>
@@ -548,7 +536,8 @@
     <string name="telefon_numarasi2">Telefon numarası - %s</string>
     <string name="guvenlik">Güvenlik</string>
     <string name="gizlilik">Gizlilik</string>
-    <string name="sifreni_degistir">Şifreni değiştir</string>
+    <string name="parolani_degistir">Parolanı Değiştir</string>
+    <string name="bagli_hesaplar">Bağlı Hesaplar</string>
 
     <!-- İstatistik Sayfası -->
     <string name="genel_online_istatistik_aciklama">%s uygulamasında kullanıcı bazlı genel çevrimiçi repertuvar istatistikleri tutulur ve görüntülenir..</string>

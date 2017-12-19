@@ -55,7 +55,7 @@
 			android:layout_marginStart="12dp"
 			android:text="@string/giris_yap"
 			android:textColor="@color/KoyuYazi"
-			android:textSize="@dimen/yazi_boyutu18"
+			style="@style/TextAppearance.AppCompat.Medium.Inverse"
 			app:layout_constraintBottom_toTopOf="@+id/view1"
 			app:layout_constraintStart_toEndOf="@+id/btnGeri"
 			app:layout_constraintTop_toTopOf="parent" />
@@ -64,19 +64,19 @@
 			android:id="@+id/view1"
 			android:layout_width="0dp"
 			android:layout_height="1dp"
-			android:background="@drawable/line2"
+			android:background="@drawable/cizgi_ortagri"
 			app:layout_constraintTop_toTopOf="@+id/h_guideline1" />
 
 		<android.support.design.widget.TextInputLayout
-		android:id="@+id/txtILEPostaKullaniciAdi"
-		android:layout_width="0dp"
-		android:layout_height="wrap_content"
-		android:layout_marginTop="24dp"
-		android:textColorHint="@color/KoyuGri"
-		app:layout_constraintHorizontal_bias="0.0"
-		app:layout_constraintLeft_toLeftOf="@+id/v_guideline1"
-		app:layout_constraintRight_toLeftOf="@+id/v_guideline2"
-		app:layout_constraintTop_toTopOf="@+id/h_guideline1">
+			android:id="@+id/txtILEPostaKullaniciAdi"
+			android:layout_width="0dp"
+			android:layout_height="wrap_content"
+			android:layout_marginTop="24dp"
+			android:textColorHint="@color/KoyuGri"
+			app:hintTextAppearance="@style/TextAppearance.AppCompat.Small.Inverse"
+			app:layout_constraintLeft_toLeftOf="@+id/v_guideline1"
+			app:layout_constraintRight_toLeftOf="@+id/v_guideline2"
+			app:layout_constraintTop_toTopOf="@+id/h_guideline1">
 
 		<EditText
 			android:id="@+id/txtEPostaKullaniciAdi"
@@ -85,18 +85,21 @@
 			android:hint="@string/email_kullaniciadi"
 			android:inputType="textEmailAddress"
 			android:maxLines="1"
-			android:textColor="@color/KoyuYazi" />
+			android:textColor="@color/KoyuYazi"
+			android:importantForAutofill="noExcludeDescendants"
+			tools:ignore="UnusedAttribute"
+			style="@style/TextAppearance.AppCompat.Small.Inverse" />
 	</android.support.design.widget.TextInputLayout>
 
 		<android.support.design.widget.TextInputLayout
 			android:id="@+id/txtILParola"
 			android:layout_width="0dp"
 			android:layout_height="wrap_content"
+			android:layout_marginTop="0dp"
 			android:textColorHint="@color/KoyuGri"
-			app:layout_constraintHorizontal_bias="0.0"
+			app:hintTextAppearance="@style/TextAppearance.AppCompat.Small.Inverse"
 			app:layout_constraintLeft_toLeftOf="@+id/v_guideline1"
 			app:layout_constraintRight_toLeftOf="@+id/v_guideline2"
-			android:layout_marginTop="0dp"
 			app:layout_constraintTop_toBottomOf="@+id/txtILEPostaKullaniciAdi">
 
 			<com.cnbcyln.app.akordefterim.util.PasswordView
@@ -106,7 +109,10 @@
 				android:hint="@string/parola"
 				android:maxLines="1"
 				android:textColor="@color/KoyuYazi"
-				app:useStrikeThrough="true" />
+				app:useStrikeThrough="true"
+				android:importantForAutofill="noExcludeDescendants"
+				tools:ignore="UnusedAttribute"
+				style="@style/TextAppearance.AppCompat.Small.Inverse"/>
 		</android.support.design.widget.TextInputLayout>
 
 		<TextView
@@ -118,6 +124,7 @@
 			android:layout_marginTop="16dp"
 			android:text="@string/giris_detaylarini_unuttun_mu"
 			android:textColor="@color/KoyuYazi"
+			style="@style/TextAppearance.AppCompat.Small.Inverse"
 			app:layout_constraintEnd_toStartOf="@+id/btnGirisYap"
 			app:layout_constraintLeft_toLeftOf="@+id/v_guideline1"
 			app:layout_constraintTop_toBottomOf="@+id/txtILParola" />
@@ -133,6 +140,7 @@
 			android:text="@string/giris_yap"
 			android:textAppearance="@style/TextAppearance.AppCompat"
 			android:textColor="@color/Beyaz"
+			style="@style/TextAppearance.AppCompat.Small.Inverse"
 			app:layout_constraintRight_toLeftOf="@+id/v_guideline2"
             app:layout_constraintTop_toBottomOf="@+id/txtILParola" />
 

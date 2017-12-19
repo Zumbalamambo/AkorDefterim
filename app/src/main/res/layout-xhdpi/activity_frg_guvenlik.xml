@@ -78,7 +78,7 @@
                             android:layout_height="wrap_content"
                             android:textColor="@color/KoyuYazi"
                             android:background="@drawable/custom_button"
-                            android:text="@string/sifreni_degistir"
+                            android:text="@string/parolani_degistir"
                             />
                     </com.andexert.library.RippleView>
                 </LinearLayout>
