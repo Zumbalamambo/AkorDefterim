@@ -18,6 +18,7 @@
       <w>aydinligi</w>
       <w>baglanti</w>
       <w>baglantisi</w>
+      <w>basla</w>
       <w>baslangic</w>
       <w>basvuru</w>
       <w>belirle</w>
@@ -66,6 +67,7 @@
       <w>girildi</w>
       <w>girilen</w>
       <w>giriş</w>
+      <w>gonderi</w>
       <w>gonderilemedi</w>
       <w>gonderme</w>
       <w>gormeyecek</w>
@@ -136,6 +138,7 @@
       <w>merkezi</w>
       <w>mqtt</w>
       <w>netten</w>
+      <w>ogren</w>
       <w>onay</w>
       <w>onaykodu</w>
       <w>orta</w>
@@ -157,12 +160,14 @@
       <w>resimsec</w>
       <w>resmi</w>
       <w>resımsec</w>
+      <w>saat</w>
       <w>sadece</w>
       <w>sanatci</w>
       <w>sayac</w>
       <w>sayfa</w>
       <w>sayfalar</w>
       <w>sayi</w>
+      <w>sayima</w>
       <w>sayisi</w>
       <w>secici</w>
       <w>secilen</w>
@@ -174,6 +179,7 @@
       <w>sistemdurum</w>
       <w>siyah</w>
       <w>skor</w>
+      <w>smsokuma</w>
       <w>sonraki</w>
       <w>sorunu</w>
       <w>sosyal</w>
@@ -182,8 +188,10 @@
       <w>sıfırlama</w>
       <w>tamam</w>
       <w>tamamla</w>
+      <w>tamamlandi</w>
       <w>tamamlandı</w>
       <w>tanımlamalar</w>
+      <w>tarihi</w>
       <w>tasarruf</w>
       <w>tekrar</w>
       <w>telefon</w>

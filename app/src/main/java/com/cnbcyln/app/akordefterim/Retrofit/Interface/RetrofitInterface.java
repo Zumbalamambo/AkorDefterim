@@ -5,6 +5,7 @@ import com.cnbcyln.app.akordefterim.Retrofit.Siniflar.SnfHesapEkle;
 import com.cnbcyln.app.akordefterim.Retrofit.Siniflar.SnfHesapGirisYap;
 import com.cnbcyln.app.akordefterim.Retrofit.Siniflar.SnfIslemSonuc;
 import com.cnbcyln.app.akordefterim.Retrofit.Siniflar.SnfSistemDurum;
+import com.cnbcyln.app.akordefterim.Retrofit.Siniflar.SnfTarihSaat;
 
 import retrofit2.Call;
 import retrofit2.http.GET;
@@ -18,7 +19,10 @@ public interface RetrofitInterface {
        ***                                ***
        **************************************/
 
-    @GET("phpscriptleri/sistemdurum.php")
+    @GET("phpscriptleri/genel/tarihsaat.php")
+    Call<SnfTarihSaat> TarihSaatGetir();
+
+    @GET("phpscriptleri/genel/sistemdurum.php")
     Call<SnfSistemDurum> SistemDurumKontrol();
 
     @GET("phpscriptleri/mail/index.php")

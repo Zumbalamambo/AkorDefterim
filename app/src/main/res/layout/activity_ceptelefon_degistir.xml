@@ -52,7 +52,7 @@
 			android:layout_height="wrap_content"
 			android:layout_marginLeft="12dp"
 			android:layout_marginStart="12dp"
-			android:text="@string/cep_telefon_degistir"
+			android:text="@string/telefon_numarasi_degistir"
 			android:textColor="@color/KoyuYazi"
 			style="@style/TextAppearance.AppCompat.Medium.Inverse"
 			app:layout_constraintBottom_toTopOf="@+id/view1"
@@ -134,7 +134,7 @@
 				style="@style/TextAppearance.AppCompat.Small.Inverse"
 				android:layout_width="match_parent"
 				android:layout_height="match_parent"
-				android:hint="@string/cep_telefon"
+				android:hint="@string/telefon_numarasi"
 				android:text="@string/labeltire"
 				android:importantForAutofill="noExcludeDescendants"
 				android:inputType="phone"
@@ -144,7 +144,7 @@
 		</android.support.design.widget.TextInputLayout>
 
 		<TextView
-			android:id="@+id/lblCepTelefonBasvuruKalanSure"
+			android:id="@+id/lblKalanSure"
 			android:layout_width="0dp"
 			android:layout_height="wrap_content"
 			android:layout_marginEnd="4dp"

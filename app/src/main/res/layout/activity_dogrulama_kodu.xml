@@ -59,21 +59,8 @@
 			app:layout_constraintStart_toEndOf="@+id/btnGeri"
 			app:layout_constraintTop_toTopOf="parent" />
 
-		<TextView
-			android:id="@+id/lblVazgec"
-			android:layout_width="wrap_content"
-			android:layout_height="wrap_content"
-			android:layout_marginEnd="16dp"
-			android:layout_marginRight="16dp"
-			android:text="@string/vazgec"
-			android:textAppearance="@style/TextAppearance.AppCompat.Button"
-			android:textColor="@color/AcikMavi3"
-			app:layout_constraintBottom_toTopOf="@+id/h_guideline1"
-			app:layout_constraintEnd_toEndOf="parent"
-			app:layout_constraintTop_toTopOf="parent" />
-
 		<ImageButton
-			android:id="@+id/btnKaydet"
+			android:id="@+id/btnDogrula"
 			android:layout_width="60dp"
 			android:layout_height="0dp"
 			android:background="@drawable/custom_button2"
@@ -91,7 +78,7 @@
 			app:layout_constraintTop_toTopOf="@+id/h_guideline1" />
 
 		<TextView
-			android:id="@+id/lblOnayKoduAciklama"
+			android:id="@+id/lblDogrulamaKoduAciklama"
 			android:layout_width="0dp"
 			android:layout_height="wrap_content"
 			android:layout_marginTop="16dp"
@@ -102,7 +89,7 @@
 			app:layout_constraintTop_toTopOf="@+id/view1" />
 
 		<com.mhk.android.passcodeview.PasscodeView
-			android:id="@+id/txtOnayKodu"
+			android:id="@+id/txtDogrulamaKodu"
 			android:layout_width="wrap_content"
 			android:layout_height="wrap_content"
 			android:layout_gravity="center_horizontal"
@@ -115,11 +102,11 @@
 			app:digitColorFilled="@color/AcikMavi3"
 			app:numDigits="6"
 			app:layout_constraintLeft_toLeftOf="@+id/v_guideline1"
-			app:layout_constraintTop_toBottomOf="@+id/lblOnayKoduAciklama"
+			app:layout_constraintTop_toBottomOf="@+id/lblDogrulamaKoduAciklama"
 			app:layout_constraintRight_toLeftOf="@+id/v_guideline2" />
 
 		<TextView
-			android:id="@+id/lblOnayKoduKalanSure"
+			android:id="@+id/lblKalanSure"
 			android:layout_width="0dp"
 			android:layout_height="wrap_content"
 			android:layout_marginLeft="0dp"
@@ -128,7 +115,7 @@
 			android:text="@string/kalan_sure"
 			android:textColor="@color/KoyuGri"
 			app:layout_constraintLeft_toLeftOf="@+id/v_guideline1"
-			app:layout_constraintTop_toBottomOf="@+id/txtOnayKodu" />
+			app:layout_constraintTop_toBottomOf="@+id/txtDogrulamaKodu" />
 
 		<TextView
 			android:id="@+id/lblYenidenGonder"
@@ -139,23 +126,7 @@
 			android:textAppearance="@style/TextAppearance.AppCompat.Button"
 			android:textColor="@color/AcikMavi3"
 			app:layout_constraintLeft_toLeftOf="@+id/v_guideline1"
-			app:layout_constraintTop_toBottomOf="@+id/lblOnayKoduKalanSure" />
-
-		<Button
-			android:id="@+id/btnDogrula"
-			android:layout_width="wrap_content"
-			android:layout_height="48dp"
-			android:layout_marginTop="24dp"
-			android:background="@drawable/custom_button_mavi"
-			android:drawableEnd="@drawable/ic_btn_arrow_forward"
-			android:drawableRight="@drawable/ic_btn_arrow_forward"
-			android:paddingEnd="5dp"
-			android:paddingRight="5dp"
-			android:text="@string/dogrula"
-			android:textAppearance="@style/TextAppearance.AppCompat"
-			android:textColor="@color/Beyaz"
-			app:layout_constraintRight_toLeftOf="@+id/v_guideline2"
-			app:layout_constraintTop_toBottomOf="@+id/txtOnayKodu" />
+			app:layout_constraintTop_toBottomOf="@+id/lblKalanSure" />
 
 	</android.support.constraint.ConstraintLayout>
 </android.support.design.widget.CoordinatorLayout>

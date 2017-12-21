@@ -49,23 +49,23 @@ public class CepTelefonu_Degistir extends AppCompatActivity implements Interface
 	SharedPreferences sharedPref;
 	SharedPreferences.Editor sharedPrefEditor;
 	Typeface YaziFontu;
-	AlertDialog ADDialog_HesapDurumu, ADDialog_CepTelefonKalanSure, ADDialog_Hata;
-	ProgressDialog PDCepTelefonKontrolIslem;
+	AlertDialog ADDialog;
+	ProgressDialog PDIslem;
 	InputMethodManager imm;
 	Random rnd;
-	Timer TCepTelefonOnayKoduSayac;
-	TimerTask TTCepTelefonOnayKoduSayac;
-	Handler CepTelefonOnayKoduHandler = new Handler();
+	Timer TDogrulamaKoduSayac;
+	TimerTask TTDogrulamaKoduSayac;
+	Handler DogrulamaKoduHandler = new Handler();
 
 	CoordinatorLayout coordinatorLayout;
 	ImageButton btnIptal, btnKaydet;
 	LinearLayout LLTelKodu;
 	TextInputLayout txtILCepTelefon;
 	EditText txtCepTelefon;
-	TextView lblBaslik, lblTelKodu, lblCepTelefonBasvuruKalanSure;
+	TextView lblBaslik, lblTelKodu, lblKalanSure;
 
-	String OnayKodu = "";
-	int SMSGondermeKalanSure = 0;
+	String DogrulamaKodu = "";
+	int KalanSure = 0;
 	private static final int SMSOKUMA_IZIN = 1;
 
 	@Override
@@ -137,8 +137,9 @@ public class CepTelefonu_Degistir extends AppCompatActivity implements Interface
 			}
 		});
 
-		lblCepTelefonBasvuruKalanSure = findViewById(R.id.lblCepTelefonBasvuruKalanSure);
-		lblCepTelefonBasvuruKalanSure.setTypeface(YaziFontu, Typeface.NORMAL);
+		lblKalanSure = findViewById(R.id.lblKalanSure);
+		lblKalanSure.setTypeface(YaziFontu, Typeface.NORMAL);
+		lblKalanSure.setVisibility(View.GONE);
 	}
 
 	@Override
@@ -149,30 +150,24 @@ public class CepTelefonu_Degistir extends AppCompatActivity implements Interface
 		else {
 			if(sharedPref.getString("prefAction", "").equals("IslemTamamlandi")) onBackPressed();
 			else {
-				if(!AkorDefterimSys.ProgressDialogisShowing(PDCepTelefonKontrolIslem)) { // Eğer progress dialog açık değilse
-					PDCepTelefonKontrolIslem = AkorDefterimSys.CustomProgressDialog(getString(R.string.islem_yapiliyor), false, AkorDefterimSys.ProgressBarTimeoutSuresi, "PDCepTelefonKontrolIslem_Timeout");
-					PDCepTelefonKontrolIslem.show();
-				}
+				// prefSMSGonderiTarihi isimli prefkey var mı?
+				if(sharedPref.contains("prefSMSGonderiTarihi")) { // Varsa
+					btnKaydet.setEnabled(false);
 
-				AkorDefterimSys.HesapBilgiGetir(null, sharedPref.getString("prefHesapID", ""), "", "", "HesapBilgiGetir_CepTelefon_Bilgisi_Al");
-
-				if(sharedPref.getInt("prefSMSGondermeKalanSure", 0) > 0) {
-					if (TCepTelefonOnayKoduSayac != null) {
-						TCepTelefonOnayKoduSayac.cancel();
-						TCepTelefonOnayKoduSayac = null;
-						TTCepTelefonOnayKoduSayac.cancel();
-						TTCepTelefonOnayKoduSayac = null;
+					if(!AkorDefterimSys.ProgressDialogisShowing(PDIslem)) { // Eğer progress dialog açık değilse
+						PDIslem = AkorDefterimSys.CustomProgressDialog(getString(R.string.islem_yapiliyor), false, AkorDefterimSys.ProgressBarTimeoutSuresi, "PDIslem_Timeout");
+						PDIslem.show();
 					}
 
-					TCepTelefonOnayKoduSayac = new Timer();
-					CepTelefonOnayKoduDialogSayac_Ayarla();
-					SMSGondermeKalanSure = sharedPref.getInt("prefSMSGondermeKalanSure", 0);
-					lblCepTelefonBasvuruKalanSure.setText(getString(R.string.yeni_basvuru_kalan_sure, AkorDefterimSys.ZamanFormatMMSS(SMSGondermeKalanSure)));
-					AkorDefterimSys.setTextViewHTML(lblCepTelefonBasvuruKalanSure);
-					lblCepTelefonBasvuruKalanSure.setVisibility(View.VISIBLE);
+					AkorDefterimSys.TarihSaatGetir("TarihSaatOgren_GeriSayimaBasla");
+				} else {
+					if(!AkorDefterimSys.ProgressDialogisShowing(PDIslem)) { // Eğer progress dialog açık değilse
+						PDIslem = AkorDefterimSys.CustomProgressDialog(getString(R.string.islem_yapiliyor), false, AkorDefterimSys.ProgressBarTimeoutSuresi, "PDIslem_Timeout");
+						PDIslem.show();
+					}
 
-					TCepTelefonOnayKoduSayac.schedule(TTCepTelefonOnayKoduSayac, 10, 1000);
-				} else lblCepTelefonBasvuruKalanSure.setVisibility(View.GONE);
+					AkorDefterimSys.HesapBilgiGetir(null, sharedPref.getString("prefHesapID", ""), "", "", "HesapBilgiGetir_CepTelefon_Bilgisi_Al");
+				}
 			}
 		}
 	}
@@ -180,9 +175,7 @@ public class CepTelefonu_Degistir extends AppCompatActivity implements Interface
 	@Override
 	public void onBackPressed() {
 		AkorDefterimSys.KlavyeKapat();
-		AkorDefterimSys.DismissAlertDialog(ADDialog_HesapDurumu);
-		AkorDefterimSys.DismissAlertDialog(ADDialog_CepTelefonKalanSure);
-		AkorDefterimSys.DismissAlertDialog(ADDialog_Hata);
+		AkorDefterimSys.DismissAlertDialog(ADDialog);
 
 		super.onBackPressed();
 	}
@@ -190,9 +183,7 @@ public class CepTelefonu_Degistir extends AppCompatActivity implements Interface
 	@Override
 	protected void onDestroy() {
 		AkorDefterimSys.KlavyeKapat();
-		AkorDefterimSys.DismissAlertDialog(ADDialog_HesapDurumu);
-		AkorDefterimSys.DismissAlertDialog(ADDialog_CepTelefonKalanSure);
-		AkorDefterimSys.DismissAlertDialog(ADDialog_Hata);
+		AkorDefterimSys.DismissAlertDialog(ADDialog);
 
 		super.onDestroy();
 	}
@@ -234,20 +225,20 @@ public class CepTelefonu_Degistir extends AppCompatActivity implements Interface
 			case SMSOKUMA_IZIN:
 				if(grantResults[0] == PackageManager.PERMISSION_GRANTED) {
 					// 6 haneli onay kodu oluşturuldu
-					OnayKodu = String.valueOf((100000 + rnd.nextInt(900000)));
+					DogrulamaKodu = String.valueOf((100000 + rnd.nextInt(900000)));
 
 					// Onay kodu belirtilen eposta adresine gönderiliyor
-					AkorDefterimSys.SMSGonder(lblTelKodu.getText().toString().substring(1,lblTelKodu.getText().length()), txtCepTelefon.getText().toString().trim(), getString(R.string.sms_dosrulama_kodu_icerik, OnayKodu, getString(R.string.uygulama_adi)));
+					AkorDefterimSys.SMSGonder(lblTelKodu.getText().toString().substring(1,lblTelKodu.getText().length()), txtCepTelefon.getText().toString().trim(), getString(R.string.sms_dosrulama_kodu_icerik, DogrulamaKodu, getString(R.string.uygulama_adi)));
 				} else {
-					AkorDefterimSys.DismissProgressDialog(PDCepTelefonKontrolIslem);
+					AkorDefterimSys.DismissProgressDialog(PDIslem);
 
-					if(!AkorDefterimSys.AlertDialogisShowing(ADDialog_Hata)) {
-						ADDialog_Hata = AkorDefterimSys.CustomAlertDialog(activity,
+					if(!AkorDefterimSys.AlertDialogisShowing(ADDialog)) {
+						ADDialog = AkorDefterimSys.CustomAlertDialog(activity,
 								getString(R.string.uygulama_izinleri),
 								getString(R.string.uygulama_izni_sms_alma_hata),
-								getString(R.string.tamam), "ADDialog_Hata_Kapat");
-						ADDialog_Hata.getWindow().getAttributes().windowAnimations = R.style.DialogAnimation;
-						ADDialog_Hata.show();
+								getString(R.string.tamam), "ADDialog_Kapat");
+						ADDialog.getWindow().getAttributes().windowAnimations = R.style.DialogAnimation;
+						ADDialog.show();
 					}
 				}
 
@@ -263,123 +254,191 @@ public class CepTelefonu_Degistir extends AppCompatActivity implements Interface
 			JSONObject JSONSonuc = new JSONObject(sonuc);
 
 			switch (JSONSonuc.getString("Islem")) {
-				case "HesapBilgiGetir_CepTelefon_Bilgisi_Al":
+				case "TarihSaatOgren_GeriSayimaBasla":
+					// Tarih bilgisi alındıysa sonuç true döner..
 					if(JSONSonuc.getBoolean("Sonuc")) {
-						AkorDefterimSys.DismissProgressDialog(PDCepTelefonKontrolIslem);
+						KalanSure = AkorDefterimSys.SMSGondermeToplamSure - (int) AkorDefterimSys.IkiTarihArasiFark(JSONSonuc.getString("TarihSaat"), sharedPref.getString("prefSMSGonderiTarihi", ""),"Saniye");
 
+						if(KalanSure > 0 && KalanSure < AkorDefterimSys.SMSGondermeToplamSure) {
+							if (TDogrulamaKoduSayac != null) {
+								TDogrulamaKoduSayac.cancel();
+								TDogrulamaKoduSayac = null;
+								TTDogrulamaKoduSayac.cancel();
+								TTDogrulamaKoduSayac = null;
+							}
+
+							TDogrulamaKoduSayac = new Timer();
+							DogrulamaKoduSayac_Ayarla();
+
+							lblKalanSure.setText(getString(R.string.yeni_basvuru_kalan_sure, AkorDefterimSys.ZamanFormatMMSS(KalanSure)));
+							AkorDefterimSys.setTextViewHTML(lblKalanSure);
+							lblKalanSure.setVisibility(View.VISIBLE);
+
+							TDogrulamaKoduSayac.schedule(TTDogrulamaKoduSayac, 10, 1000);
+						} else {
+							KalanSure = 0;
+
+							sharedPrefEditor = sharedPref.edit();
+							sharedPrefEditor.remove("prefSMSGonderiTarihi");
+							sharedPrefEditor.apply();
+
+							lblKalanSure.setVisibility(View.GONE);
+						}
+
+						AkorDefterimSys.HesapBilgiGetir(null, sharedPref.getString("prefHesapID", ""), "", "", "HesapBilgiGetir_CepTelefon_Bilgisi_Al");
+					} else {
+						btnIptal.setEnabled(true);
+						btnKaydet.setEnabled(true);
+						AkorDefterimSys.DismissProgressDialog(PDIslem);
+
+						if(!AkorDefterimSys.AlertDialogisShowing(ADDialog)) {
+							ADDialog = AkorDefterimSys.CustomAlertDialog(activity,
+									getString(R.string.hata),
+									getString(R.string.islem_yapilirken_bir_hata_olustu),
+									activity.getString(R.string.tamam),
+									"ADDialog_Kapat_GeriGit");
+							ADDialog.getWindow().getAttributes().windowAnimations = R.style.DialogAnimation;
+							ADDialog.show();
+						}
+					}
+
+					break;
+				case "HesapBilgiGetir_CepTelefon_Bilgisi_Al":
+					btnIptal.setEnabled(true);
+					btnKaydet.setEnabled(true);
+					AkorDefterimSys.DismissProgressDialog(PDIslem);
+
+					if(JSONSonuc.getBoolean("Sonuc")) {
 						if(JSONSonuc.getString("HesapDurum").equals("Ban")) { // Eğer hesap banlanmışsa
-							if(!AkorDefterimSys.AlertDialogisShowing(ADDialog_HesapDurumu)) {
-								ADDialog_HesapDurumu = AkorDefterimSys.CustomAlertDialog(activity,
+							if(!AkorDefterimSys.AlertDialogisShowing(ADDialog)) {
+								ADDialog = AkorDefterimSys.CustomAlertDialog(activity,
 										getString(R.string.hesap_durumu),
 										getString(R.string.hesap_banlandi, JSONSonuc.getString("HesapDurumBilgi"), getString(R.string.uygulama_yapimci_site)),
 										activity.getString(R.string.tamam),
-										"ADDialog_HesapDurumu_Kapat");
-								ADDialog_HesapDurumu.getWindow().getAttributes().windowAnimations = R.style.DialogAnimation;
-								ADDialog_HesapDurumu.show();
+										"ADDialog_Kapat");
+								ADDialog.getWindow().getAttributes().windowAnimations = R.style.DialogAnimation;
+								ADDialog.show();
 							}
 						} else {
 							lblTelKodu.setText(String.format("%s%s", "+", JSONSonuc.getString("TelKodu")));
 							txtCepTelefon.setText(JSONSonuc.getString("CepTelefon"));
 						}
 					} else {
-						if(!AkorDefterimSys.AlertDialogisShowing(ADDialog_HesapDurumu)) {
-							ADDialog_HesapDurumu = AkorDefterimSys.CustomAlertDialog(activity,
+						if(!AkorDefterimSys.AlertDialogisShowing(ADDialog)) {
+							ADDialog = AkorDefterimSys.CustomAlertDialog(activity,
 									getString(R.string.hesap_durumu),
 									getString(R.string.hesap_bilgileri_bulunamadi),
 									activity.getString(R.string.tamam),
-									"ADDialog_HesapDurumu_Kapat_GeriGit");
-							ADDialog_HesapDurumu.getWindow().getAttributes().windowAnimations = R.style.DialogAnimation;
-							ADDialog_HesapDurumu.show();
+									"ADDialog_Kapat_GeriGit");
+							ADDialog.getWindow().getAttributes().windowAnimations = R.style.DialogAnimation;
+							ADDialog.show();
 						}
 					}
 
 					break;
 				case "HesapBilgiGetir_CepTelefon_Kontrol":
-					btnKaydet.setEnabled(true);
-					AkorDefterimSys.DismissProgressDialog(PDCepTelefonKontrolIslem);
-
 					if(JSONSonuc.getBoolean("Sonuc")) { // Eğer yazılan e-posta adresi kayıtlı ise
 						// Bizim ID, kayıtlı olan cep telefonu sahibinin ID'si ile aynı DEĞİL ise
+						btnIptal.setEnabled(true);
+						btnKaydet.setEnabled(true);
+						AkorDefterimSys.DismissProgressDialog(PDIslem);
+						
 						if(!sharedPref.getString("prefHesapID","").equals(JSONSonuc.getString("HesapID")))
 							AkorDefterimSys.StandartSnackBarMsj(coordinatorLayout, getString(R.string.ceptelefonu_kayitli));
 						else { // Aynı ise
 							if(JSONSonuc.getString("HesapDurum").equals("Ban")) { // Eğer hesap banlanmışsa
-								if(!AkorDefterimSys.AlertDialogisShowing(ADDialog_HesapDurumu)) {
-									ADDialog_HesapDurumu = AkorDefterimSys.CustomAlertDialog(activity,
+								if(!AkorDefterimSys.AlertDialogisShowing(ADDialog)) {
+									ADDialog = AkorDefterimSys.CustomAlertDialog(activity,
 											getString(R.string.hesap_durumu),
 											getString(R.string.hesap_banlandi, JSONSonuc.getString("HesapDurumBilgi"), getString(R.string.uygulama_yapimci_site)),
 											activity.getString(R.string.tamam),
-											"ADDialog_HesapDurumu_Kapat");
-									ADDialog_HesapDurumu.getWindow().getAttributes().windowAnimations = R.style.DialogAnimation;
-									ADDialog_HesapDurumu.show();
+											"ADDialog_Kapat");
+									ADDialog.getWindow().getAttributes().windowAnimations = R.style.DialogAnimation;
+									ADDialog.show();
 								}
 							} else onBackPressed(); // Bu durumda aynı ceptelefonu_kayitli olduğu için güncel demek oluyor. Hiçbir işlem yapmıyoruz..
 						}
 					} else { // Yazılan ceptelefonu_kayitli kayıtlı değil ise
+						if(KalanSure > 0 && KalanSure < AkorDefterimSys.SMSGondermeToplamSure) { // Eğer kalan süre hala bitmemişse
+							btnIptal.setEnabled(true);
+							btnKaydet.setEnabled(true);
+							AkorDefterimSys.DismissProgressDialog(PDIslem);
 
-						if(SMSGondermeKalanSure > 0 && SMSGondermeKalanSure < AkorDefterimSys.SMSGondermeToplamSure) { // Eğer kalan süre hala bitmemişse
-							if(!AkorDefterimSys.AlertDialogisShowing(ADDialog_CepTelefonKalanSure)) {
-								ADDialog_CepTelefonKalanSure = AkorDefterimSys.CustomAlertDialog(activity,
-										getString(R.string.dogrulama_kodu),
-										getString(R.string.yeni_onay_kodu_talebi_hata),
-										activity.getString(R.string.tamam),
-										"ADDialog_CepTelefonKalanSure_Kapat");
-								ADDialog_CepTelefonKalanSure.getWindow().getAttributes().windowAnimations = R.style.DialogAnimation;
-								ADDialog_CepTelefonKalanSure.show();
-							}
+							AkorDefterimSys.StandartSnackBarMsj(coordinatorLayout, getString(R.string.yeni_onay_kodu_talebi_hata));
 						} else {
 							if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-								if (activity.checkSelfPermission(Manifest.permission.RECEIVE_SMS) != PackageManager.PERMISSION_GRANTED)
-                                    activity.requestPermissions(new String[]{Manifest.permission.RECEIVE_SMS}, SMSOKUMA_IZIN);
-                                else {
+								if (activity.checkSelfPermission(Manifest.permission.RECEIVE_SMS) != PackageManager.PERMISSION_GRANTED) {
+									btnIptal.setEnabled(true);
+									btnKaydet.setEnabled(true);
+									AkorDefterimSys.DismissProgressDialog(PDIslem);
+
+									activity.requestPermissions(new String[]{Manifest.permission.RECEIVE_SMS}, SMSOKUMA_IZIN);
+								} else {
 									// 6 haneli onay kodu oluşturuldu
-									OnayKodu = String.valueOf((100000 + rnd.nextInt(900000)));
+									DogrulamaKodu = String.valueOf((100000 + rnd.nextInt(900000)));
 
 									// Onay kodu belirtilen eposta adresine gönderiliyor
-									AkorDefterimSys.SMSGonder(lblTelKodu.getText().toString().substring(1,lblTelKodu.getText().length()), txtCepTelefon.getText().toString().trim(), getString(R.string.sms_dosrulama_kodu_icerik, OnayKodu, getString(R.string.uygulama_adi)));
+									AkorDefterimSys.SMSGonder(lblTelKodu.getText().toString().substring(1,lblTelKodu.getText().length()), txtCepTelefon.getText().toString().trim(), getString(R.string.sms_dosrulama_kodu_icerik, DogrulamaKodu, getString(R.string.uygulama_adi)));
                                 }
+							} else {
+								btnIptal.setEnabled(true);
+								btnKaydet.setEnabled(true);
+								AkorDefterimSys.DismissProgressDialog(PDIslem);
 							}
 						}
 					}
 
 					break;
-				case "ADDialog_HesapDurumu_Kapat":
-					AkorDefterimSys.DismissAlertDialog(ADDialog_HesapDurumu);
-
-					AkorDefterimSys.CikisYap();
-					break;
-				case "ADDialog_HesapDurumu_Kapat_GeriGit":
-					AkorDefterimSys.DismissAlertDialog(ADDialog_HesapDurumu);
-
-					onBackPressed();
-					break;
-				case "PDCepTelefonKontrolIslem_Timeout":
-					AkorDefterimSys.DismissProgressDialog(PDCepTelefonKontrolIslem);
-
-					onBackPressed();
-					break;
 				case "SMSGonder":
-					btnKaydet.setEnabled(true);
-					AkorDefterimSys.DismissProgressDialog(PDCepTelefonKontrolIslem);
-
 					// Eğer SMS gönderildiyse sonuç true döner..
+					if(JSONSonuc.getBoolean("Sonuc")) AkorDefterimSys.TarihSaatGetir("TarihSaatGetir_DevamEt"); // Öncelikle sistem saatini öğreniyoruz. Daha sonra SMS gönderdikten sonra sistem tarihini kullanıcıya kaydediyoruz..
+					else {
+						btnIptal.setEnabled(true);
+						btnKaydet.setEnabled(true);
+						AkorDefterimSys.DismissProgressDialog(PDIslem);
+						
+						AkorDefterimSys.StandartSnackBarMsj(coordinatorLayout, getString(R.string.islem_yapilirken_bir_hata_olustu));
+					}
+
+					break;
+				case "TarihSaatGetir_DevamEt":
+					btnIptal.setEnabled(true);
+					btnKaydet.setEnabled(true);
+					AkorDefterimSys.DismissProgressDialog(PDIslem);
+
+					// Tarih bilgisi alındıysa sonuç true döner..
 					if(JSONSonuc.getBoolean("Sonuc")) {
+						sharedPrefEditor = sharedPref.edit();
+						sharedPrefEditor.putString("prefSMSGonderiTarihi", JSONSonuc.getString("TarihSaat"));
+						sharedPrefEditor.apply();
+
 						// Yeni açılacak olan intent'e gönderilecek bilgileri tanımlıyoruz
 						Intent mIntent = new Intent(activity, Dogrulama_Kodu.class);
 						mIntent.putExtra("Islem", "CepTelefonuDegisikligi");
 						mIntent.putExtra("TelKodu", lblTelKodu.getText().toString().substring(1,lblTelKodu.getText().length()));
 						mIntent.putExtra("CepTelefonu", txtCepTelefon.getText().toString());
-						mIntent.putExtra("OnayKodu", String.valueOf(OnayKodu));
+						mIntent.putExtra("DogrulamaKodu", String.valueOf(DogrulamaKodu));
 
 						AkorDefterimSys.EkranGetir(mIntent, "Slide");
 					} else AkorDefterimSys.StandartSnackBarMsj(coordinatorLayout, getString(R.string.islem_yapilirken_bir_hata_olustu));
+					break;
+				case "PDIslem_Timeout":
+					AkorDefterimSys.DismissProgressDialog(PDIslem);
 
+					onBackPressed();
 					break;
-				case "ADDialog_CepTelefonKalanSure_Kapat":
-					AkorDefterimSys.DismissAlertDialog(ADDialog_CepTelefonKalanSure);
+				case "ADDialog_Kapat":
+					AkorDefterimSys.DismissAlertDialog(ADDialog);
 					break;
-				case "ADDialog_Hata_Kapat":
-					AkorDefterimSys.DismissAlertDialog(ADDialog_Hata);
+				case "ADDialog_Kapat_GeriGit":
+					AkorDefterimSys.DismissAlertDialog(ADDialog);
+
+					onBackPressed();
+					break;
+				case "ADDialog_Kapat_CikisYap":
+					AkorDefterimSys.DismissAlertDialog(ADDialog);
+
+					AkorDefterimSys.CikisYap();
 					break;
 			}
 		} catch (JSONException e) {
@@ -389,6 +448,7 @@ public class CepTelefonu_Degistir extends AppCompatActivity implements Interface
 
 	private void Kaydet() {
 		if(AkorDefterimSys.InternetErisimKontrolu()) {
+			btnIptal.setEnabled(false);
 			btnKaydet.setEnabled(false);
 			AkorDefterimSys.KlavyeKapat();
 
@@ -420,43 +480,44 @@ public class CepTelefonu_Degistir extends AppCompatActivity implements Interface
 			if(txtILCepTelefon.getError() == null) {
 				AkorDefterimSys.UnFocusEditText(txtCepTelefon);
 
-				if(!AkorDefterimSys.ProgressDialogisShowing(PDCepTelefonKontrolIslem)) { // Eğer progress dialog açık değilse
-					PDCepTelefonKontrolIslem = AkorDefterimSys.CustomProgressDialog(getString(R.string.islem_yapiliyor), false, AkorDefterimSys.ProgressBarTimeoutSuresi, "PDCepTelefonKontrolIslem_Timeout");
-					PDCepTelefonKontrolIslem.show();
+				if(!AkorDefterimSys.ProgressDialogisShowing(PDIslem)) { // Eğer progress dialog açık değilse
+					PDIslem = AkorDefterimSys.CustomProgressDialog(getString(R.string.islem_yapiliyor), false, AkorDefterimSys.ProgressBarTimeoutSuresi, "PDIslem_Timeout");
+					PDIslem.show();
 				}
 
 				AkorDefterimSys.HesapBilgiGetir(null, "", lblTelKodu.getText().toString().substring(1,lblTelKodu.getText().length()), CepTelefon, "HesapBilgiGetir_CepTelefon_Kontrol");
-			} else btnKaydet.setEnabled(true);
+			} else {
+				btnIptal.setEnabled(true);
+				btnKaydet.setEnabled(true);
+			}
 		} else AkorDefterimSys.StandartSnackBarMsj(coordinatorLayout, getString(R.string.internet_baglantisi_saglanamadi));
 	}
 
-	public void CepTelefonOnayKoduDialogSayac_Ayarla() {
-		TTCepTelefonOnayKoduSayac = new TimerTask() {
+	public void DogrulamaKoduSayac_Ayarla() {
+		TTDogrulamaKoduSayac = new TimerTask() {
 			@Override
 			public void run() {
-				CepTelefonOnayKoduHandler.post(new Runnable() {
+				DogrulamaKoduHandler.post(new Runnable() {
 					public void run() {
-						if (SMSGondermeKalanSure == 0) {
-							if (TCepTelefonOnayKoduSayac != null) {
-								TCepTelefonOnayKoduSayac.cancel();
-								TCepTelefonOnayKoduSayac = null;
-								TTCepTelefonOnayKoduSayac.cancel();
-								TTCepTelefonOnayKoduSayac = null;
+						if (KalanSure == 0) {
+							if (TDogrulamaKoduSayac != null) {
+								TDogrulamaKoduSayac.cancel();
+								TDogrulamaKoduSayac = null;
 							}
 
 							sharedPrefEditor = sharedPref.edit();
-							sharedPrefEditor.remove("prefSMSGondermeKalanSure");
+							sharedPrefEditor.remove("prefSMSGonderiTarihi");
 							sharedPrefEditor.apply();
 
-							lblCepTelefonBasvuruKalanSure.setText(getString(R.string.yeni_basvuru_kalan_sure, AkorDefterimSys.ZamanFormatMMSS(SMSGondermeKalanSure)));
-							AkorDefterimSys.setTextViewHTML(lblCepTelefonBasvuruKalanSure);
-							lblCepTelefonBasvuruKalanSure.setVisibility(View.GONE);
+							lblKalanSure.setText(getString(R.string.yeni_basvuru_kalan_sure, AkorDefterimSys.ZamanFormatMMSS(KalanSure)));
+							AkorDefterimSys.setTextViewHTML(lblKalanSure);
+							lblKalanSure.setVisibility(View.GONE);
 
 							AkorDefterimSys.StandartSnackBarMsj(coordinatorLayout, getString(R.string.sure_bitti_yeniden_basvuru_yapilabilir));
 						} else {
-							lblCepTelefonBasvuruKalanSure.setText(getString(R.string.yeni_basvuru_kalan_sure, AkorDefterimSys.ZamanFormatMMSS(SMSGondermeKalanSure)));
-							AkorDefterimSys.setTextViewHTML(lblCepTelefonBasvuruKalanSure);
-							SMSGondermeKalanSure--;
+							lblKalanSure.setText(getString(R.string.yeni_basvuru_kalan_sure, AkorDefterimSys.ZamanFormatMMSS(KalanSure)));
+							AkorDefterimSys.setTextViewHTML(lblKalanSure);
+							KalanSure--;
 						}
 					}
 				});

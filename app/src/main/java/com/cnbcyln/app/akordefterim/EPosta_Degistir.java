@@ -43,22 +43,22 @@ public class EPosta_Degistir extends AppCompatActivity implements Interface_Asyn
 	SharedPreferences sharedPref;
 	SharedPreferences.Editor sharedPrefEditor;
 	Typeface YaziFontu;
-	AlertDialog ADDialog_HesapDurumu, ADDialog_EPostaKalanSure;
-	ProgressDialog PDEPostaKontrolIslem;
+	AlertDialog ADDialog_HesapDurumu, ADDialog_Hata;
+	ProgressDialog PDIslem;
 	InputMethodManager imm;
 	Random rnd;
-	Timer TEPostaOnayKoduSayac;
-	TimerTask TTEPostaOnayKoduSayac;
-	Handler EPostaOnayKoduHandler = new Handler();
+	Timer TDogrulamaKoduSayac;
+	TimerTask TTDogrulamaKoduSayac;
+	Handler DogrulamaKoduHandler = new Handler();
 
 	CoordinatorLayout coordinatorLayout;
 	ImageButton btnIptal, btnKaydet;
 	TextInputLayout txtILEPosta;
 	EditText txtEPosta;
-	TextView lblBaslik, lblEPostaBasvuruKalanSure;
+	TextView lblBaslik, lblKalanSure;
 
-	String OnayKodu = "";
-	int EPostaGondermeKalanSure = 0;
+	String DogrulamaKodu = "";
+	int KalanSure = 0;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -123,8 +123,9 @@ public class EPosta_Degistir extends AppCompatActivity implements Interface_Asyn
 			}
 		});
 
-		lblEPostaBasvuruKalanSure = findViewById(R.id.lblEPostaBasvuruKalanSure);
-		lblEPostaBasvuruKalanSure.setTypeface(YaziFontu, Typeface.NORMAL);
+		lblKalanSure = findViewById(R.id.lblKalanSure);
+		lblKalanSure.setTypeface(YaziFontu, Typeface.NORMAL);
+		lblKalanSure.setVisibility(View.GONE);
 	}
 
 	@Override
@@ -135,23 +136,18 @@ public class EPosta_Degistir extends AppCompatActivity implements Interface_Asyn
 		else {
 			if(sharedPref.getString("prefAction", "").equals("IslemTamamlandi")) onBackPressed();
 			else {
-				if(sharedPref.getInt("prefEPostaGondermeKalanSure", 0) > 0) {
-					if (TEPostaOnayKoduSayac != null) {
-						TEPostaOnayKoduSayac.cancel();
-						TEPostaOnayKoduSayac = null;
-						TTEPostaOnayKoduSayac.cancel();
-						TTEPostaOnayKoduSayac = null;
+				// prefEPostaGonderiTarihi isimli prefkey var mı?
+				if(sharedPref.contains("prefEPostaGonderiTarihi")) { // Varsa
+					btnIptal.setEnabled(false);
+					btnKaydet.setEnabled(false);
+
+					if(!AkorDefterimSys.ProgressDialogisShowing(PDIslem)) { // Eğer progress dialog açık değilse
+						PDIslem = AkorDefterimSys.CustomProgressDialog(getString(R.string.islem_yapiliyor), false, AkorDefterimSys.ProgressBarTimeoutSuresi, "PDIslem_Timeout");
+						PDIslem.show();
 					}
 
-					TEPostaOnayKoduSayac = new Timer();
-					EPostaOnayKoduDialogSayac_Ayarla();
-					EPostaGondermeKalanSure = sharedPref.getInt("prefEPostaGondermeKalanSure", 0);
-					lblEPostaBasvuruKalanSure.setText(getString(R.string.yeni_basvuru_kalan_sure, AkorDefterimSys.ZamanFormatMMSS(EPostaGondermeKalanSure)));
-					AkorDefterimSys.setTextViewHTML(lblEPostaBasvuruKalanSure);
-					lblEPostaBasvuruKalanSure.setVisibility(View.VISIBLE);
-
-					TEPostaOnayKoduSayac.schedule(TTEPostaOnayKoduSayac, 10, 1000);
-				} else lblEPostaBasvuruKalanSure.setVisibility(View.GONE);
+					AkorDefterimSys.TarihSaatGetir("TarihSaatOgren_GeriSayimaBasla");
+				}
 			}
 		}
 	}
@@ -192,10 +188,68 @@ public class EPosta_Degistir extends AppCompatActivity implements Interface_Asyn
 			JSONObject JSONSonuc = new JSONObject(sonuc);
 
 			switch (JSONSonuc.getString("Islem")) {
+				case "TarihSaatOgren_GeriSayimaBasla":
+					btnIptal.setEnabled(true);
+					btnKaydet.setEnabled(true);
+					AkorDefterimSys.DismissProgressDialog(PDIslem);
+
+					// Tarih bilgisi alındıysa sonuç true döner..
+					if(JSONSonuc.getBoolean("Sonuc")) {
+						KalanSure = AkorDefterimSys.EPostaGondermeToplamSure - (int) AkorDefterimSys.IkiTarihArasiFark(JSONSonuc.getString("TarihSaat"), sharedPref.getString("prefEPostaGonderiTarihi", ""),"Saniye");
+
+						if(KalanSure > 0 && KalanSure < AkorDefterimSys.EPostaGondermeToplamSure) {
+							if (TDogrulamaKoduSayac != null) {
+								TDogrulamaKoduSayac.cancel();
+								TDogrulamaKoduSayac = null;
+								TTDogrulamaKoduSayac.cancel();
+								TTDogrulamaKoduSayac = null;
+							}
+
+							TDogrulamaKoduSayac = new Timer();
+							DogrulamaKoduSayac_Ayarla();
+
+							lblKalanSure.setText(getString(R.string.yeni_basvuru_kalan_sure, AkorDefterimSys.ZamanFormatMMSS(KalanSure)));
+							AkorDefterimSys.setTextViewHTML(lblKalanSure);
+							lblKalanSure.setVisibility(View.VISIBLE);
+
+							TDogrulamaKoduSayac.schedule(TTDogrulamaKoduSayac, 10, 1000);
+						} else {
+							KalanSure = 0;
+
+							sharedPrefEditor = sharedPref.edit();
+							sharedPrefEditor.remove("prefEPostaGonderiTarihi");
+							sharedPrefEditor.apply();
+
+							lblKalanSure.setVisibility(View.GONE);
+						}
+					} else {
+						if(!AkorDefterimSys.AlertDialogisShowing(ADDialog_Hata)) {
+							ADDialog_Hata = AkorDefterimSys.CustomAlertDialog(activity,
+									getString(R.string.hata),
+									getString(R.string.islem_yapilirken_bir_hata_olustu),
+									activity.getString(R.string.tamam),
+									"ADDialog_Hata_Kapat");
+							ADDialog_Hata.getWindow().getAttributes().windowAnimations = R.style.DialogAnimation;
+							ADDialog_Hata.show();
+						}
+					}
+
+					break;
+				case "PDIslem_Timeout":
+					AkorDefterimSys.DismissProgressDialog(PDIslem);
+
+					onBackPressed();
+					break;
+				case "ADDialog_Hata_Kapat":
+					AkorDefterimSys.DismissAlertDialog(ADDialog_Hata);
+
+					onBackPressed();
+					break;
 				case "HesapBilgiGetir":
 					if(JSONSonuc.getBoolean("Sonuc")) { // Eğer yazılan e-posta adresi kayıtlı ise
+						btnIptal.setEnabled(true);
 						btnKaydet.setEnabled(true);
-						AkorDefterimSys.DismissProgressDialog(PDEPostaKontrolIslem);
+						AkorDefterimSys.DismissProgressDialog(PDIslem);
 
 						// Bizim ID, kayıtlı olan e-posta adresi sahibinin ID'si ile aynı DEĞİL ise
 						if(!sharedPref.getString("prefHesapID","").equals(JSONSonuc.getString("HesapID")))
@@ -214,25 +268,18 @@ public class EPosta_Degistir extends AppCompatActivity implements Interface_Asyn
 							} else onBackPressed(); // Bu durumda aynı e-posta adresi olduğu için güncel demek oluyor. Hiçbir işlem yapmıyoruz..
 						}
 					} else { // Yazılan e-posta adresi kayıtlı değil ise
-						if(EPostaGondermeKalanSure > 0 && EPostaGondermeKalanSure < AkorDefterimSys.EPostaGondermeToplamSure) { // Eğer kalan süre hala bitmemişse
+						if(KalanSure > 0 && KalanSure < AkorDefterimSys.EPostaGondermeToplamSure) { // Eğer kalan süre hala bitmemişse
+							btnIptal.setEnabled(true);
 							btnKaydet.setEnabled(true);
-							AkorDefterimSys.DismissProgressDialog(PDEPostaKontrolIslem);
+							AkorDefterimSys.DismissProgressDialog(PDIslem);
 
-							if(!AkorDefterimSys.AlertDialogisShowing(ADDialog_EPostaKalanSure)) {
-								ADDialog_EPostaKalanSure = AkorDefterimSys.CustomAlertDialog(activity,
-										getString(R.string.dogrulama_kodu),
-										getString(R.string.yeni_onay_kodu_talebi_hata),
-										activity.getString(R.string.tamam),
-										"ADDialog_EPostaKalanSure_Kapat");
-								ADDialog_EPostaKalanSure.getWindow().getAttributes().windowAnimations = R.style.DialogAnimation;
-								ADDialog_EPostaKalanSure.show();
-							}
+							AkorDefterimSys.StandartSnackBarMsj(coordinatorLayout, getString(R.string.yeni_onay_kodu_talebi_hata));
 						} else {
 							// 6 haneli onay kodu oluşturuldu
-							OnayKodu = String.valueOf((100000 + rnd.nextInt(900000)));
+							DogrulamaKodu = String.valueOf((100000 + rnd.nextInt(900000)));
 
 							// Onay kodu belirtilen eposta adresine gönderiliyor
-							AkorDefterimSys.EPostaGonder(txtEPosta.getText().toString().trim(), "", getString(R.string.dogrulama_kodu), getString(R.string.eposta_dosrulama_kodu_icerik, OnayKodu, getString(R.string.uygulama_adi)));
+							AkorDefterimSys.EPostaGonder(txtEPosta.getText().toString().trim(), "", getString(R.string.dogrulama_kodu), getString(R.string.eposta_dosrulama_kodu_icerik, DogrulamaKodu, getString(R.string.uygulama_adi)));
 						}
 					}
 
@@ -242,29 +289,38 @@ public class EPosta_Degistir extends AppCompatActivity implements Interface_Asyn
 
 					AkorDefterimSys.CikisYap();
 					break;
-				case "PDEPostaKontrolIslem_Timeout":
-					AkorDefterimSys.DismissProgressDialog(PDEPostaKontrolIslem);
-
-					onBackPressed();
-					break;
 				case "EPostaGonder":
-					btnKaydet.setEnabled(true);
-					AkorDefterimSys.DismissProgressDialog(PDEPostaKontrolIslem);
-
 					// Eğer EPosta gönderildiyse sonuç true döner..
+					if(JSONSonuc.getBoolean("Sonuc")) AkorDefterimSys.TarihSaatGetir("TarihSaatGetir_DevamEt"); // Öncelikle sistem saatini öğreniyoruz. Daha sonra E-Posta gönderdikten sonra sistem tarihini kullanıcıya kaydediyoruz..
+					else {
+						btnIptal.setEnabled(true);
+						btnKaydet.setEnabled(true);
+						AkorDefterimSys.DismissProgressDialog(PDIslem);
+
+						AkorDefterimSys.StandartSnackBarMsj(coordinatorLayout, getString(R.string.islem_yapilirken_bir_hata_olustu));
+					}
+
+					break;
+				case "TarihSaatGetir_DevamEt":
+					btnIptal.setEnabled(true);
+					btnKaydet.setEnabled(true);
+					AkorDefterimSys.DismissProgressDialog(PDIslem);
+
+					// Tarih bilgisi alındıysa sonuç true döner..
 					if(JSONSonuc.getBoolean("Sonuc")) {
+						sharedPrefEditor = sharedPref.edit();
+						sharedPrefEditor.putString("prefEPostaGonderiTarihi", JSONSonuc.getString("TarihSaat"));
+						sharedPrefEditor.apply();
+
 						// Yeni açılacak olan intent'e gönderilecek bilgileri tanımlıyoruz
 						Intent mIntent = new Intent(activity, Dogrulama_Kodu.class);
 						mIntent.putExtra("Islem", "EPostaDegisikligi");
 						mIntent.putExtra("EPosta", txtEPosta.getText().toString().trim());
-						mIntent.putExtra("OnayKodu", String.valueOf(OnayKodu));
+						mIntent.putExtra("DogrulamaKodu", String.valueOf(DogrulamaKodu));
 
 						AkorDefterimSys.EkranGetir(mIntent, "Slide");
 					} else AkorDefterimSys.StandartSnackBarMsj(coordinatorLayout, getString(R.string.islem_yapilirken_bir_hata_olustu));
 
-					break;
-				case "ADDialog_EPostaKalanSure_Kapat":
-					AkorDefterimSys.DismissAlertDialog(ADDialog_EPostaKalanSure);
 					break;
 			}
 		} catch (JSONException e) {
@@ -274,6 +330,7 @@ public class EPosta_Degistir extends AppCompatActivity implements Interface_Asyn
 
 	private void Kaydet() {
 		if(AkorDefterimSys.InternetErisimKontrolu()) {
+			btnIptal.setEnabled(false);
 			btnKaydet.setEnabled(false);
 			AkorDefterimSys.KlavyeKapat();
 
@@ -291,43 +348,44 @@ public class EPosta_Degistir extends AppCompatActivity implements Interface_Asyn
 			if(txtILEPosta.getError() == null) {
 				AkorDefterimSys.UnFocusEditText(txtEPosta);
 
-				if(!AkorDefterimSys.ProgressDialogisShowing(PDEPostaKontrolIslem)) { // Eğer progress dialog açık değilse
-					PDEPostaKontrolIslem = AkorDefterimSys.CustomProgressDialog(getString(R.string.islem_yapiliyor), false, AkorDefterimSys.ProgressBarTimeoutSuresi, "PDEPostaKontrolIslem_Timeout");
-					PDEPostaKontrolIslem.show();
+				if(!AkorDefterimSys.ProgressDialogisShowing(PDIslem)) { // Eğer progress dialog açık değilse
+					PDIslem = AkorDefterimSys.CustomProgressDialog(getString(R.string.islem_yapiliyor), false, AkorDefterimSys.ProgressBarTimeoutSuresi, "PDIslem_Timeout");
+					PDIslem.show();
 				}
 
 				AkorDefterimSys.HesapBilgiGetir(null, "", "", EPosta, "HesapBilgiGetir");
-			} else btnKaydet.setEnabled(true);
+			} else {
+				btnIptal.setEnabled(true);
+				btnKaydet.setEnabled(true);
+			}
 		} else AkorDefterimSys.StandartSnackBarMsj(coordinatorLayout, getString(R.string.internet_baglantisi_saglanamadi));
 	}
 
-	public void EPostaOnayKoduDialogSayac_Ayarla() {
-		TTEPostaOnayKoduSayac = new TimerTask() {
+	public void DogrulamaKoduSayac_Ayarla() {
+		TTDogrulamaKoduSayac = new TimerTask() {
 			@Override
 			public void run() {
-				EPostaOnayKoduHandler.post(new Runnable() {
+				DogrulamaKoduHandler.post(new Runnable() {
 					public void run() {
-						if (EPostaGondermeKalanSure == 0) {
-							if (TEPostaOnayKoduSayac != null) {
-								TEPostaOnayKoduSayac.cancel();
-								TEPostaOnayKoduSayac = null;
-								TTEPostaOnayKoduSayac.cancel();
-								TTEPostaOnayKoduSayac = null;
+						if (KalanSure == 0) {
+							if (TDogrulamaKoduSayac != null) {
+								TDogrulamaKoduSayac.cancel();
+								TDogrulamaKoduSayac = null;
 							}
 
 							sharedPrefEditor = sharedPref.edit();
-							sharedPrefEditor.remove("prefEPostaGondermeKalanSure");
+							sharedPrefEditor.remove("prefEPostaGonderiTarihi");
 							sharedPrefEditor.apply();
 
-							lblEPostaBasvuruKalanSure.setText(getString(R.string.yeni_basvuru_kalan_sure, AkorDefterimSys.ZamanFormatMMSS(EPostaGondermeKalanSure)));
-							AkorDefterimSys.setTextViewHTML(lblEPostaBasvuruKalanSure);
-							lblEPostaBasvuruKalanSure.setVisibility(View.GONE);
+							lblKalanSure.setText(getString(R.string.yeni_basvuru_kalan_sure, AkorDefterimSys.ZamanFormatMMSS(KalanSure)));
+							AkorDefterimSys.setTextViewHTML(lblKalanSure);
+							lblKalanSure.setVisibility(View.GONE);
 
 							AkorDefterimSys.StandartSnackBarMsj(coordinatorLayout, getString(R.string.sure_bitti_yeniden_basvuru_yapilabilir));
 						} else {
-							lblEPostaBasvuruKalanSure.setText(getString(R.string.yeni_basvuru_kalan_sure, AkorDefterimSys.ZamanFormatMMSS(EPostaGondermeKalanSure)));
-							AkorDefterimSys.setTextViewHTML(lblEPostaBasvuruKalanSure);
-							EPostaGondermeKalanSure--;
+							lblKalanSure.setText(getString(R.string.yeni_basvuru_kalan_sure, AkorDefterimSys.ZamanFormatMMSS(KalanSure)));
+							AkorDefterimSys.setTextViewHTML(lblKalanSure);
+							KalanSure--;
 						}
 					}
 				});

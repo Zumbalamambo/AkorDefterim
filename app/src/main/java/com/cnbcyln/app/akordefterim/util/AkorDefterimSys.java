@@ -36,8 +36,10 @@ import java.util.Calendar;
 import java.util.Collections;
 import java.util.Date;
 import java.util.Enumeration;
+import java.util.GregorianCalendar;
 import java.util.List;
 import java.util.Locale;
+import java.util.concurrent.TimeUnit;
 
 import com.cnbcyln.app.akordefterim.Adaptorler.AdpAkorlar;
 import com.cnbcyln.app.akordefterim.Adaptorler.AdpTonlar;
@@ -52,6 +54,7 @@ import com.cnbcyln.app.akordefterim.Retrofit.Siniflar.SnfHesapEkle;
 import com.cnbcyln.app.akordefterim.Retrofit.Siniflar.SnfHesapGirisYap;
 import com.cnbcyln.app.akordefterim.Retrofit.Siniflar.SnfIslemSonuc;
 import com.cnbcyln.app.akordefterim.Retrofit.Siniflar.SnfSistemDurum;
+import com.cnbcyln.app.akordefterim.Retrofit.Siniflar.SnfTarihSaat;
 import com.cnbcyln.app.akordefterim.Siniflar.SnfAkorlar;
 import com.cnbcyln.app.akordefterim.Siniflar.SnfTonlar;
 import com.cnbcyln.app.akordefterim.Siniflar.SnfUlkeKodlari;
@@ -190,8 +193,8 @@ public class AkorDefterimSys {
 
 	public String AnaKlasorDizini = Environment.getExternalStorageDirectory() + File.separator + "Akor Defterim" + File.separator;
 	public int WebBaglantiIstegiToplamSure = 30;
-	public int SMSGondermeToplamSure = 180;
-	public int EPostaGondermeToplamSure = 180;
+	public int SMSGondermeToplamSure = 20;
+	public int EPostaGondermeToplamSure = 20;
 	public int ProgressBarTimeoutSuresi = 30 * 1000; // 30 Saniye
 	private static final int PLAY_SERVICES_RESOLUTION_REQUEST = 1000;
 	public int RC_GOOGLE_LOGIN = 9001;
@@ -2894,6 +2897,28 @@ public class AkorDefterimSys {
 	}
 
 	// PHP İŞLEMLERİ - Retrofit 2
+
+	public void TarihSaatGetir(final String Islem) {
+		RetrofitInterface retrofitInterface = RetrofitServiceGenerator.createService(activity, RetrofitInterface.class);
+		final Interface_AsyncResponse AsyncResponse = (Interface_AsyncResponse) activity;
+
+		Call<SnfTarihSaat> snfTarihSaatCall = retrofitInterface.TarihSaatGetir();
+		snfTarihSaatCall.enqueue(new Callback<SnfTarihSaat>() {
+			@Override
+			public void onResponse(Call<SnfTarihSaat> call, Response<SnfTarihSaat> response) {
+				if(response.isSuccessful()) {
+					SnfTarihSaat snfTarihSaat = response.body();
+
+					AsyncResponse.AsyncTaskReturnValue("{\"Islem\":\"" + Islem + "\", \"Sonuc\":true, \"TarihSaat\":\"" + snfTarihSaat.getTarihSaat() + "\"}");
+				} else AsyncResponse.AsyncTaskReturnValue("{\"Islem\":\"" + Islem + "\", \"Sonuc\":false}");
+			}
+
+			@Override
+			public void onFailure(Call<SnfTarihSaat> call, Throwable t) {
+				AsyncResponse.AsyncTaskReturnValue("{\"Islem\":\"TarihSaatGetir\", \"Sonuc\":false}");
+			}
+		});
+	}
 
 	public void SistemDurumKontrol() {
 		RetrofitInterface retrofitInterface = RetrofitServiceGenerator.createService(activity, RetrofitInterface.class);
@@ -6469,5 +6494,36 @@ public class AkorDefterimSys {
 	public int dpToPx(int dp) {
 		Resources r = activity.getResources();
 		return Math.round(TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, dp, r.getDisplayMetrics()));
+	}
+
+	public long IkiTarihArasiFark(String BuyukTarih, String KucukTarih, String Cins) {
+		long Fark = 0;
+
+		try {
+			Date DBuyukTarih = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault()).parse(BuyukTarih);
+			Date DKucukTarih = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault()).parse(KucukTarih);
+
+			switch (Cins) {
+				case "Gun":
+					Fark = TimeUnit.MILLISECONDS.toDays(DBuyukTarih.getTime() - DKucukTarih.getTime());
+					break;
+				case "Saat":
+					Fark = TimeUnit.MILLISECONDS.toHours(DBuyukTarih.getTime() - DKucukTarih.getTime());
+					break;
+				case "Dakika":
+					Fark = TimeUnit.MILLISECONDS.toMinutes(DBuyukTarih.getTime() - DKucukTarih.getTime());
+					break;
+				case "Saniye":
+					Fark = TimeUnit.MILLISECONDS.toSeconds(DBuyukTarih.getTime() - DKucukTarih.getTime());
+					break;
+				default:
+					Fark = TimeUnit.MILLISECONDS.toSeconds(DBuyukTarih.getTime() - DKucukTarih.getTime());
+					break;
+			}
+		} catch (ParseException e) {
+			e.printStackTrace();
+		}
+
+		return Fark;
 	}
 }

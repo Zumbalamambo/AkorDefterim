@@ -19,7 +19,6 @@ import android.support.design.widget.CoordinatorLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.view.View.OnClickListener;
-import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.TextView;
 
@@ -43,22 +42,21 @@ public class Dogrulama_Kodu extends AppCompatActivity implements Interface_Async
 	SharedPreferences sharedPref;
 	SharedPreferences.Editor sharedPrefEditor;
 	Typeface YaziFontu;
-	Timer EPostaOnayKoduSayac, SMSOnayKoduSayac;
-	TimerTask EPostaOnayKoduDialogSayac, SMSOnayKoduDialogSayac;
-	Handler EPostaOnayKoduHandler = new Handler(), SMSOnayKoduHandler = new Handler();
+	Timer TDogrulamaKoduSayac;
+	TimerTask TTDogrulamaKoduSayac;
+	Handler DogrulamaKoduHandler = new Handler();
 	Random rnd;
-	AlertDialog ADDialog_Hata, ADDialog_Guncelleme;
-	ProgressDialog PDBilgilerGuncelleniyor;
+	AlertDialog ADDialog_Hata;
+	ProgressDialog PDIslem, PDBilgilerGuncelleniyor;
+	Bundle mBundle;
 
 	CoordinatorLayout coordinatorLayout;
-	ImageButton btnGeri, btnKaydet;
-	Button btnDogrula;
-	TextView lblVazgec, lblBaslik, lblOnayKoduAciklama, lblOnayKoduKalanSure, lblYenidenGonder;
-	PasscodeView txtOnayKodu;
+	ImageButton btnGeri, btnDogrula;
+	TextView lblBaslik, lblDogrulamaKoduAciklama, lblKalanSure, lblYenidenGonder;
+	PasscodeView txtDogrulamaKodu;
 
-	String Islem = "", EPosta = "", TelKodu = "", CepTelefonu = "", OnayKodu = "";
-	int EPostaGondermeKalanSure = 0;
-	int SMSGondermeKalanSure = 0;
+	String Islem = "", EPosta = "", TelKodu = "", CepTelefonu = "", DogrulamaKodu = "";
+	int KalanSure = 0;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -77,10 +75,10 @@ public class Dogrulama_Kodu extends AppCompatActivity implements Interface_Async
 		//AkorDefterimSys.NotifyIkonParlakligi(); // Notification Bar'daki simgelerin parlaklığını aldık.
 
 		sharedPrefEditor = sharedPref.edit();
-		sharedPrefEditor.putString("prefSMSOnayKoduSayfaAdi", "Dogrulama_Kodu");
+		sharedPrefEditor.putString("prefSMSDogrulamaKoduSayfaAdi", "Dogrulama_Kodu");
 		sharedPrefEditor.apply();
 
-		registerReceiver(OnayKoduAlici, new IntentFilter("com.cnbcyln.app.akordefterim.Dogrulama_Kodu"));
+		registerReceiver(DogrulamaKoduAlici, new IntentFilter("com.cnbcyln.app.akordefterim.Dogrulama_Kodu"));
 
 		coordinatorLayout = activity.findViewById(R.id.coordinatorLayout);
 		coordinatorLayout.setOnClickListener(this);
@@ -91,136 +89,117 @@ public class Dogrulama_Kodu extends AppCompatActivity implements Interface_Async
 		lblBaslik = findViewById(R.id.lblBaslik);
 		lblBaslik.setTypeface(YaziFontu, Typeface.BOLD);
 
-		lblVazgec = findViewById(R.id.lblVazgec);
-		lblVazgec.setTypeface(YaziFontu, Typeface.BOLD);
-		lblVazgec.setOnClickListener(this);
+		btnDogrula = findViewById(R.id.btnDogrula);
+		btnDogrula.setOnClickListener(this);
 
-		btnKaydet = findViewById(R.id.btnKaydet);
-		btnKaydet.setOnClickListener(this);
+		lblDogrulamaKoduAciklama = findViewById(R.id.lblDogrulamaKoduAciklama);
+		lblDogrulamaKoduAciklama.setTypeface(YaziFontu, Typeface.NORMAL);
 
-		lblOnayKoduAciklama = findViewById(R.id.lblOnayKoduAciklama);
-		lblOnayKoduAciklama.setTypeface(YaziFontu, Typeface.NORMAL);
-
-		txtOnayKodu = findViewById(R.id.txtOnayKodu);
-		txtOnayKodu.setPasscodeEntryListener(new PasscodeView.PasscodeEntryListener() {
+		txtDogrulamaKodu = findViewById(R.id.txtDogrulamaKodu);
+		txtDogrulamaKodu.setPasscodeEntryListener(new PasscodeView.PasscodeEntryListener() {
 			@Override
-			public void onPasscodeEntered(String GirilenOnayKodu) {
+			public void onPasscodeEntered(String GirilenDogrulamaKodu) {
 				DevamEt();
 			}
 		});
 
-		lblOnayKoduKalanSure = findViewById(R.id.lblOnayKoduKalanSure);
+		lblKalanSure = findViewById(R.id.lblKalanSure);
+		lblKalanSure.setTypeface(YaziFontu, Typeface.NORMAL);
+		lblKalanSure.setVisibility(View.GONE);
 
 		lblYenidenGonder = findViewById(R.id.lblYenidenGonder);
 		lblYenidenGonder.setTypeface(YaziFontu, Typeface.BOLD);
 		lblYenidenGonder.setOnClickListener(this);
 
-		btnDogrula = findViewById(R.id.btnDogrula);
-		btnDogrula.setTypeface(YaziFontu, Typeface.NORMAL);
-		btnDogrula.setOnClickListener(this);
-
-		Bundle mBundle = getIntent().getExtras();
+		mBundle = getIntent().getExtras();
 		Islem = mBundle.getString("Islem");
-
-		switch (Islem) {
-			case "Kayit":
-				EPosta = mBundle.getString("EPosta");
-				OnayKodu = mBundle.getString("OnayKodu");
-
-				EPostaOnayKoduSayac = new Timer();
-				EPostaOnayKoduDialogSayac_Ayarla();
-
-				if(sharedPref.getInt("prefEPostaGondermeKalanSure", 0) > 0)
-					EPostaGondermeKalanSure = sharedPref.getInt("prefEPostaGondermeKalanSure", 0);
-				else
-					EPostaGondermeKalanSure = AkorDefterimSys.EPostaGondermeToplamSure;
-
-				lblVazgec.setVisibility(View.VISIBLE);
-
-				btnKaydet.setVisibility(View.GONE);
-
-				lblOnayKoduAciklama.setText(getString(R.string.dogrulama_kodu_eposta, EPosta));
-				AkorDefterimSys.setTextViewHTML(lblOnayKoduAciklama);
-
-				lblOnayKoduKalanSure.setTypeface(YaziFontu, Typeface.NORMAL);
-				lblOnayKoduKalanSure.setText(getString(R.string.kalan_sure, AkorDefterimSys.ZamanFormatMMSS(EPostaGondermeKalanSure)));
-
-				btnDogrula.setVisibility(View.VISIBLE);
-
-				EPostaOnayKoduSayac.schedule(EPostaOnayKoduDialogSayac, 10, 1000);
-				break;
-			case "EPostaDegisikligi":
-				EPosta = mBundle.getString("EPosta");
-				OnayKodu = mBundle.getString("OnayKodu");
-
-				EPostaOnayKoduSayac = new Timer();
-				EPostaOnayKoduDialogSayac_Ayarla();
-
-				if(sharedPref.getInt("prefEPostaGondermeKalanSure", 0) > 0)
-					EPostaGondermeKalanSure = sharedPref.getInt("prefEPostaGondermeKalanSure", 0);
-				else
-					EPostaGondermeKalanSure = AkorDefterimSys.EPostaGondermeToplamSure;
-
-				lblVazgec.setVisibility(View.GONE);
-
-				btnKaydet.setVisibility(View.VISIBLE);
-
-				lblOnayKoduAciklama.setText(getString(R.string.dogrulama_kodu_eposta, EPosta));
-				AkorDefterimSys.setTextViewHTML(lblOnayKoduAciklama);
-
-				lblOnayKoduKalanSure.setTypeface(YaziFontu, Typeface.NORMAL);
-				lblOnayKoduKalanSure.setText(getString(R.string.kalan_sure, AkorDefterimSys.ZamanFormatMMSS(EPostaGondermeKalanSure)));
-
-				btnDogrula.setVisibility(View.GONE);
-
-				EPostaOnayKoduSayac.schedule(EPostaOnayKoduDialogSayac, 10, 1000);
-				break;
-			case "CepTelefonuDegisikligi":
-				SMSOnayKoduSayac = new Timer();
-				SMSOnayKoduDialogSayac_Ayarla();
-
-				if(sharedPref.getInt("prefSMSGondermeKalanSure", 0) > 0)
-					SMSGondermeKalanSure = sharedPref.getInt("prefSMSGondermeKalanSure", 0);
-				else
-					SMSGondermeKalanSure = AkorDefterimSys.SMSGondermeToplamSure;
-
-				TelKodu = mBundle.getString("TelKodu");
-				CepTelefonu = mBundle.getString("CepTelefonu");
-				OnayKodu = mBundle.getString("OnayKodu");
-
-				lblVazgec.setVisibility(View.GONE);
-
-				btnKaydet.setVisibility(View.VISIBLE);
-
-				lblOnayKoduAciklama.setText(getString(R.string.dogrulama_kodu_cep, "+" + TelKodu + CepTelefonu));
-				AkorDefterimSys.setTextViewHTML(lblOnayKoduAciklama);
-
-				lblOnayKoduKalanSure.setTypeface(YaziFontu, Typeface.NORMAL);
-				lblOnayKoduKalanSure.setText(getString(R.string.kalan_sure, AkorDefterimSys.ZamanFormatMMSS(SMSGondermeKalanSure)));
-
-				btnDogrula.setVisibility(View.GONE);
-
-				SMSOnayKoduSayac.schedule(SMSOnayKoduDialogSayac, 10, 1000);
-				break;
-		}
 	}
 
 	@Override
 	protected void onStart() {
 		super.onStart();
 
-		if(sharedPref.getString("prefAction", "").equals("Vazgec")) onBackPressed();
+		if(sharedPref.getString("prefAction", "").equals("Vazgec")) finish();
+		else {
+			switch (Islem) {
+				case "Kayit":
+					EPosta = mBundle.getString("EPosta");
+					DogrulamaKodu = mBundle.getString("DogrulamaKodu");
+
+					lblDogrulamaKoduAciklama.setText(getString(R.string.dogrulama_kodu_eposta, EPosta));
+					AkorDefterimSys.setTextViewHTML(lblDogrulamaKoduAciklama);
+
+					// prefEPostaGonderiTarihi isimli prefkey var mı?
+					if(sharedPref.contains("prefEPostaGonderiTarihi")) { // Varsa
+						btnGeri.setEnabled(false);
+						btnDogrula.setEnabled(false);
+						lblYenidenGonder.setEnabled(false);
+
+						if(!AkorDefterimSys.ProgressDialogisShowing(PDIslem)) { // Eğer progress dialog açık değilse
+							PDIslem = AkorDefterimSys.CustomProgressDialog(getString(R.string.islem_yapiliyor), false, AkorDefterimSys.ProgressBarTimeoutSuresi, "PDIslem_Timeout");
+							PDIslem.show();
+						}
+
+						AkorDefterimSys.TarihSaatGetir("TarihSaatOgren_GeriSayimaBasla");
+					}
+					break;
+				case "EPostaDegisikligi":
+					EPosta = mBundle.getString("EPosta");
+					DogrulamaKodu = mBundle.getString("DogrulamaKodu");
+
+					lblDogrulamaKoduAciklama.setText(getString(R.string.dogrulama_kodu_eposta, EPosta));
+					AkorDefterimSys.setTextViewHTML(lblDogrulamaKoduAciklama);
+
+					// prefEPostaGonderiTarihi isimli prefkey var mı?
+					if(sharedPref.contains("prefEPostaGonderiTarihi")) { // Varsa
+						btnGeri.setEnabled(false);
+						btnDogrula.setEnabled(false);
+						lblYenidenGonder.setEnabled(false);
+
+						if(!AkorDefterimSys.ProgressDialogisShowing(PDIslem)) { // Eğer progress dialog açık değilse
+							PDIslem = AkorDefterimSys.CustomProgressDialog(getString(R.string.islem_yapiliyor), false, AkorDefterimSys.ProgressBarTimeoutSuresi, "PDIslem_Timeout");
+							PDIslem.show();
+						}
+
+						AkorDefterimSys.TarihSaatGetir("TarihSaatOgren_GeriSayimaBasla");
+					}
+					break;
+				case "CepTelefonuDegisikligi":
+					TelKodu = mBundle.getString("TelKodu");
+					CepTelefonu = mBundle.getString("CepTelefonu");
+					DogrulamaKodu = mBundle.getString("DogrulamaKodu");
+
+					lblDogrulamaKoduAciklama.setText(getString(R.string.dogrulama_kodu_cep, "+" + TelKodu + CepTelefonu));
+					AkorDefterimSys.setTextViewHTML(lblDogrulamaKoduAciklama);
+
+					// prefSMSGonderiTarihi isimli prefkey var mı?
+					if(sharedPref.contains("prefSMSGonderiTarihi")) { // Varsa
+						btnGeri.setEnabled(false);
+						btnDogrula.setEnabled(false);
+						lblYenidenGonder.setEnabled(false);
+
+						if(!AkorDefterimSys.ProgressDialogisShowing(PDIslem)) { // Eğer progress dialog açık değilse
+							PDIslem = AkorDefterimSys.CustomProgressDialog(getString(R.string.islem_yapiliyor), false, AkorDefterimSys.ProgressBarTimeoutSuresi, "PDIslem_Timeout");
+							PDIslem.show();
+						}
+
+						AkorDefterimSys.TarihSaatGetir("TarihSaatOgren_GeriSayimaBasla");
+					}
+					break;
+			}
+		}
 	}
 
 	@Override
 	protected void onDestroy() {
 		AkorDefterimSys.KlavyeKapat();
 		AkorDefterimSys.DismissAlertDialog(ADDialog_Hata);
-		AkorDefterimSys.DismissAlertDialog(ADDialog_Guncelleme);
 
 		sharedPrefEditor = sharedPref.edit();
-		sharedPrefEditor.remove("prefSMSOnayKoduSayfaAdi");
+		sharedPrefEditor.remove("prefSMSDogrulamaKoduSayfaAdi");
 		sharedPrefEditor.apply();
+
+		if(DogrulamaKoduAlici != null) unregisterReceiver(DogrulamaKoduAlici);
 
 		super.onDestroy();
 	}
@@ -229,9 +208,8 @@ public class Dogrulama_Kodu extends AppCompatActivity implements Interface_Async
 	public void onBackPressed() {
 		AkorDefterimSys.KlavyeKapat();
 		AkorDefterimSys.DismissAlertDialog(ADDialog_Hata);
-		AkorDefterimSys.DismissAlertDialog(ADDialog_Guncelleme);
 
-		if(OnayKoduAlici != null) unregisterReceiver(OnayKoduAlici);
+		if(DogrulamaKoduAlici != null) unregisterReceiver(DogrulamaKoduAlici);
 
 		super.onBackPressed();
 	}
@@ -243,68 +221,82 @@ public class Dogrulama_Kodu extends AppCompatActivity implements Interface_Async
 				AkorDefterimSys.KlavyeKapat();
 				break;
 			case R.id.btnGeri:
-				onBackPressed();
+				finish();
 				break;
-			case R.id.lblVazgec:
-				sharedPrefEditor = sharedPref.edit();
-				sharedPrefEditor.putString("prefAction", "Vazgec");
-				sharedPrefEditor.apply();
-
-				onBackPressed();
-				break;
-			case R.id.btnKaydet:
+			case R.id.btnDogrula:
 				DevamEt();
 				break;
 			case R.id.lblYenidenGonder:
-				lblYenidenGonder.setEnabled(false);
-				AkorDefterimSys.KlavyeKapat();
-
 				if(AkorDefterimSys.InternetErisimKontrolu()) {
 					switch (Islem) {
 						case "Kayit":
-							if(EPostaGondermeKalanSure > 0 && EPostaGondermeKalanSure < AkorDefterimSys.EPostaGondermeToplamSure) { // Eğer kalan süre hala bitmemişse
-								lblYenidenGonder.setEnabled(true);
-								AkorDefterimSys.KlavyeKapat();
+							if(KalanSure > 0 && KalanSure < AkorDefterimSys.EPostaGondermeToplamSure)
 								AkorDefterimSys.StandartSnackBarMsj(coordinatorLayout, getString(R.string.yeni_onay_kodu_talebi_hata));
-							} else {
+							else {
+								btnGeri.setEnabled(false);
+								btnDogrula.setEnabled(false);
+								lblYenidenGonder.setEnabled(false);
+								txtDogrulamaKodu.clearText();
+								AkorDefterimSys.KlavyeKapat();
+
+								if(!AkorDefterimSys.ProgressDialogisShowing(PDIslem)) { // Eğer progress dialog açık değilse
+									PDIslem = AkorDefterimSys.CustomProgressDialog(getString(R.string.islem_yapiliyor), false, AkorDefterimSys.ProgressBarTimeoutSuresi, "PDIslem_Timeout");
+									PDIslem.show();
+								}
+
 								// 6 haneli onay kodu oluşturuldu
-								OnayKodu = String.valueOf((100000 + rnd.nextInt(900000)));
+								DogrulamaKodu = String.valueOf((100000 + rnd.nextInt(900000)));
 
 								// Onay kodu belirtilen eposta adresine gönderiliyor
-								AkorDefterimSys.EPostaGonder(EPosta, "", getString(R.string.dogrulama_kodu), getString(R.string.eposta_dosrulama_kodu_icerik, OnayKodu, getString(R.string.uygulama_adi)));
+								AkorDefterimSys.EPostaGonder(EPosta, "", getString(R.string.dogrulama_kodu), getString(R.string.eposta_dosrulama_kodu_icerik, DogrulamaKodu, getString(R.string.uygulama_adi)));
 							}
 							break;
 						case "EPostaDegisikligi":
-							if(EPostaGondermeKalanSure > 0 && EPostaGondermeKalanSure < AkorDefterimSys.EPostaGondermeToplamSure) { // Eğer kalan süre hala bitmemişse
-								lblYenidenGonder.setEnabled(true);
-								AkorDefterimSys.KlavyeKapat();
+							if(KalanSure > 0 && KalanSure < AkorDefterimSys.EPostaGondermeToplamSure)
 								AkorDefterimSys.StandartSnackBarMsj(coordinatorLayout, getString(R.string.yeni_onay_kodu_talebi_hata));
-							} else {
+							else {
+								btnGeri.setEnabled(false);
+								btnDogrula.setEnabled(false);
+								lblYenidenGonder.setEnabled(false);
+								txtDogrulamaKodu.clearText();
+								AkorDefterimSys.KlavyeKapat();
+
+								if(!AkorDefterimSys.ProgressDialogisShowing(PDIslem)) { // Eğer progress dialog açık değilse
+									PDIslem = AkorDefterimSys.CustomProgressDialog(getString(R.string.islem_yapiliyor), false, AkorDefterimSys.ProgressBarTimeoutSuresi, "PDIslem_Timeout");
+									PDIslem.show();
+								}
+
 								// 6 haneli onay kodu oluşturuldu
-								OnayKodu = String.valueOf((100000 + rnd.nextInt(900000)));
+								DogrulamaKodu = String.valueOf((100000 + rnd.nextInt(900000)));
 
 								// Onay kodu belirtilen eposta adresine gönderiliyor
-								AkorDefterimSys.EPostaGonder(EPosta, "", getString(R.string.dogrulama_kodu), getString(R.string.eposta_dosrulama_kodu_icerik, OnayKodu, getString(R.string.uygulama_adi)));
+								AkorDefterimSys.EPostaGonder(EPosta, "", getString(R.string.dogrulama_kodu), getString(R.string.eposta_dosrulama_kodu_icerik, DogrulamaKodu, getString(R.string.uygulama_adi)));
 							}
 							break;
 						case "CepTelefonuDegisikligi":
-							if(SMSGondermeKalanSure > 0 && SMSGondermeKalanSure < AkorDefterimSys.SMSGondermeToplamSure) { // Eğer kalan süre hala bitmemişse
-								lblYenidenGonder.setEnabled(true);
-								AkorDefterimSys.KlavyeKapat();
+							if(KalanSure > 0 && KalanSure < AkorDefterimSys.SMSGondermeToplamSure)
 								AkorDefterimSys.StandartSnackBarMsj(coordinatorLayout, getString(R.string.yeni_onay_kodu_talebi_hata));
-							} else {
+							else {
+								btnGeri.setEnabled(false);
+								btnDogrula.setEnabled(false);
+								lblYenidenGonder.setEnabled(false);
+								txtDogrulamaKodu.clearText();
+								AkorDefterimSys.KlavyeKapat();
+
+								if(!AkorDefterimSys.ProgressDialogisShowing(PDIslem)) { // Eğer progress dialog açık değilse
+									PDIslem = AkorDefterimSys.CustomProgressDialog(getString(R.string.islem_yapiliyor), false, AkorDefterimSys.ProgressBarTimeoutSuresi, "PDIslem_Timeout");
+									PDIslem.show();
+								}
+
 								// 6 haneli onay kodu oluşturuldu
-								OnayKodu = String.valueOf((100000 + rnd.nextInt(900000)));
+								DogrulamaKodu = String.valueOf((100000 + rnd.nextInt(900000)));
 
 								// Onay kodu belirtilen cep telefonuna sms olarak gönderiliyor
-								AkorDefterimSys.SMSGonder(TelKodu, CepTelefonu, getString(R.string.sms_dosrulama_kodu_icerik, OnayKodu, getString(R.string.uygulama_adi)));
+								AkorDefterimSys.SMSGonder(TelKodu, CepTelefonu, getString(R.string.sms_dosrulama_kodu_icerik, DogrulamaKodu, getString(R.string.uygulama_adi)));
 							}
 							break;
 					}
-				} else {
-					lblYenidenGonder.setEnabled(true);
-					AkorDefterimSys.StandartSnackBarMsj(coordinatorLayout, getString(R.string.internet_baglantisi_saglanamadi));
-				}
+				} else AkorDefterimSys.StandartSnackBarMsj(coordinatorLayout, getString(R.string.internet_baglantisi_saglanamadi));
 				break;
 			case R.id.btnIleri:
 				DevamEt();
@@ -318,34 +310,137 @@ public class Dogrulama_Kodu extends AppCompatActivity implements Interface_Async
 			JSONObject JSONSonuc = new JSONObject(sonuc);
 
 			switch (JSONSonuc.getString("Islem")) {
-				case "EPostaGonder":
+				case "TarihSaatOgren_GeriSayimaBasla":
+					btnGeri.setEnabled(true);
+					btnDogrula.setEnabled(true);
+					lblYenidenGonder.setEnabled(true);
+					AkorDefterimSys.DismissProgressDialog(PDIslem);
+
+					// Tarih bilgisi alındıysa sonuç true döner..
 					if(JSONSonuc.getBoolean("Sonuc")) {
-						lblYenidenGonder.setEnabled(true);
-						txtOnayKodu.clearText();
-						AkorDefterimSys.KlavyeKapat();
+						switch (Islem) {
+							case "Kayit":
+								KalanSure = AkorDefterimSys.EPostaGondermeToplamSure - (int) AkorDefterimSys.IkiTarihArasiFark(JSONSonuc.getString("TarihSaat"), sharedPref.getString("prefEPostaGonderiTarihi", ""),"Saniye");
 
-						EPostaGondermeKalanSure = AkorDefterimSys.EPostaGondermeToplamSure;
+								if(KalanSure > 0 && KalanSure < AkorDefterimSys.EPostaGondermeToplamSure) {
+									if (TDogrulamaKoduSayac != null) {
+										TDogrulamaKoduSayac.cancel();
+										TDogrulamaKoduSayac = null;
+										TTDogrulamaKoduSayac.cancel();
+										TTDogrulamaKoduSayac = null;
+									}
 
-						sharedPrefEditor = sharedPref.edit();
-						sharedPrefEditor.putInt("prefEPostaGondermeKalanSure", EPostaGondermeKalanSure);
-						sharedPrefEditor.apply();
+									TDogrulamaKoduSayac = new Timer();
+									DogrulamaKoduSayac_Ayarla();
 
-						EPostaOnayKoduSayac = new Timer();
-						EPostaOnayKoduDialogSayac_Ayarla();
-						EPostaOnayKoduSayac.schedule(EPostaOnayKoduDialogSayac, 10, 1000);
-					} else {
-						if (EPostaOnayKoduSayac != null) {
-							EPostaOnayKoduSayac.cancel();
-							EPostaOnayKoduSayac = null;
-							EPostaGondermeKalanSure = 0;
-							lblOnayKoduKalanSure.setText(getString(R.string.kalan_sure, AkorDefterimSys.ZamanFormatMMSS(EPostaGondermeKalanSure)));
+									lblKalanSure.setText(getString(R.string.kalan_sure, AkorDefterimSys.ZamanFormatMMSS(KalanSure)));
+									AkorDefterimSys.setTextViewHTML(lblKalanSure);
+									lblKalanSure.setVisibility(View.VISIBLE);
+
+									TDogrulamaKoduSayac.schedule(TTDogrulamaKoduSayac, 10, 1000);
+								} else {
+									KalanSure = 0;
+
+									sharedPrefEditor = sharedPref.edit();
+									sharedPrefEditor.remove("prefEPostaGonderiTarihi");
+									sharedPrefEditor.apply();
+
+									lblKalanSure.setVisibility(View.GONE);
+								}
+								break;
+							case "EPostaDegisikligi":
+								KalanSure = AkorDefterimSys.EPostaGondermeToplamSure - (int) AkorDefterimSys.IkiTarihArasiFark(JSONSonuc.getString("TarihSaat"), sharedPref.getString("prefEPostaGonderiTarihi", ""),"Saniye");
+
+								if(KalanSure > 0 && KalanSure < AkorDefterimSys.EPostaGondermeToplamSure) {
+									if (TDogrulamaKoduSayac != null) {
+										TDogrulamaKoduSayac.cancel();
+										TDogrulamaKoduSayac = null;
+										TTDogrulamaKoduSayac.cancel();
+										TTDogrulamaKoduSayac = null;
+									}
+
+									TDogrulamaKoduSayac = new Timer();
+									DogrulamaKoduSayac_Ayarla();
+
+									lblKalanSure.setText(getString(R.string.kalan_sure, AkorDefterimSys.ZamanFormatMMSS(KalanSure)));
+									AkorDefterimSys.setTextViewHTML(lblKalanSure);
+									lblKalanSure.setVisibility(View.VISIBLE);
+
+									TDogrulamaKoduSayac.schedule(TTDogrulamaKoduSayac, 10, 1000);
+								} else {
+									KalanSure = 0;
+
+									sharedPrefEditor = sharedPref.edit();
+									sharedPrefEditor.remove("prefEPostaGonderiTarihi");
+									sharedPrefEditor.apply();
+
+									lblKalanSure.setVisibility(View.GONE);
+								}
+								break;
+							case "CepTelefonuDegisikligi":
+								KalanSure = AkorDefterimSys.SMSGondermeToplamSure - (int) AkorDefterimSys.IkiTarihArasiFark(JSONSonuc.getString("TarihSaat"), sharedPref.getString("prefSMSGonderiTarihi", ""),"Saniye");
+
+								if(KalanSure > 0 && KalanSure < AkorDefterimSys.SMSGondermeToplamSure) {
+									if (TDogrulamaKoduSayac != null) {
+										TDogrulamaKoduSayac.cancel();
+										TDogrulamaKoduSayac = null;
+										TTDogrulamaKoduSayac.cancel();
+										TTDogrulamaKoduSayac = null;
+									}
+
+									TDogrulamaKoduSayac = new Timer();
+									DogrulamaKoduSayac_Ayarla();
+
+									lblKalanSure.setText(getString(R.string.kalan_sure, AkorDefterimSys.ZamanFormatMMSS(KalanSure)));
+									AkorDefterimSys.setTextViewHTML(lblKalanSure);
+									lblKalanSure.setVisibility(View.VISIBLE);
+
+									TDogrulamaKoduSayac.schedule(TTDogrulamaKoduSayac, 10, 1000);
+								} else {
+									KalanSure = 0;
+
+									sharedPrefEditor = sharedPref.edit();
+									sharedPrefEditor.remove("prefEPostaGonderiTarihi");
+									sharedPrefEditor.apply();
+
+									lblKalanSure.setVisibility(View.GONE);
+								}
+								break;
 						}
+					} else {
+						if(!AkorDefterimSys.AlertDialogisShowing(ADDialog_Hata)) {
+							ADDialog_Hata = AkorDefterimSys.CustomAlertDialog(activity,
+									getString(R.string.hata),
+									getString(R.string.islem_yapilirken_bir_hata_olustu),
+									activity.getString(R.string.tamam),
+									"ADDialog_Hata_Kapat");
+							ADDialog_Hata.getWindow().getAttributes().windowAnimations = R.style.DialogAnimation;
+							ADDialog_Hata.show();
+						}
+					}
+					break;
+				case "PDIslem_Timeout":
+					AkorDefterimSys.DismissProgressDialog(PDIslem);
 
-						AkorDefterimSys.KlavyeKapat();
+					finish();
+					break;
+				case "ADDialog_Hata_Kapat":
+					AkorDefterimSys.DismissAlertDialog(ADDialog_Hata);
+
+					finish();
+					break;
+				case "EPostaGonder":
+					if(JSONSonuc.getBoolean("Sonuc"))
+						AkorDefterimSys.TarihSaatGetir("TarihSaatGetir_YenidenGonder");
+					else {
+						btnGeri.setEnabled(true);
+						btnDogrula.setEnabled(true);
+						lblYenidenGonder.setEnabled(true);
+						AkorDefterimSys.DismissProgressDialog(PDIslem);
 
 						if(!AkorDefterimSys.AlertDialogisShowing(ADDialog_Hata)) {
 							ADDialog_Hata = AkorDefterimSys.CustomAlertDialog(activity,
-									getString(R.string.onay_kodu),
+									getString(R.string.dogrulama_kodu),
 									getString(R.string.islem_yapilirken_bir_hata_olustu),
 									activity.getString(R.string.tamam),
 									"ADDialog_Hata_Kapat");
@@ -356,33 +451,17 @@ public class Dogrulama_Kodu extends AppCompatActivity implements Interface_Async
 
 					break;
 				case "SMSGonder":
-					if(JSONSonuc.getBoolean("Sonuc")) {
+					if(JSONSonuc.getBoolean("Sonuc"))
+						AkorDefterimSys.TarihSaatGetir("TarihSaatGetir_YenidenGonder");
+					else {
+						btnGeri.setEnabled(true);
+						btnDogrula.setEnabled(true);
 						lblYenidenGonder.setEnabled(true);
-						txtOnayKodu.clearText();
-						AkorDefterimSys.KlavyeKapat();
-
-						SMSGondermeKalanSure = AkorDefterimSys.SMSGondermeToplamSure;
-
-						sharedPrefEditor = sharedPref.edit();
-						sharedPrefEditor.putInt("prefSMSGondermeKalanSure", SMSGondermeKalanSure);
-						sharedPrefEditor.apply();
-
-						SMSOnayKoduSayac = new Timer();
-						SMSOnayKoduDialogSayac_Ayarla();
-						SMSOnayKoduSayac.schedule(SMSOnayKoduDialogSayac, 10, 1000);
-					} else {
-						if (SMSOnayKoduSayac != null) {
-							SMSOnayKoduSayac.cancel();
-							SMSOnayKoduSayac = null;
-							SMSGondermeKalanSure = 0;
-							lblOnayKoduKalanSure.setText(getString(R.string.kalan_sure, AkorDefterimSys.ZamanFormatMMSS(SMSGondermeKalanSure)));
-						}
-
-						AkorDefterimSys.KlavyeKapat();
+						AkorDefterimSys.DismissProgressDialog(PDIslem);
 
 						if(!AkorDefterimSys.AlertDialogisShowing(ADDialog_Hata)) {
 							ADDialog_Hata = AkorDefterimSys.CustomAlertDialog(activity,
-									getString(R.string.onay_kodu),
+									getString(R.string.dogrulama_kodu),
 									getString(R.string.islem_yapilirken_bir_hata_olustu),
 									activity.getString(R.string.tamam),
 									"ADDialog_Hata_Kapat");
@@ -392,38 +471,76 @@ public class Dogrulama_Kodu extends AppCompatActivity implements Interface_Async
 					}
 
 					break;
-				case "ADDialog_Hata_Kapat":
-					AkorDefterimSys.DismissAlertDialog(ADDialog_Hata);
+				case "TarihSaatGetir_YenidenGonder":
+					btnGeri.setEnabled(true);
+					btnDogrula.setEnabled(true);
+					lblYenidenGonder.setEnabled(true);
+					AkorDefterimSys.DismissProgressDialog(PDIslem);
 
-					onBackPressed();
+					// Tarih bilgisi alındıysa sonuç true döner..
+					if(JSONSonuc.getBoolean("Sonuc")) {
+						sharedPrefEditor = sharedPref.edit();
+
+						switch (Islem) {
+							case "Kayit":
+								sharedPrefEditor.putString("prefEPostaGonderiTarihi", JSONSonuc.getString("TarihSaat"));
+								break;
+							case "EPostaDegisikligi":
+								sharedPrefEditor.putString("prefEPostaGonderiTarihi", JSONSonuc.getString("TarihSaat"));
+								break;
+							case "SMSDegisikligi":
+								sharedPrefEditor.putString("prefSMSGonderiTarihi", JSONSonuc.getString("TarihSaat"));
+								break;
+						}
+
+						sharedPrefEditor.apply();
+
+						KalanSure = AkorDefterimSys.EPostaGondermeToplamSure;
+
+						if (TDogrulamaKoduSayac != null) {
+							TDogrulamaKoduSayac.cancel();
+							TDogrulamaKoduSayac = null;
+							TTDogrulamaKoduSayac.cancel();
+							TTDogrulamaKoduSayac = null;
+						}
+
+						TDogrulamaKoduSayac = new Timer();
+						DogrulamaKoduSayac_Ayarla();
+
+						lblKalanSure.setText(getString(R.string.kalan_sure, AkorDefterimSys.ZamanFormatMMSS(KalanSure)));
+						AkorDefterimSys.setTextViewHTML(lblKalanSure);
+						lblKalanSure.setVisibility(View.VISIBLE);
+
+						TDogrulamaKoduSayac.schedule(TTDogrulamaKoduSayac, 10, 1000);
+					} else AkorDefterimSys.StandartSnackBarMsj(coordinatorLayout, getString(R.string.islem_yapilirken_bir_hata_olustu));
+
 					break;
 				case "HesapBilgiGuncelle":
-					btnKaydet.setEnabled(true);
+					btnGeri.setEnabled(true);
+					btnDogrula.setEnabled(true);
+					lblYenidenGonder.setEnabled(true);
 					AkorDefterimSys.DismissProgressDialog(PDBilgilerGuncelleniyor);
 
 					if(JSONSonuc.getBoolean("Sonuc")) {
 						sharedPrefEditor = sharedPref.edit();
+
 						if(Islem.equals("EPostaDegisikligi")) sharedPrefEditor.putString("prefEPosta", EPosta);
+
 						sharedPrefEditor.putString("prefAction", "IslemTamamlandi");
 						sharedPrefEditor.apply();
 
-						onBackPressed();
+						finish();
 					} else {
-						if(!AkorDefterimSys.AlertDialogisShowing(ADDialog_Guncelleme)) {
-							ADDialog_Guncelleme = AkorDefterimSys.CustomAlertDialog(activity,
+						if(!AkorDefterimSys.AlertDialogisShowing(ADDialog_Hata)) {
+							ADDialog_Hata = AkorDefterimSys.CustomAlertDialog(activity,
 									getString(R.string.hata),
 									getString(R.string.hesap_bilgileri_guncellenemedi),
 									activity.getString(R.string.tamam),
-									"ADDialog_Guncelleme_Kapat_GeriGit");
-							ADDialog_Guncelleme.getWindow().getAttributes().windowAnimations = R.style.DialogAnimation;
-							ADDialog_Guncelleme.show();
+									"ADDialog_Hata_Kapat");
+							ADDialog_Hata.getWindow().getAttributes().windowAnimations = R.style.DialogAnimation;
+							ADDialog_Hata.show();
 						}
 					}
-					break;
-				case "ADDialog_Guncelleme_Kapat_GeriGit":
-					AkorDefterimSys.DismissAlertDialog(ADDialog_Guncelleme);
-
-					onBackPressed();
 					break;
 			}
 
@@ -433,27 +550,28 @@ public class Dogrulama_Kodu extends AppCompatActivity implements Interface_Async
 	}
 
 	private void DevamEt() {
-		btnDogrula.setEnabled(false);
-		btnKaydet.setEnabled(false);
-		AkorDefterimSys.KlavyeKapat();
-
 		if(AkorDefterimSys.InternetErisimKontrolu()) {
+			btnGeri.setEnabled(false);
+			btnDogrula.setEnabled(false);
+			lblYenidenGonder.setEnabled(false);
+			AkorDefterimSys.KlavyeKapat();
+
 			switch (Islem) {
 				case "Kayit":
-					if(txtOnayKodu.getText().toString().equals(OnayKodu)) {
+					if(txtDogrulamaKodu.getText().toString().equals(DogrulamaKodu)) {
 						Intent mIntent = new Intent(activity, KayitEkran_Parola_Belirle.class);
 						mIntent.putExtra("Islem", Islem);
 						mIntent.putExtra("EPosta", EPosta);
 
 						AkorDefterimSys.EkranGetir(mIntent, "Slide");
-						btnDogrula.setEnabled(true);
-					} else {
-						btnDogrula.setEnabled(true);
-						AkorDefterimSys.StandartSnackBarMsj(coordinatorLayout, getString(R.string.girilen_onay_kodu_hata2));
-					}
+					} else AkorDefterimSys.StandartSnackBarMsj(coordinatorLayout, getString(R.string.girilen_onay_kodu_hata2));
+
+					btnGeri.setEnabled(true);
+					btnDogrula.setEnabled(true);
+					lblYenidenGonder.setEnabled(true);
 					break;
 				case "EPostaDegisikligi":
-					if(txtOnayKodu.getText().toString().equals(OnayKodu)) {
+					if(txtDogrulamaKodu.getText().toString().equals(DogrulamaKodu)) {
 						String FirebaseToken = FirebaseInstanceId.getInstance().getToken();
 						@SuppressLint("HardwareIds")
 						String OSID = Settings.Secure.getString(getContentResolver(), Settings.Secure.ANDROID_ID);
@@ -473,12 +591,14 @@ public class Dogrulama_Kodu extends AppCompatActivity implements Interface_Async
 
 						AkorDefterimSys.HesapBilgiGuncelle(sharedPref.getString("prefHesapID",""), FirebaseToken, OSID, OSVersiyon, "", "", EPosta, "", "", "", "", "", UygulamaVersiyon, "HesapBilgiGuncelle");
 					} else {
-						btnKaydet.setEnabled(true);
+						btnGeri.setEnabled(true);
+						btnDogrula.setEnabled(true);
+						lblYenidenGonder.setEnabled(true);
 						AkorDefterimSys.StandartSnackBarMsj(coordinatorLayout, getString(R.string.girilen_onay_kodu_hata2));
 					}
 					break;
 				case "CepTelefonuDegisikligi":
-					if(txtOnayKodu.getText().toString().equals(OnayKodu)) {
+					if(txtDogrulamaKodu.getText().toString().equals(DogrulamaKodu)) {
 						String FirebaseToken = FirebaseInstanceId.getInstance().getToken();
 						@SuppressLint("HardwareIds")
 						String OSID = Settings.Secure.getString(getContentResolver(), Settings.Secure.ANDROID_ID);
@@ -498,74 +618,54 @@ public class Dogrulama_Kodu extends AppCompatActivity implements Interface_Async
 
 						AkorDefterimSys.HesapBilgiGuncelle(sharedPref.getString("prefHesapID",""), FirebaseToken, OSID, OSVersiyon, "", "", "", "", "", "", TelKodu, CepTelefonu, UygulamaVersiyon, "HesapBilgiGuncelle");
 					} else {
-						btnKaydet.setEnabled(true);
+						btnGeri.setEnabled(true);
+						btnDogrula.setEnabled(true);
+						lblYenidenGonder.setEnabled(true);
 						AkorDefterimSys.StandartSnackBarMsj(coordinatorLayout, getString(R.string.girilen_onay_kodu_hata2));
 					}
 					break;
 			}
-		} else {
-			btnDogrula.setEnabled(true);
-			AkorDefterimSys.StandartSnackBarMsj(coordinatorLayout, getString(R.string.internet_baglantisi_saglanamadi));
-		}
+		} else AkorDefterimSys.StandartSnackBarMsj(coordinatorLayout, getString(R.string.internet_baglantisi_saglanamadi));
 	}
 
-	public void EPostaOnayKoduDialogSayac_Ayarla() {
-		EPostaOnayKoduDialogSayac = new TimerTask() {
+	public void DogrulamaKoduSayac_Ayarla() {
+		TTDogrulamaKoduSayac = new TimerTask() {
 			@Override
 			public void run() {
-				EPostaOnayKoduHandler.post(new Runnable() {
+				DogrulamaKoduHandler.post(new Runnable() {
 					public void run() {
-						if (EPostaGondermeKalanSure == 0) {
-							if (EPostaOnayKoduSayac != null) {
-								EPostaOnayKoduSayac.cancel();
-								EPostaOnayKoduSayac = null;
+						if (KalanSure == 0) {
+							if (TDogrulamaKoduSayac != null) {
+								TDogrulamaKoduSayac.cancel();
+								TDogrulamaKoduSayac = null;
 							}
 
 							sharedPrefEditor = sharedPref.edit();
-							sharedPrefEditor.remove("prefEPostaGondermeKalanSure");
-							sharedPrefEditor.apply();
 
-							lblOnayKoduKalanSure.setText(getString(R.string.kalan_sure, AkorDefterimSys.ZamanFormatMMSS(EPostaGondermeKalanSure)));
-							AkorDefterimSys.KlavyeKapat();
-						} else {
-							sharedPrefEditor = sharedPref.edit();
-							sharedPrefEditor.putInt("prefEPostaGondermeKalanSure", EPostaGondermeKalanSure);
-							sharedPrefEditor.apply();
-
-							lblOnayKoduKalanSure.setText(getString(R.string.kalan_sure, AkorDefterimSys.ZamanFormatMMSS(EPostaGondermeKalanSure)));
-							EPostaGondermeKalanSure--;
-						}
-					}
-				});
-			}
-		};
-	}
-
-	public void SMSOnayKoduDialogSayac_Ayarla() {
-		SMSOnayKoduDialogSayac = new TimerTask() {
-			@Override
-			public void run() {
-				SMSOnayKoduHandler.post(new Runnable() {
-					public void run() {
-						if (SMSGondermeKalanSure == 0) {
-							if (SMSOnayKoduSayac != null) {
-								SMSOnayKoduSayac.cancel();
-								SMSOnayKoduSayac = null;
+							switch (Islem) {
+								case "Kayit":
+									sharedPrefEditor.remove("prefEPostaGonderiTarihi");
+									break;
+								case "EPostaDegisikligi":
+									sharedPrefEditor.remove("prefEPostaGonderiTarihi");
+									break;
+								case "CepTelefonuDegisikligi":
+									sharedPrefEditor.remove("prefSMSGonderiTarihi");
+									break;
 							}
 
-							sharedPrefEditor = sharedPref.edit();
-							sharedPrefEditor.remove("prefSMSGondermeKalanSure");
 							sharedPrefEditor.apply();
 
-							lblOnayKoduKalanSure.setText(getString(R.string.kalan_sure, AkorDefterimSys.ZamanFormatMMSS(SMSGondermeKalanSure)));
+							lblKalanSure.setText(getString(R.string.kalan_sure, AkorDefterimSys.ZamanFormatMMSS(KalanSure)));
+							AkorDefterimSys.setTextViewHTML(lblKalanSure);
+							lblKalanSure.setVisibility(View.GONE);
 							AkorDefterimSys.KlavyeKapat();
-						} else {
-							sharedPrefEditor = sharedPref.edit();
-							sharedPrefEditor.putInt("prefSMSGondermeKalanSure", SMSGondermeKalanSure);
-							sharedPrefEditor.apply();
 
-							lblOnayKoduKalanSure.setText(getString(R.string.kalan_sure, AkorDefterimSys.ZamanFormatMMSS(SMSGondermeKalanSure)));
-							SMSGondermeKalanSure--;
+							AkorDefterimSys.StandartSnackBarMsj(coordinatorLayout, getString(R.string.sure_bitti_yeniden_basvuru_yapilabilir));
+						} else {
+							lblKalanSure.setText(getString(R.string.kalan_sure, AkorDefterimSys.ZamanFormatMMSS(KalanSure)));
+							AkorDefterimSys.setTextViewHTML(lblKalanSure);
+							KalanSure--;
 						}
 					}
 				});
@@ -575,11 +675,11 @@ public class Dogrulama_Kodu extends AppCompatActivity implements Interface_Async
 
 	@SuppressWarnings("unused")
 	@SuppressLint("InflateParams")
-	private BroadcastReceiver OnayKoduAlici = new BroadcastReceiver() {
+	private BroadcastReceiver DogrulamaKoduAlici = new BroadcastReceiver() {
 		@Override
 		public void onReceive(Context context, Intent intent) {
 			String Kimden = intent.getStringExtra("Kimden");
-			String OnayKodu = intent.getStringExtra("OnayKodu");
+			String DogrulamaKodu = intent.getStringExtra("DogrulamaKodu");
 
 			/*int SMSID = 0;
 			Cursor cursor = activity.getContentResolver().query(Uri.parse("content://sms/"), null, "address='"+ Kimden + "'", null, null);
@@ -588,7 +688,7 @@ public class Dogrulama_Kodu extends AppCompatActivity implements Interface_Async
 				SMSID = Integer.parseInt(cursor.getString(0));
 			}*/
 
-			txtOnayKodu.setText(OnayKodu);
+			txtDogrulamaKodu.setText(DogrulamaKodu);
 
 			//AkorDefterimSys.SmsSil(activity, SMSID);
 		}

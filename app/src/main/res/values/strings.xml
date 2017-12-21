@@ -48,10 +48,10 @@
     <string name="fotografi_degistir">Fotoğrafı Değiştir</string>
 
     <!-- SMS Gönderme İşlemi -->
-    <string name="sms_dosrulama_kodu_icerik">Merhaba. Doğrulama kodunuz: %1$s / %2$s Ekibi</string>
-    <string name="cep_telefon_degistir">Cep Telefonu Değiştir</string>
+    <string name="sms_dosrulama_kodu_icerik">Merhaba. Doğrulama kodunuz: %1$s / %2$s</string>
+    <string name="telefon_numarasi_degistir">Telefon Numarası Değiştir</string>
     <string name="sms_gonderildi">SMS Gönderildi</string>
-    <string name="sms_parola_gonderildi_icerik">Merhaba %1$s. İsteğin üzerine hesabına ait parolanı gönderdik. Parola: %2$s / %3$s Ekibi</string>
+    <string name="sms_parola_gonderildi_icerik">Merhaba %1$s. İsteğin üzerine hesabına ait parolanı gönderdik. Parola: %2$s / %3$s</string>
     <string name="sms_parola_gonderildi_mesaj">&lt;b&gt;%s&lt;/b&gt; cep telefonuna, hesabına ait parolayı içeren sms gönderdik.</string>
     <string name="sms_gonderilemedi_mesaj">&lt;b&gt;%s&lt;/b&gt; cep telefonuna sms gönderilemedi. Daha sonra yeniden deneyin.</string>
     <string name="sms_gonderilemedi">SMS Gönderilemedi</string>
@@ -336,7 +336,6 @@
     <string name="guncel_sifre">Güncel şifre</string>
     <string name="yeni_sifre">Yeni şifre</string>
     <string name="yeni_sifre_tekrar">Yeni şifre (Tekrar)</string>
-    <string name="onay_kodu">Onay Kodu</string>
     <string name="dogrulama_kodu">Doğrulama Kodu</string>
 
     <!-- Hata Mesajları -->
