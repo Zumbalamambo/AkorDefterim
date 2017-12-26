@@ -2,6 +2,7 @@ package com.cnbcyln.app.akordefterim;
 
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.graphics.Typeface;
@@ -21,20 +22,18 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
-import android.widget.Spinner;
 import android.widget.TextView;
 
-import com.cnbcyln.app.akordefterim.Adaptorler.AdpUlkeKodlari;
 import com.cnbcyln.app.akordefterim.Interface.Interface_AsyncResponse;
-import com.cnbcyln.app.akordefterim.Siniflar.SnfUlkeKodlari;
 import com.cnbcyln.app.akordefterim.util.AkorDefterimSys;
 import com.github.ybq.android.spinkit.SpinKitView;
+import com.hbb20.CountryCodePicker;
 
 import org.apache.commons.lang3.StringUtils;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.util.List;
+import java.util.Locale;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -46,10 +45,11 @@ public class Hesabina_Eris_Sms_Gonder extends AppCompatActivity implements Inter
     SharedPreferences sharedPref;
     SharedPreferences.Editor sharedPrefEditor;
 	Typeface YaziFontu;
-	AlertDialog ADDialog_HesapDurumu, ADDialog_SMS_Gonder;
-	Timer TSMSGondermeSayac;
-	TimerTask TTSMSGondermeSayac;
-	Handler SMSGondermeHandler = new Handler();
+	AlertDialog ADDialog;
+	ProgressDialog PDIslem;
+	Timer TDogrulamaKoduSayac;
+	TimerTask TTDogrulamaKoduSayac;
+	Handler DogrulamaKoduHandler = new Handler();
 	InputMethodManager imm;
 
 	CoordinatorLayout coordinatorLayout;
@@ -59,11 +59,9 @@ public class Hesabina_Eris_Sms_Gonder extends AppCompatActivity implements Inter
 	TextInputLayout txtILCepTelefon;
 	EditText txtCepTelefon;
 	TextView lblBaslik, lblSmsGonder, lblHesabiniBulSmsGonderAciklama;
-	Spinner spnUlkeKodlari;
+	CountryCodePicker CCPTelKodu;
 
-	int SMSGondermeKalanSure = 0;
-	String TelKodu = "", CepTelefon = "";
-	List<SnfUlkeKodlari> snfUlkeKodlari;
+	int KalanSure = 0;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -111,10 +109,9 @@ public class Hesabina_Eris_Sms_Gonder extends AppCompatActivity implements Inter
 		lblSmsGonder.setTypeface(YaziFontu, Typeface.BOLD);
 		lblSmsGonder.setText(lblSmsGonder.getText().toString().toUpperCase());
 
-		spnUlkeKodlari = findViewById(R.id.spnUlkeKodlari);
-		snfUlkeKodlari = AkorDefterimSys.UlkeKodlariniGetir();
-		AdpUlkeKodlari adpUlkeKodlari = new AdpUlkeKodlari(activity, snfUlkeKodlari);
-		spnUlkeKodlari.setAdapter(adpUlkeKodlari);
+		CCPTelKodu = findViewById(R.id.CCPTelKodu);
+		CCPTelKodu.setCountryPreference(Locale.getDefault().getCountry());
+		CCPTelKodu.setTypeFace(YaziFontu, Typeface.NORMAL);
 
 		txtILCepTelefon = findViewById(R.id.txtILCepTelefon);
 		txtILCepTelefon.setTypeface(YaziFontu);
@@ -157,28 +154,43 @@ public class Hesabina_Eris_Sms_Gonder extends AppCompatActivity implements Inter
 	protected void onStart() {
 		super.onStart();
 
-		if (TSMSGondermeSayac != null) {
-			TSMSGondermeSayac.cancel();
-			TSMSGondermeSayac = null;
-			TTSMSGondermeSayac.cancel();
-			TTSMSGondermeSayac = null;
+		if(AkorDefterimSys.InternetErisimKontrolu()) {
+			// prefSMSGonderiTarihi isimli prefkey var mı?
+			if(sharedPref.contains("prefSMSGonderiTarihi")) { // Varsa
+				if(!AkorDefterimSys.ProgressDialogisShowing(PDIslem)) { // Eğer progress dialog açık değilse
+					PDIslem = AkorDefterimSys.CustomProgressDialog(getString(R.string.islem_yapiliyor), false, AkorDefterimSys.ProgressBarTimeoutSuresi, "PDIslem_Timeout");
+					PDIslem.show();
+				}
+
+				AkorDefterimSys.TarihSaatGetir("TarihSaatOgren_GeriSayimaBasla");
+			}
+		} else {
+			if(!AkorDefterimSys.AlertDialogisShowing(ADDialog)) {
+				ADDialog = AkorDefterimSys.CustomAlertDialog(activity,
+						getString(R.string.hata),
+						getString(R.string.internet_baglantisi_saglanamadi),
+						activity.getString(R.string.tamam),
+						"ADDialog_Kapat_GeriGit");
+				ADDialog.getWindow().getAttributes().windowAnimations = R.style.DialogAnimation;
+				ADDialog.show();
+			}
 		}
-
-		TSMSGondermeSayac = new Timer();
-		TSMSGondermeSayac_Ayarla();
-
-		if(sharedPref.getInt("prefSMSGondermeKalanSure", 0) > 0) {
-			SMSGondermeKalanSure = sharedPref.getInt("prefSMSGondermeKalanSure", 0);
-			TSMSGondermeSayac.schedule(TTSMSGondermeSayac, 10, 1000);
-		} else
-			SMSGondermeKalanSure = AkorDefterimSys.SMSGondermeToplamSure;
 	}
 
 	@Override
 	public void onBackPressed() {
 		AkorDefterimSys.KlavyeKapat();
+		AkorDefterimSys.DismissAlertDialog(ADDialog);
 
 		super.onBackPressed();
+	}
+
+	@Override
+	protected void onDestroy() {
+		AkorDefterimSys.KlavyeKapat();
+		AkorDefterimSys.DismissAlertDialog(ADDialog);
+
+		super.onDestroy();
 	}
 
 	@Override
@@ -197,73 +209,148 @@ public class Hesabina_Eris_Sms_Gonder extends AppCompatActivity implements Inter
             JSONObject JSONSonuc = new JSONObject(sonuc);
 
             switch (JSONSonuc.getString("Islem")) {
+				case "TarihSaatOgren_GeriSayimaBasla":
+					AkorDefterimSys.DismissProgressDialog(PDIslem);
+
+					// Tarih bilgisi alındıysa sonuç true döner..
+					if(JSONSonuc.getBoolean("Sonuc")) {
+						KalanSure = AkorDefterimSys.SMSGondermeToplamSure - (int) AkorDefterimSys.IkiTarihArasiFark(JSONSonuc.getString("TarihSaat"), sharedPref.getString("prefSMSGonderiTarihi", ""),"Saniye");
+
+						if(KalanSure > 0 && KalanSure < AkorDefterimSys.SMSGondermeToplamSure) {
+							if (TDogrulamaKoduSayac != null) {
+								TDogrulamaKoduSayac.cancel();
+								TDogrulamaKoduSayac = null;
+								TTDogrulamaKoduSayac.cancel();
+								TTDogrulamaKoduSayac = null;
+							}
+
+							TDogrulamaKoduSayac = new Timer();
+							DogrulamaKoduSayac_Ayarla();
+
+							lblSmsGonder.setText(getString(R.string.sms_gonder2, AkorDefterimSys.ZamanFormatMMSS(KalanSure)));
+							AkorDefterimSys.setTextViewHTML(lblSmsGonder);
+
+							TDogrulamaKoduSayac.schedule(TTDogrulamaKoduSayac, 10, 1000);
+						} else {
+							KalanSure = 0;
+
+							sharedPrefEditor = sharedPref.edit();
+							sharedPrefEditor.remove("prefSMSGonderiTarihi");
+							sharedPrefEditor.apply();
+
+							lblSmsGonder.setText(getString(R.string.sms_gonder));
+						}
+					} else {
+						if(!AkorDefterimSys.AlertDialogisShowing(ADDialog)) {
+							ADDialog = AkorDefterimSys.CustomAlertDialog(activity,
+									getString(R.string.hata),
+									getString(R.string.islem_yapilirken_bir_hata_olustu),
+									activity.getString(R.string.tamam),
+									"ADDialog_Kapat_GeriGit");
+							ADDialog.getWindow().getAttributes().windowAnimations = R.style.DialogAnimation;
+							ADDialog.show();
+						}
+					}
+					break;
 				case "HesapBilgiGetir":
 					if(JSONSonuc.getBoolean("Sonuc")) {
                         if(JSONSonuc.getString("HesapDurum").equals("Ban")) { // Eğer hesap banlanmışsa
-							ADDialog_HesapDurumu = AkorDefterimSys.CustomAlertDialog(activity,
-									getString(R.string.hesap_durumu),
-									getString(R.string.hesap_banlandi, JSONSonuc.getString("HesapDurumBilgi"), getString(R.string.uygulama_yapimci_site)),
-									activity.getString(R.string.tamam),
-									"ADDialog_HesapDurumu_Kapat");
-							ADDialog_HesapDurumu.getWindow().getAttributes().windowAnimations = R.style.DialogAnimation;
-							ADDialog_HesapDurumu.show();
-
 							btnIleri.setEnabled(true);
 							SKVLoader.setVisibility(View.GONE);
+							AkorDefterimSys.DismissProgressDialog(PDIslem);
+
+							if(!AkorDefterimSys.AlertDialogisShowing(ADDialog)) {
+								ADDialog = AkorDefterimSys.CustomAlertDialog(activity,
+										getString(R.string.hesap_durumu),
+										getString(R.string.hesap_banlandi, JSONSonuc.getString("HesapDurumBilgi"), getString(R.string.uygulama_yapimci_site)),
+										activity.getString(R.string.tamam),
+										"ADDialog_Kapat_GeriGit");
+								ADDialog.getWindow().getAttributes().windowAnimations = R.style.DialogAnimation;
+								ADDialog.show();
+							}
                         } else {
-							if(SMSGondermeKalanSure > 0 && SMSGondermeKalanSure < AkorDefterimSys.SMSGondermeToplamSure) {
+							if(KalanSure > 0 && KalanSure < AkorDefterimSys.SMSGondermeToplamSure) {
 								AkorDefterimSys.StandartSnackBarMsj(coordinatorLayout, getString(R.string.sure_bitmeden_yeni_sms_telebinde_bulunamazsiniz));
 
 								btnIleri.setEnabled(true);
 								SKVLoader.setVisibility(View.GONE);
-							} else AkorDefterimSys.SMSGonder(TelKodu, CepTelefon, getString(R.string.sms_parola_gonderildi_icerik, JSONSonuc.getString("AdSoyad"), JSONSonuc.getString("Parola"), getString(R.string.uygulama_adi)));
+								AkorDefterimSys.DismissProgressDialog(PDIslem);
+							} else AkorDefterimSys.SMSGonder(CCPTelKodu.getSelectedCountryCode(), txtCepTelefon.getText().toString().trim(), getString(R.string.sms_parola_gonderildi_icerik, JSONSonuc.getString("AdSoyad"), JSONSonuc.getString("Parola"), getString(R.string.uygulama_adi)));
                         }
 					} else {
 						btnIleri.setEnabled(true);
 						SKVLoader.setVisibility(View.GONE);
+						AkorDefterimSys.DismissProgressDialog(PDIslem);
 
 						AkorDefterimSys.StandartSnackBarMsj(coordinatorLayout, getString(R.string.hesap_bilgileri_bulunamadi));
 					}
 
                     break;
-				case "ADDialog_HesapDurumu_Kapat":
-					AkorDefterimSys.DismissAlertDialog(ADDialog_HesapDurumu);
-					break;
 				case "SMSGonder":
-					btnIleri.setEnabled(true);
-					SKVLoader.setVisibility(View.GONE);
-
-					if(JSONSonuc.getBoolean("Sonuc")) {
-						ADDialog_SMS_Gonder = AkorDefterimSys.CustomAlertDialog(activity,
-								getString(R.string.sms_gonderildi),
-								getString(R.string.sms_parola_gonderildi_mesaj, AkorDefterimSys.CepTelefonSifrele(TelKodu, CepTelefon)),
-								activity.getString(R.string.tamam),
-								"ADDialog_SMS_Gonder_Kapat");
-						ADDialog_SMS_Gonder.getWindow().getAttributes().windowAnimations = R.style.DialogAnimation;
-						ADDialog_SMS_Gonder.show();
-
-						TSMSGondermeSayac = new Timer();
-						TSMSGondermeSayac_Ayarla();
-						SMSGondermeKalanSure = AkorDefterimSys.SMSGondermeToplamSure;
-
-						sharedPrefEditor = sharedPref.edit();
-						sharedPrefEditor.putInt("prefSMSGondermeKalanSure", SMSGondermeKalanSure);
-						sharedPrefEditor.apply();
-
-						TSMSGondermeSayac.schedule(TTSMSGondermeSayac, 10, 1000);
-					} else {
-						ADDialog_SMS_Gonder = AkorDefterimSys.CustomAlertDialog(activity,
-								getString(R.string.sms_gonderilemedi),
-								getString(R.string.sms_gonderilemedi_mesaj, AkorDefterimSys.CepTelefonSifrele(TelKodu, CepTelefon)),
-								activity.getString(R.string.tamam),
-								"ADDialog_SMS_Gonder_Kapat");
-						ADDialog_SMS_Gonder.getWindow().getAttributes().windowAnimations = R.style.DialogAnimation;
-						ADDialog_SMS_Gonder.show();
+					if(JSONSonuc.getBoolean("Sonuc")) AkorDefterimSys.TarihSaatGetir("TarihSaatGetir_DevamEt"); // Öncelikle sistem saatini öğreniyoruz. Daha sonra SMS gönderdikten sonra sistem tarihini kullanıcıya kaydediyoruz..
+					else {
+						if(!AkorDefterimSys.AlertDialogisShowing(ADDialog)) {
+							ADDialog = AkorDefterimSys.CustomAlertDialog(activity,
+									getString(R.string.sms_gonderilemedi),
+									getString(R.string.sms_parola_gonderildi_mesaj, AkorDefterimSys.CepTelefonSifrele(CCPTelKodu.getSelectedCountryCode(), txtCepTelefon.getText().toString().trim())),
+									activity.getString(R.string.tamam),
+									"ADDialog_Kapat");
+							ADDialog.getWindow().getAttributes().windowAnimations = R.style.DialogAnimation;
+							ADDialog.show();
+						}
 					}
 
 					break;
-				case "ADDialog_SMS_Gonder_Kapat":
-					AkorDefterimSys.DismissAlertDialog(ADDialog_SMS_Gonder);
+				case "TarihSaatGetir_DevamEt":
+					btnIleri.setEnabled(true);
+					SKVLoader.setVisibility(View.GONE);
+					AkorDefterimSys.DismissProgressDialog(PDIslem);
+
+					// Tarih bilgisi alındıysa sonuç true döner..
+					if(JSONSonuc.getBoolean("Sonuc")) {
+						sharedPrefEditor = sharedPref.edit();
+						sharedPrefEditor.putString("prefSMSGonderiTarihi", JSONSonuc.getString("TarihSaat"));
+						sharedPrefEditor.apply();
+
+						if(!AkorDefterimSys.AlertDialogisShowing(ADDialog)) {
+							ADDialog = AkorDefterimSys.CustomAlertDialog(activity,
+									getString(R.string.sms_gonderildi),
+									getString(R.string.sms_parola_gonderildi_mesaj, AkorDefterimSys.CepTelefonSifrele(CCPTelKodu.getSelectedCountryCode(), txtCepTelefon.getText().toString().trim())),
+									activity.getString(R.string.tamam),
+									"ADDialog_Kapat");
+							ADDialog.getWindow().getAttributes().windowAnimations = R.style.DialogAnimation;
+							ADDialog.show();
+						}
+
+						if (TDogrulamaKoduSayac != null) {
+							TDogrulamaKoduSayac.cancel();
+							TDogrulamaKoduSayac = null;
+							TTDogrulamaKoduSayac.cancel();
+							TTDogrulamaKoduSayac = null;
+						}
+
+						TDogrulamaKoduSayac = new Timer();
+						DogrulamaKoduSayac_Ayarla();
+						KalanSure = AkorDefterimSys.SMSGondermeToplamSure;
+
+						lblSmsGonder.setText(getString(R.string.sms_gonder2, AkorDefterimSys.ZamanFormatMMSS(KalanSure)));
+						AkorDefterimSys.setTextViewHTML(lblSmsGonder);
+
+						TDogrulamaKoduSayac.schedule(TTDogrulamaKoduSayac, 10, 1000);
+					} else AkorDefterimSys.StandartSnackBarMsj(coordinatorLayout, getString(R.string.islem_yapilirken_bir_hata_olustu));
+					break;
+				case "ADDialog_Kapat":
+					AkorDefterimSys.DismissAlertDialog(ADDialog);
+					break;
+				case "ADDialog_Kapat_GeriGit":
+					AkorDefterimSys.DismissAlertDialog(ADDialog);
+
+					finish();
+					break;
+				case "PDIslem_Timeout":
+					AkorDefterimSys.DismissProgressDialog(PDIslem);
+
+					finish();
 					break;
             }
         } catch (JSONException e) {
@@ -272,15 +359,11 @@ public class Hesabina_Eris_Sms_Gonder extends AppCompatActivity implements Inter
     }
 
     private void IleriIslem() {
+		AkorDefterimSys.KlavyeKapat();
+
 		if(AkorDefterimSys.InternetErisimKontrolu()) {
-			btnIleri.setEnabled(false);
-			SKVLoader.setVisibility(View.VISIBLE);
-			AkorDefterimSys.KlavyeKapat();
-
 			txtCepTelefon.setText(txtCepTelefon.getText().toString().trim());
-			CepTelefon = txtCepTelefon.getText().toString();
-
-			TelKodu = snfUlkeKodlari.get(spnUlkeKodlari.getSelectedItemPosition()).getUlkeKodu();
+			String CepTelefon = txtCepTelefon.getText().toString();
 
 			if(TextUtils.isEmpty(CepTelefon)) {
 				txtILCepTelefon.setError(getString(R.string.hata_bos_alan));
@@ -305,46 +388,43 @@ public class Hesabina_Eris_Sms_Gonder extends AppCompatActivity implements Inter
 			} else txtILCepTelefon.setError(null);
 
 			if(txtILCepTelefon.getError() == null) {
+				btnIleri.setEnabled(false);
+				SKVLoader.setVisibility(View.VISIBLE);
 				AkorDefterimSys.UnFocusEditText(txtCepTelefon);
 
-				AkorDefterimSys.HesapBilgiGetir(null, "", TelKodu, CepTelefon, "HesapBilgiGetir");
-			} else {
-				btnIleri.setEnabled(true);
-				SKVLoader.setVisibility(View.GONE);
+				if(!AkorDefterimSys.ProgressDialogisShowing(PDIslem)) { // Eğer progress dialog açık değilse
+					PDIslem = AkorDefterimSys.CustomProgressDialog(getString(R.string.islem_yapiliyor), false, AkorDefterimSys.ProgressBarTimeoutSuresi, "PDIslem_Timeout");
+					PDIslem.show();
+				}
+
+				AkorDefterimSys.HesapBilgiGetir(null, "", CCPTelKodu.getSelectedCountryCode(), CepTelefon, "HesapBilgiGetir");
 			}
-		} else {
-			btnIleri.setEnabled(true);
-			SKVLoader.setVisibility(View.GONE);
-			AkorDefterimSys.StandartSnackBarMsj(coordinatorLayout, getString(R.string.internet_baglantisi_saglanamadi));
-		}
+		} else AkorDefterimSys.StandartSnackBarMsj(coordinatorLayout, getString(R.string.internet_baglantisi_saglanamadi));
 	}
 
-	public void TSMSGondermeSayac_Ayarla() {
-		TTSMSGondermeSayac = new TimerTask() {
+	public void DogrulamaKoduSayac_Ayarla() {
+		TTDogrulamaKoduSayac = new TimerTask() {
 			@Override
 			public void run() {
-				SMSGondermeHandler.post(new Runnable() {
+				DogrulamaKoduHandler.post(new Runnable() {
 					public void run() {
-						if (SMSGondermeKalanSure == 0) {
-							if (TSMSGondermeSayac != null) {
-								TSMSGondermeSayac.cancel();
-								TSMSGondermeSayac = null;
-								TTSMSGondermeSayac.cancel();
-								TTSMSGondermeSayac = null;
+						if (KalanSure == 0) {
+							if (TDogrulamaKoduSayac != null) {
+								TDogrulamaKoduSayac.cancel();
+								TDogrulamaKoduSayac = null;
+								TTDogrulamaKoduSayac.cancel();
+								TTDogrulamaKoduSayac = null;
 							}
 
 							sharedPrefEditor = sharedPref.edit();
-							sharedPrefEditor.remove("prefSMSGondermeKalanSure");
+							sharedPrefEditor.remove("prefSMSGonderiTarihi");
 							sharedPrefEditor.apply();
 
-							lblSmsGonder.setText(getString(R.string.telefon_numarasi));
+							lblSmsGonder.setText(getString(R.string.sms_gonder));
 						} else {
-							sharedPrefEditor = sharedPref.edit();
-							sharedPrefEditor.putInt("prefSMSGondermeKalanSure", SMSGondermeKalanSure);
-							sharedPrefEditor.apply();
-
-							lblSmsGonder.setText(getString(R.string.telefon_numarasi2, AkorDefterimSys.ZamanFormatMMSS(SMSGondermeKalanSure)));
-							SMSGondermeKalanSure--;
+							lblSmsGonder.setText(getString(R.string.sms_gonder2, AkorDefterimSys.ZamanFormatMMSS(KalanSure)));
+							AkorDefterimSys.setTextViewHTML(lblSmsGonder);
+							KalanSure--;
 						}
 					}
 				});

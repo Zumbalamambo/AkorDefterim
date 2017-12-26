@@ -21,6 +21,7 @@ import android.view.KeyEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.inputmethod.EditorInfo;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
@@ -42,6 +43,7 @@ public class KayitEkran_EPosta extends AppCompatActivity implements Interface_As
     Random rnd;
 	ProgressDialog PDEPosta;
 	AlertDialog ADDialog_EPosta;
+	InputMethodManager imm;
 
 	CoordinatorLayout coordinatorLayout;
 	ImageButton btnGeri;
@@ -63,6 +65,8 @@ public class KayitEkran_EPosta extends AppCompatActivity implements Interface_As
         rnd = new Random();
 
 		sharedPref = activity.getSharedPreferences(AkorDefterimSys.PrefAdi, Context.MODE_PRIVATE);
+
+		imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE); // İstenildiği zaman klavyeyi gizlemeye yarayan kod tanımlayıcısı
 
 		AkorDefterimSys.GenelAyarlar(); // Uygulama için genel ayarları uyguladık.
 		//AkorDefterimSys.TransparanNotifyBar(); // Notification Bar'ı transparan yapıyoruz.
@@ -228,12 +232,21 @@ public class KayitEkran_EPosta extends AppCompatActivity implements Interface_As
 		txtEPosta.setText(txtEPosta.getText().toString().trim());
 		String EPosta = txtEPosta.getText().toString();
 
-		if(TextUtils.isEmpty(EPosta))
+		if(TextUtils.isEmpty(EPosta)) {
 			txtILEPosta.setError(getString(R.string.hata_bos_alan));
-		else if(!AkorDefterimSys.isValid(EPosta, "EPosta"))
+			txtEPosta.requestFocus();
+			txtEPosta.setSelection(txtEPosta.length());
+			imm.showSoftInput(txtEPosta, 0);
+		} else if(!AkorDefterimSys.isValid(EPosta, "EPosta")) {
 			txtILEPosta.setError(getString(R.string.hata_format_eposta));
-		else if(AkorDefterimSys.isValid(EPosta, "FakeEPosta")) {
+			txtEPosta.requestFocus();
+			txtEPosta.setSelection(txtEPosta.length());
+			imm.showSoftInput(txtEPosta, 0);
+		} else if(AkorDefterimSys.isValid(EPosta, "FakeEPosta")) {
 			txtILEPosta.setError(getString(R.string.hata_format_eposta));
+			txtEPosta.requestFocus();
+			txtEPosta.setSelection(txtEPosta.length());
+			imm.showSoftInput(txtEPosta, 0);
 		} else txtILEPosta.setError(null);
 
 		if(txtILEPosta.getError() == null) {

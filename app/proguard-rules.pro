@@ -30,42 +30,66 @@
 -dontwarn com.squareup.okhttp.*
 -dontwarn okio.**
 -dontwarn com.github.**
+-dontwarn com.nostra13.**
+-dontwarn com.hbb20.**
 
--keep public class org.jsoup.** {
-public *;
+-ignorewarnings
+
+-keep class * {
+    public private *;
 }
 
--keep public class org.apache.** {
-public *;
-}
+#-keep public class org.jsoup.** {
+#public *;
+#}
 
--keep public class com.theartofdev.** {
-public *;
-}
+#-keep public class org.apache.** {
+#public *;
+#}
 
--keep public class org.eclipse.** {
-public *;
-}
+#-keep public class com.theartofdev.** {
+#public *;
+#}
 
--keep public class com.github.clans.** {
-public *;
-}
+#-keep public class org.eclipse.** {
+#public *;
+#}
 
--keep public class com.jpardogo.** {
-public *;
-}
+#-keep public class com.github.clans.** {
+#public *;
+#}
 
--keep public class com.squareup.** {
-public *;
-}
+#-keep public class com.jpardogo.** {
+#public *;
+#}
 
--keep public class com.github.iammehedi.** {
-public *;
-}
+#-keep public class com.squareup.** {
+#public *;
+#}
 
--keep public class com.github.ybq.** {
-public *;
-}
+#-keep public class com.github.iammehedi.** {
+#public *;
+#}
+
+#-keep public class com.github.ybq.** {
+#public *;
+#}
+
+#-keep public class com.github.iammehedi.** {
+#public *;
+#}
+
+#-keep public class com.github.bumptech.** {
+#public *;
+#}
+
+#-keep public class com.nostra13.** {
+#public *;
+#}
+
+#-keep public class com.hbb20.** {
+#public *;
+#}
 
 # Platform calls Class.forName on types which do not exist on Android to determine platform.
 -dontnote retrofit2.Platform

@@ -7,6 +7,8 @@ import com.cnbcyln.app.akordefterim.util.AkorDefterimSys;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
+import java.io.File;
+
 import okhttp3.OkHttpClient;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
@@ -21,7 +23,7 @@ public class RetrofitServiceGenerator {
     public static <S> S createService(Activity activity, Class<S> serviceClass) {
         AkorDefterimSys = new AkorDefterimSys(activity);
         Gson gson = new GsonBuilder().setLenient().create();
-        RB = new Retrofit.Builder().baseUrl(AkorDefterimSys.CBCAPP_HttpsAdres + "/akordefterim/").addConverterFactory(GsonConverterFactory.create(gson));
+        RB = new Retrofit.Builder().baseUrl(AkorDefterimSys.CBCAPP_HttpsAdres + File.separator + AkorDefterimSys.AkorDefterimKlasorAdi + File.separator).addConverterFactory(GsonConverterFactory.create(gson));
         RB.client(HttpClient.build());
         retrofit = RB.build();
         return retrofit.create(serviceClass);

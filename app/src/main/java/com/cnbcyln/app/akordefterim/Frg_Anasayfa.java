@@ -74,9 +74,9 @@ public class Frg_Anasayfa extends Fragment implements SwipeRefreshLayout.OnRefre
 		
 		YaziFontu = AkorDefterimSys.FontGetir(activity, "anivers_regular");
 
-		coordinatorLayout = (CoordinatorLayout) activity.findViewById(R.id.coordinatorLayout);
+		coordinatorLayout = activity.findViewById(R.id.coordinatorLayout);
 
-        SRLAnasayfa = (SwipeRefreshLayout) activity.findViewById(R.id.SRLAnasayfa);
+        SRLAnasayfa = activity.findViewById(R.id.SRLAnasayfa);
         SRLAnasayfa.setOnRefreshListener(this);
         SRLAnasayfa.post(new Runnable() {
 			@Override
@@ -87,7 +87,7 @@ public class Frg_Anasayfa extends Fragment implements SwipeRefreshLayout.OnRefre
 
 		RecyclerView.LayoutManager mGridLayoutManager = new GridLayoutManager(activity, 2);
 
-		RVAnasayfa = (RecyclerView) activity.findViewById(R.id.RVAnasayfa);
+		RVAnasayfa = activity.findViewById(R.id.RVAnasayfa);
 		RVAnasayfa.setLayoutManager(mGridLayoutManager);
 		RVAnasayfa.addItemDecoration(new GridSpacingItemDecoration(2, AkorDefterimSys.dpToPx(10), true));
 	}

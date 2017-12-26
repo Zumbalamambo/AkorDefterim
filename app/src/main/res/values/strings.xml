@@ -46,6 +46,7 @@
     <string name="orta">Orta</string>
     <string name="yuksek">Yüksek</string>
     <string name="fotografi_degistir">Fotoğrafı Değiştir</string>
+    <string name="bir_profil_fotografi_belirle">Bir Profil Fotoğrafı Belirle</string>
 
     <!-- SMS Gönderme İşlemi -->
     <string name="sms_dosrulama_kodu_icerik">Merhaba. Doğrulama kodunuz: %1$s / %2$s</string>
@@ -179,6 +180,7 @@
     <string name="uygulama_izni_sms_alma_hata">İşlemi tamamlayabilmek için uygulamaya SMS iletileri gönderme ve görüntüleme izni vermelisiniz.</string>
     <string name="uygulama_izni_dosya_yazma_hata">İşlemi tamamlayabilmek için uygulamaya cihazınızdaki fotoğraflara, medyaya ve dosyalara erişme izni vermelisiniz.</string>
     <string name="uygulama_izni_konum_hata">İşlemi tamamlayabilmek için uygulamaya cihazın konumuna erişme izni vermelisiniz.</string>
+    <string name="uygulama_izni_kamera_hata">İşlemi tamamlayabilmek için uygulamaya cihazın kamerasına erişme izni vermelisiniz.</string>
     <string name="resim_guncelleme_icerik">Sosyal ağ hesabınızdaki profil resminin &lt;b&gt;%s&lt;/b&gt; hesabınıza eklenmesiniz ister misiniz?</string>
     <string name="profil_resmi_secmemissin_devam_etmek_istiyormusun">Profil resmi seçmemişsin. Yine de devam etmek istiyor musun?</string>
 
@@ -233,6 +235,22 @@
     <string name="crop_image_menu_rotate_right">Döndür</string>
     <string name="pick_image_intent_chooser_title">Görüntü Seç</string>
     <string name="crop_image_menu_crop">Kırp</string>
+
+    <!-- Material Camera Değişkenleri -->
+    <string name="mcam_error">Hata</string>
+    <string name="mcam_file_size_limit_reached">Maximum dosya limitine ulaştınız!</string>
+    <string name="mcam_image_preview_error_message">Bitmap çözülemiyor!</string>
+    <string name="mcam_image_preview_error_title">Resim önizleme hatası!</string>
+    <string name="mcam_no_audio_access">Mikrofon erişimine izin vermediğiniz için ses kaydı yapılmayacak.</string>
+    <string name="mcam_permissions_needed">Gerekli İzinler</string>
+    <string name="mcam_portrait">Portre</string>
+    <string name="mcam_portrait_warning">It\'s recommended that you record in landscape. Record in portrait?</string>
+    <string name="mcam_retry">Yeniden Dene</string>
+    <string name="mcam_use_stillshot">USE STILLSHOT</string>
+    <string name="mcam_use_video">Kullan</string>
+    <string name="mcam_video_capture_unsupported">Cihazınız video çekimini desteklemiyor!</string>
+    <string name="mcam_video_perm_warning">Cihazınızda mikrofon ve kamera izni verilmedi. Gerekli izinleri verin.</string>
+    <string name="mcam_yes">Evet</string>
 
     <!-- Radio Button'lar -->
     <string name="sonu_xx_ile_biten_telefon">&lt;b&gt;%s&lt;/b&gt; ile biten telefonuma onay kodu gönder</string>
@@ -307,10 +325,13 @@
     <string name="kayit_ekran_aciklama">Nasıl başlayalım?</string>
     <string name="veya">veya</string>
     <string name="eposta_adresini_kimseye_gormeyecek">Merak etme. E-Posta adresin kimseye gösterilmeyecek. ;)</string>
-    <string name="kalan_sure">Kalan süre: %s</string>
+    <string name="kalan_sure">Kalan süre: &lt;b&gt;%s&lt;/b&gt;</string>
     <string name="parolani_belirle">Parolanı belirle</string>
     <string name="parola">Parola</string>
     <string name="parola_tekrar">Parola Tekrar</string>
+    <string name="mevcut_parola">Mevcut Parola</string>
+    <string name="yeni_parola">Yeni Parola</string>
+    <string name="yeni_parola_tekrar">Yeni Parola (Tekrar)</string>
     <string name="parola_guvenligi">Parola güvenliği: &lt;b&gt;%s&lt;/b&gt;</string>
     <string name="parola_ekran_aciklama">Parolan en az &lt;b&gt;%1$s&lt;/b&gt;, en fazla &lt;b&gt;%2$s&lt;/b&gt; karakter olmalı. Güvenli bir parola için harf, sembol ve rakamı bir arada kullanabilirsin.</string>
     <string name="profilini_olustur">Profilini oluştur</string>
@@ -323,6 +344,8 @@
     <string name="interneti_yoksa">internetin yoksa</string>
     <string name="belirtilmemis">Belirtilmemiş</string>
     <string name="onaylanmamis">Onaylanmamış</string>
+    <string name="ulke_adi">Ülke Adı</string>
+    <string name="ulkeni_sec">Ülkeni Seç</string>
 
     <!-- EditText Hint'ler -->
     <string name="sanatci_adina_gore_ara">Ara (Sanatçı adına göre)</string>
@@ -409,8 +432,9 @@
     <string name="yeni_onay_kodu_talebi_hata">Süre bitmeden yeni doğrulama kodu talebinde bulunamazsın.</string>
     <string name="yeni_basvuru_kalan_sure">Bir sonraki başvuru için kalan süre: &lt;b&gt;%s&lt;/b&gt;</string>
     <string name="sifre_sifirlama_yontemi_secin">Lütfen bir şifre sıfırlama yöntemi seç.</string>
-    <string name="google_play_servis_hata1">Cihazınızda Google Play Servisi bulunamadı. Lütfen gerekli yüklemeleri yapın.</string>
+    <string name="google_play_servis_hata">Cihazınızda &lt;b&gt;Google Play Hizmetleri&lt;/b&gt; bulunamadı ya da güncel değil. &lt;b&gt;Tamam&lt;/b&gt;\'a bastığınızda uygulama sizi otomatik olarak &lt;b&gt;Google Market - Google Play Hizmetleri&lt;/b&gt; ekranına yönlendirecektir. Lütfen gerekli yüklemeleri yapın..</string>
     <string name="profil_resmi_guncellendi">Profil resmi güncellendi.</string>
+    <string name="profil_resmi_guncellenemedi">Profil resmi güncellenemedi.</string>
     <string name="mail_gonderim_hatasi">Mail gönderim hatası. Daha sonra yeniden deneyin..</string>
 
     <string name="yerel_repertuvar_guncellendi">Yerel repertuvar güncellendi.</string>
@@ -488,9 +512,12 @@
         <item>girisyap_Giriş Yap</item>
     </string-array>-->
 
-    <string-array name="ResimDuzenleContextMenu">
-        <item>Galeriden Seç</item>
-        <item>Fotoğraf Çek</item>
+    <string-array name="ProfilFotografiBelirleContextMenu">
+        <item>fotografyukle_Fotoğraf Yükle</item>
+        <item>fotografcek_Fotoğraf Çek</item>
+        <item>facebooktanaktar_Facebook\'tan Aktar</item>
+        <item>googledanaktar_Google\'dan Aktar</item>
+        <item>fotografikaldir_Fotoğrafı Kaldır</item>
     </string-array>
 
     <string-array name="SarkiPaylasContextMenu">
@@ -510,7 +537,7 @@
     <string name="ekran_isigi_ayarlari">Ekran Işığı Ayarları</string>
     <string name="aydinlik">Aydınlık</string>
     <string name="istek_ayarlari_baslik">İstek Ayarları</string>
-    <string name="istek_ayarlari_aciklama" tools:ignore="Typos">Bu ayarlar <b>%1$s</b> web uygulaması ile bağlantılıdır. Burada yapacağınız tüm değişiklikler <b>%2$s</b> web uygulamasında geçerli olacaktır.</string>
+    <string name="istek_ayarlari_aciklama" tools:ignore="Typos">Bu ayarlar &lt;b&gt;%1$s&lt;/b&gt; web uygulaması ile bağlantılıdır. Burada yapacağınız tüm değişiklikler &lt;b&gt;%2$s&lt;/b&gt; web uygulamasında geçerli olacaktır.</string>
     <string name="istek_ayarlari_konum_bilgisi">Konum Bilgisi</string>
     <string name="istek_ayarlari_konum_bilgisi_aciklama">İnsanlara sizin nerede olduğunuzu gösterir.</string>
     <string name="istek_ayarlari_canli_istek">Canlı İstek</string>
@@ -532,7 +559,7 @@
     <string name="diger_islemler">Diğer İşlemler</string>
     <string name="siparis_gecmisi">Sipariş Geçmişi</string>
     <string name="telefon_numarasi">Telefon numarası</string>
-    <string name="telefon_numarasi2">Telefon numarası - %s</string>
+    <string name="telefon_numarasi2">Telefon numarası - &lt;b&gt;%s&lt;/b&gt;</string>
     <string name="guvenlik">Güvenlik</string>
     <string name="gizlilik">Gizlilik</string>
     <string name="parolani_degistir">Parolanı Değiştir</string>

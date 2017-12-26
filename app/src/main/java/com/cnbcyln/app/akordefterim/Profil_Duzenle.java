@@ -24,7 +24,10 @@ import android.text.Editable;
 import android.text.InputType;
 import android.text.TextUtils;
 import android.text.TextWatcher;
+import android.util.Log;
+import android.view.ContextMenu;
 import android.view.KeyEvent;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.inputmethod.EditorInfo;
@@ -39,6 +42,19 @@ import com.cnbcyln.app.akordefterim.Interface.Interface_AsyncResponse;
 import com.cnbcyln.app.akordefterim.util.AkorDefterimSys;
 import com.cnbcyln.app.akordefterim.util.AndroidMultiPartEntity;
 import com.cnbcyln.app.akordefterim.util.CircleImageView;
+import com.facebook.CallbackManager;
+import com.facebook.FacebookCallback;
+import com.facebook.FacebookException;
+import com.facebook.FacebookSdk;
+import com.facebook.GraphRequest;
+import com.facebook.GraphResponse;
+import com.facebook.login.LoginManager;
+import com.facebook.login.LoginResult;
+import com.google.android.gms.auth.api.Auth;
+import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
+import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
+import com.google.android.gms.auth.api.signin.GoogleSignInResult;
+import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.firebase.iid.FirebaseInstanceId;
 import com.theartofdev.edmodo.cropper.CropImage;
 
@@ -59,6 +75,7 @@ import java.io.IOException;
 import java.net.MalformedURLException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.Locale;
 
@@ -67,11 +84,13 @@ public class Profil_Duzenle extends AppCompatActivity implements Interface_Async
 
 	private Activity activity;
 	private AkorDefterimSys AkorDefterimSys;
+	CallbackManager mFacebookCallbackManager;
+	private GoogleApiClient mGoogleLoginApiClient;
 	SharedPreferences sharedPref;
 	SharedPreferences.Editor sharedPrefEditor;
 	Typeface YaziFontu;
-	AlertDialog ADDialog_HesapDurumu, ADDialog_Hata, ADDialog_HesapGuncelleme;
-	ProgressDialog PDBilgilerAliniyor, PDFotografYuklemeIslem, PDBilgilerGuncelleniyor;
+	AlertDialog ADDialog;
+	ProgressDialog PDBilgilerAliniyor, PDBilgilerGuncelleniyor;
 	InputMethodManager imm;
 	File SecilenProfilResmiFile;
 
@@ -85,16 +104,22 @@ public class Profil_Duzenle extends AppCompatActivity implements Interface_Async
 	CircleImageView CImgProfilResim;
 	LinearLayout LLEPostaAdresi, LLTelefonNumarasi;
 
-	String KayitliKullaniciAdi = "";
+	String FirebaseToken = "", OSID = "", OSVersiyon = "", UygulamaVersiyon = "", KayitliKullaniciAdi = "", FacebookID = "", GoogleID = "";
 	int ProfilResimYuklemeBoyutu = 0, KullaniciAdiKarakterSayisiMIN = 0, KullaniciAdiKarakterSayisiMAX = 0, KullaniciAdiBastakiHarfKarakterSayisi = 0;
 	Boolean DogumTarihAlaninaGirildiMi = false;
 	Boolean IlkYuklemeYapildiMi = false;
 	private static final int DOSYAOKUMAYAZMA_IZIN = 1;
-	private static final int RESIMSEC = 2;
+	private static final int KAMERA_IZIN = 2;
+	private static final int RESIMSEC = 3;
+	private static final int FOTOGRAFCEK = 4;
+	private static final int GoogleBilgiAlma = 5;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+		FacebookSdk.sdkInitialize(getApplicationContext());
+		mFacebookCallbackManager = CallbackManager.Factory.create();
+
 		setContentView(R.layout.activity_profil_duzenle);
 
 		activity = this;
@@ -140,10 +165,12 @@ public class Profil_Duzenle extends AppCompatActivity implements Interface_Async
 		lblFotografiDegistir = findViewById(R.id.lblFotografiDegistir);
 		lblFotografiDegistir.setTypeface(YaziFontu, Typeface.BOLD);
 		lblFotografiDegistir.setOnClickListener(this);
+		registerForContextMenu(lblFotografiDegistir);
 
 		lblFotografiDegistir2 = findViewById(R.id.lblFotografiDegistir2);
 		lblFotografiDegistir2.setTypeface(YaziFontu, Typeface.BOLD);
 		lblFotografiDegistir2.setOnClickListener(this);
+		registerForContextMenu(lblFotografiDegistir2);
 
 		lblGenelBilgiler = findViewById(R.id.lblGenelBilgiler);
 		lblGenelBilgiler.setTypeface(YaziFontu, Typeface.BOLD);
@@ -264,6 +291,7 @@ public class Profil_Duzenle extends AppCompatActivity implements Interface_Async
 		lblTelefonNumarasi2.setTypeface(YaziFontu, Typeface.BOLD);
 	}
 
+	@SuppressLint("HardwareIds")
 	@Override
 	protected void onStart() {
 		super.onStart();
@@ -276,6 +304,16 @@ public class Profil_Duzenle extends AppCompatActivity implements Interface_Async
 			IlkYuklemeYapildiMi = false;
 		}
 
+		FirebaseToken = FirebaseInstanceId.getInstance().getToken();
+		OSID = Settings.Secure.getString(getContentResolver(), Settings.Secure.ANDROID_ID);
+		OSVersiyon = AkorDefterimSys.AndroidSurumBilgisi(Build.VERSION.SDK_INT);
+
+		try {
+			UygulamaVersiyon = activity.getPackageManager().getPackageInfo(activity.getPackageName(), 0).versionName;
+		} catch (PackageManager.NameNotFoundException e) {
+			e.printStackTrace();
+		}
+
 		if(!IlkYuklemeYapildiMi) {
 			if(AkorDefterimSys.GirisYapildiMi()) {
 				if(!AkorDefterimSys.ProgressDialogisShowing(PDBilgilerAliniyor)) {
@@ -286,6 +324,9 @@ public class Profil_Duzenle extends AppCompatActivity implements Interface_Async
 				AkorDefterimSys.HesapBilgiGetir(null, sharedPref.getString("prefHesapID",""), "", "", "HesapBilgiGetir");
 			} else AkorDefterimSys.CikisYap();
 		}
+
+		FacebookLoginInit();
+		GoogleAPIInit();
 	}
 
 	@Override
@@ -293,6 +334,83 @@ public class Profil_Duzenle extends AppCompatActivity implements Interface_Async
 		AkorDefterimSys.KlavyeKapat();
 
 		super.onBackPressed();
+	}
+
+	@Override
+	public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
+		super.onCreateContextMenu(menu, v, menuInfo);
+
+		menu.setHeaderTitle(getString(R.string.bir_profil_fotografi_belirle));
+
+		String[] ResimDuzenleContextMenu = getResources().getStringArray(R.array.ProfilFotografiBelirleContextMenu);
+
+		for (String aResimDuzenleContextMenu : ResimDuzenleContextMenu) {
+			switch (aResimDuzenleContextMenu.subSequence(0, aResimDuzenleContextMenu.indexOf("_")).toString()) {
+				case "fotografyukle":
+					menu.add(0, 0, 0, aResimDuzenleContextMenu.subSequence(aResimDuzenleContextMenu.indexOf("_") + 1, aResimDuzenleContextMenu.length()));
+					break;
+				case "fotografcek":
+					menu.add(0, 1, 0, aResimDuzenleContextMenu.subSequence(aResimDuzenleContextMenu.indexOf("_") + 1, aResimDuzenleContextMenu.length()));
+					break;
+				case "facebooktanaktar":
+					if(!FacebookID.equals("")) menu.add(0, 2, 0, aResimDuzenleContextMenu.subSequence(aResimDuzenleContextMenu.indexOf("_") + 1, aResimDuzenleContextMenu.length()));
+					break;
+				case "googledanaktar":
+					if(!GoogleID.equals("")) menu.add(0, 3, 0, aResimDuzenleContextMenu.subSequence(aResimDuzenleContextMenu.indexOf("_") + 1, aResimDuzenleContextMenu.length()));
+					break;
+				case "fotografikaldir":
+					menu.add(0, 4, 0, aResimDuzenleContextMenu.subSequence(aResimDuzenleContextMenu.indexOf("_") + 1, aResimDuzenleContextMenu.length()));
+					break;
+			}
+		}
+	}
+
+	@Override
+	public boolean onContextItemSelected(MenuItem item) {
+		switch (item.getItemId()) {
+			case 0:
+				if(AkorDefterimSys.InternetErisimKontrolu()) {
+					AkorDefterimSys.IntentGetir(new String[]{"GaleridenResimGetir", String.valueOf(DOSYAOKUMAYAZMA_IZIN), String.valueOf(RESIMSEC)});
+				} else AkorDefterimSys.StandartSnackBarMsj(coordinatorLayout, getString(R.string.internet_baglantisi_saglanamadi));
+
+				break;
+			case 1:
+				if(AkorDefterimSys.InternetErisimKontrolu()) {
+					AkorDefterimSys.IntentGetir(new String[]{"FotografCek", String.valueOf(KAMERA_IZIN), String.valueOf(FOTOGRAFCEK)});
+				} else AkorDefterimSys.StandartSnackBarMsj(coordinatorLayout, getString(R.string.internet_baglantisi_saglanamadi));
+
+				break;
+			case 2:
+				LoginManager.getInstance().logInWithReadPermissions(activity, Arrays.asList("public_profile", "email"));
+
+				break;
+			case 3:
+				if (mGoogleLoginApiClient != null) {
+					mGoogleLoginApiClient.connect();
+
+					Intent signInIntent = Auth.GoogleSignInApi.getSignInIntent(mGoogleLoginApiClient);
+					startActivityForResult(signInIntent, GoogleBilgiAlma);
+				} else {
+					GoogleAPIInit();
+
+					Intent signInIntent = Auth.GoogleSignInApi.getSignInIntent(mGoogleLoginApiClient);
+					startActivityForResult(signInIntent, GoogleBilgiAlma);
+				}
+
+				break;
+			case 4:
+				if(!AkorDefterimSys.ProgressDialogisShowing(PDBilgilerGuncelleniyor)) {
+					PDBilgilerGuncelleniyor = AkorDefterimSys.CustomProgressDialog(getString(R.string.bilgileriniz_guncelleniyor), false, AkorDefterimSys.ProgressBarTimeoutSuresi, "PDBilgilerGuncelleniyor_Timeout");
+					PDBilgilerGuncelleniyor.show();
+				}
+
+				AkorDefterimSys.HesapBilgiGuncelle(sharedPref.getString("prefHesapID",""), FirebaseToken, OSID, OSVersiyon, "", "", "-","", "", "", "", "", "", UygulamaVersiyon, "HesapBilgiGuncelle_Profil_Resim2");
+				break;
+			default:
+				return false;
+		}
+
+		return true;
 	}
 
 	@SuppressLint("SimpleDateFormat")
@@ -334,15 +452,11 @@ public class Profil_Duzenle extends AppCompatActivity implements Interface_Async
 
 				break;
 			case R.id.lblFotografiDegistir:
-				if(AkorDefterimSys.InternetErisimKontrolu()) {
-					AkorDefterimSys.IntentGetir(new String[]{"GaleridenResimGetir", String.valueOf(DOSYAOKUMAYAZMA_IZIN), String.valueOf(RESIMSEC)});
-				} else AkorDefterimSys.StandartSnackBarMsj(coordinatorLayout, getString(R.string.internet_baglantisi_saglanamadi));
+				activity.openContextMenu(lblFotografiDegistir);
 
 				break;
 			case R.id.lblFotografiDegistir2:
-				if(AkorDefterimSys.InternetErisimKontrolu()) {
-					AkorDefterimSys.IntentGetir(new String[]{"GaleridenResimGetir", String.valueOf(DOSYAOKUMAYAZMA_IZIN), String.valueOf(RESIMSEC)});
-				} else AkorDefterimSys.StandartSnackBarMsj(coordinatorLayout, getString(R.string.internet_baglantisi_saglanamadi));
+				activity.openContextMenu(lblFotografiDegistir2);
 
 				break;
 			case R.id.txtDogumTarih:
@@ -371,13 +485,28 @@ public class Profil_Duzenle extends AppCompatActivity implements Interface_Async
 				if(grantResults[0] == PackageManager.PERMISSION_GRANTED)
 					AkorDefterimSys.IntentGetir(new String[]{"GaleridenResimGetir", String.valueOf(DOSYAOKUMAYAZMA_IZIN), String.valueOf(RESIMSEC)});
 				else {
-					if(!AkorDefterimSys.AlertDialogisShowing(ADDialog_Hata)) {
-						ADDialog_Hata = AkorDefterimSys.CustomAlertDialog(activity,
+					if(!AkorDefterimSys.AlertDialogisShowing(ADDialog)) {
+						ADDialog = AkorDefterimSys.CustomAlertDialog(activity,
 								getString(R.string.uygulama_izinleri),
 								getString(R.string.uygulama_izni_dosya_yazma_hata),
-								getString(R.string.tamam), "ADDialog_Hata_Kapat");
-						ADDialog_Hata.getWindow().getAttributes().windowAnimations = R.style.DialogAnimation;
-						ADDialog_Hata.show();
+								getString(R.string.tamam), "ADDialog_Kapat");
+						ADDialog.getWindow().getAttributes().windowAnimations = R.style.DialogAnimation;
+						ADDialog.show();
+					}
+				}
+
+				break;
+			case KAMERA_IZIN:
+				if(grantResults[0] == PackageManager.PERMISSION_GRANTED)
+					AkorDefterimSys.IntentGetir(new String[]{"FotografCek", String.valueOf(KAMERA_IZIN), String.valueOf(FOTOGRAFCEK)});
+				else {
+					if(!AkorDefterimSys.AlertDialogisShowing(ADDialog)) {
+						ADDialog = AkorDefterimSys.CustomAlertDialog(activity,
+								getString(R.string.uygulama_izinleri),
+								getString(R.string.uygulama_izni_kamera_hata),
+								getString(R.string.tamam), "ADDialog_Kapat");
+						ADDialog.getWindow().getAttributes().windowAnimations = R.style.DialogAnimation;
+						ADDialog.show();
 					}
 				}
 
@@ -389,14 +518,48 @@ public class Profil_Duzenle extends AppCompatActivity implements Interface_Async
 
 	@Override
 	public void onActivityResult(int requestCode, int resultCode, Intent data) {
+		super.onActivityResult(requestCode, resultCode, data);
+		mFacebookCallbackManager.onActivityResult(requestCode, resultCode, data);
+
 		if (resultCode == Activity.RESULT_OK) {
 			switch (requestCode) {
 				case RESIMSEC:
 					AkorDefterimSys.IntentGetir(new String[]{"ResimKirp", data.getData().toString(), String.valueOf(CropImage.CROP_IMAGE_ACTIVITY_REQUEST_CODE)});
 					break;
+				case FOTOGRAFCEK:
+					File FAnaDizin = new File(AkorDefterimSys.AnaKlasorDizini);
+
+					if(!FAnaDizin.exists()) FAnaDizin.mkdir();
+
+					File Fotograf = new File(String.format("%s%s%s", AkorDefterimSys.AnaKlasorDizini, sharedPref.getString("prefHesapID", ""), ".jpg"));
+
+					if(Fotograf.exists())
+						AkorDefterimSys.IntentGetir(new String[]{"ResimKirp", "file://" + Fotograf.getAbsolutePath(), String.valueOf(CropImage.CROP_IMAGE_ACTIVITY_REQUEST_CODE)});
+					break;
 				case CropImage.CROP_IMAGE_ACTIVITY_REQUEST_CODE:
 					SecilenProfilResmiFile = AkorDefterimSys.ResimIsleme(coordinatorLayout, SecilenProfilResmiFile, CImgProfilResim, CropImage.getActivityResult(data).getUri());
+
+					File EskiFotograf = new File(String.format("%s%s%s", AkorDefterimSys.AnaKlasorDizini, sharedPref.getString("prefHesapID", ""), ".jpg"));
+
+					if(EskiFotograf.exists()) EskiFotograf.delete();
+
 					new ProfilResimYukle().execute();
+					break;
+				case GoogleBilgiAlma:
+					GoogleSignInResult result = Auth.GoogleSignInApi.getSignInResultFromIntent(data);
+
+					if (result.isSuccess()) {
+						GoogleSignInAccount acct = result.getSignInAccount();
+
+						String ResimURL_Google = (acct.getPhotoUrl() == null ? "":acct.getPhotoUrl().toString());
+
+						if(!AkorDefterimSys.ProgressDialogisShowing(PDBilgilerGuncelleniyor)) {
+							PDBilgilerGuncelleniyor = AkorDefterimSys.CustomProgressDialog(getString(R.string.bilgileriniz_guncelleniyor), false, AkorDefterimSys.ProgressBarTimeoutSuresi, "PDBilgilerGuncelleniyor_Timeout");
+							PDBilgilerGuncelleniyor.show();
+						}
+
+						AkorDefterimSys.HesapBilgiGuncelle(sharedPref.getString("prefHesapID",""), FirebaseToken, OSID, OSVersiyon, "", "", ResimURL_Google,"", "", "", "", "", "", UygulamaVersiyon, "HesapBilgiGuncelle_Profil_Resim2");
+					}
 					break;
 			}
 		}
@@ -414,22 +577,38 @@ public class Profil_Duzenle extends AppCompatActivity implements Interface_Async
 				case "HesapBilgiGetir":
 					if(JSONSonuc.getBoolean("Sonuc")) {
 						if(JSONSonuc.getString("HesapDurum").equals("Ban")) { // Eğer hesap banlanmışsa
-							if(!AkorDefterimSys.AlertDialogisShowing(ADDialog_HesapDurumu)) {
-								ADDialog_HesapDurumu = AkorDefterimSys.CustomAlertDialog(activity,
+							if(!AkorDefterimSys.AlertDialogisShowing(ADDialog)) {
+								ADDialog = AkorDefterimSys.CustomAlertDialog(activity,
 										getString(R.string.hesap_durumu),
 										getString(R.string.hesap_banlandi, JSONSonuc.getString("HesapDurumBilgi"), getString(R.string.uygulama_yapimci_site)),
 										activity.getString(R.string.tamam),
-										"ADDialog_HesapDurumu_Kapat");
-								ADDialog_HesapDurumu.getWindow().getAttributes().windowAnimations = R.style.DialogAnimation;
-								ADDialog_HesapDurumu.show();
+										"ADDialog_Kapat_CikisYap");
+								ADDialog.getWindow().getAttributes().windowAnimations = R.style.DialogAnimation;
+								ADDialog.show();
 							}
 						} else {
-							if(JSONSonuc.getString("ResimURL").equals("")) {
+							sharedPrefEditor = sharedPref.edit();
+							sharedPrefEditor.putString("prefEPosta", JSONSonuc.getString("EPosta"));
+							sharedPrefEditor.putString("prefParolaSHA1", JSONSonuc.getString("ParolaSHA1"));
+							sharedPrefEditor.apply();
+
+							if(!JSONSonuc.getString("FacebookID").equals("")) FacebookID = JSONSonuc.getString("FacebookID");
+							else FacebookID = "";
+
+							if(!JSONSonuc.getString("GoogleID").equals("")) GoogleID = JSONSonuc.getString("GoogleID");
+							else GoogleID = "";
+
+							if(JSONSonuc.getString("ResimURL").equals("-")) {
 								ImgBuyukProfilResim.setImageResource(R.drawable.bos_profil);
 								CImgProfilResim.setImageResource(R.drawable.bos_profil);
 							} else {
-								new AkorDefterimSys.NettenResimYukle(ImgBuyukProfilResim).execute(AkorDefterimSys.CBCAPP_HttpsAdres + JSONSonuc.getString("ResimURL"));
-								new AkorDefterimSys.NettenResimYukle(CImgProfilResim).execute(AkorDefterimSys.CBCAPP_HttpsAdres + JSONSonuc.getString("ResimURL"));
+								if (JSONSonuc.getString("ResimURL").startsWith("http://") || JSONSonuc.getString("ResimURL").startsWith("https://")) {
+									new AkorDefterimSys.NettenResimYukle(ImgBuyukProfilResim).execute(JSONSonuc.getString("ResimURL"));
+									new AkorDefterimSys.NettenResimYukle(CImgProfilResim).execute(JSONSonuc.getString("ResimURL"));
+								} else {
+									new AkorDefterimSys.NettenResimYukle(ImgBuyukProfilResim).execute(AkorDefterimSys.CBCAPP_HttpsAdres + JSONSonuc.getString("ResimURL"));
+									new AkorDefterimSys.NettenResimYukle(CImgProfilResim).execute(AkorDefterimSys.CBCAPP_HttpsAdres + JSONSonuc.getString("ResimURL"));
+								}
 							}
 
 							txtAdSoyad.setText(JSONSonuc.getString("AdSoyad"));
@@ -453,38 +632,19 @@ public class Profil_Duzenle extends AppCompatActivity implements Interface_Async
 							else lblTelefonNumarasi2.setText(String.format("%s%s%s", "+", JSONSonuc.getString("TelKodu"), JSONSonuc.getString("CepTelefon")));
 						}
 					} else {
-						if(!AkorDefterimSys.AlertDialogisShowing(ADDialog_HesapDurumu)) {
-							ADDialog_HesapDurumu = AkorDefterimSys.CustomAlertDialog(activity,
+						if(!AkorDefterimSys.AlertDialogisShowing(ADDialog)) {
+							ADDialog = AkorDefterimSys.CustomAlertDialog(activity,
 									getString(R.string.hesap_durumu),
 									getString(R.string.hesap_bilgileri_bulunamadi),
 									activity.getString(R.string.tamam),
-									"ADDialog_HesapDurumu_Kapat_CikisYap");
-							ADDialog_HesapDurumu.getWindow().getAttributes().windowAnimations = R.style.DialogAnimation;
-							ADDialog_HesapDurumu.show();
+									"ADDialog_Kapat_CikisYap");
+							ADDialog.getWindow().getAttributes().windowAnimations = R.style.DialogAnimation;
+							ADDialog.show();
 						}
 					}
 
 					IlkYuklemeYapildiMi = true;
 
-					break;
-				case "ADDialog_HesapDurumu_Kapat":
-					AkorDefterimSys.DismissAlertDialog(ADDialog_HesapDurumu);
-
-					AkorDefterimSys.CikisYap();
-					break;
-				case "ADDialog_HesapDurumu_Kapat_CikisYap":
-					AkorDefterimSys.DismissAlertDialog(ADDialog_HesapDurumu);
-
-					AkorDefterimSys.CikisYap();
-					break;
-				case "PDBilgilerAliniyor_Timeout":
-					onBackPressed();
-					break;
-				case "ADDialog_Hata_Kapat":
-					AkorDefterimSys.DismissAlertDialog(ADDialog_Hata);
-					break;
-				case "PDFotografYuklemeIslem_Timeout":
-					AkorDefterimSys.DismissProgressDialog(PDFotografYuklemeIslem);
 					break;
 				case "KullaniciAdiKontrol":
 					if(JSONSonuc.getBoolean("Sonuc"))
@@ -496,14 +656,14 @@ public class Profil_Duzenle extends AppCompatActivity implements Interface_Async
 					btnKaydet.setEnabled(true);
 
 					if(JSONSonuc.getBoolean("Sonuc")) {
-						if(!AkorDefterimSys.AlertDialogisShowing(ADDialog_HesapGuncelleme)) {
-							ADDialog_HesapGuncelleme = AkorDefterimSys.CustomAlertDialog(activity,
+						if(!AkorDefterimSys.AlertDialogisShowing(ADDialog)) {
+							ADDialog = AkorDefterimSys.CustomAlertDialog(activity,
 									getString(R.string.profili_duzenle),
 									getString(R.string.hesap_bilgileri_guncellendi),
 									activity.getString(R.string.tamam),
-									"ADDialog_HesapGuncelleme_Kapat_GeriGit");
-							ADDialog_HesapGuncelleme.getWindow().getAttributes().windowAnimations = R.style.DialogAnimation;
-							ADDialog_HesapGuncelleme.show();
+									"ADDialog_Kapat_GeriGit");
+							ADDialog.getWindow().getAttributes().windowAnimations = R.style.DialogAnimation;
+							ADDialog.show();
 						}
 					} else {
 						switch (JSONSonuc.getString("Aciklama")) {
@@ -511,25 +671,71 @@ public class Profil_Duzenle extends AppCompatActivity implements Interface_Async
 								AkorDefterimSys.StandartSnackBarMsj(coordinatorLayout, getString(R.string.kullaniciadi_kayitli));
 								break;
 							default:
-								if(!AkorDefterimSys.AlertDialogisShowing(ADDialog_HesapGuncelleme)) {
-									ADDialog_HesapGuncelleme = AkorDefterimSys.CustomAlertDialog(activity,
+								if(!AkorDefterimSys.AlertDialogisShowing(ADDialog)) {
+									ADDialog = AkorDefterimSys.CustomAlertDialog(activity,
 											getString(R.string.hata),
 											getString(R.string.hesap_bilgileri_guncellenemedi),
 											activity.getString(R.string.tamam),
-											"ADDialog_HesapGuncelleme_Kapat_GeriGit");
-									ADDialog_HesapGuncelleme.getWindow().getAttributes().windowAnimations = R.style.DialogAnimation;
-									ADDialog_HesapGuncelleme.show();
+											"ADDialog_Kapat_GeriGit");
+									ADDialog.getWindow().getAttributes().windowAnimations = R.style.DialogAnimation;
+									ADDialog.show();
 								}
 								break;
 						}
 					}
 					break;
-				case "ADDialog_HesapGuncelleme_Kapat_GeriGit":
-					AkorDefterimSys.DismissAlertDialog(ADDialog_HesapGuncelleme);
+				case "HesapBilgiGuncelle_Profil_Resim":
+					if(JSONSonuc.getBoolean("Sonuc")) {
+						Bitmap mBitmap = BitmapFactory.decodeFile(SecilenProfilResmiFile.getAbsolutePath());
 
+						ImgBuyukProfilResim.setImageBitmap(mBitmap);
+						CImgProfilResim.setImageBitmap(mBitmap);
+
+						if(SecilenProfilResmiFile != null && SecilenProfilResmiFile.exists()) SecilenProfilResmiFile.delete();
+					} else {
+						if(!AkorDefterimSys.AlertDialogisShowing(ADDialog)) {
+							ADDialog = AkorDefterimSys.CustomAlertDialog(activity,
+									getString(R.string.hata),
+									getString(R.string.profil_resmi_guncellenemedi),
+									activity.getString(R.string.tamam),
+									"ADDialog_Kapat_GeriGit");
+							ADDialog.getWindow().getAttributes().windowAnimations = R.style.DialogAnimation;
+							ADDialog.show();
+						}
+					}
+					break;
+				case "HesapBilgiGuncelle_Profil_Resim2":
+					if(JSONSonuc.getBoolean("Sonuc")) {
+						AkorDefterimSys.HesapBilgiGetir(null, sharedPref.getString("prefHesapID",""), "", "", "HesapBilgiGetir");
+					} else {
+						if(!AkorDefterimSys.AlertDialogisShowing(ADDialog)) {
+							ADDialog = AkorDefterimSys.CustomAlertDialog(activity,
+									getString(R.string.hata),
+									getString(R.string.profil_resmi_guncellenemedi),
+									activity.getString(R.string.tamam),
+									"ADDialog_Kapat_GeriGit");
+							ADDialog.getWindow().getAttributes().windowAnimations = R.style.DialogAnimation;
+							ADDialog.show();
+						}
+					}
+					break;
+				case "ADDialog_Kapat":
+					AkorDefterimSys.DismissAlertDialog(ADDialog);
+					break;
+				case "ADDialog_Kapat_GeriGit":
+					AkorDefterimSys.DismissAlertDialog(ADDialog);
+					onBackPressed();
+					break;
+				case "ADDialog_Kapat_CikisYap":
+					AkorDefterimSys.DismissAlertDialog(ADDialog);
+					AkorDefterimSys.CikisYap();
+					break;
+				case "PDBilgilerAliniyor_Timeout":
+					AkorDefterimSys.DismissProgressDialog(PDBilgilerAliniyor);
 					onBackPressed();
 					break;
 				case "PDBilgilerGuncelleniyor_Timeout":
+					AkorDefterimSys.DismissProgressDialog(PDBilgilerGuncelleniyor);
 					onBackPressed();
 					break;
 			}
@@ -547,9 +753,9 @@ public class Profil_Duzenle extends AppCompatActivity implements Interface_Async
 		protected void onPreExecute() {
 			super.onPreExecute();
 
-			if(!AkorDefterimSys.ProgressDialogisShowing(PDFotografYuklemeIslem)) {
-				PDFotografYuklemeIslem = AkorDefterimSys.CustomProgressDialog(getString(R.string.profil_resmi_yukleniyor, "0%"), false, AkorDefterimSys.ProgressBarTimeoutSuresi, "PDFotografYuklemeIslem_Timeout");
-				PDFotografYuklemeIslem.show();
+			if(!AkorDefterimSys.ProgressDialogisShowing(PDBilgilerGuncelleniyor)) {
+				PDBilgilerGuncelleniyor = AkorDefterimSys.CustomProgressDialog(getString(R.string.profil_resmi_yukleniyor, "0%"), false, AkorDefterimSys.ProgressBarTimeoutSuresi, "PDBilgilerGuncelleniyor_Timeout");
+				PDBilgilerGuncelleniyor.show();
 			}
 		}
 
@@ -578,7 +784,7 @@ public class Profil_Duzenle extends AppCompatActivity implements Interface_Async
 
 				// Adding file data to http body
 				entity.addPart("Dosya", new FileBody(SecilenProfilResmiFile));
-				entity.addPart("Dizin", new StringBody(AkorDefterimSys.ProfilResimleriKlasoruDizin));
+				entity.addPart("Dizin", new StringBody(AkorDefterimSys.PHPProfilResimleriDizini));
 				entity.addPart("HesapID", new StringBody(sharedPref.getString("prefHesapID","")));
 
 				totalSize = entity.getContentLength();
@@ -616,12 +822,23 @@ public class Profil_Duzenle extends AppCompatActivity implements Interface_Async
 					activity.runOnUiThread(new Runnable() {
 						@Override
 						public void run() {
-							Bitmap mBitmap = BitmapFactory.decodeFile(SecilenProfilResmiFile.getAbsolutePath());
+							String FirebaseToken = FirebaseInstanceId.getInstance().getToken();
+							@SuppressLint("HardwareIds")
+							String OSID = Settings.Secure.getString(getContentResolver(), Settings.Secure.ANDROID_ID);
+							String OSVersiyon = AkorDefterimSys.AndroidSurumBilgisi(Build.VERSION.SDK_INT);
+							String UygulamaVersiyon = "";
 
-							ImgBuyukProfilResim.setImageBitmap(mBitmap);
-							CImgProfilResim.setImageBitmap(mBitmap);
+							try {
+								UygulamaVersiyon = activity.getPackageManager().getPackageInfo(activity.getPackageName(), 0).versionName;
+							} catch (PackageManager.NameNotFoundException e) {
+								e.printStackTrace();
+							}
 
-							if(SecilenProfilResmiFile != null && SecilenProfilResmiFile.exists()) SecilenProfilResmiFile.delete();
+							String ResimURL = AkorDefterimSys.ProfilResimleriDizini + sharedPref.getString("prefHesapID", "") + ".jpg";
+
+							PDBilgilerGuncelleniyor.setMessage(getString(R.string.bilgileriniz_guncelleniyor));
+
+							AkorDefterimSys.HesapBilgiGuncelle(sharedPref.getString("prefHesapID",""), FirebaseToken, OSID, OSVersiyon, "", "", ResimURL,"", "", "", "", "", "", UygulamaVersiyon, "HesapBilgiGuncelle_Profil_Resim");
 						}
 					});
 					break;
@@ -629,6 +846,7 @@ public class Profil_Duzenle extends AppCompatActivity implements Interface_Async
 					activity.runOnUiThread(new Runnable() {
 						@Override
 						public void run() {
+							AkorDefterimSys.DismissProgressDialog(PDBilgilerGuncelleniyor);
 							AkorDefterimSys.StandartSnackBarMsj(coordinatorLayout, getString(R.string.islem_yapilirken_bir_hata_olustu));
 						}
 					});
@@ -637,6 +855,7 @@ public class Profil_Duzenle extends AppCompatActivity implements Interface_Async
 					activity.runOnUiThread(new Runnable() {
 						@Override
 						public void run() {
+							AkorDefterimSys.DismissProgressDialog(PDBilgilerGuncelleniyor);
 							AkorDefterimSys.StandartSnackBarMsj(coordinatorLayout, getString(R.string.url_hatasi));
 						}
 					});
@@ -645,6 +864,7 @@ public class Profil_Duzenle extends AppCompatActivity implements Interface_Async
 					activity.runOnUiThread(new Runnable() {
 						@Override
 						public void run() {
+							AkorDefterimSys.DismissProgressDialog(PDBilgilerGuncelleniyor);
 							AkorDefterimSys.StandartSnackBarMsj(coordinatorLayout, getString(R.string.dosya_yazma_okuma_hatasi));
 						}
 					});
@@ -653,14 +873,12 @@ public class Profil_Duzenle extends AppCompatActivity implements Interface_Async
 					activity.runOnUiThread(new Runnable() {
 						@Override
 						public void run() {
+							AkorDefterimSys.DismissProgressDialog(PDBilgilerGuncelleniyor);
 							AkorDefterimSys.StandartSnackBarMsj(coordinatorLayout, getString(R.string.beklenmedik_hata_meydana_geldi));
 						}
 					});
 					break;
 			}
-
-			// PDFotografYuklemeIslem Progress Dialog'u kapattık
-			AkorDefterimSys.DismissProgressDialog(PDFotografYuklemeIslem);
 		}
 
 		@Override
@@ -668,7 +886,7 @@ public class Profil_Duzenle extends AppCompatActivity implements Interface_Async
 			activity.runOnUiThread(new Runnable() {
 				@Override
 				public void run() {
-					PDFotografYuklemeIslem.setMessage(getString(R.string.profil_resmi_yukleniyor, String.valueOf(Deger[0]) + "%"));
+					PDBilgilerGuncelleniyor.setMessage(getString(R.string.profil_resmi_yukleniyor, String.valueOf(Deger[0]) + "%"));
 				}
 			});
 		}
@@ -676,11 +894,11 @@ public class Profil_Duzenle extends AppCompatActivity implements Interface_Async
 		@Override
 		protected void onCancelled(String Sonuc) {
 			super.onCancelled(Sonuc);
-			// PDFotografYuklemeIslem Progress Dialog'u kapattık
-			AkorDefterimSys.DismissProgressDialog(PDFotografYuklemeIslem);
+			AkorDefterimSys.DismissProgressDialog(PDBilgilerGuncelleniyor);
 		}
 	}
 
+	@SuppressLint("SimpleDateFormat")
 	private void Kaydet() {
 		btnKaydet.setEnabled(false);
 		AkorDefterimSys.KlavyeKapat();
@@ -774,7 +992,62 @@ public class Profil_Duzenle extends AppCompatActivity implements Interface_Async
 				PDBilgilerGuncelleniyor.show();
 			}
 
-			AkorDefterimSys.HesapBilgiGuncelle(sharedPref.getString("prefHesapID",""), FirebaseToken, OSID, OSVersiyon, AdSoyad, DogumTarih, "", "", "", KullaniciAdi, "", "", UygulamaVersiyon, "HesapBilgiGuncelle_Profil");
+			AkorDefterimSys.HesapBilgiGuncelle(sharedPref.getString("prefHesapID",""), FirebaseToken, OSID, OSVersiyon, AdSoyad, DogumTarih, "","", "", "", KullaniciAdi, "", "", UygulamaVersiyon, "HesapBilgiGuncelle_Profil");
 		} else btnKaydet.setEnabled(true);
+	}
+
+	private void GoogleAPIInit() {
+		GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+				.requestEmail()
+				.build();
+
+		mGoogleLoginApiClient = new GoogleApiClient.Builder(this)
+				.addApi(Auth.GOOGLE_SIGN_IN_API, gso)
+				.build();
+	}
+
+	@SuppressLint("HardwareIds")
+	private void FacebookLoginInit() {
+		LoginManager.getInstance().registerCallback(mFacebookCallbackManager, new FacebookCallback<LoginResult>() {
+			@Override
+			public void onSuccess(LoginResult loginResult) {
+				GraphRequest request = GraphRequest.newMeRequest(loginResult.getAccessToken(), new GraphRequest.GraphJSONObjectCallback() {
+					@Override
+					public void onCompleted(JSONObject JSONFacebookGelenVeri, GraphResponse response) {
+						if (response.getError() != null) {
+							Log.d("Hata", "Facebook girişi yapılırken hata oluştu..");
+						} else {
+							try {
+								String ResimURL_Facebook = "https://graph.facebook.com/" + JSONFacebookGelenVeri.getString("id") + "/picture?width=300&height=300";
+
+								if(!AkorDefterimSys.ProgressDialogisShowing(PDBilgilerGuncelleniyor)) {
+									PDBilgilerGuncelleniyor = AkorDefterimSys.CustomProgressDialog(getString(R.string.bilgileriniz_guncelleniyor), false, AkorDefterimSys.ProgressBarTimeoutSuresi, "PDBilgilerGuncelleniyor_Timeout");
+									PDBilgilerGuncelleniyor.show();
+								}
+
+								AkorDefterimSys.HesapBilgiGuncelle(sharedPref.getString("prefHesapID",""), FirebaseToken, OSID, OSVersiyon, "", "", ResimURL_Facebook,"", "", "", "", "", "", UygulamaVersiyon, "HesapBilgiGuncelle_Profil_Resim2");
+							} catch (JSONException e) {
+								e.printStackTrace();
+							}
+						}
+					}
+				});
+
+				Bundle parameters = new Bundle();
+				parameters.putString("fields", "id,name,email");
+				request.setParameters(parameters);
+				request.executeAsync();
+			}
+
+			@Override
+			public void onCancel() {
+				Log.d("","");
+			}
+
+			@Override
+			public void onError(FacebookException error) {
+				Log.d("","");
+			}
+		});
 	}
 }

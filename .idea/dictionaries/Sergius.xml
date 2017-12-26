@@ -9,6 +9,7 @@
       <w>adresine</w>
       <w>akordefterim</w>
       <w>alanina</w>
+      <w>aliniyor</w>
       <w>anaekran</w>
       <w>anasayfa</w>
       <w>animasyon</w>
@@ -23,6 +24,7 @@
       <w>basvuru</w>
       <w>belirle</w>
       <w>bilgi</w>
+      <w>bilgiler</w>
       <w>bilgileri</w>
       <w>bitis</w>
       <w>bosluklu</w>
@@ -44,6 +46,7 @@
       <w>devam</w>
       <w>değişkenler</w>
       <w>değişkenleri</w>
+      <w>dizin</w>
       <w>dogrula</w>
       <w>dogrulama</w>
       <w>dogum</w>
@@ -60,6 +63,8 @@
       <w>etiketleyici</w>
       <w>fazla</w>
       <w>foto</w>
+      <w>fotograf</w>
+      <w>fotografi</w>
       <w>galeriden</w>
       <w>gelinen</w>
       <w>getir</w>
@@ -72,6 +77,7 @@
       <w>gonderme</w>
       <w>gormeyecek</w>
       <w>guncelleme</w>
+      <w>guncelleniyor</w>
       <w>guvenligi</w>
       <w>gönderildi</w>
       <w>gösterilmeyecek</w>
@@ -113,6 +119,7 @@
       <w>kayıtlı</w>
       <w>kimseye</w>
       <w>kirp</w>
+      <w>klasor</w>
       <w>klasör</w>
       <w>klavye</w>
       <w>klavyeyi</w>
@@ -136,8 +143,10 @@
       <w>mcurrent</w>
       <w>menü</w>
       <w>merkezi</w>
+      <w>mevcut</w>
       <w>mqtt</w>
       <w>netten</w>
+      <w>numarasi</w>
       <w>ogren</w>
       <w>onay</w>
       <w>onaykodu</w>

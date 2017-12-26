@@ -13,7 +13,8 @@
     <uses-permission android:name="android.permission.SEND_SMS" />
     <uses-permission android:name="android.permission.WRITE_SMS" />-->
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
-    <!--<uses-permission android:name="android.permission.CAMERA" />-->
+    <uses-permission android:name="android.permission.CAMERA" />
+    <uses-permission android:name="android.permission.RECORD_AUDIO" />
     <!--<uses-permission android:name="com.android.vending.BILLING" />-->
     <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
     <uses-permission android:name="com.google.android.c2dm.permission.RECEIVE" />
@@ -22,6 +23,9 @@
     <uses-permission android:name="android.permission.USE_CREDENTIALS" />
     <uses-permission android:name="android.permission.GET_ACCOUNTS" />
     <uses-permission android:name="android.permission.WRITE_SETTINGS"/>
+
+    <uses-feature android:name="android.hardware.camera" />
+    <uses-feature android:name="android.hardware.camera.autofocus" />
 
     <!--<supports-screens
         android:anyDensity="true"
@@ -227,6 +231,12 @@
             android:name="com.startapp.android.publish.adsCommon.activities.FullScreenActivity"
             android:configChanges="orientation|keyboardHidden|screenSize"
             android:theme="@android:style/Theme" />
+        <activity
+            android:name="com.afollestad.materialcamera.CaptureActivity"
+            android:theme="@style/MaterialCamera.CaptureActivity" />
+        <activity
+            android:name="com.afollestad.materialcamera.CaptureActivity2"
+            android:theme="@style/MaterialCamera.CaptureActivity" />
 
         <service android:name=".util.AppService" android:exported="false" />
         <service android:name=".util.MqttService" android:exported="false" />

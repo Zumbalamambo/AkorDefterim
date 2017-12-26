@@ -27,16 +27,17 @@ import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.ImageButton;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.cnbcyln.app.akordefterim.Interface.Interface_AsyncResponse;
 import com.cnbcyln.app.akordefterim.util.AkorDefterimSys;
+import com.hbb20.CountryCodePicker;
 
 import org.apache.commons.lang3.StringUtils;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.Locale;
 import java.util.Random;
 import java.util.Timer;
 import java.util.TimerTask;
@@ -59,10 +60,10 @@ public class CepTelefonu_Degistir extends AppCompatActivity implements Interface
 
 	CoordinatorLayout coordinatorLayout;
 	ImageButton btnIptal, btnKaydet;
-	LinearLayout LLTelKodu;
+	CountryCodePicker CCPTelKodu;
 	TextInputLayout txtILCepTelefon;
 	EditText txtCepTelefon;
-	TextView lblBaslik, lblTelKodu, lblKalanSure;
+	TextView lblBaslik, lblKalanSure;
 
 	String DogrulamaKodu = "";
 	int KalanSure = 0;
@@ -98,11 +99,9 @@ public class CepTelefonu_Degistir extends AppCompatActivity implements Interface
 		btnKaydet = findViewById(R.id.btnKaydet);
 		btnKaydet.setOnClickListener(this);
 
-		LLTelKodu = findViewById(R.id.LLTelKodu);
-		LLTelKodu.setOnClickListener(this);
-
-		lblTelKodu = findViewById(R.id.lblTelKodu);
-		lblTelKodu.setTypeface(YaziFontu, Typeface.BOLD);
+		CCPTelKodu = findViewById(R.id.CCPTelKodu);
+		CCPTelKodu.setCountryPreference(Locale.getDefault().getCountry());
+		CCPTelKodu.setTypeFace(YaziFontu, Typeface.NORMAL);
 
 		txtILCepTelefon = findViewById(R.id.txtILCepTelefon);
 		txtILCepTelefon.setTypeface(YaziFontu);
@@ -208,14 +207,6 @@ public class CepTelefonu_Degistir extends AppCompatActivity implements Interface
 				Kaydet();
 
 				break;
-			case R.id.LLTelKodu:
-
-
-				break;
-			case R.id.lblTelKodu:
-
-
-				break;
 		}
 	}
 
@@ -228,7 +219,7 @@ public class CepTelefonu_Degistir extends AppCompatActivity implements Interface
 					DogrulamaKodu = String.valueOf((100000 + rnd.nextInt(900000)));
 
 					// Onay kodu belirtilen eposta adresine gönderiliyor
-					AkorDefterimSys.SMSGonder(lblTelKodu.getText().toString().substring(1,lblTelKodu.getText().length()), txtCepTelefon.getText().toString().trim(), getString(R.string.sms_dosrulama_kodu_icerik, DogrulamaKodu, getString(R.string.uygulama_adi)));
+					AkorDefterimSys.SMSGonder(CCPTelKodu.getSelectedCountryCode(), txtCepTelefon.getText().toString().trim(), getString(R.string.sms_dosrulama_kodu_icerik, DogrulamaKodu, getString(R.string.uygulama_adi)));
 				} else {
 					AkorDefterimSys.DismissProgressDialog(PDIslem);
 
@@ -320,7 +311,7 @@ public class CepTelefonu_Degistir extends AppCompatActivity implements Interface
 								ADDialog.show();
 							}
 						} else {
-							lblTelKodu.setText(String.format("%s%s", "+", JSONSonuc.getString("TelKodu")));
+							if(!JSONSonuc.getString("TelKodu").equals("")) CCPTelKodu.setCountryForPhoneCode(Integer.parseInt(JSONSonuc.getString("TelKodu")));
 							txtCepTelefon.setText(JSONSonuc.getString("CepTelefon"));
 						}
 					} else {
@@ -378,7 +369,7 @@ public class CepTelefonu_Degistir extends AppCompatActivity implements Interface
 									DogrulamaKodu = String.valueOf((100000 + rnd.nextInt(900000)));
 
 									// Onay kodu belirtilen eposta adresine gönderiliyor
-									AkorDefterimSys.SMSGonder(lblTelKodu.getText().toString().substring(1,lblTelKodu.getText().length()), txtCepTelefon.getText().toString().trim(), getString(R.string.sms_dosrulama_kodu_icerik, DogrulamaKodu, getString(R.string.uygulama_adi)));
+									AkorDefterimSys.SMSGonder(CCPTelKodu.getSelectedCountryCode(), txtCepTelefon.getText().toString().trim(), getString(R.string.sms_dosrulama_kodu_icerik, DogrulamaKodu, getString(R.string.uygulama_adi)));
                                 }
 							} else {
 								btnIptal.setEnabled(true);
@@ -415,7 +406,7 @@ public class CepTelefonu_Degistir extends AppCompatActivity implements Interface
 						// Yeni açılacak olan intent'e gönderilecek bilgileri tanımlıyoruz
 						Intent mIntent = new Intent(activity, Dogrulama_Kodu.class);
 						mIntent.putExtra("Islem", "CepTelefonuDegisikligi");
-						mIntent.putExtra("TelKodu", lblTelKodu.getText().toString().substring(1,lblTelKodu.getText().length()));
+						mIntent.putExtra("TelKodu", CCPTelKodu.getSelectedCountryCode());
 						mIntent.putExtra("CepTelefonu", txtCepTelefon.getText().toString());
 						mIntent.putExtra("DogrulamaKodu", String.valueOf(DogrulamaKodu));
 
@@ -447,11 +438,9 @@ public class CepTelefonu_Degistir extends AppCompatActivity implements Interface
 	}
 
 	private void Kaydet() {
-		if(AkorDefterimSys.InternetErisimKontrolu()) {
-			btnIptal.setEnabled(false);
-			btnKaydet.setEnabled(false);
-			AkorDefterimSys.KlavyeKapat();
+		AkorDefterimSys.KlavyeKapat();
 
+		if(AkorDefterimSys.InternetErisimKontrolu()) {
 			txtCepTelefon.setText(txtCepTelefon.getText().toString().trim());
 			String CepTelefon = txtCepTelefon.getText().toString();
 
@@ -478,6 +467,8 @@ public class CepTelefonu_Degistir extends AppCompatActivity implements Interface
 			} else txtILCepTelefon.setError(null);
 
 			if(txtILCepTelefon.getError() == null) {
+				btnIptal.setEnabled(false);
+				btnKaydet.setEnabled(false);
 				AkorDefterimSys.UnFocusEditText(txtCepTelefon);
 
 				if(!AkorDefterimSys.ProgressDialogisShowing(PDIslem)) { // Eğer progress dialog açık değilse
@@ -485,10 +476,7 @@ public class CepTelefonu_Degistir extends AppCompatActivity implements Interface
 					PDIslem.show();
 				}
 
-				AkorDefterimSys.HesapBilgiGetir(null, "", lblTelKodu.getText().toString().substring(1,lblTelKodu.getText().length()), CepTelefon, "HesapBilgiGetir_CepTelefon_Kontrol");
-			} else {
-				btnIptal.setEnabled(true);
-				btnKaydet.setEnabled(true);
+				AkorDefterimSys.HesapBilgiGetir(null, "", CCPTelKodu.getSelectedCountryCode(), CepTelefon, "HesapBilgiGetir_CepTelefon_Kontrol");
 			}
 		} else AkorDefterimSys.StandartSnackBarMsj(coordinatorLayout, getString(R.string.internet_baglantisi_saglanamadi));
 	}

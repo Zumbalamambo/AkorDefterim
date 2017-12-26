@@ -81,9 +81,6 @@ public class Giris_Yardimi extends AppCompatActivity implements Interface_AsyncR
 	public void onBackPressed() {
 		AkorDefterimSys.KlavyeKapat();
 
-		//AkorDefterimSys.DismissProgressDialog(PDParolamiUnuttum);
-		//AkorDefterimSys.DismissAlertDialog(ADDialog_HesapDurumu);
-
 		super.onBackPressed();
 	}
 
@@ -110,97 +107,12 @@ public class Giris_Yardimi extends AppCompatActivity implements Interface_AsyncR
             JSONObject JSONSonuc = new JSONObject(sonuc);
 
             switch (JSONSonuc.getString("Islem")) {
-				case "HesapBilgiGetir":
-					/*if(JSONSonuc.getBoolean("Sonuc") && !TextUtils.isEmpty(JSONSonuc.getString("ParolaSHA1"))) { // Eğer hesap bulundu ve ParolaSHA1 var ise. Yani normal hesap açıldıysa..
-                        if(JSONSonuc.getString("HesapDurum").equals("Ban")) { // Eğer hesap banlanmışsa
-							// PDParolamiUnuttum Progress Dialog'u kapattık
-							AkorDefterimSys.DismissProgressDialog(PDParolamiUnuttum);
-
-                            ADDialog_HesapDurumu = AkorDefterimSys.CustomAlertDialog(activity, R.mipmap.ic_launcher,
-                                    getString(R.string.hesap_durumu),
-                                    getString(R.string.hesap_banlandi, JSONSonuc.getString("HesapDurumBilgi"), getString(R.string.uygulama_yapimci_site)),
-                                    activity.getString(R.string.tamam));
-                            ADDialog_HesapDurumu.getWindow().getAttributes().windowAnimations = R.style.DialogAnimation;
-                            ADDialog_HesapDurumu.show();
-
-                            ADDialog_HesapDurumu.getButton(AlertDialog.BUTTON_POSITIVE).setOnClickListener(new OnClickListener() {
-                                @Override
-                                public void onClick(View v) {
-                                    ADDialog_HesapDurumu.dismiss();
-                                }
-                            });
-                        } else {
-                            BulunanEPosta = JSONSonuc.getString("EPosta");
-
-                            // 6 haneli onay kodu oluşturuldu
-                            OnayKodu = String.valueOf((100000 + rnd.nextInt(900000)));
-
-                            // Onay kodu belirtilen eposta adresine gönderiliyor
-                            AkorDefterimSys.EPostaGonder(BulunanEPosta, "", getString(R.string.dogrulama_kodu), getString(R.string.mail_onayi_icerik2, getString(R.string.uygulama_adi), OnayKodu));
-                        }
-					} else {
-						// PDParolamiUnuttum Progress Dialog'u kapattık
-						AkorDefterimSys.DismissProgressDialog(PDParolamiUnuttum);
-
-						//AkorDefterimSys.StandartSnackBarMsj(coordinatorLayout, getString(R.string.hesap_bilgileri_bulunamadi));
-					}*/
+				case "":
 
 					break;
-                case "EPostaGonder":
-                    // PDParolamiUnuttum Progress Dialog'u kapattık
-                    /*AkorDefterimSys.DismissProgressDialog(PDParolamiUnuttum);
-
-                    if(JSONSonuc.getBoolean("Sonuc")) {
-						// Yeni açılacak olan intent'e gönderilecek bilgileri tanımlıyoruz
-						Intent mIntent = new Intent(activity, Dogrulama_Kodu.class);
-						mIntent.putExtra("Islem", "Giris_Yardimi");
-						mIntent.putExtra("EPosta", BulunanEPosta);
-						mIntent.putExtra("OnayKodu", String.valueOf(OnayKodu));
-
-						AkorDefterimSys.EkranGetir(mIntent, "Slide");
-					}
-                    else //AkorDefterimSys.StandartSnackBarMsj(coordinatorLayout, getString(R.string.islem_yapilirken_bir_hata_olustu));*/
-
-                    break;
             }
-
         } catch (JSONException e) {
             e.printStackTrace();
         }
     }
-
-    /*private void IleriIslem() {
-		AkorDefterimSys.KlavyeKapat();
-
-		txtEPostaKullaniciAdi.setText(txtEPostaKullaniciAdi.getText().toString().trim());
-		String EPostaKullaniciAdi = txtEPostaKullaniciAdi.getText().toString();
-		if(TextUtils.isEmpty(EPostaKullaniciAdi))
-			txtILEPostaKullaniciAdi.setError(getString(R.string.hata_bos_alan));
-		else {
-			if(AkorDefterimSys.isValid(EPostaKullaniciAdi, "EPosta")) {
-				if(AkorDefterimSys.isValid(EPostaKullaniciAdi, "FakeEPosta"))
-					txtILEPostaKullaniciAdi.setError(getString(R.string.hata_format_eposta));
-				else
-					txtILEPostaKullaniciAdi.setError(null);
-			} else {
-				if(EPostaKullaniciAdi.length() < getResources().getInteger(R.integer.KullaniciAdiKarakterSayisi_MIN))
-					txtILEPostaKullaniciAdi.setError(getString(R.string.hata_en_az_karakter, String.valueOf(getResources().getInteger(R.integer.KullaniciAdiKarakterSayisi_MIN))));
-				else if(!AkorDefterimSys.isValid(EPostaKullaniciAdi, "KullaniciAdi"))
-					txtILEPostaKullaniciAdi.setError(getString(R.string.hata_format_sadece_sayi_kucukharf));
-				else
-					txtILEPostaKullaniciAdi.setError(null);
-			}
-		}
-
-		AkorDefterimSys.UnFocusEditText(txtEPostaKullaniciAdi);
-
-		if(txtILEPostaKullaniciAdi.getError() == null) {
-			if(AkorDefterimSys.InternetErisimKontrolu()) {
-				PDParolamiUnuttum = AkorDefterimSys.CustomProgressDialog(getString(R.string.islem_yapiliyor), false, AkorDefterimSys.ProgressBarTimeoutSuresi);
-				PDParolamiUnuttum.show();
-
-				AkorDefterimSys.HesapBilgiGetir(null, EPostaKullaniciAdi);
-			} else AkorDefterimSys.StandartSnackBarMsj(coordinatorLayout, getString(R.string.internet_baglantisi_saglanamadi));
-		}
-	}*/
 }

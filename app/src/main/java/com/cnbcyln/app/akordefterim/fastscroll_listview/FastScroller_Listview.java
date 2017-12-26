@@ -9,20 +9,20 @@ import android.view.MotionEvent;
 import android.widget.ListAdapter;
 import android.widget.ListView;
 
-public class Listview_SarkiListesi extends ListView {
+public class FastScroller_Listview extends ListView {
 	private boolean mIsFastScrollEnabled = false;
 	private IndexScroller mScroller = null;
 	private GestureDetector mGestureDetector = null;
 	
-	public Listview_SarkiListesi(Context context) {
+	public FastScroller_Listview(Context context) {
 		super(context);
 	}
 
-	public Listview_SarkiListesi(Context context, AttributeSet attrs) {
+	public FastScroller_Listview(Context context, AttributeSet attrs) {
 		super(context, attrs);
 	}
 
-	public Listview_SarkiListesi(Context context, AttributeSet attrs, int defStyle) {
+	public FastScroller_Listview(Context context, AttributeSet attrs, int defStyle) {
 		super(context, attrs, defStyle);
 	}
 

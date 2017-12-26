@@ -105,7 +105,7 @@ public class Frg_TabRepKontrol extends Fragment implements OnClickListener {
 				SecilenListeID = SnfListeler.get(spnListeler.getSelectedItemPosition()).getId();
 
 				if(AkorDefterimSys.InternetErisimKontrolu()) { //İnternet kontrolü yap
-					new KategoriTarzGetir().execute(String.valueOf(SecilenListeID), "Evet", "Evet");
+					//new KategoriTarzGetir().execute(String.valueOf(SecilenListeID), "Evet", "Evet");
 				} else {
 					if(SecilenListeID == 0) {
 						if(SnfListeler.size() > 1) {
@@ -113,7 +113,7 @@ public class Frg_TabRepKontrol extends Fragment implements OnClickListener {
 							SecilenListeID = SnfListeler.get(spnListeler.getSelectedItemPosition()).getId();
 						}
 					} else {
-						new KategoriTarzGetir().execute(String.valueOf(SecilenListeID), "Evet", "Evet");
+						//new KategoriTarzGetir().execute(String.valueOf(SecilenListeID), "Evet", "Evet");
 					}
 				}
 			}

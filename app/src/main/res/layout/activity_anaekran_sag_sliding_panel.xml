@@ -180,7 +180,7 @@
     	android:layout_height="match_parent"
     	android:orientation="vertical">
         
-        <com.cnbcyln.app.akordefterim.fastscroll_listview.Listview_SarkiListesi
+        <com.cnbcyln.app.akordefterim.fastscroll_listview.FastScroller_Listview
 	        android:id="@+id/lstSarkiListesi"
 	        android:layout_width="match_parent"
 	        android:layout_height="match_parent"

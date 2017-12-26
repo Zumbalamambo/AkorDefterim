@@ -232,15 +232,13 @@ public class KayitEkran_KullaniciAdi extends AppCompatActivity implements Interf
 						AkorDefterimSys.HesapEkle(FirebaseToken, OSID, OSVersiyon, AdSoyad, DogumTarih, SecilenProfilResmiFile != null, EPosta, Parola, ParolaSHA1, KullaniciAdi, UygulamaVersiyon);
 					} else {
 						btnTamamla.setEnabled(true);
-						// PDKayitIslem Progress Dialog'u kapattık
 						AkorDefterimSys.DismissProgressDialog(PDKayitIslem);
+
 						AkorDefterimSys.StandartSnackBarMsj(coordinatorLayout, getString(R.string.kullaniciadi_kayitli));
 					}
 
 					break;
 				case "HesapEkle":
-					btnTamamla.setEnabled(true);
-
 					if(JSONSonuc.getBoolean("Sonuc")) { // Kayıt yapıldıysa
 						EklenenHesapID = JSONSonuc.getString("EklenenHesapID");
 
@@ -255,8 +253,9 @@ public class KayitEkran_KullaniciAdi extends AppCompatActivity implements Interf
 						if(SecilenProfilResmiFile == null) SonrakiEkran();
 						else new ProfilResimYukle().execute();
 					} else { // Kayıt yapılmadıysa
-						// PDKayitIslem Progress Dialog'u kapattık
+						btnTamamla.setEnabled(true);
 						AkorDefterimSys.DismissProgressDialog(PDKayitIslem);
+
 						AkorDefterimSys.StandartSnackBarMsj(coordinatorLayout, getString(R.string.islem_yapilirken_bir_hata_olustu));
 					}
 
@@ -268,54 +267,51 @@ public class KayitEkran_KullaniciAdi extends AppCompatActivity implements Interf
 	}
 
 	private void Tamamla() {
-		btnTamamla.setEnabled(false);
 		AkorDefterimSys.KlavyeKapat();
 
-		txtKullaniciAdi.setText(txtKullaniciAdi.getText().toString().trim());
-		String KullaniciAdi = txtKullaniciAdi.getText().toString().trim();
+		if(AkorDefterimSys.InternetErisimKontrolu()) {
+			txtKullaniciAdi.setText(txtKullaniciAdi.getText().toString().trim());
+			String KullaniciAdi = txtKullaniciAdi.getText().toString().trim();
 
-		if (TextUtils.isEmpty(KullaniciAdi)) {
-			txtILKullaniciAdi.setError(getString(R.string.hata_bos_alan));
-			txtKullaniciAdi.requestFocus();
-			txtKullaniciAdi.setSelection(txtKullaniciAdi.length());
-			imm.showSoftInput(txtKullaniciAdi, 0);
-		} else if (KullaniciAdi.length() < KullaniciAdiKarakterSayisiMIN) {
-			txtILKullaniciAdi.setError(getString(R.string.hata_en_az_karakter, String.valueOf(KullaniciAdiKarakterSayisiMIN)));
-			txtKullaniciAdi.requestFocus();
-			txtKullaniciAdi.setSelection(txtKullaniciAdi.length());
-			imm.showSoftInput(txtKullaniciAdi, 0);
-		} else if (KullaniciAdi.length() > KullaniciAdiKarakterSayisiMAX) {
-			txtILKullaniciAdi.setError(getString(R.string.hata_en_fazla_karakter, String.valueOf(KullaniciAdiKarakterSayisiMAX)));
-			txtKullaniciAdi.requestFocus();
-			txtKullaniciAdi.setSelection(txtKullaniciAdi.length());
-			imm.showSoftInput(txtKullaniciAdi, 0);
-		} else if(!AkorDefterimSys.isValid(KullaniciAdi, "KullaniciAdi")) {
-			txtILKullaniciAdi.setError(getString(R.string.hata_format_sadece_sayi_kucukharf));
-			txtKullaniciAdi.requestFocus();
-			txtKullaniciAdi.setSelection(txtKullaniciAdi.length());
-			imm.showSoftInput(txtKullaniciAdi, 0);
-		} else if(!StringUtils.isAlpha(KullaniciAdi.substring(0, KullaniciAdiBastakiHarfKarakterSayisi))) {
-			txtILKullaniciAdi.setError(getString(R.string.hata_format_bastaki_karakterler_harf_olmak_zorunda, String.valueOf(KullaniciAdiBastakiHarfKarakterSayisi)));
-			txtKullaniciAdi.requestFocus();
-			txtKullaniciAdi.setSelection(txtKullaniciAdi.length());
-			imm.showSoftInput(txtKullaniciAdi, 0);
-		} else txtILKullaniciAdi.setError(null);
+			if (TextUtils.isEmpty(KullaniciAdi)) {
+				txtILKullaniciAdi.setError(getString(R.string.hata_bos_alan));
+				txtKullaniciAdi.requestFocus();
+				txtKullaniciAdi.setSelection(txtKullaniciAdi.length());
+				imm.showSoftInput(txtKullaniciAdi, 0);
+			} else if (KullaniciAdi.length() < KullaniciAdiKarakterSayisiMIN) {
+				txtILKullaniciAdi.setError(getString(R.string.hata_en_az_karakter, String.valueOf(KullaniciAdiKarakterSayisiMIN)));
+				txtKullaniciAdi.requestFocus();
+				txtKullaniciAdi.setSelection(txtKullaniciAdi.length());
+				imm.showSoftInput(txtKullaniciAdi, 0);
+			} else if (KullaniciAdi.length() > KullaniciAdiKarakterSayisiMAX) {
+				txtILKullaniciAdi.setError(getString(R.string.hata_en_fazla_karakter, String.valueOf(KullaniciAdiKarakterSayisiMAX)));
+				txtKullaniciAdi.requestFocus();
+				txtKullaniciAdi.setSelection(txtKullaniciAdi.length());
+				imm.showSoftInput(txtKullaniciAdi, 0);
+			} else if(!AkorDefterimSys.isValid(KullaniciAdi, "KullaniciAdi")) {
+				txtILKullaniciAdi.setError(getString(R.string.hata_format_sadece_sayi_kucukharf));
+				txtKullaniciAdi.requestFocus();
+				txtKullaniciAdi.setSelection(txtKullaniciAdi.length());
+				imm.showSoftInput(txtKullaniciAdi, 0);
+			} else if(!StringUtils.isAlpha(KullaniciAdi.substring(0, KullaniciAdiBastakiHarfKarakterSayisi))) {
+				txtILKullaniciAdi.setError(getString(R.string.hata_format_bastaki_karakterler_harf_olmak_zorunda, String.valueOf(KullaniciAdiBastakiHarfKarakterSayisi)));
+				txtKullaniciAdi.requestFocus();
+				txtKullaniciAdi.setSelection(txtKullaniciAdi.length());
+				imm.showSoftInput(txtKullaniciAdi, 0);
+			} else txtILKullaniciAdi.setError(null);
 
-		if(txtILKullaniciAdi.getError() == null) {
-			AkorDefterimSys.UnFocusEditText(txtKullaniciAdi);
+			if(txtILKullaniciAdi.getError() == null) {
+				btnTamamla.setEnabled(false);
+				AkorDefterimSys.UnFocusEditText(txtKullaniciAdi);
 
-			if(AkorDefterimSys.InternetErisimKontrolu()) {
 				if(!AkorDefterimSys.ProgressDialogisShowing(PDKayitIslem)) {
 					PDKayitIslem = AkorDefterimSys.CustomProgressDialog(getString(R.string.profiliniz_olusturuluyor_lutfen_bekleyiniz), false, AkorDefterimSys.ProgressBarTimeoutSuresi, "");
 					PDKayitIslem.show();
 				}
 
 				AkorDefterimSys.HesapBilgiGetir(null, "", "", KullaniciAdi, "HesapBilgiGetir");
-			} else {
-				btnTamamla.setEnabled(true);
-				AkorDefterimSys.StandartSnackBarMsj(coordinatorLayout, getString(R.string.internet_baglantisi_saglanamadi));
 			}
-		} else btnTamamla.setEnabled(true);
+		} else AkorDefterimSys.StandartSnackBarMsj(coordinatorLayout, getString(R.string.internet_baglantisi_saglanamadi));
 	}
 
 	@SuppressWarnings("ResultOfMethodCallIgnored")
@@ -354,7 +350,7 @@ public class KayitEkran_KullaniciAdi extends AppCompatActivity implements Interf
 
 				// Adding file data to http body
 				entity.addPart("Dosya", new FileBody(SecilenProfilResmiFile));
-				entity.addPart("Dizin", new StringBody(AkorDefterimSys.ProfilResimleriKlasoruDizin));
+				entity.addPart("Dizin", new StringBody(AkorDefterimSys.PHPProfilResimleriDizini));
 				entity.addPart("HesapID", new StringBody(EklenenHesapID));
 
 				totalSize = entity.getContentLength();
@@ -454,7 +450,7 @@ public class KayitEkran_KullaniciAdi extends AppCompatActivity implements Interf
 	}
 
 	private void SonrakiEkran() {
-		// PDKayitIslem Progress Dialog'u kapattık
+		btnTamamla.setEnabled(true);
 		AkorDefterimSys.DismissProgressDialog(PDKayitIslem);
 
 		Intent mIntent = new Intent(activity, AnaEkran.class);

@@ -27,7 +27,6 @@ import java.net.URL;
 import java.nio.charset.Charset;
 import java.security.cert.CertificateException;
 import java.security.cert.X509Certificate;
-import java.sql.Time;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -36,7 +35,6 @@ import java.util.Calendar;
 import java.util.Collections;
 import java.util.Date;
 import java.util.Enumeration;
-import java.util.GregorianCalendar;
 import java.util.List;
 import java.util.Locale;
 import java.util.concurrent.TimeUnit;
@@ -57,7 +55,6 @@ import com.cnbcyln.app.akordefterim.Retrofit.Siniflar.SnfSistemDurum;
 import com.cnbcyln.app.akordefterim.Retrofit.Siniflar.SnfTarihSaat;
 import com.cnbcyln.app.akordefterim.Siniflar.SnfAkorlar;
 import com.cnbcyln.app.akordefterim.Siniflar.SnfTonlar;
-import com.cnbcyln.app.akordefterim.Siniflar.SnfUlkeKodlari;
 import com.cnbcyln.app.akordefterim.util.SlideNav.SlideGravity;
 import com.cnbcyln.app.akordefterim.util.SlideNav.SlidingRootNav;
 import com.cnbcyln.app.akordefterim.util.SlideNav.SlidingRootNavBuilder;
@@ -109,6 +106,7 @@ import android.support.constraint.ConstraintLayout;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.ActivityOptionsCompat;
+import android.support.v4.content.FileProvider;
 import android.support.v7.widget.PopupMenu;
 import android.text.Html;
 import android.text.Spannable;
@@ -188,13 +186,13 @@ public class AkorDefterimSys {
 
 	// PHP AYARLARI (MAİL VE SMS GÖNDERİMİ)
 	public String CBCAPP_HttpsAdres = "https://www.cbcapp.net";
-	private String AkorDefterimHttpAdres = "http://akordefterim.cbcapp.net/";
+	public String AkorDefterimKlasorAdi = "akordefterim";
 	List<String> SMSGondericiAdi = Arrays.asList("+908503042567", "C.B.CEYLAN");
 
 	public String AnaKlasorDizini = Environment.getExternalStorageDirectory() + File.separator + "Akor Defterim" + File.separator;
 	public int WebBaglantiIstegiToplamSure = 30;
-	public int SMSGondermeToplamSure = 20;
-	public int EPostaGondermeToplamSure = 20;
+	public int SMSGondermeToplamSure = 60;
+	public int EPostaGondermeToplamSure = 60;
 	public int ProgressBarTimeoutSuresi = 30 * 1000; // 30 Saniye
 	private static final int PLAY_SERVICES_RESOLUTION_REQUEST = 1000;
 	public int RC_GOOGLE_LOGIN = 9001;
@@ -211,58 +209,32 @@ public class AkorDefterimSys {
 	public int DISPLACEMENT = 5; // 5 metre
 
 	// **** URL ADRESLERİ
-	public String SanatciResimleriKlasoruURL = CBCAPP_HttpsAdres + "/akordefterim/sanatci_img/";
-	public String ProfilResimleriKlasoruURL = CBCAPP_HttpsAdres + "/akordefterim/profil_img/";
-	public String ProfilResimleriKlasoruDizin = "../../profil_img/";
-	public String YedeklemeKlasoruURL = AkorDefterimHttpAdres + "/rep_yedekleri/";
-	public String YedeklemeKlasoruDizin = "../../rep_yedekleri/";
-	public String OnlineRepertuvarListesiKlasoruURL = AkorDefterimHttpAdres + "/rep_listeleri/";
+	public String SanatciResimleriKlasoruDizini = File.separator + AkorDefterimKlasorAdi + "/sanatci_img/";
+
+	public String ProfilResimleriDizini = File.separator + AkorDefterimKlasorAdi + "/profil_img/";
+	public String PHPProfilResimleriDizini = "../../profil_img/";
+
+	public String YedeklemeKlasoruDizini =  File.separator + AkorDefterimKlasorAdi + "/rep_yedekleri/";
+	public String PHPYedeklemeKlasoruDizini = "../../rep_yedekleri/";
+
+	public String RepertuvarListesiKlasoruDizini = "/rep_listeleri/";
 	public String OnlineRepertuvarListesiKlasoruDizin = "../../../httpdocs/akordefterim/rep_listeleri/";
 
 	// **** Genel İşlemler
-	public String PHPSMSYolla = AkorDefterimHttpAdres + "/araclar/sms/index.php";
-	public String PHPEMailYolla = "/akordefterim/phpscriptleri/mail/index.php";
-	public String PHPDosyaYukle = AkorDefterimHttpAdres + "/araclar/genel/dosyayukle.php";
+	public String PHPDosyaYukle = "/araclar/genel/dosyayukle.php";
 	public String PHPResimYukle = CBCAPP_HttpsAdres + "/akordefterim/phpscriptleri/genel/resimyukle.php";
 	public String AnasayfaURL = CBCAPP_HttpsAdres + "/akordefterim/phpscriptleri/genel/anasayfa.php";
-	private String ReklamDuyuru = AkorDefterimHttpAdres + "/araclar/genel/reklamduyuru.php";
-	private String SistemDurum = AkorDefterimHttpAdres + "/araclar/genel/sistemdurum.php";
-
-	// **** Hesap İşlemleri - Normal
-	public String PHPHesapGirisYap = AkorDefterimHttpAdres + "/araclar/hesapislemleri/normal/hesapgirisyap.php";
-	public String PHPHesapKontrol = AkorDefterimHttpAdres + "/araclar/hesapislemleri/normal/hesapkontrol.php";
-	public String PHPHesapBilgiGetir = AkorDefterimHttpAdres + "/araclar/hesapislemleri/normal/hesapbilgigetir.php";
-	public String PHPHesapOnayIslemleri = AkorDefterimHttpAdres + "/araclar/hesapislemleri/normal/hesaponayislemleri.php";
-	public String PHPHesapEkle = AkorDefterimHttpAdres + "/araclar/hesapislemleri/normal/hesapekle.php";
-	public String PHPHesapYeniSifre = AkorDefterimHttpAdres + "/araclar/hesapislemleri/normal/hesapyenisifre.php";
-	public String PHPHesapGuncelle = AkorDefterimHttpAdres + "/araclar/hesapislemleri/normal/hesapguncelle.php";
-	public String PHPEmailKontrol = AkorDefterimHttpAdres + "/araclar/hesapislemleri/normal/emailkontrol.php";
-
-	// **** Hesap İşlemleri - Google
-	public String PHPGoogleHesapEkle_GirisYap = AkorDefterimHttpAdres + "/araclar/hesapislemleri/google/hesapekle_girisyap.php";
-	public String PHPGoogleHesapBilgiGetir = AkorDefterimHttpAdres + "/araclar/hesapislemleri/google/hesapbilgigetir.php";
-	public String PHPGoogleCepTelOnayIslemi = AkorDefterimHttpAdres + "/araclar/hesapislemleri/google/ceptelonay.php";
-	public String PHPGoogleHesapGuncelle = AkorDefterimHttpAdres + "/araclar/hesapislemleri/google/hesapguncelle.php";
-
-	// **** Hesap İşlemleri - Facebook
-	public String PHPFacebookHesapEkle_GirisYap = AkorDefterimHttpAdres + "/araclar/hesapislemleri/facebook/hesapekle_girisyap.php";
-	public String PHPFacebookHesapBilgiGetir = AkorDefterimHttpAdres + "/araclar/hesapislemleri/facebook/hesapbilgigetir.php";
-	public String PHPFacebookCepTelOnayIslemi = AkorDefterimHttpAdres + "/araclar/hesapislemleri/facebook/ceptelonay.php";
-	public String PHPFacebookHesapGuncelle = AkorDefterimHttpAdres + "/araclar/hesapislemleri/facebook/hesapguncelle.php";
-
-	// **** Genel Hesap İşlemleri
-	public String PHPKullaniciAdiKontrol = AkorDefterimHttpAdres + "/araclar/hesapislemleri/kullaniciadikontrol.php";
-	public String PHPCepTelefonKontrol = AkorDefterimHttpAdres + "/araclar/hesapislemleri/ceptelefonkontrol.php";
+	private String ReklamDuyuru = "/araclar/genel/reklamduyuru.php";
 
 	// **** Repertuvar İşlemleri
-	public String PHPSarkiListesiGetir = AkorDefterimHttpAdres + "/araclar/repertuvarislemleri/sarkilistesigetir.php";
-	public String PHPSarkiGetir = AkorDefterimHttpAdres + "/araclar/repertuvarislemleri/sarkigetir.php";
-	public String PHPKategoriListesiGetir = AkorDefterimHttpAdres + "/araclar/repertuvarislemleri/kategorilistesigetir.php";
-	public String PHPTarzListesiGetir = AkorDefterimHttpAdres + "/araclar/repertuvarislemleri/tarzlistesigetir.php";
-	public String PHPRepertuvarIcerikGonder = AkorDefterimHttpAdres + "/araclar/repertuvarislemleri/rep_icerik_gonder.php";
+	//public String PHPSarkiListesiGetir = AkorDefterimHttpAdres + "/araclar/repertuvarislemleri/sarkilistesigetir.php";
+	public String PHPSarkiGetir = "/araclar/repertuvarislemleri/sarkigetir.php";
+	public String PHPKategoriListesiGetir = "/araclar/repertuvarislemleri/kategorilistesigetir.php";
+	public String PHPTarzListesiGetir = "/araclar/repertuvarislemleri/tarzlistesigetir.php";
+	public String PHPRepertuvarIcerikGonder = "/araclar/repertuvarislemleri/rep_icerik_gonder.php";
 
 	// **** Firebase İşlemleri
-	private String PHPFirebaseNotify = AkorDefterimHttpAdres + "/araclar/firebase/mesajgonder.php";
+	private String PHPFirebaseNotify = "/araclar/firebase/mesajgonder.php";
 
 	public AkorDefterimSys() {}
 
@@ -1573,32 +1545,78 @@ public class AkorDefterimSys {
         }
     }
 
-    public void IntentGetir(String[] Data) {
-        switch (Data[0]) {
-            case "GaleridenResimGetir":
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                    if (activity.checkSelfPermission(android.Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED)
-                        activity.requestPermissions(new String[]{android.Manifest.permission.WRITE_EXTERNAL_STORAGE}, Integer.parseInt(Data[1]));
+    @SuppressWarnings({"EmptyTryBlock", "ResultOfMethodCallIgnored"})
+	public void IntentGetir(String[] Data) {
+		/*
+			Data[0] => Intent Adı
+			Data[1] => Kamera İzin No
+			Data[2] => onActivityResult için requestCode No
+		*/
+
+		switch (Data[0]) {
+			case "GaleridenResimGetir":
+				if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+					if (activity.checkSelfPermission(android.Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED)
+						activity.requestPermissions(new String[]{android.Manifest.permission.WRITE_EXTERNAL_STORAGE}, Integer.parseInt(Data[1]));
+					else {
+						Intent PickPictureIntent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+						PickPictureIntent.setType("image/*");
+						activity.startActivityForResult(Intent.createChooser(PickPictureIntent, activity.getString(R.string.bir_fotograf_secin)), Integer.parseInt(Data[2]));
+					}
+				} else {
+					Intent PickPictureIntent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+					PickPictureIntent.setType("image/*");
+					activity.startActivityForResult(Intent.createChooser(PickPictureIntent, activity.getString(R.string.bir_fotograf_secin)), Integer.parseInt(Data[2]));
+				}
+
+				break;
+			case "FotografCek":
+				int KameraIzinNo = Integer.parseInt(Data[1]);
+				int RequestCodeNo = Integer.parseInt(Data[2]);
+
+				if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                    if (activity.checkSelfPermission(android.Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED)
+                        activity.requestPermissions(new String[]{android.Manifest.permission.CAMERA}, KameraIzinNo);
                     else {
-                        Intent PickPictureIntent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
-                        PickPictureIntent.setType("image/*");
-                        activity.startActivityForResult(Intent.createChooser(PickPictureIntent, activity.getString(R.string.bir_fotograf_secin)), Integer.parseInt(Data[2]));
+                        File FAnaDizin = new File(AnaKlasorDizini);
+
+                        if(!FAnaDizin.exists()) FAnaDizin.mkdir();
+
+                        File Fotograf = new File(String.format("%s%s%s", AnaKlasorDizini, sharedPref.getString("prefHesapID", ""), ".jpg"));
+
+                        if(Fotograf.exists()) Fotograf.delete();
+
+                        Intent TakePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+                        if (TakePictureIntent.resolveActivity(activity.getPackageManager()) != null) {
+                            TakePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(Fotograf));
+                            activity.startActivityForResult(Intent.createChooser(TakePictureIntent, activity.getString(R.string.bir_kamera_secin)), RequestCodeNo);
+                        }
                     }
                 } else {
-                    Intent PickPictureIntent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
-                    PickPictureIntent.setType("image/*");
-                    activity.startActivityForResult(Intent.createChooser(PickPictureIntent, activity.getString(R.string.bir_fotograf_secin)), Integer.parseInt(Data[2]));
+					File FAnaDizin = new File(AnaKlasorDizini);
+
+					if(!FAnaDizin.exists()) FAnaDizin.mkdir();
+
+					File Fotograf = new File(String.format("%s%s%s", AnaKlasorDizini, sharedPref.getString("prefHesapID", ""), ".jpg"));
+
+					if(Fotograf.exists()) Fotograf.delete();
+
+					Intent TakePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+					if (TakePictureIntent.resolveActivity(activity.getPackageManager()) != null) {
+						TakePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(Fotograf));
+						activity.startActivityForResult(Intent.createChooser(TakePictureIntent, activity.getString(R.string.bir_kamera_secin)), RequestCodeNo);
+					}
                 }
 
-                break;
-            case "ResimKirp":
-                Intent intent = CropImage.activity(Uri.parse(Data[1]))
-                        .setFixAspectRatio(true)
-                        .getIntent(activity.getBaseContext());
-                activity.startActivityForResult(intent, Integer.parseInt(Data[2]));
+				break;
+			case "ResimKirp":
+				Intent intent = CropImage.activity(Uri.parse(Data[1]))
+						.setFixAspectRatio(true)
+						.getIntent(activity.getBaseContext());
+				activity.startActivityForResult(intent, Integer.parseInt(Data[2]));
 
-                break;
-        }
+				break;
+		}
     }
 
     @SuppressWarnings("ResultOfMethodCallIgnored")
@@ -1624,1258 +1642,6 @@ public class AkorDefterimSys {
 
         return SecilenProfilResmiFile;
     }
-
-    public List<SnfUlkeKodlari> UlkeKodlariniGetir(){
-		List<SnfUlkeKodlari> UlkeKodlari = new ArrayList<>();
-		SnfUlkeKodlari snfUlkeKodlari;
-
-		snfUlkeKodlari = new SnfUlkeKodlari();
-		snfUlkeKodlari.setUlkeAdi("Afghanistan");
-		snfUlkeKodlari.setUlkeKodu("93");
-		UlkeKodlari.add(snfUlkeKodlari);
-
-		snfUlkeKodlari = new SnfUlkeKodlari();
-		snfUlkeKodlari.setUlkeAdi("Åland Islands");
-		snfUlkeKodlari.setUlkeKodu("0");
-		UlkeKodlari.add(snfUlkeKodlari);
-
-		snfUlkeKodlari = new SnfUlkeKodlari();
-		snfUlkeKodlari.setUlkeAdi("Albania");
-		snfUlkeKodlari.setUlkeKodu("355");
-		UlkeKodlari.add(snfUlkeKodlari);
-
-		snfUlkeKodlari = new SnfUlkeKodlari();
-		snfUlkeKodlari.setUlkeAdi("Algeria");
-		snfUlkeKodlari.setUlkeKodu("213");
-		UlkeKodlari.add(snfUlkeKodlari);
-
-		snfUlkeKodlari = new SnfUlkeKodlari();
-		snfUlkeKodlari.setUlkeAdi("American Samoa");
-		snfUlkeKodlari.setUlkeKodu("1684");
-		UlkeKodlari.add(snfUlkeKodlari);
-
-		snfUlkeKodlari = new SnfUlkeKodlari();
-		snfUlkeKodlari.setUlkeAdi("Andorra");
-		snfUlkeKodlari.setUlkeKodu("376");
-		UlkeKodlari.add(snfUlkeKodlari);
-
-		snfUlkeKodlari = new SnfUlkeKodlari();
-		snfUlkeKodlari.setUlkeAdi("Angola");
-		snfUlkeKodlari.setUlkeKodu("244");
-		UlkeKodlari.add(snfUlkeKodlari);
-
-		snfUlkeKodlari = new SnfUlkeKodlari();
-		snfUlkeKodlari.setUlkeAdi("Anguilla");
-		snfUlkeKodlari.setUlkeKodu("1264");
-		UlkeKodlari.add(snfUlkeKodlari);
-
-		snfUlkeKodlari = new SnfUlkeKodlari();
-		snfUlkeKodlari.setUlkeAdi("Antarctica");
-		snfUlkeKodlari.setUlkeKodu("672");
-		UlkeKodlari.add(snfUlkeKodlari);
-
-		snfUlkeKodlari = new SnfUlkeKodlari();
-		snfUlkeKodlari.setUlkeAdi("Antigua and Barbuda");
-		snfUlkeKodlari.setUlkeKodu("1268");
-		UlkeKodlari.add(snfUlkeKodlari);
-
-		snfUlkeKodlari = new SnfUlkeKodlari();
-		snfUlkeKodlari.setUlkeAdi("Argentina");
-		snfUlkeKodlari.setUlkeKodu("54");
-		UlkeKodlari.add(snfUlkeKodlari);
-
-		snfUlkeKodlari = new SnfUlkeKodlari();
-		snfUlkeKodlari.setUlkeAdi("Armenia");
-		snfUlkeKodlari.setUlkeKodu("374");
-		UlkeKodlari.add(snfUlkeKodlari);
-
-		snfUlkeKodlari = new SnfUlkeKodlari();
-		snfUlkeKodlari.setUlkeAdi("Aruba");
-		snfUlkeKodlari.setUlkeKodu("297");
-		UlkeKodlari.add(snfUlkeKodlari);
-
-		snfUlkeKodlari = new SnfUlkeKodlari();
-		snfUlkeKodlari.setUlkeAdi("Australia");
-		snfUlkeKodlari.setUlkeKodu("61");
-		UlkeKodlari.add(snfUlkeKodlari);
-
-		snfUlkeKodlari = new SnfUlkeKodlari();
-		snfUlkeKodlari.setUlkeAdi("Austria");
-		snfUlkeKodlari.setUlkeKodu("43");
-		UlkeKodlari.add(snfUlkeKodlari);
-
-		snfUlkeKodlari = new SnfUlkeKodlari();
-		snfUlkeKodlari.setUlkeAdi("Azerbaijan");
-		snfUlkeKodlari.setUlkeKodu("994");
-		UlkeKodlari.add(snfUlkeKodlari);
-
-		snfUlkeKodlari = new SnfUlkeKodlari();
-		snfUlkeKodlari.setUlkeAdi("Bahamas");
-		snfUlkeKodlari.setUlkeKodu("1242");
-		UlkeKodlari.add(snfUlkeKodlari);
-
-		snfUlkeKodlari = new SnfUlkeKodlari();
-		snfUlkeKodlari.setUlkeAdi("Bahrain");
-		snfUlkeKodlari.setUlkeKodu("973");
-		UlkeKodlari.add(snfUlkeKodlari);
-
-		snfUlkeKodlari = new SnfUlkeKodlari();
-		snfUlkeKodlari.setUlkeAdi("Bangladesh");
-		snfUlkeKodlari.setUlkeKodu("880");
-		UlkeKodlari.add(snfUlkeKodlari);
-
-		snfUlkeKodlari = new SnfUlkeKodlari();
-		snfUlkeKodlari.setUlkeAdi("Barbados");
-		snfUlkeKodlari.setUlkeKodu("1246");
-		UlkeKodlari.add(snfUlkeKodlari);
-
-		snfUlkeKodlari = new SnfUlkeKodlari();
-		snfUlkeKodlari.setUlkeAdi("Belarus");
-		snfUlkeKodlari.setUlkeKodu("375");
-		UlkeKodlari.add(snfUlkeKodlari);
-
-		snfUlkeKodlari = new SnfUlkeKodlari();
-		snfUlkeKodlari.setUlkeAdi("Belgium");
-		snfUlkeKodlari.setUlkeKodu("32");
-		UlkeKodlari.add(snfUlkeKodlari);
-
-		snfUlkeKodlari = new SnfUlkeKodlari();
-		snfUlkeKodlari.setUlkeAdi("Belize");
-		snfUlkeKodlari.setUlkeKodu("501");
-		UlkeKodlari.add(snfUlkeKodlari);
-
-		snfUlkeKodlari = new SnfUlkeKodlari();
-		snfUlkeKodlari.setUlkeAdi("Benin");
-		snfUlkeKodlari.setUlkeKodu("229");
-		UlkeKodlari.add(snfUlkeKodlari);
-
-		snfUlkeKodlari = new SnfUlkeKodlari();
-		snfUlkeKodlari.setUlkeAdi("Bermuda");
-		snfUlkeKodlari.setUlkeKodu("1441");
-		UlkeKodlari.add(snfUlkeKodlari);
-
-		snfUlkeKodlari = new SnfUlkeKodlari();
-		snfUlkeKodlari.setUlkeAdi("Bhutan");
-		snfUlkeKodlari.setUlkeKodu("975");
-		UlkeKodlari.add(snfUlkeKodlari);
-
-		snfUlkeKodlari = new SnfUlkeKodlari();
-		snfUlkeKodlari.setUlkeAdi("Bolivia");
-		snfUlkeKodlari.setUlkeKodu("591");
-		UlkeKodlari.add(snfUlkeKodlari);
-
-		snfUlkeKodlari = new SnfUlkeKodlari();
-		snfUlkeKodlari.setUlkeAdi("Bonaire, Sint Eustatius and Saba");
-		snfUlkeKodlari.setUlkeKodu("0");
-		UlkeKodlari.add(snfUlkeKodlari);
-
-		snfUlkeKodlari = new SnfUlkeKodlari();
-		snfUlkeKodlari.setUlkeAdi("Bosnia and Herzegovina");
-		snfUlkeKodlari.setUlkeKodu("387");
-		UlkeKodlari.add(snfUlkeKodlari);
-
-		snfUlkeKodlari = new SnfUlkeKodlari();
-		snfUlkeKodlari.setUlkeAdi("Botswana");
-		snfUlkeKodlari.setUlkeKodu("267");
-		UlkeKodlari.add(snfUlkeKodlari);
-
-		snfUlkeKodlari = new SnfUlkeKodlari();
-		snfUlkeKodlari.setUlkeAdi("Bouvet Island");
-		snfUlkeKodlari.setUlkeKodu("44");
-		UlkeKodlari.add(snfUlkeKodlari);
-
-		snfUlkeKodlari = new SnfUlkeKodlari();
-		snfUlkeKodlari.setUlkeAdi("Brazil");
-		snfUlkeKodlari.setUlkeKodu("55");
-		UlkeKodlari.add(snfUlkeKodlari);
-
-		snfUlkeKodlari = new SnfUlkeKodlari();
-		snfUlkeKodlari.setUlkeAdi("British Indian Ocean Territory");
-		snfUlkeKodlari.setUlkeKodu("0");
-		UlkeKodlari.add(snfUlkeKodlari);
-
-		snfUlkeKodlari = new SnfUlkeKodlari();
-		snfUlkeKodlari.setUlkeAdi("Brunei Darussalam");
-		snfUlkeKodlari.setUlkeKodu("673");
-		UlkeKodlari.add(snfUlkeKodlari);
-
-		snfUlkeKodlari = new SnfUlkeKodlari();
-		snfUlkeKodlari.setUlkeAdi("Bulgaria");
-		snfUlkeKodlari.setUlkeKodu("359");
-		UlkeKodlari.add(snfUlkeKodlari);
-
-		snfUlkeKodlari = new SnfUlkeKodlari();
-		snfUlkeKodlari.setUlkeAdi("Burkina Faso");
-		snfUlkeKodlari.setUlkeKodu("226");
-		UlkeKodlari.add(snfUlkeKodlari);
-
-		snfUlkeKodlari = new SnfUlkeKodlari();
-		snfUlkeKodlari.setUlkeAdi("Burundi");
-		snfUlkeKodlari.setUlkeKodu("257");
-		UlkeKodlari.add(snfUlkeKodlari);
-
-		snfUlkeKodlari = new SnfUlkeKodlari();
-		snfUlkeKodlari.setUlkeAdi("Cambodia");
-		snfUlkeKodlari.setUlkeKodu("855");
-		UlkeKodlari.add(snfUlkeKodlari);
-
-		snfUlkeKodlari = new SnfUlkeKodlari();
-		snfUlkeKodlari.setUlkeAdi("Cameroon");
-		snfUlkeKodlari.setUlkeKodu("237");
-		UlkeKodlari.add(snfUlkeKodlari);
-
-		snfUlkeKodlari = new SnfUlkeKodlari();
-		snfUlkeKodlari.setUlkeAdi("Canada");
-		snfUlkeKodlari.setUlkeKodu("1");
-		UlkeKodlari.add(snfUlkeKodlari);
-
-		snfUlkeKodlari = new SnfUlkeKodlari();
-		snfUlkeKodlari.setUlkeAdi("Cape Verde");
-		snfUlkeKodlari.setUlkeKodu("238");
-		UlkeKodlari.add(snfUlkeKodlari);
-
-		snfUlkeKodlari = new SnfUlkeKodlari();
-		snfUlkeKodlari.setUlkeAdi("Cayman Islands");
-		snfUlkeKodlari.setUlkeKodu("1345");
-		UlkeKodlari.add(snfUlkeKodlari);
-
-		snfUlkeKodlari = new SnfUlkeKodlari();
-		snfUlkeKodlari.setUlkeAdi("Central African Republic");
-		snfUlkeKodlari.setUlkeKodu("236");
-		UlkeKodlari.add(snfUlkeKodlari);
-
-		snfUlkeKodlari = new SnfUlkeKodlari();
-		snfUlkeKodlari.setUlkeAdi("Chad");
-		snfUlkeKodlari.setUlkeKodu("235");
-		UlkeKodlari.add(snfUlkeKodlari);
-
-		snfUlkeKodlari = new SnfUlkeKodlari();
-		snfUlkeKodlari.setUlkeAdi("Chile");
-		snfUlkeKodlari.setUlkeKodu("56");
-		UlkeKodlari.add(snfUlkeKodlari);
-
-		snfUlkeKodlari = new SnfUlkeKodlari();
-		snfUlkeKodlari.setUlkeAdi("China");
-		snfUlkeKodlari.setUlkeKodu("86");
-		UlkeKodlari.add(snfUlkeKodlari);
-
-		snfUlkeKodlari = new SnfUlkeKodlari();
-		snfUlkeKodlari.setUlkeAdi("Christmas Island");
-		snfUlkeKodlari.setUlkeKodu("61");
-		UlkeKodlari.add(snfUlkeKodlari);
-
-		snfUlkeKodlari = new SnfUlkeKodlari();
-		snfUlkeKodlari.setUlkeAdi("Cocos (Keeling) Islands");
-		snfUlkeKodlari.setUlkeKodu("61");
-		UlkeKodlari.add(snfUlkeKodlari);
-
-		snfUlkeKodlari = new SnfUlkeKodlari();
-		snfUlkeKodlari.setUlkeAdi("Colombia");
-		snfUlkeKodlari.setUlkeKodu("57");
-		UlkeKodlari.add(snfUlkeKodlari);
-
-		snfUlkeKodlari = new SnfUlkeKodlari();
-		snfUlkeKodlari.setUlkeAdi("Comoros");
-		snfUlkeKodlari.setUlkeKodu("269");
-		UlkeKodlari.add(snfUlkeKodlari);
-
-		snfUlkeKodlari = new SnfUlkeKodlari();
-		snfUlkeKodlari.setUlkeAdi("Congo");
-		snfUlkeKodlari.setUlkeKodu("242");
-		UlkeKodlari.add(snfUlkeKodlari);
-
-		snfUlkeKodlari = new SnfUlkeKodlari();
-		snfUlkeKodlari.setUlkeAdi("Congo (Democratic Republic of the)");
-		snfUlkeKodlari.setUlkeKodu("243");
-		UlkeKodlari.add(snfUlkeKodlari);
-
-		snfUlkeKodlari = new SnfUlkeKodlari();
-		snfUlkeKodlari.setUlkeAdi("Cook Islands");
-		snfUlkeKodlari.setUlkeKodu("682");
-		UlkeKodlari.add(snfUlkeKodlari);
-
-		snfUlkeKodlari = new SnfUlkeKodlari();
-		snfUlkeKodlari.setUlkeAdi("Costa Rica");
-		snfUlkeKodlari.setUlkeKodu("506");
-		UlkeKodlari.add(snfUlkeKodlari);
-
-		snfUlkeKodlari = new SnfUlkeKodlari();
-		snfUlkeKodlari.setUlkeAdi("Croatia (Hrvatska)");
-		snfUlkeKodlari.setUlkeKodu("385");
-		UlkeKodlari.add(snfUlkeKodlari);
-
-		snfUlkeKodlari = new SnfUlkeKodlari();
-		snfUlkeKodlari.setUlkeAdi("Cuba");
-		snfUlkeKodlari.setUlkeKodu("53");
-		UlkeKodlari.add(snfUlkeKodlari);
-
-		snfUlkeKodlari = new SnfUlkeKodlari();
-		snfUlkeKodlari.setUlkeAdi("Curaçao");
-		snfUlkeKodlari.setUlkeKodu("0");
-		UlkeKodlari.add(snfUlkeKodlari);
-
-		snfUlkeKodlari = new SnfUlkeKodlari();
-		snfUlkeKodlari.setUlkeAdi("Cyprus");
-		snfUlkeKodlari.setUlkeKodu("357");
-		UlkeKodlari.add(snfUlkeKodlari);
-
-		snfUlkeKodlari = new SnfUlkeKodlari();
-		snfUlkeKodlari.setUlkeAdi("Czech Republic");
-		snfUlkeKodlari.setUlkeKodu("420");
-		UlkeKodlari.add(snfUlkeKodlari);
-
-		snfUlkeKodlari = new SnfUlkeKodlari();
-		snfUlkeKodlari.setUlkeAdi("Denmark");
-		snfUlkeKodlari.setUlkeKodu("45");
-		UlkeKodlari.add(snfUlkeKodlari);
-
-		snfUlkeKodlari = new SnfUlkeKodlari();
-		snfUlkeKodlari.setUlkeAdi("Djibouti");
-		snfUlkeKodlari.setUlkeKodu("253");
-		UlkeKodlari.add(snfUlkeKodlari);
-
-		snfUlkeKodlari = new SnfUlkeKodlari();
-		snfUlkeKodlari.setUlkeAdi("Dominica");
-		snfUlkeKodlari.setUlkeKodu("1767");
-		UlkeKodlari.add(snfUlkeKodlari);
-
-		snfUlkeKodlari = new SnfUlkeKodlari();
-		snfUlkeKodlari.setUlkeAdi("Dominican Republic");
-		snfUlkeKodlari.setUlkeKodu("1809");
-		UlkeKodlari.add(snfUlkeKodlari);
-
-		snfUlkeKodlari = new SnfUlkeKodlari();
-		snfUlkeKodlari.setUlkeAdi("Ecuador");
-		snfUlkeKodlari.setUlkeKodu("593");
-		UlkeKodlari.add(snfUlkeKodlari);
-
-		snfUlkeKodlari = new SnfUlkeKodlari();
-		snfUlkeKodlari.setUlkeAdi("Egypt");
-		snfUlkeKodlari.setUlkeKodu("20");
-		UlkeKodlari.add(snfUlkeKodlari);
-
-		snfUlkeKodlari = new SnfUlkeKodlari();
-		snfUlkeKodlari.setUlkeAdi("El Salvador");
-		snfUlkeKodlari.setUlkeKodu("503");
-		UlkeKodlari.add(snfUlkeKodlari);
-
-		snfUlkeKodlari = new SnfUlkeKodlari();
-		snfUlkeKodlari.setUlkeAdi("Equatorial Guinea");
-		snfUlkeKodlari.setUlkeKodu("240");
-		UlkeKodlari.add(snfUlkeKodlari);
-
-		snfUlkeKodlari = new SnfUlkeKodlari();
-		snfUlkeKodlari.setUlkeAdi("Eritrea");
-		snfUlkeKodlari.setUlkeKodu("291");
-		UlkeKodlari.add(snfUlkeKodlari);
-
-		snfUlkeKodlari = new SnfUlkeKodlari();
-		snfUlkeKodlari.setUlkeAdi("Estonia");
-		snfUlkeKodlari.setUlkeKodu("372");
-		UlkeKodlari.add(snfUlkeKodlari);
-
-		snfUlkeKodlari = new SnfUlkeKodlari();
-		snfUlkeKodlari.setUlkeAdi("Ethiopia");
-		snfUlkeKodlari.setUlkeKodu("251");
-		UlkeKodlari.add(snfUlkeKodlari);
-
-		snfUlkeKodlari = new SnfUlkeKodlari();
-		snfUlkeKodlari.setUlkeAdi("Falkland Islands (Malvinas)");
-		snfUlkeKodlari.setUlkeKodu("500");
-		UlkeKodlari.add(snfUlkeKodlari);
-
-		snfUlkeKodlari = new SnfUlkeKodlari();
-		snfUlkeKodlari.setUlkeAdi("Faroe Islands");
-		snfUlkeKodlari.setUlkeKodu("298");
-		UlkeKodlari.add(snfUlkeKodlari);
-
-		snfUlkeKodlari = new SnfUlkeKodlari();
-		snfUlkeKodlari.setUlkeAdi("Fiji");
-		snfUlkeKodlari.setUlkeKodu("679");
-		UlkeKodlari.add(snfUlkeKodlari);
-
-		snfUlkeKodlari = new SnfUlkeKodlari();
-		snfUlkeKodlari.setUlkeAdi("Finland");
-		snfUlkeKodlari.setUlkeKodu("358");
-		UlkeKodlari.add(snfUlkeKodlari);
-
-		snfUlkeKodlari = new SnfUlkeKodlari();
-		snfUlkeKodlari.setUlkeAdi("France");
-		snfUlkeKodlari.setUlkeKodu("33");
-		UlkeKodlari.add(snfUlkeKodlari);
-
-		snfUlkeKodlari = new SnfUlkeKodlari();
-		snfUlkeKodlari.setUlkeAdi("French Guiana");
-		snfUlkeKodlari.setUlkeKodu("594");
-		UlkeKodlari.add(snfUlkeKodlari);
-
-		snfUlkeKodlari = new SnfUlkeKodlari();
-		snfUlkeKodlari.setUlkeAdi("French Polynesia");
-		snfUlkeKodlari.setUlkeKodu("689");
-		UlkeKodlari.add(snfUlkeKodlari);
-
-		snfUlkeKodlari = new SnfUlkeKodlari();
-		snfUlkeKodlari.setUlkeAdi("French Southern Territories");
-		snfUlkeKodlari.setUlkeKodu("44");
-		UlkeKodlari.add(snfUlkeKodlari);
-
-		snfUlkeKodlari = new SnfUlkeKodlari();
-		snfUlkeKodlari.setUlkeAdi("Gabon");
-		snfUlkeKodlari.setUlkeKodu("241");
-		UlkeKodlari.add(snfUlkeKodlari);
-
-		snfUlkeKodlari = new SnfUlkeKodlari();
-		snfUlkeKodlari.setUlkeAdi("Gambia");
-		snfUlkeKodlari.setUlkeKodu("220");
-		UlkeKodlari.add(snfUlkeKodlari);
-
-		snfUlkeKodlari = new SnfUlkeKodlari();
-		snfUlkeKodlari.setUlkeAdi("Georgia");
-		snfUlkeKodlari.setUlkeKodu("995");
-		UlkeKodlari.add(snfUlkeKodlari);
-
-		snfUlkeKodlari = new SnfUlkeKodlari();
-		snfUlkeKodlari.setUlkeAdi("Germany");
-		snfUlkeKodlari.setUlkeKodu("49");
-		UlkeKodlari.add(snfUlkeKodlari);
-
-		snfUlkeKodlari = new SnfUlkeKodlari();
-		snfUlkeKodlari.setUlkeAdi("Ghana");
-		snfUlkeKodlari.setUlkeKodu("233");
-		UlkeKodlari.add(snfUlkeKodlari);
-
-		snfUlkeKodlari = new SnfUlkeKodlari();
-		snfUlkeKodlari.setUlkeAdi("Gibraltar");
-		snfUlkeKodlari.setUlkeKodu("350");
-		UlkeKodlari.add(snfUlkeKodlari);
-
-		snfUlkeKodlari = new SnfUlkeKodlari();
-		snfUlkeKodlari.setUlkeAdi("Greece");
-		snfUlkeKodlari.setUlkeKodu("30");
-		UlkeKodlari.add(snfUlkeKodlari);
-
-		snfUlkeKodlari = new SnfUlkeKodlari();
-		snfUlkeKodlari.setUlkeAdi("Greenland");
-		snfUlkeKodlari.setUlkeKodu("299");
-		UlkeKodlari.add(snfUlkeKodlari);
-
-		snfUlkeKodlari = new SnfUlkeKodlari();
-		snfUlkeKodlari.setUlkeAdi("Grenada");
-		snfUlkeKodlari.setUlkeKodu("1473");
-		UlkeKodlari.add(snfUlkeKodlari);
-
-		snfUlkeKodlari = new SnfUlkeKodlari();
-		snfUlkeKodlari.setUlkeAdi("Guadeloupe");
-		snfUlkeKodlari.setUlkeKodu("590");
-		UlkeKodlari.add(snfUlkeKodlari);
-
-		snfUlkeKodlari = new SnfUlkeKodlari();
-		snfUlkeKodlari.setUlkeAdi("Guam");
-		snfUlkeKodlari.setUlkeKodu("1671");
-		UlkeKodlari.add(snfUlkeKodlari);
-
-		snfUlkeKodlari = new SnfUlkeKodlari();
-		snfUlkeKodlari.setUlkeAdi("Guatemala");
-		snfUlkeKodlari.setUlkeKodu("502");
-		UlkeKodlari.add(snfUlkeKodlari);
-
-		snfUlkeKodlari = new SnfUlkeKodlari();
-		snfUlkeKodlari.setUlkeAdi("Guernsey");
-		snfUlkeKodlari.setUlkeKodu("0");
-		UlkeKodlari.add(snfUlkeKodlari);
-
-		snfUlkeKodlari = new SnfUlkeKodlari();
-		snfUlkeKodlari.setUlkeAdi("Guinea");
-		snfUlkeKodlari.setUlkeKodu("224");
-		UlkeKodlari.add(snfUlkeKodlari);
-
-		snfUlkeKodlari = new SnfUlkeKodlari();
-		snfUlkeKodlari.setUlkeAdi("Guinea-Bissau");
-		snfUlkeKodlari.setUlkeKodu("245");
-		UlkeKodlari.add(snfUlkeKodlari);
-
-		snfUlkeKodlari = new SnfUlkeKodlari();
-		snfUlkeKodlari.setUlkeAdi("Guyana");
-		snfUlkeKodlari.setUlkeKodu("592");
-		UlkeKodlari.add(snfUlkeKodlari);
-
-		snfUlkeKodlari = new SnfUlkeKodlari();
-		snfUlkeKodlari.setUlkeAdi("Haiti");
-		snfUlkeKodlari.setUlkeKodu("509");
-		UlkeKodlari.add(snfUlkeKodlari);
-
-		snfUlkeKodlari = new SnfUlkeKodlari();
-		snfUlkeKodlari.setUlkeAdi("Heard Island and McDonald Islands");
-		snfUlkeKodlari.setUlkeKodu("44");
-		UlkeKodlari.add(snfUlkeKodlari);
-
-		snfUlkeKodlari = new SnfUlkeKodlari();
-		snfUlkeKodlari.setUlkeAdi("Honduras");
-		snfUlkeKodlari.setUlkeKodu("504");
-		UlkeKodlari.add(snfUlkeKodlari);
-
-		snfUlkeKodlari = new SnfUlkeKodlari();
-		snfUlkeKodlari.setUlkeAdi("Hong Kong");
-		snfUlkeKodlari.setUlkeKodu("852");
-		UlkeKodlari.add(snfUlkeKodlari);
-
-		snfUlkeKodlari = new SnfUlkeKodlari();
-		snfUlkeKodlari.setUlkeAdi("Hungary");
-		snfUlkeKodlari.setUlkeKodu("36");
-		UlkeKodlari.add(snfUlkeKodlari);
-
-		snfUlkeKodlari = new SnfUlkeKodlari();
-		snfUlkeKodlari.setUlkeAdi("Iceland");
-		snfUlkeKodlari.setUlkeKodu("354");
-		UlkeKodlari.add(snfUlkeKodlari);
-
-		snfUlkeKodlari = new SnfUlkeKodlari();
-		snfUlkeKodlari.setUlkeAdi("India");
-		snfUlkeKodlari.setUlkeKodu("91");
-		UlkeKodlari.add(snfUlkeKodlari);
-
-		snfUlkeKodlari = new SnfUlkeKodlari();
-		snfUlkeKodlari.setUlkeAdi("Indonesia");
-		snfUlkeKodlari.setUlkeKodu("62");
-		UlkeKodlari.add(snfUlkeKodlari);
-
-		snfUlkeKodlari = new SnfUlkeKodlari();
-		snfUlkeKodlari.setUlkeAdi("Iran (Islamic Republic of)");
-		snfUlkeKodlari.setUlkeKodu("98");
-		UlkeKodlari.add(snfUlkeKodlari);
-
-		snfUlkeKodlari = new SnfUlkeKodlari();
-		snfUlkeKodlari.setUlkeAdi("Iraq");
-		snfUlkeKodlari.setUlkeKodu("964");
-		UlkeKodlari.add(snfUlkeKodlari);
-
-		snfUlkeKodlari = new SnfUlkeKodlari();
-		snfUlkeKodlari.setUlkeAdi("Ireland");
-		snfUlkeKodlari.setUlkeKodu("353");
-		UlkeKodlari.add(snfUlkeKodlari);
-
-		snfUlkeKodlari = new SnfUlkeKodlari();
-		snfUlkeKodlari.setUlkeAdi("Isle of Man");
-		snfUlkeKodlari.setUlkeKodu("0");
-		UlkeKodlari.add(snfUlkeKodlari);
-
-		snfUlkeKodlari = new SnfUlkeKodlari();
-		snfUlkeKodlari.setUlkeAdi("Israel");
-		snfUlkeKodlari.setUlkeKodu("972");
-		UlkeKodlari.add(snfUlkeKodlari);
-
-		snfUlkeKodlari = new SnfUlkeKodlari();
-		snfUlkeKodlari.setUlkeAdi("Italy");
-		snfUlkeKodlari.setUlkeKodu("39");
-		UlkeKodlari.add(snfUlkeKodlari);
-
-		snfUlkeKodlari = new SnfUlkeKodlari();
-		snfUlkeKodlari.setUlkeAdi("Ivory Coast");
-		snfUlkeKodlari.setUlkeKodu("225");
-		UlkeKodlari.add(snfUlkeKodlari);
-
-		snfUlkeKodlari = new SnfUlkeKodlari();
-		snfUlkeKodlari.setUlkeAdi("Jamaica");
-		snfUlkeKodlari.setUlkeKodu("1876");
-		UlkeKodlari.add(snfUlkeKodlari);
-
-		snfUlkeKodlari = new SnfUlkeKodlari();
-		snfUlkeKodlari.setUlkeAdi("Japan");
-		snfUlkeKodlari.setUlkeKodu("81");
-		UlkeKodlari.add(snfUlkeKodlari);
-
-		snfUlkeKodlari = new SnfUlkeKodlari();
-		snfUlkeKodlari.setUlkeAdi("Jersey");
-		snfUlkeKodlari.setUlkeKodu("0");
-		UlkeKodlari.add(snfUlkeKodlari);
-
-		snfUlkeKodlari = new SnfUlkeKodlari();
-		snfUlkeKodlari.setUlkeAdi("Jordan");
-		snfUlkeKodlari.setUlkeKodu("962");
-		UlkeKodlari.add(snfUlkeKodlari);
-
-		snfUlkeKodlari = new SnfUlkeKodlari();
-		snfUlkeKodlari.setUlkeAdi("Kazakhstan");
-		snfUlkeKodlari.setUlkeKodu("7");
-		UlkeKodlari.add(snfUlkeKodlari);
-
-		snfUlkeKodlari = new SnfUlkeKodlari();
-		snfUlkeKodlari.setUlkeAdi("Kenya");
-		snfUlkeKodlari.setUlkeKodu("254");
-		UlkeKodlari.add(snfUlkeKodlari);
-
-		snfUlkeKodlari = new SnfUlkeKodlari();
-		snfUlkeKodlari.setUlkeAdi("Kiribati");
-		snfUlkeKodlari.setUlkeKodu("686");
-		UlkeKodlari.add(snfUlkeKodlari);
-
-		snfUlkeKodlari = new SnfUlkeKodlari();
-		snfUlkeKodlari.setUlkeAdi("Korea (Democratic People's Republic of)");
-		snfUlkeKodlari.setUlkeKodu("850");
-		UlkeKodlari.add(snfUlkeKodlari);
-
-		snfUlkeKodlari = new SnfUlkeKodlari();
-		snfUlkeKodlari.setUlkeAdi("Korea (Republic of)");
-		snfUlkeKodlari.setUlkeKodu("82");
-		UlkeKodlari.add(snfUlkeKodlari);
-
-		snfUlkeKodlari = new SnfUlkeKodlari();
-		snfUlkeKodlari.setUlkeAdi("Kuwait");
-		snfUlkeKodlari.setUlkeKodu("965");
-		UlkeKodlari.add(snfUlkeKodlari);
-
-		snfUlkeKodlari = new SnfUlkeKodlari();
-		snfUlkeKodlari.setUlkeAdi("Kyrgyzstan");
-		snfUlkeKodlari.setUlkeKodu("996");
-		UlkeKodlari.add(snfUlkeKodlari);
-
-		snfUlkeKodlari = new SnfUlkeKodlari();
-		snfUlkeKodlari.setUlkeAdi("Lao People's Democratic Republic");
-		snfUlkeKodlari.setUlkeKodu("856");
-		UlkeKodlari.add(snfUlkeKodlari);
-
-		snfUlkeKodlari = new SnfUlkeKodlari();
-		snfUlkeKodlari.setUlkeAdi("Latvia");
-		snfUlkeKodlari.setUlkeKodu("371");
-		UlkeKodlari.add(snfUlkeKodlari);
-
-		snfUlkeKodlari = new SnfUlkeKodlari();
-		snfUlkeKodlari.setUlkeAdi("Lebanon");
-		snfUlkeKodlari.setUlkeKodu("961");
-		UlkeKodlari.add(snfUlkeKodlari);
-
-		snfUlkeKodlari = new SnfUlkeKodlari();
-		snfUlkeKodlari.setUlkeAdi("Lesotho");
-		snfUlkeKodlari.setUlkeKodu("266");
-		UlkeKodlari.add(snfUlkeKodlari);
-
-		snfUlkeKodlari = new SnfUlkeKodlari();
-		snfUlkeKodlari.setUlkeAdi("Liberia");
-		snfUlkeKodlari.setUlkeKodu("231");
-		UlkeKodlari.add(snfUlkeKodlari);
-
-		snfUlkeKodlari = new SnfUlkeKodlari();
-		snfUlkeKodlari.setUlkeAdi("Libya");
-		snfUlkeKodlari.setUlkeKodu("218");
-		UlkeKodlari.add(snfUlkeKodlari);
-
-		snfUlkeKodlari = new SnfUlkeKodlari();
-		snfUlkeKodlari.setUlkeAdi("Liechtenstein");
-		snfUlkeKodlari.setUlkeKodu("423");
-		UlkeKodlari.add(snfUlkeKodlari);
-
-		snfUlkeKodlari = new SnfUlkeKodlari();
-		snfUlkeKodlari.setUlkeAdi("Lithuania");
-		snfUlkeKodlari.setUlkeKodu("370");
-		UlkeKodlari.add(snfUlkeKodlari);
-
-		snfUlkeKodlari = new SnfUlkeKodlari();
-		snfUlkeKodlari.setUlkeAdi("Luxembourg");
-		snfUlkeKodlari.setUlkeKodu("352");
-		UlkeKodlari.add(snfUlkeKodlari);
-
-		snfUlkeKodlari = new SnfUlkeKodlari();
-		snfUlkeKodlari.setUlkeAdi("Macau");
-		snfUlkeKodlari.setUlkeKodu("853");
-		UlkeKodlari.add(snfUlkeKodlari);
-
-		snfUlkeKodlari = new SnfUlkeKodlari();
-		snfUlkeKodlari.setUlkeAdi("Macedonia");
-		snfUlkeKodlari.setUlkeKodu("389");
-		UlkeKodlari.add(snfUlkeKodlari);
-
-		snfUlkeKodlari = new SnfUlkeKodlari();
-		snfUlkeKodlari.setUlkeAdi("Madagascar");
-		snfUlkeKodlari.setUlkeKodu("261");
-		UlkeKodlari.add(snfUlkeKodlari);
-
-		snfUlkeKodlari = new SnfUlkeKodlari();
-		snfUlkeKodlari.setUlkeAdi("Malawi");
-		snfUlkeKodlari.setUlkeKodu("265");
-		UlkeKodlari.add(snfUlkeKodlari);
-
-		snfUlkeKodlari = new SnfUlkeKodlari();
-		snfUlkeKodlari.setUlkeAdi("Malaysia");
-		snfUlkeKodlari.setUlkeKodu("60");
-		UlkeKodlari.add(snfUlkeKodlari);
-
-		snfUlkeKodlari = new SnfUlkeKodlari();
-		snfUlkeKodlari.setUlkeAdi("Maldives");
-		snfUlkeKodlari.setUlkeKodu("960");
-		UlkeKodlari.add(snfUlkeKodlari);
-
-		snfUlkeKodlari = new SnfUlkeKodlari();
-		snfUlkeKodlari.setUlkeAdi("Mali");
-		snfUlkeKodlari.setUlkeKodu("223");
-		UlkeKodlari.add(snfUlkeKodlari);
-
-		snfUlkeKodlari = new SnfUlkeKodlari();
-		snfUlkeKodlari.setUlkeAdi("Malta");
-		snfUlkeKodlari.setUlkeKodu("356");
-		UlkeKodlari.add(snfUlkeKodlari);
-
-		snfUlkeKodlari = new SnfUlkeKodlari();
-		snfUlkeKodlari.setUlkeAdi("Marshall Islands");
-		snfUlkeKodlari.setUlkeKodu("692");
-		UlkeKodlari.add(snfUlkeKodlari);
-
-		snfUlkeKodlari = new SnfUlkeKodlari();
-		snfUlkeKodlari.setUlkeAdi("Martinique");
-		snfUlkeKodlari.setUlkeKodu("596");
-		UlkeKodlari.add(snfUlkeKodlari);
-
-		snfUlkeKodlari = new SnfUlkeKodlari();
-		snfUlkeKodlari.setUlkeAdi("Mauritania");
-		snfUlkeKodlari.setUlkeKodu("222");
-		UlkeKodlari.add(snfUlkeKodlari);
-
-		snfUlkeKodlari = new SnfUlkeKodlari();
-		snfUlkeKodlari.setUlkeAdi("Mauritius");
-		snfUlkeKodlari.setUlkeKodu("230");
-		UlkeKodlari.add(snfUlkeKodlari);
-
-		snfUlkeKodlari = new SnfUlkeKodlari();
-		snfUlkeKodlari.setUlkeAdi("Mayotte");
-		snfUlkeKodlari.setUlkeKodu("262");
-		UlkeKodlari.add(snfUlkeKodlari);
-
-		snfUlkeKodlari = new SnfUlkeKodlari();
-		snfUlkeKodlari.setUlkeAdi("Mexico");
-		snfUlkeKodlari.setUlkeKodu("52");
-		UlkeKodlari.add(snfUlkeKodlari);
-
-		snfUlkeKodlari = new SnfUlkeKodlari();
-		snfUlkeKodlari.setUlkeAdi("Micronesia (Federated States of)");
-		snfUlkeKodlari.setUlkeKodu("691");
-		UlkeKodlari.add(snfUlkeKodlari);
-
-		snfUlkeKodlari = new SnfUlkeKodlari();
-		snfUlkeKodlari.setUlkeAdi("Moldova (Republic of)");
-		snfUlkeKodlari.setUlkeKodu("373");
-		UlkeKodlari.add(snfUlkeKodlari);
-
-		snfUlkeKodlari = new SnfUlkeKodlari();
-		snfUlkeKodlari.setUlkeAdi("Monaco");
-		snfUlkeKodlari.setUlkeKodu("377");
-		UlkeKodlari.add(snfUlkeKodlari);
-
-		snfUlkeKodlari = new SnfUlkeKodlari();
-		snfUlkeKodlari.setUlkeAdi("Mongolia");
-		snfUlkeKodlari.setUlkeKodu("976");
-		UlkeKodlari.add(snfUlkeKodlari);
-
-		snfUlkeKodlari = new SnfUlkeKodlari();
-		snfUlkeKodlari.setUlkeAdi("Montenegro");
-		snfUlkeKodlari.setUlkeKodu("382");
-		UlkeKodlari.add(snfUlkeKodlari);
-
-		snfUlkeKodlari = new SnfUlkeKodlari();
-		snfUlkeKodlari.setUlkeAdi("Montserrat");
-		snfUlkeKodlari.setUlkeKodu("1664");
-		UlkeKodlari.add(snfUlkeKodlari);
-
-		snfUlkeKodlari = new SnfUlkeKodlari();
-		snfUlkeKodlari.setUlkeAdi("Morocco");
-		snfUlkeKodlari.setUlkeKodu("212");
-		UlkeKodlari.add(snfUlkeKodlari);
-
-		snfUlkeKodlari = new SnfUlkeKodlari();
-		snfUlkeKodlari.setUlkeAdi("Mozambique");
-		snfUlkeKodlari.setUlkeKodu("258");
-		UlkeKodlari.add(snfUlkeKodlari);
-
-		snfUlkeKodlari = new SnfUlkeKodlari();
-		snfUlkeKodlari.setUlkeAdi("Myanmar");
-		snfUlkeKodlari.setUlkeKodu("95");
-		UlkeKodlari.add(snfUlkeKodlari);
-
-		snfUlkeKodlari = new SnfUlkeKodlari();
-		snfUlkeKodlari.setUlkeAdi("Namibia");
-		snfUlkeKodlari.setUlkeKodu("264");
-		UlkeKodlari.add(snfUlkeKodlari);
-
-		snfUlkeKodlari = new SnfUlkeKodlari();
-		snfUlkeKodlari.setUlkeAdi("Nauru");
-		snfUlkeKodlari.setUlkeKodu("674");
-		UlkeKodlari.add(snfUlkeKodlari);
-
-		snfUlkeKodlari = new SnfUlkeKodlari();
-		snfUlkeKodlari.setUlkeAdi("Nepal");
-		snfUlkeKodlari.setUlkeKodu("977");
-		UlkeKodlari.add(snfUlkeKodlari);
-
-		snfUlkeKodlari = new SnfUlkeKodlari();
-		snfUlkeKodlari.setUlkeAdi("Netherlands");
-		snfUlkeKodlari.setUlkeKodu("31");
-		UlkeKodlari.add(snfUlkeKodlari);
-
-		snfUlkeKodlari = new SnfUlkeKodlari();
-		snfUlkeKodlari.setUlkeAdi("New Caledonia");
-		snfUlkeKodlari.setUlkeKodu("687");
-		UlkeKodlari.add(snfUlkeKodlari);
-
-		snfUlkeKodlari = new SnfUlkeKodlari();
-		snfUlkeKodlari.setUlkeAdi("New Zealand");
-		snfUlkeKodlari.setUlkeKodu("64");
-		UlkeKodlari.add(snfUlkeKodlari);
-
-		snfUlkeKodlari = new SnfUlkeKodlari();
-		snfUlkeKodlari.setUlkeAdi("Nicaragua");
-		snfUlkeKodlari.setUlkeKodu("505");
-		UlkeKodlari.add(snfUlkeKodlari);
-
-		snfUlkeKodlari = new SnfUlkeKodlari();
-		snfUlkeKodlari.setUlkeAdi("Niger");
-		snfUlkeKodlari.setUlkeKodu("227");
-		UlkeKodlari.add(snfUlkeKodlari);
-
-		snfUlkeKodlari = new SnfUlkeKodlari();
-		snfUlkeKodlari.setUlkeAdi("Nigeria");
-		snfUlkeKodlari.setUlkeKodu("234");
-		UlkeKodlari.add(snfUlkeKodlari);
-
-		snfUlkeKodlari = new SnfUlkeKodlari();
-		snfUlkeKodlari.setUlkeAdi("Niue");
-		snfUlkeKodlari.setUlkeKodu("683");
-		UlkeKodlari.add(snfUlkeKodlari);
-
-		snfUlkeKodlari = new SnfUlkeKodlari();
-		snfUlkeKodlari.setUlkeAdi("Norfolk Island");
-		snfUlkeKodlari.setUlkeKodu("672");
-		UlkeKodlari.add(snfUlkeKodlari);
-
-		snfUlkeKodlari = new SnfUlkeKodlari();
-		snfUlkeKodlari.setUlkeAdi("Northern Mariana Islands");
-		snfUlkeKodlari.setUlkeKodu("1670");
-		UlkeKodlari.add(snfUlkeKodlari);
-
-		snfUlkeKodlari = new SnfUlkeKodlari();
-		snfUlkeKodlari.setUlkeAdi("Norway");
-		snfUlkeKodlari.setUlkeKodu("47");
-		UlkeKodlari.add(snfUlkeKodlari);
-
-		snfUlkeKodlari = new SnfUlkeKodlari();
-		snfUlkeKodlari.setUlkeAdi("Oman");
-		snfUlkeKodlari.setUlkeKodu("968");
-		UlkeKodlari.add(snfUlkeKodlari);
-
-		snfUlkeKodlari = new SnfUlkeKodlari();
-		snfUlkeKodlari.setUlkeAdi("Pakistan");
-		snfUlkeKodlari.setUlkeKodu("92");
-		UlkeKodlari.add(snfUlkeKodlari);
-
-		snfUlkeKodlari = new SnfUlkeKodlari();
-		snfUlkeKodlari.setUlkeAdi("Palau");
-		snfUlkeKodlari.setUlkeKodu("680");
-		UlkeKodlari.add(snfUlkeKodlari);
-
-		snfUlkeKodlari = new SnfUlkeKodlari();
-		snfUlkeKodlari.setUlkeAdi("Palestine, State of");
-		snfUlkeKodlari.setUlkeKodu("0");
-		UlkeKodlari.add(snfUlkeKodlari);
-
-		snfUlkeKodlari = new SnfUlkeKodlari();
-		snfUlkeKodlari.setUlkeAdi("Panama");
-		snfUlkeKodlari.setUlkeKodu("507");
-		UlkeKodlari.add(snfUlkeKodlari);
-
-		snfUlkeKodlari = new SnfUlkeKodlari();
-		snfUlkeKodlari.setUlkeAdi("Papua New Guinea");
-		snfUlkeKodlari.setUlkeKodu("675");
-		UlkeKodlari.add(snfUlkeKodlari);
-
-		snfUlkeKodlari = new SnfUlkeKodlari();
-		snfUlkeKodlari.setUlkeAdi("Paraguay");
-		snfUlkeKodlari.setUlkeKodu("595");
-		UlkeKodlari.add(snfUlkeKodlari);
-
-		snfUlkeKodlari = new SnfUlkeKodlari();
-		snfUlkeKodlari.setUlkeAdi("Peru");
-		snfUlkeKodlari.setUlkeKodu("51");
-		UlkeKodlari.add(snfUlkeKodlari);
-
-		snfUlkeKodlari = new SnfUlkeKodlari();
-		snfUlkeKodlari.setUlkeAdi("Philippines");
-		snfUlkeKodlari.setUlkeKodu("63");
-		UlkeKodlari.add(snfUlkeKodlari);
-
-		snfUlkeKodlari = new SnfUlkeKodlari();
-		snfUlkeKodlari.setUlkeAdi("Pitcairn");
-		snfUlkeKodlari.setUlkeKodu("870");
-		UlkeKodlari.add(snfUlkeKodlari);
-
-		snfUlkeKodlari = new SnfUlkeKodlari();
-		snfUlkeKodlari.setUlkeAdi("Poland");
-		snfUlkeKodlari.setUlkeKodu("48");
-		UlkeKodlari.add(snfUlkeKodlari);
-
-		snfUlkeKodlari = new SnfUlkeKodlari();
-		snfUlkeKodlari.setUlkeAdi("Portugal");
-		snfUlkeKodlari.setUlkeKodu("351");
-		UlkeKodlari.add(snfUlkeKodlari);
-
-		snfUlkeKodlari = new SnfUlkeKodlari();
-		snfUlkeKodlari.setUlkeAdi("Puerto Rico");
-		snfUlkeKodlari.setUlkeKodu("1");
-		UlkeKodlari.add(snfUlkeKodlari);
-
-		snfUlkeKodlari = new SnfUlkeKodlari();
-		snfUlkeKodlari.setUlkeAdi("Qatar");
-		snfUlkeKodlari.setUlkeKodu("974");
-		UlkeKodlari.add(snfUlkeKodlari);
-
-		snfUlkeKodlari = new SnfUlkeKodlari();
-		snfUlkeKodlari.setUlkeAdi("Reunion");
-		snfUlkeKodlari.setUlkeKodu("262");
-		UlkeKodlari.add(snfUlkeKodlari);
-
-		snfUlkeKodlari = new SnfUlkeKodlari();
-		snfUlkeKodlari.setUlkeAdi("Romania");
-		snfUlkeKodlari.setUlkeKodu("40");
-		UlkeKodlari.add(snfUlkeKodlari);
-
-		snfUlkeKodlari = new SnfUlkeKodlari();
-		snfUlkeKodlari.setUlkeAdi("Russian Federation");
-		snfUlkeKodlari.setUlkeKodu("7");
-		UlkeKodlari.add(snfUlkeKodlari);
-
-		snfUlkeKodlari = new SnfUlkeKodlari();
-		snfUlkeKodlari.setUlkeAdi("Rwanda");
-		snfUlkeKodlari.setUlkeKodu("250");
-		UlkeKodlari.add(snfUlkeKodlari);
-
-		snfUlkeKodlari = new SnfUlkeKodlari();
-		snfUlkeKodlari.setUlkeAdi("Saint Barthélemy");
-		snfUlkeKodlari.setUlkeKodu("0");
-		UlkeKodlari.add(snfUlkeKodlari);
-
-		snfUlkeKodlari = new SnfUlkeKodlari();
-		snfUlkeKodlari.setUlkeAdi("Saint Helena, Ascension and Tristan da Cunha");
-		snfUlkeKodlari.setUlkeKodu("290");
-		UlkeKodlari.add(snfUlkeKodlari);
-
-		snfUlkeKodlari = new SnfUlkeKodlari();
-		snfUlkeKodlari.setUlkeAdi("Saint Kitts and Nevis");
-		snfUlkeKodlari.setUlkeKodu("1869");
-		UlkeKodlari.add(snfUlkeKodlari);
-
-		snfUlkeKodlari = new SnfUlkeKodlari();
-		snfUlkeKodlari.setUlkeAdi("Saint Lucia");
-		snfUlkeKodlari.setUlkeKodu("1758");
-		UlkeKodlari.add(snfUlkeKodlari);
-
-		snfUlkeKodlari = new SnfUlkeKodlari();
-		snfUlkeKodlari.setUlkeAdi("Saint Martin (French part)");
-		snfUlkeKodlari.setUlkeKodu("0");
-		UlkeKodlari.add(snfUlkeKodlari);
-
-		snfUlkeKodlari = new SnfUlkeKodlari();
-		snfUlkeKodlari.setUlkeAdi("Saint Pierre and Miquelon");
-		snfUlkeKodlari.setUlkeKodu("508");
-		UlkeKodlari.add(snfUlkeKodlari);
-
-		snfUlkeKodlari = new SnfUlkeKodlari();
-		snfUlkeKodlari.setUlkeAdi("Saint Vincent and the Grenadines");
-		snfUlkeKodlari.setUlkeKodu("1784");
-		UlkeKodlari.add(snfUlkeKodlari);
-
-		snfUlkeKodlari = new SnfUlkeKodlari();
-		snfUlkeKodlari.setUlkeAdi("Samoa");
-		snfUlkeKodlari.setUlkeKodu("685");
-		UlkeKodlari.add(snfUlkeKodlari);
-
-		snfUlkeKodlari = new SnfUlkeKodlari();
-		snfUlkeKodlari.setUlkeAdi("San Marino");
-		snfUlkeKodlari.setUlkeKodu("378");
-		UlkeKodlari.add(snfUlkeKodlari);
-
-		snfUlkeKodlari = new SnfUlkeKodlari();
-		snfUlkeKodlari.setUlkeAdi("Sao Tome and Principe");
-		snfUlkeKodlari.setUlkeKodu("239");
-		UlkeKodlari.add(snfUlkeKodlari);
-
-		snfUlkeKodlari = new SnfUlkeKodlari();
-		snfUlkeKodlari.setUlkeAdi("Saudi Arabia");
-		snfUlkeKodlari.setUlkeKodu("966");
-		UlkeKodlari.add(snfUlkeKodlari);
-
-		snfUlkeKodlari = new SnfUlkeKodlari();
-		snfUlkeKodlari.setUlkeAdi("Senegal");
-		snfUlkeKodlari.setUlkeKodu("221");
-		UlkeKodlari.add(snfUlkeKodlari);
-
-		snfUlkeKodlari = new SnfUlkeKodlari();
-		snfUlkeKodlari.setUlkeAdi("Serbia");
-		snfUlkeKodlari.setUlkeKodu("381");
-		UlkeKodlari.add(snfUlkeKodlari);
-
-		snfUlkeKodlari = new SnfUlkeKodlari();
-		snfUlkeKodlari.setUlkeAdi("Seychelles");
-		snfUlkeKodlari.setUlkeKodu("248");
-		UlkeKodlari.add(snfUlkeKodlari);
-
-		snfUlkeKodlari = new SnfUlkeKodlari();
-		snfUlkeKodlari.setUlkeAdi("Sierra Leone");
-		snfUlkeKodlari.setUlkeKodu("232");
-		UlkeKodlari.add(snfUlkeKodlari);
-
-		snfUlkeKodlari = new SnfUlkeKodlari();
-		snfUlkeKodlari.setUlkeAdi("Singapore");
-		snfUlkeKodlari.setUlkeKodu("65");
-		UlkeKodlari.add(snfUlkeKodlari);
-
-		snfUlkeKodlari = new SnfUlkeKodlari();
-		snfUlkeKodlari.setUlkeAdi("Sint Maarten (Dutch part)");
-		snfUlkeKodlari.setUlkeKodu("0");
-		UlkeKodlari.add(snfUlkeKodlari);
-
-		snfUlkeKodlari = new SnfUlkeKodlari();
-		snfUlkeKodlari.setUlkeAdi("Slovakia");
-		snfUlkeKodlari.setUlkeKodu("421");
-		UlkeKodlari.add(snfUlkeKodlari);
-
-		snfUlkeKodlari = new SnfUlkeKodlari();
-		snfUlkeKodlari.setUlkeAdi("Slovenia");
-		snfUlkeKodlari.setUlkeKodu("386");
-		UlkeKodlari.add(snfUlkeKodlari);
-
-		snfUlkeKodlari = new SnfUlkeKodlari();
-		snfUlkeKodlari.setUlkeAdi("Solomon Islands");
-		snfUlkeKodlari.setUlkeKodu("677");
-		UlkeKodlari.add(snfUlkeKodlari);
-
-		snfUlkeKodlari = new SnfUlkeKodlari();
-		snfUlkeKodlari.setUlkeAdi("Somalia");
-		snfUlkeKodlari.setUlkeKodu("252");
-		UlkeKodlari.add(snfUlkeKodlari);
-
-		snfUlkeKodlari = new SnfUlkeKodlari();
-		snfUlkeKodlari.setUlkeAdi("South Africa");
-		snfUlkeKodlari.setUlkeKodu("27");
-		UlkeKodlari.add(snfUlkeKodlari);
-
-		snfUlkeKodlari = new SnfUlkeKodlari();
-		snfUlkeKodlari.setUlkeAdi("South Georgia and the South Sandwich Islands");
-		snfUlkeKodlari.setUlkeKodu("44");
-		UlkeKodlari.add(snfUlkeKodlari);
-
-		snfUlkeKodlari = new SnfUlkeKodlari();
-		snfUlkeKodlari.setUlkeAdi("South Sudan");
-		snfUlkeKodlari.setUlkeKodu("0");
-		UlkeKodlari.add(snfUlkeKodlari);
-
-		snfUlkeKodlari = new SnfUlkeKodlari();
-		snfUlkeKodlari.setUlkeAdi("Spain");
-		snfUlkeKodlari.setUlkeKodu("34");
-		UlkeKodlari.add(snfUlkeKodlari);
-
-		snfUlkeKodlari = new SnfUlkeKodlari();
-		snfUlkeKodlari.setUlkeAdi("Sri Lanka");
-		snfUlkeKodlari.setUlkeKodu("94");
-		UlkeKodlari.add(snfUlkeKodlari);
-
-		snfUlkeKodlari = new SnfUlkeKodlari();
-		snfUlkeKodlari.setUlkeAdi("Sudan");
-		snfUlkeKodlari.setUlkeKodu("249");
-		UlkeKodlari.add(snfUlkeKodlari);
-
-		snfUlkeKodlari = new SnfUlkeKodlari();
-		snfUlkeKodlari.setUlkeAdi("Suriname");
-		snfUlkeKodlari.setUlkeKodu("597");
-		UlkeKodlari.add(snfUlkeKodlari);
-
-		snfUlkeKodlari = new SnfUlkeKodlari();
-		snfUlkeKodlari.setUlkeAdi("Svalbard and Jan Mayen");
-		snfUlkeKodlari.setUlkeKodu("0");
-		UlkeKodlari.add(snfUlkeKodlari);
-
-		snfUlkeKodlari = new SnfUlkeKodlari();
-		snfUlkeKodlari.setUlkeAdi("Swaziland");
-		snfUlkeKodlari.setUlkeKodu("268");
-		UlkeKodlari.add(snfUlkeKodlari);
-
-		snfUlkeKodlari = new SnfUlkeKodlari();
-		snfUlkeKodlari.setUlkeAdi("Sweden");
-		snfUlkeKodlari.setUlkeKodu("46");
-		UlkeKodlari.add(snfUlkeKodlari);
-
-		snfUlkeKodlari = new SnfUlkeKodlari();
-		snfUlkeKodlari.setUlkeAdi("Switzerland");
-		snfUlkeKodlari.setUlkeKodu("41");
-		UlkeKodlari.add(snfUlkeKodlari);
-
-		snfUlkeKodlari = new SnfUlkeKodlari();
-		snfUlkeKodlari.setUlkeAdi("Syrian Arab Republic");
-		snfUlkeKodlari.setUlkeKodu("963");
-		UlkeKodlari.add(snfUlkeKodlari);
-
-		snfUlkeKodlari = new SnfUlkeKodlari();
-		snfUlkeKodlari.setUlkeAdi("Taiwan");
-		snfUlkeKodlari.setUlkeKodu("886");
-		UlkeKodlari.add(snfUlkeKodlari);
-
-		snfUlkeKodlari = new SnfUlkeKodlari();
-		snfUlkeKodlari.setUlkeAdi("Tajikistan");
-		snfUlkeKodlari.setUlkeKodu("992");
-		UlkeKodlari.add(snfUlkeKodlari);
-
-		snfUlkeKodlari = new SnfUlkeKodlari();
-		snfUlkeKodlari.setUlkeAdi("Tanzania, United Republic of");
-		snfUlkeKodlari.setUlkeKodu("255");
-		UlkeKodlari.add(snfUlkeKodlari);
-
-		snfUlkeKodlari = new SnfUlkeKodlari();
-		snfUlkeKodlari.setUlkeAdi("Thailand");
-		snfUlkeKodlari.setUlkeKodu("66");
-		UlkeKodlari.add(snfUlkeKodlari);
-
-		snfUlkeKodlari = new SnfUlkeKodlari();
-		snfUlkeKodlari.setUlkeAdi("Timor-Leste");
-		snfUlkeKodlari.setUlkeKodu("670");
-		UlkeKodlari.add(snfUlkeKodlari);
-
-		snfUlkeKodlari = new SnfUlkeKodlari();
-		snfUlkeKodlari.setUlkeAdi("Togo");
-		snfUlkeKodlari.setUlkeKodu("228");
-		UlkeKodlari.add(snfUlkeKodlari);
-
-		snfUlkeKodlari = new SnfUlkeKodlari();
-		snfUlkeKodlari.setUlkeAdi("Tokelau");
-		snfUlkeKodlari.setUlkeKodu("690");
-		UlkeKodlari.add(snfUlkeKodlari);
-
-		snfUlkeKodlari = new SnfUlkeKodlari();
-		snfUlkeKodlari.setUlkeAdi("Tonga");
-		snfUlkeKodlari.setUlkeKodu("676");
-		UlkeKodlari.add(snfUlkeKodlari);
-
-		snfUlkeKodlari = new SnfUlkeKodlari();
-		snfUlkeKodlari.setUlkeAdi("Trinidad and Tobago");
-		snfUlkeKodlari.setUlkeKodu("1868");
-		UlkeKodlari.add(snfUlkeKodlari);
-
-		snfUlkeKodlari = new SnfUlkeKodlari();
-		snfUlkeKodlari.setUlkeAdi("Tunisia");
-		snfUlkeKodlari.setUlkeKodu("216");
-		UlkeKodlari.add(snfUlkeKodlari);
-
-		snfUlkeKodlari = new SnfUlkeKodlari();
-		snfUlkeKodlari.setUlkeAdi("Turkey");
-		snfUlkeKodlari.setUlkeKodu("90");
-		UlkeKodlari.add(snfUlkeKodlari);
-
-		snfUlkeKodlari = new SnfUlkeKodlari();
-		snfUlkeKodlari.setUlkeAdi("Turkmenistan");
-		snfUlkeKodlari.setUlkeKodu("993");
-		UlkeKodlari.add(snfUlkeKodlari);
-
-		snfUlkeKodlari = new SnfUlkeKodlari();
-		snfUlkeKodlari.setUlkeAdi("Turks and Caicos Islands");
-		snfUlkeKodlari.setUlkeKodu("1649");
-		UlkeKodlari.add(snfUlkeKodlari);
-
-		snfUlkeKodlari = new SnfUlkeKodlari();
-		snfUlkeKodlari.setUlkeAdi("Tuvalu");
-		snfUlkeKodlari.setUlkeKodu("688");
-		UlkeKodlari.add(snfUlkeKodlari);
-
-		snfUlkeKodlari = new SnfUlkeKodlari();
-		snfUlkeKodlari.setUlkeAdi("Uganda");
-		snfUlkeKodlari.setUlkeKodu("256");
-		UlkeKodlari.add(snfUlkeKodlari);
-
-		snfUlkeKodlari = new SnfUlkeKodlari();
-		snfUlkeKodlari.setUlkeAdi("Ukraine");
-		snfUlkeKodlari.setUlkeKodu("380");
-		UlkeKodlari.add(snfUlkeKodlari);
-
-		snfUlkeKodlari = new SnfUlkeKodlari();
-		snfUlkeKodlari.setUlkeAdi("United Arab Emirates");
-		snfUlkeKodlari.setUlkeKodu("971");
-		UlkeKodlari.add(snfUlkeKodlari);
-
-		snfUlkeKodlari = new SnfUlkeKodlari();
-		snfUlkeKodlari.setUlkeAdi("United Kingdom");
-		snfUlkeKodlari.setUlkeKodu("44");
-		UlkeKodlari.add(snfUlkeKodlari);
-
-		snfUlkeKodlari = new SnfUlkeKodlari();
-		snfUlkeKodlari.setUlkeAdi("United States Minor Outlying Islands");
-		snfUlkeKodlari.setUlkeKodu("44");
-		UlkeKodlari.add(snfUlkeKodlari);
-
-		snfUlkeKodlari = new SnfUlkeKodlari();
-		snfUlkeKodlari.setUlkeAdi("United States of America");
-		snfUlkeKodlari.setUlkeKodu("1");
-		UlkeKodlari.add(snfUlkeKodlari);
-
-		snfUlkeKodlari = new SnfUlkeKodlari();
-		snfUlkeKodlari.setUlkeAdi("Uruguay");
-		snfUlkeKodlari.setUlkeKodu("598");
-		UlkeKodlari.add(snfUlkeKodlari);
-
-		snfUlkeKodlari = new SnfUlkeKodlari();
-		snfUlkeKodlari.setUlkeAdi("Uzbekistan");
-		snfUlkeKodlari.setUlkeKodu("998");
-		UlkeKodlari.add(snfUlkeKodlari);
-
-		snfUlkeKodlari = new SnfUlkeKodlari();
-		snfUlkeKodlari.setUlkeAdi("Vanuatu");
-		snfUlkeKodlari.setUlkeKodu("678");
-		UlkeKodlari.add(snfUlkeKodlari);
-
-		snfUlkeKodlari = new SnfUlkeKodlari();
-		snfUlkeKodlari.setUlkeAdi("Vatican City State");
-		snfUlkeKodlari.setUlkeKodu("39");
-		UlkeKodlari.add(snfUlkeKodlari);
-
-		snfUlkeKodlari = new SnfUlkeKodlari();
-		snfUlkeKodlari.setUlkeAdi("Venezuela");
-		snfUlkeKodlari.setUlkeKodu("58");
-		UlkeKodlari.add(snfUlkeKodlari);
-
-		snfUlkeKodlari = new SnfUlkeKodlari();
-		snfUlkeKodlari.setUlkeAdi("Viet Nam");
-		snfUlkeKodlari.setUlkeKodu("84");
-		UlkeKodlari.add(snfUlkeKodlari);
-
-		snfUlkeKodlari = new SnfUlkeKodlari();
-		snfUlkeKodlari.setUlkeAdi("Virgin Islands (British)");
-		snfUlkeKodlari.setUlkeKodu("1284");
-		UlkeKodlari.add(snfUlkeKodlari);
-
-		snfUlkeKodlari = new SnfUlkeKodlari();
-		snfUlkeKodlari.setUlkeAdi("Virgin Islands (U.S.)");
-		snfUlkeKodlari.setUlkeKodu("1340");
-		UlkeKodlari.add(snfUlkeKodlari);
-
-		snfUlkeKodlari = new SnfUlkeKodlari();
-		snfUlkeKodlari.setUlkeAdi("Wallis and Futuna");
-		snfUlkeKodlari.setUlkeKodu("681");
-		UlkeKodlari.add(snfUlkeKodlari);
-
-		snfUlkeKodlari = new SnfUlkeKodlari();
-		snfUlkeKodlari.setUlkeAdi("Western Sahara");
-		snfUlkeKodlari.setUlkeKodu("0");
-		UlkeKodlari.add(snfUlkeKodlari);
-
-		snfUlkeKodlari = new SnfUlkeKodlari();
-		snfUlkeKodlari.setUlkeAdi("Yemen");
-		snfUlkeKodlari.setUlkeKodu("967");
-		UlkeKodlari.add(snfUlkeKodlari);
-
-		snfUlkeKodlari = new SnfUlkeKodlari();
-		snfUlkeKodlari.setUlkeAdi("Zambia");
-		snfUlkeKodlari.setUlkeKodu("260");
-		UlkeKodlari.add(snfUlkeKodlari);
-
-		snfUlkeKodlari = new SnfUlkeKodlari();
-		snfUlkeKodlari.setUlkeAdi("Zimbabwe");
-		snfUlkeKodlari.setUlkeKodu("263");
-		UlkeKodlari.add(snfUlkeKodlari);
-
-		return UlkeKodlari;
-	}
 
 	public String EPostaSifrele(String EPosta) {
     	return EPosta.substring(0,1) + "*******" + EPosta.substring(EPosta.indexOf("@") - 1, EPosta.length());
@@ -3084,11 +1850,11 @@ public class AkorDefterimSys {
 		});
 	}
 
-	public void HesapBilgiGuncelle(String mHesapID, String mFirebaseToken, String mOSID, String mOSVersiyon, String mAdSoyad, String mDogumTarih, String mEPosta, String mParola, String mParolaSHA1, String mKullaniciAdi, String mTelKodu, String mCepTelefon, String mUygulamaVersiyon, final String mIslem) {
+	public void HesapBilgiGuncelle(String mHesapID, String mFirebaseToken, String mOSID, String mOSVersiyon, String mAdSoyad, String mDogumTarih, String mResimURL, String mEPosta, String mParola, String mParolaSHA1, String mKullaniciAdi, String mTelKodu, String mCepTelefon, String mUygulamaVersiyon, final String mIslem) {
 		RetrofitInterface retrofitInterface = RetrofitServiceGenerator.createService(activity, RetrofitInterface.class);
 		final Interface_AsyncResponse AsyncResponse = (Interface_AsyncResponse) activity;
 
-		Call<SnfIslemSonuc> snfIslemSonucCall = retrofitInterface.HesapBilgiGuncelle(mHesapID, mFirebaseToken, mOSID, mOSVersiyon, mAdSoyad, mDogumTarih, mEPosta, mParola, mParolaSHA1, mKullaniciAdi, mTelKodu, mCepTelefon, mUygulamaVersiyon);
+		Call<SnfIslemSonuc> snfIslemSonucCall = retrofitInterface.HesapBilgiGuncelle(mHesapID, mFirebaseToken, mOSID, mOSVersiyon, mAdSoyad, mDogumTarih, mResimURL, mEPosta, mParola, mParolaSHA1, mKullaniciAdi, mTelKodu, mCepTelefon, mUygulamaVersiyon);
 		snfIslemSonucCall.enqueue(new Callback<SnfIslemSonuc>() {
 			@Override
 			public void onResponse(Call<SnfIslemSonuc> call, Response<SnfIslemSonuc> response) {

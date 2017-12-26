@@ -257,7 +257,7 @@ public class Frg_Guvenlik extends Fragment implements OnClickListener {
 
 			try {
 				HttpClient httpClient = new DefaultHttpClient();
-				HttpPost httpPost = new HttpPost(AkorDefterimSys.PHPHesapYeniSifre);
+				HttpPost httpPost = new HttpPost("");
 				httpPost.setEntity(new UrlEncodedFormEntity(nameValuePairs, HTTP.UTF_8));
 				HttpResponse response = httpClient.execute(httpPost);
 				HttpEntity entity = response.getEntity();

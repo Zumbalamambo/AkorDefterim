@@ -76,6 +76,7 @@ public interface RetrofitInterface {
                                            @Query("OSVersiyon") String mOSVersiyon,
                                            @Query("AdSoyad") String mAdSoyad,
                                            @Query("DogumTarih") String mDogumTarih,
+                                           @Query("ResimURL") String mResimURL,
                                            @Query("EPosta") String mEPosta,
                                            @Query("Parola") String mParola,
                                            @Query("ParolaSHA1") String mParolaSHA1,

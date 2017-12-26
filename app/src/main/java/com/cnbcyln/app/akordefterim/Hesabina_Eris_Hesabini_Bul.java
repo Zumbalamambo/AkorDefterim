@@ -2,6 +2,8 @@ package com.cnbcyln.app.akordefterim;
 
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Typeface;
@@ -16,6 +18,7 @@ import android.view.KeyEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.inputmethod.EditorInfo;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
@@ -36,7 +39,9 @@ public class Hesabina_Eris_Hesabini_Bul extends AppCompatActivity implements Int
 
 	Typeface YaziFontu;
     SharedPreferences.Editor sharedPrefEditor;
-	AlertDialog ADDialog_HesapDurumu;
+	AlertDialog ADDialog;
+	ProgressDialog PDIslem;
+	InputMethodManager imm;
 
 	CoordinatorLayout coordinatorLayout;
 	ImageButton btnGeri;
@@ -54,6 +59,8 @@ public class Hesabina_Eris_Hesabini_Bul extends AppCompatActivity implements Int
 		activity = this;
 		AkorDefterimSys = new AkorDefterimSys(activity);
 		YaziFontu = AkorDefterimSys.FontGetir(activity, "anivers_regular"); // Genel yazı fontunu belirttik
+
+		imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE); // İstenildiği zaman klavyeyi gizlemeye yarayan kod tanımlayıcısı
 
 		AkorDefterimSys.GenelAyarlar(); // Uygulama için genel ayarları uyguladık.
 		//AkorDefterimSys.TransparanNotifyBar(); // Notification Bar'ı transparan yapıyoruz.
@@ -149,19 +156,20 @@ public class Hesabina_Eris_Hesabini_Bul extends AppCompatActivity implements Int
 
 			btnIleri.setEnabled(true);
 			SKVLoader.setVisibility(View.GONE);
+			AkorDefterimSys.DismissProgressDialog(PDIslem);
 
             switch (JSONSonuc.getString("Islem")) {
 				case "HesapBilgiGetir":
 					if(JSONSonuc.getBoolean("Sonuc")) {
                         if(JSONSonuc.getString("HesapDurum").equals("Ban")) { // Eğer hesap banlanmışsa
-							if(!AkorDefterimSys.AlertDialogisShowing(ADDialog_HesapDurumu)) {
-								ADDialog_HesapDurumu = AkorDefterimSys.CustomAlertDialog(activity,
+							if(!AkorDefterimSys.AlertDialogisShowing(ADDialog)) {
+								ADDialog = AkorDefterimSys.CustomAlertDialog(activity,
 										getString(R.string.hesap_durumu),
 										getString(R.string.hesap_banlandi, JSONSonuc.getString("HesapDurumBilgi"), getString(R.string.uygulama_yapimci_site)),
 										activity.getString(R.string.tamam),
-										"ADDialog_HesapDurumu_Tamam");
-								ADDialog_HesapDurumu.getWindow().getAttributes().windowAnimations = R.style.DialogAnimation;
-								ADDialog_HesapDurumu.show();
+										"ADDialog_Kapat");
+								ADDialog.getWindow().getAttributes().windowAnimations = R.style.DialogAnimation;
+								ADDialog.show();
 							}
                         } else {
 							Intent mIntent = new Intent(activity, Hesabina_Eris_Hesabini_Bul2.class);
@@ -181,8 +189,11 @@ public class Hesabina_Eris_Hesabini_Bul extends AppCompatActivity implements Int
 					} else AkorDefterimSys.StandartSnackBarMsj(coordinatorLayout, getString(R.string.hesap_bilgileri_bulunamadi));
 
                     break;
-				case "ADDialog_HesapDurumu_Tamam":
-					AkorDefterimSys.DismissAlertDialog(ADDialog_HesapDurumu);
+				case "ADDialog_Kapat":
+					AkorDefterimSys.DismissAlertDialog(ADDialog);
+					break;
+				case "PDIslem_Timeout":
+					AkorDefterimSys.DismissProgressDialog(PDIslem);
 					break;
             }
         } catch (JSONException e) {
@@ -191,44 +202,54 @@ public class Hesabina_Eris_Hesabini_Bul extends AppCompatActivity implements Int
     }
 
     private void IleriIslem() {
-		btnIleri.setEnabled(false);
-		SKVLoader.setVisibility(View.VISIBLE);
 		AkorDefterimSys.KlavyeKapat();
 
-		txtEPostaKullaniciAdi.setText(txtEPostaKullaniciAdi.getText().toString().trim());
-		String EPostaKullaniciAdi = txtEPostaKullaniciAdi.getText().toString();
+		if(AkorDefterimSys.InternetErisimKontrolu()) {
+			txtEPostaKullaniciAdi.setText(txtEPostaKullaniciAdi.getText().toString().trim());
+			String EPostaKullaniciAdi = txtEPostaKullaniciAdi.getText().toString();
 
-		if(TextUtils.isEmpty(EPostaKullaniciAdi))
-			txtILEPostaKullaniciAdi.setError(getString(R.string.hata_bos_alan));
-		else {
-			if(AkorDefterimSys.isValid(EPostaKullaniciAdi, "EPosta")) {
-				if(AkorDefterimSys.isValid(EPostaKullaniciAdi, "FakeEPosta"))
-					txtILEPostaKullaniciAdi.setError(getString(R.string.hata_format_eposta));
-				else
-					txtILEPostaKullaniciAdi.setError(null);
+			if(TextUtils.isEmpty(EPostaKullaniciAdi)) {
+				txtILEPostaKullaniciAdi.setError(getString(R.string.hata_bos_alan));
+				txtEPostaKullaniciAdi.requestFocus();
+				txtEPostaKullaniciAdi.setSelection(txtEPostaKullaniciAdi.length());
+				imm.showSoftInput(txtEPostaKullaniciAdi, 0);
 			} else {
-				if(EPostaKullaniciAdi.length() < getResources().getInteger(R.integer.KullaniciAdiKarakterSayisi_MIN))
-					txtILEPostaKullaniciAdi.setError(getString(R.string.hata_en_az_karakter, String.valueOf(getResources().getInteger(R.integer.KullaniciAdiKarakterSayisi_MIN))));
-				else if(!AkorDefterimSys.isValid(EPostaKullaniciAdi, "KullaniciAdi"))
-					txtILEPostaKullaniciAdi.setError(getString(R.string.hata_format_sadece_sayi_kucukharf));
-				else
-					txtILEPostaKullaniciAdi.setError(null);
+				if(AkorDefterimSys.isValid(EPostaKullaniciAdi, "EPosta")) {
+					if(AkorDefterimSys.isValid(EPostaKullaniciAdi, "FakeEPosta")) {
+						txtILEPostaKullaniciAdi.setError(getString(R.string.hata_format_eposta));
+						txtEPostaKullaniciAdi.requestFocus();
+						txtEPostaKullaniciAdi.setSelection(txtEPostaKullaniciAdi.length());
+						imm.showSoftInput(txtEPostaKullaniciAdi, 0);
+					} else
+						txtILEPostaKullaniciAdi.setError(null);
+				} else {
+					if(EPostaKullaniciAdi.length() < getResources().getInteger(R.integer.KullaniciAdiKarakterSayisi_MIN)) {
+						txtILEPostaKullaniciAdi.setError(getString(R.string.hata_en_az_karakter, String.valueOf(getResources().getInteger(R.integer.KullaniciAdiKarakterSayisi_MIN))));
+						txtEPostaKullaniciAdi.requestFocus();
+						txtEPostaKullaniciAdi.setSelection(txtEPostaKullaniciAdi.length());
+						imm.showSoftInput(txtEPostaKullaniciAdi, 0);
+					} else if(!AkorDefterimSys.isValid(EPostaKullaniciAdi, "KullaniciAdi")) {
+						txtILEPostaKullaniciAdi.setError(getString(R.string.hata_format_sadece_sayi_kucukharf));
+						txtEPostaKullaniciAdi.requestFocus();
+						txtEPostaKullaniciAdi.setSelection(txtEPostaKullaniciAdi.length());
+						imm.showSoftInput(txtEPostaKullaniciAdi, 0);
+					} else
+						txtILEPostaKullaniciAdi.setError(null);
+				}
 			}
-		}
 
-		if(txtILEPostaKullaniciAdi.getError() == null) {
-			AkorDefterimSys.UnFocusEditText(txtEPostaKullaniciAdi);
+			if(txtILEPostaKullaniciAdi.getError() == null) {
+				btnIleri.setEnabled(false);
+				SKVLoader.setVisibility(View.VISIBLE);
+				AkorDefterimSys.UnFocusEditText(txtEPostaKullaniciAdi);
 
-			if(AkorDefterimSys.InternetErisimKontrolu())
+				if(!AkorDefterimSys.ProgressDialogisShowing(PDIslem)) { // Eğer progress dialog açık değilse
+					PDIslem = AkorDefterimSys.CustomProgressDialog(getString(R.string.islem_yapiliyor), false, AkorDefterimSys.ProgressBarTimeoutSuresi, "PDIslem_Timeout");
+					PDIslem.show();
+				}
+
 				AkorDefterimSys.HesapBilgiGetir(null, "", "", EPostaKullaniciAdi, "HesapBilgiGetir");
-			else {
-				btnIleri.setEnabled(true);
-				SKVLoader.setVisibility(View.GONE);
-				AkorDefterimSys.StandartSnackBarMsj(coordinatorLayout, getString(R.string.internet_baglantisi_saglanamadi));
 			}
-		} else {
-			btnIleri.setEnabled(true);
-			SKVLoader.setVisibility(View.GONE);
-		}
+		} else AkorDefterimSys.StandartSnackBarMsj(coordinatorLayout, getString(R.string.internet_baglantisi_saglanamadi));
 	}
 }

@@ -31,6 +31,7 @@ public class Hesabim extends AppCompatActivity implements Interface_AsyncRespons
 	private Activity activity;
 	private AkorDefterimSys AkorDefterimSys;
 	SharedPreferences sharedPref;
+	SharedPreferences.Editor sharedPrefEditor;
 	Typeface YaziFontu;
 	AlertDialog ADDialog_HesapDurumu;
 	ProgressDialog PDBilgilerAliniyor;
@@ -162,17 +163,27 @@ public class Hesabim extends AppCompatActivity implements Interface_AsyncRespons
 										getString(R.string.hesap_durumu),
 										getString(R.string.hesap_banlandi, JSONSonuc.getString("HesapDurumBilgi"), getString(R.string.uygulama_yapimci_site)),
 										activity.getString(R.string.tamam),
-										"ADDialog_HesapDurumu_Kapat");
+										"ADDialog_HesapDurumu_Kapat_CikisYap");
 								ADDialog_HesapDurumu.getWindow().getAttributes().windowAnimations = R.style.DialogAnimation;
 								ADDialog_HesapDurumu.show();
 							}
 						} else {
-							if(JSONSonuc.getString("ResimURL").equals("")) {
+							sharedPrefEditor = sharedPref.edit();
+							sharedPrefEditor.putString("prefEPosta", JSONSonuc.getString("EPosta"));
+							sharedPrefEditor.putString("prefParolaSHA1", JSONSonuc.getString("ParolaSHA1"));
+							sharedPrefEditor.apply();
+
+							if(JSONSonuc.getString("ResimURL").equals("-")) {
 								ImgBuyukProfilResim.setImageResource(R.drawable.bos_profil);
 								CImgKucukProfilResim.setImageResource(R.drawable.bos_profil);
 							} else {
-								new AkorDefterimSys.NettenResimYukle(ImgBuyukProfilResim).execute(AkorDefterimSys.CBCAPP_HttpsAdres + JSONSonuc.getString("ResimURL"));
-								new AkorDefterimSys.NettenResimYukle(CImgKucukProfilResim).execute(AkorDefterimSys.CBCAPP_HttpsAdres + JSONSonuc.getString("ResimURL"));
+								if (JSONSonuc.getString("ResimURL").startsWith("http://") || JSONSonuc.getString("ResimURL").startsWith("https://")) {
+									new AkorDefterimSys.NettenResimYukle(ImgBuyukProfilResim).execute(JSONSonuc.getString("ResimURL"));
+									new AkorDefterimSys.NettenResimYukle(CImgKucukProfilResim).execute(JSONSonuc.getString("ResimURL"));
+								} else {
+									new AkorDefterimSys.NettenResimYukle(ImgBuyukProfilResim).execute(AkorDefterimSys.CBCAPP_HttpsAdres + JSONSonuc.getString("ResimURL"));
+									new AkorDefterimSys.NettenResimYukle(CImgKucukProfilResim).execute(AkorDefterimSys.CBCAPP_HttpsAdres + JSONSonuc.getString("ResimURL"));
+								}
 							}
 
 							if(!JSONSonuc.getString("FacebookID").equals("")) CImgSosyalAgFacebookIcon.setVisibility(View.VISIBLE);

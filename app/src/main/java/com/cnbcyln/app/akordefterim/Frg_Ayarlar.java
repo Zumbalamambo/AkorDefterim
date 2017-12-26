@@ -796,7 +796,7 @@ public class Frg_Ayarlar extends Fragment {
 		protected String doInBackground(String... parametre) {
 			String Sonuc;
 			try {
-				URL url = new URL(AkorDefterimSys.YedeklemeKlasoruURL + sharedPref.getString("prefHesapID", "0") + ".txt");
+				URL url = new URL(AkorDefterimSys.CBCAPP_HttpsAdres + AkorDefterimSys.YedeklemeKlasoruDizini + sharedPref.getString("prefHesapID", "0") + ".txt");
 				HttpURLConnection httpCon = (HttpURLConnection) url.openConnection();
 				httpCon.setUseCaches(false);
 				httpCon.setDefaultUseCaches(false);
@@ -1074,7 +1074,7 @@ public class Frg_Ayarlar extends Fragment {
 
 				// Adding file data to http body
 				entity.addPart("dosya", new FileBody(YedekDosyasi));
-				entity.addPart("dizin", new StringBody(AkorDefterimSys.YedeklemeKlasoruDizin));
+				entity.addPart("dizin", new StringBody(AkorDefterimSys.PHPYedeklemeKlasoruDizini));
 
 				totalSize = entity.getContentLength();
 				httppost.setEntity(entity);
@@ -1274,7 +1274,7 @@ public class Frg_Ayarlar extends Fragment {
 
 				if(YedekDosyasi.exists()) YedekDosyasi.delete();
 
-				URL url = new URL(AkorDefterimSys.YedeklemeKlasoruURL + sharedPref.getString("prefHesapID", "0") + ".txt");
+				URL url = new URL(AkorDefterimSys.PHPYedeklemeKlasoruDizini + sharedPref.getString("prefHesapID", "0") + ".txt");
 				URLConnection conn = url.openConnection();
 				conn.connect();
 				// getting file length

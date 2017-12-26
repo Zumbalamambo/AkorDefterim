@@ -126,7 +126,7 @@ public class SplashEkran extends Activity implements Interface_AsyncResponse {
 			if(!AkorDefterimSys.AlertDialogisShowing(ADDialog_PlayGoogleServisi)) {
 				ADDialog_PlayGoogleServisi = AkorDefterimSys.CustomAlertDialog(activity,
 						getString(R.string.google_play_servis_baslik),
-						getString(R.string.google_play_servis_hata1),
+						getString(R.string.google_play_servis_hata),
 						activity.getString(R.string.tamam),
 						"ADDialog_PlayGoogleServisi_Tamam");
 				ADDialog_PlayGoogleServisi.getWindow().getAttributes().windowAnimations = R.style.DialogAnimation;
@@ -280,6 +280,12 @@ public class SplashEkran extends Activity implements Interface_AsyncResponse {
 					Process.killProcess(Process.myPid());
 					break;
 				case "ADDialog_PlayGoogleServisi_Tamam":
+					try {
+						startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("market://details?id=com.google.android.gms")));
+					} catch (android.content.ActivityNotFoundException e) {
+						startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("https://play.google.com/store/apps/details?id=com.google.android.gms")));
+					}
+
 					AkorDefterimSys.DismissAlertDialog(ADDialog_PlayGoogleServisi);
 					Process.killProcess(Process.myPid());
 					break;

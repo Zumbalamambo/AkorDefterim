@@ -158,7 +158,7 @@ public class Egitim extends AppCompatActivity implements View.OnClickListener {
         else {
             ADDialog_PlayGoogleServisi = AkorDefterimSys.CustomAlertDialog(activity, R.mipmap.ic_launcher,
                     getString(R.string.google_play_servis_baslik),
-                    getString(R.string.google_play_servis_hata1),
+                    getString(R.string.google_play_servis_hata),
                     activity.getString(R.string.tamam));
             ADDialog_PlayGoogleServisi.getWindow().getAttributes().windowAnimations = R.style.DialogAnimation;
             ADDialog_PlayGoogleServisi.show();
@@ -460,13 +460,13 @@ public class Egitim extends AppCompatActivity implements View.OnClickListener {
 
                 switch (SosyalAg) {
                     case "Google":
-                        httpPost = new HttpPost(AkorDefterimSys.PHPGoogleHesapEkle_GirisYap);
+                        //httpPost = new HttpPost(AkorDefterimSys.PHPGoogleHesapEkle_GirisYap);
                         break;
                     case "Facebook":
-                        httpPost = new HttpPost(AkorDefterimSys.PHPFacebookHesapEkle_GirisYap);
+                        //httpPost = new HttpPost(AkorDefterimSys.PHPFacebookHesapEkle_GirisYap);
                         break;
                     case "Normal":
-                        httpPost = new HttpPost(AkorDefterimSys.PHPHesapGirisYap);
+                        //httpPost = new HttpPost(AkorDefterimSys.PHPHesapGirisYap);
                         break;
                 }
 
