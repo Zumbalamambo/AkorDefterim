@@ -124,7 +124,12 @@ public class Secenekler extends AppCompatActivity implements OnClickListener {
 
                 break;
             case R.id.btnSorunBildir:
-                activity.openContextMenu(btnSorunBildir);
+                if(AkorDefterimSys.GirisYapildiMi()) {
+                    if(AkorDefterimSys.InternetErisimKontrolu()) {
+                        activity.openContextMenu(btnSorunBildir);
+                    } else AkorDefterimSys.StandartSnackBarMsj(coordinatorLayout, getString(R.string.internet_baglantisi_saglanamadi));
+                } else AkorDefterimSys.StandartSnackBarMsj(coordinatorLayout, getString(R.string.devam_etmek_icin_giris_yapmalisin));
+
                 break;
             case R.id.btnOyVer:
                 if(AkorDefterimSys.InternetErisimKontrolu()) {

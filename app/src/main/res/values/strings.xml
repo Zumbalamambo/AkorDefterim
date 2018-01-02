@@ -98,6 +98,7 @@
     <string name="egitim_baslik">Uygulama Eğitimi</string>
     <string name="internet_baglantisi">İnternet Bağlantısı</string>
     <string name="giris_yapilamadi">Giriş Yapılamadı</string>
+    <string name="devam_etmek_icin_giris_yapmalisin">Devam etmek için giriş yapmalısın.</string>
     <string name="tarih_secin">Tarih Seçin</string>
     <string name="yontem_secin">Yöntem Seçin</string>
     <string name="sifre_sifirla">Şifre Sıfırla</string>
@@ -506,18 +507,12 @@
 
     <string-array name="GenelMenu_Cevrimici">
         <item>anasayfa_Anasayfa</item>
-        <!-- <item>istatistik_İstatistik</item> -->
         <item>hesabim_Hesabım</item>
-        <!-- <item>guvenlik_Güvenlik</item> -->
-        <!-- <item>oyla_Oyla</item> -->
         <item>secenekler_Secenekler</item>
-        <!-- <item>cikisyap_Çıkış Yap</item> -->
     </string-array>
 
     <string-array name="GenelMenu_Cevrimdisi">
         <item>anasayfa_Anasayfa</item>
-        <!-- <item>istatistik_İstatistik</item> -->
-        <!-- <item>oyla_Oyla</item> -->
         <item>secenekler_Secenekler</item>
         <item>girisyap_Giriş Yap</item>
     </string-array>

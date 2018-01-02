@@ -7,6 +7,7 @@ import android.app.AlertDialog;
 import android.app.Fragment;
 import android.app.FragmentTransaction;
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.graphics.Typeface;
@@ -258,40 +259,18 @@ public class AnaEkran extends AppCompatActivity implements Interface_FragmentDat
                 }
 
                 break;
-            /*case "istatistik": // İstatistik
-                FT.remove(Fragment_Sayfa); // Geçerli fragment'i sil
+            case "hesabim": // Hesabım
+                if(AkorDefterimSys.GirisYapildiMi()) {
+                    if(AkorDefterimSys.InternetErisimKontrolu()) {
+                        AkorDefterimSys.EkranGetir(new Intent(activity, Hesabim.class), "Slide");
+                    } else AkorDefterimSys.StandartSnackBarMsj(coordinatorLayout, getString(R.string.internet_baglantisi_saglanamadi));
+                } else AkorDefterimSys.StandartSnackBarMsj(coordinatorLayout, getString(R.string.devam_etmek_icin_giris_yapmalisin));
 
-                Fragment_Sayfa = new Frg_Istatistik();// Fragment sayfa belirle
-                Fragment_SayfaAdi = "Frg_Istatistik";
-                lblSayfaBaslik.setText(getString(R.string.istatistik));
-
-                FT = activity.getFragmentManager().beginTransaction(); // Fragment methodunu kullanmak için sabit nesne
-                FT.replace(R.id.LLSayfa, Fragment_Sayfa, Fragment_SayfaAdi); // FT.add(<Hangi layout içinde çağırılacaksa id'si>, <Çağırılan Fragment>, <Çağırılan Fragment Takma Adı>);
-                FT.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
-                FT.commit();// Çağırma işlemini yaptırıyoruz..
-                break;*/
+                break;
             case "girisyap": // Giriş Yap
                 AkorDefterimSys.CikisYap();
 
                 break;
-            /*case "istekyap": // İstek Yap
-                if (AkorDefterimSys.InternetErisimKontrolu()) { //İnternet kontrolü yap
-                    FT.remove(Fragment_Sayfa); // Geçerli fragment'i sil
-
-                    Fragment_Sayfa = new Frg_IstekYap();// Fragment sayfa belirle
-                    Fragment_SayfaTag = "Frg_" + SayfaAdi;
-                    lblSayfaBaslik.setText(getString(R.string.istek_yap));
-                    btnTranspozeArti.setVisibility(View.GONE);
-                    btnTranspozeEksi.setVisibility(View.GONE);
-                    btnStar.setVisibility(View.GONE);
-
-                    FT = activity.getFragmentManager().beginTransaction(); // Fragment methodunu kullanmak için sabit nesne
-                    FT.replace(R.id.LLSayfa, Fragment_Sayfa, Fragment_SayfaTag); // FT.add(<Hangi layout içinde çağırılacaksa id'si>, <Çağırılan Fragment>, <Çağırılan Fragment Takma Adı>);
-                    FT.commit();// Çağırma işlemini yaptırıyoruz..
-                } else
-                    AkorDefterimSys.ToastMsj(activity, getString(R.string.internet_baglantisi_saglanamadi), Toast.LENGTH_SHORT);
-
-                break;*/
         }
     }
 

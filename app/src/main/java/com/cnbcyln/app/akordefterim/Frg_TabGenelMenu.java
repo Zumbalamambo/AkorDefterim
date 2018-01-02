@@ -92,7 +92,7 @@ public class Frg_TabGenelMenu extends Fragment implements Interface_AsyncRespons
 
 				switch (SayfaAdi) {
 					case "hesabim": // Hesabım
-						AkorDefterimSys.EkranGetir(new Intent(activity, Hesabim.class), "Slide");
+						FragmentDataConn.FragmentSayfaGetir(SayfaAdi);
 						break;
 					case "secenekler": // Seçenekler
 						AkorDefterimSys.EkranGetir(new Intent(activity, Secenekler.class), "Slide");
