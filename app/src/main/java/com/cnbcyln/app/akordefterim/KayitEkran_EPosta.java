@@ -30,8 +30,6 @@ import android.widget.TextView;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.util.Random;
-
 @SuppressWarnings({"deprecation", "ResultOfMethodCallIgnored", "ConstantConditions"})
 public class KayitEkran_EPosta extends AppCompatActivity implements Interface_AsyncResponse, OnClickListener {
 
@@ -40,7 +38,6 @@ public class KayitEkran_EPosta extends AppCompatActivity implements Interface_As
 	SharedPreferences sharedPref;
 	SharedPreferences.Editor sharedPrefEditor;
 	Typeface YaziFontu;
-    Random rnd;
 	ProgressDialog PDEPosta;
 	AlertDialog ADDialog_EPosta;
 	InputMethodManager imm;
@@ -62,7 +59,6 @@ public class KayitEkran_EPosta extends AppCompatActivity implements Interface_As
 		activity = this;
 		AkorDefterimSys = new AkorDefterimSys(activity);
 		YaziFontu = AkorDefterimSys.FontGetir(activity, "anivers_regular"); // Genel yazı fontunu belirttik
-        rnd = new Random();
 
 		sharedPref = activity.getSharedPreferences(AkorDefterimSys.PrefAdi, Context.MODE_PRIVATE);
 
@@ -176,7 +172,7 @@ public class KayitEkran_EPosta extends AppCompatActivity implements Interface_As
 					// Eğer hesap kontrol'de hesap bulunamadıysa sonuç false döner. Böylelikle kayıt işlemlerine devam edebiliriz.
 					if(!JSONSonuc.getBoolean("Sonuc")) {
 						// 6 haneli onay kodu oluşturuldu
-						OnayKodu = String.valueOf((100000 + rnd.nextInt(900000)));
+						OnayKodu = AkorDefterimSys.KodUret(6, true, false, false, false);
 
 						// Onay kodu belirtilen eposta adresine gönderiliyor
 						AkorDefterimSys.EPostaGonder(txtEPosta.getText().toString().trim(), "", getString(R.string.dogrulama_kodu), getString(R.string.eposta_dosrulama_kodu_icerik, OnayKodu, getString(R.string.uygulama_adi)));
@@ -225,44 +221,40 @@ public class KayitEkran_EPosta extends AppCompatActivity implements Interface_As
     }
 
     private void IleriIslem() {
-		btnIleri.setEnabled(false);
-		AkorDefterimSys.UnFocusEditText(txtEPosta);
 		AkorDefterimSys.KlavyeKapat();
 
-		txtEPosta.setText(txtEPosta.getText().toString().trim());
-		String EPosta = txtEPosta.getText().toString();
+		if(AkorDefterimSys.InternetErisimKontrolu()) {
+			txtEPosta.setText(txtEPosta.getText().toString().trim());
+			String EPosta = txtEPosta.getText().toString();
 
-		if(TextUtils.isEmpty(EPosta)) {
-			txtILEPosta.setError(getString(R.string.hata_bos_alan));
-			txtEPosta.requestFocus();
-			txtEPosta.setSelection(txtEPosta.length());
-			imm.showSoftInput(txtEPosta, 0);
-		} else if(!AkorDefterimSys.isValid(EPosta, "EPosta")) {
-			txtILEPosta.setError(getString(R.string.hata_format_eposta));
-			txtEPosta.requestFocus();
-			txtEPosta.setSelection(txtEPosta.length());
-			imm.showSoftInput(txtEPosta, 0);
-		} else if(AkorDefterimSys.isValid(EPosta, "FakeEPosta")) {
-			txtILEPosta.setError(getString(R.string.hata_format_eposta));
-			txtEPosta.requestFocus();
-			txtEPosta.setSelection(txtEPosta.length());
-			imm.showSoftInput(txtEPosta, 0);
-		} else txtILEPosta.setError(null);
+			if(TextUtils.isEmpty(EPosta)) {
+				txtILEPosta.setError(getString(R.string.hata_bos_alan));
+				txtEPosta.requestFocus();
+				txtEPosta.setSelection(txtEPosta.length());
+				imm.showSoftInput(txtEPosta, 0);
+			} else if(!AkorDefterimSys.isValid(EPosta, "EPosta")) {
+				txtILEPosta.setError(getString(R.string.hata_format_eposta));
+				txtEPosta.requestFocus();
+				txtEPosta.setSelection(txtEPosta.length());
+				imm.showSoftInput(txtEPosta, 0);
+			} else if(AkorDefterimSys.isValid(EPosta, "FakeEPosta")) {
+				txtILEPosta.setError(getString(R.string.hata_format_eposta));
+				txtEPosta.requestFocus();
+				txtEPosta.setSelection(txtEPosta.length());
+				imm.showSoftInput(txtEPosta, 0);
+			} else txtILEPosta.setError(null);
 
-		if(txtILEPosta.getError() == null) {
-			AkorDefterimSys.UnFocusEditText(txtEPosta);
+			if(txtILEPosta.getError() == null) {
+				btnIleri.setEnabled(false);
+				AkorDefterimSys.UnFocusEditText(txtEPosta);
 
-			if(AkorDefterimSys.InternetErisimKontrolu()) {
 				if(!AkorDefterimSys.ProgressDialogisShowing(PDEPosta)) { // Eğer progress dialog açık değilse
 					PDEPosta = AkorDefterimSys.CustomProgressDialog(getString(R.string.islem_yapiliyor), false, AkorDefterimSys.ProgressBarTimeoutSuresi, "");
 					PDEPosta.show();
 				}
 
 				AkorDefterimSys.HesapBilgiGetir(null, "", "", EPosta, "HesapBilgiGetir");
-			} else {
-				btnIleri.setEnabled(true);
-				AkorDefterimSys.StandartSnackBarMsj(coordinatorLayout, getString(R.string.internet_baglantisi_saglanamadi));
 			}
-		} else btnIleri.setEnabled(true);
+		} else AkorDefterimSys.StandartSnackBarMsj(coordinatorLayout, getString(R.string.internet_baglantisi_saglanamadi));
 	}
 }

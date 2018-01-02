@@ -1,0 +1,441 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+	xmlns:app="http://schemas.android.com/apk/res-auto"
+	xmlns:tools="http://schemas.android.com/tools"
+	android:id="@+id/coordinatorLayout"
+	android:layout_width="match_parent"
+	android:layout_height="match_parent"
+	android:background="@color/Beyaz">
+
+	<android.support.constraint.ConstraintLayout
+		android:id="@+id/ConstraintLayout1"
+		android:layout_width="match_parent"
+		android:layout_height="match_parent"
+		android:descendantFocusability="beforeDescendants"
+		android:focusableInTouchMode="true"
+		android:keepScreenOn="true">
+
+		<android.support.constraint.Guideline
+			android:id="@+id/v_guideline1"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:orientation="vertical"
+			app:layout_constraintGuide_percent="0.05" />
+
+		<android.support.constraint.Guideline
+			android:id="@+id/v_guideline2"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:orientation="vertical"
+			app:layout_constraintGuide_percent="0.95" />
+
+		<android.support.constraint.Guideline
+			android:id="@+id/h_guideline1"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:orientation="horizontal"
+			app:layout_constraintGuide_percent="0.085" />
+
+		<ImageButton
+			android:id="@+id/btnGeri"
+			android:layout_width="60dp"
+			android:layout_height="0dp"
+			android:background="@drawable/custom_button2"
+			app:layout_constraintBottom_toTopOf="@+id/view1"
+			app:layout_constraintStart_toStartOf="parent"
+			app:layout_constraintTop_toTopOf="parent"
+			app:srcCompat="@drawable/ic_arrow_back_siyah"
+			android:contentDescription="@string/imageDesc" />
+
+		<TextView
+			android:id="@+id/lblBaslik"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:layout_marginLeft="12dp"
+			android:layout_marginStart="12dp"
+			android:text="@string/secenekler"
+			android:textColor="@color/KoyuYazi"
+			style="@style/TextAppearance.AppCompat.Medium.Inverse"
+			app:layout_constraintBottom_toTopOf="@+id/view1"
+			app:layout_constraintStart_toEndOf="@+id/btnGeri"
+			app:layout_constraintTop_toTopOf="parent" />
+
+		<View
+			android:id="@+id/view1"
+			android:layout_width="0dp"
+			android:layout_height="1dp"
+			android:background="@drawable/cizgi_ortagri"
+			app:layout_constraintTop_toTopOf="@+id/h_guideline1" />
+
+		<ScrollView
+			android:id="@+id/scroll_view"
+			android:layout_width="0dp"
+			android:layout_height="0dp"
+			android:fillViewport="true"
+			app:layout_constraintBottom_toBottomOf="parent"
+			app:layout_constraintEnd_toEndOf="parent"
+			app:layout_constraintStart_toStartOf="parent"
+			app:layout_constraintTop_toTopOf="@+id/view1">
+
+			<android.support.constraint.ConstraintLayout
+				android:id="@+id/ConstraintLayout2"
+				android:layout_width="match_parent"
+				android:layout_height="wrap_content">
+
+				<android.support.constraint.Guideline
+					android:id="@+id/v_guideline3"
+					android:layout_width="wrap_content"
+					android:layout_height="wrap_content"
+					android:orientation="vertical"
+					app:layout_constraintGuide_percent="0.05" />
+
+				<android.support.constraint.Guideline
+					android:id="@+id/v_guideline4"
+					android:layout_width="wrap_content"
+					android:layout_height="wrap_content"
+					android:orientation="vertical"
+					app:layout_constraintGuide_percent="0.95" />
+
+				<TextView
+					android:id="@+id/lblAyarlar"
+					style="@style/TextAppearance.AppCompat.Small.Inverse"
+					android:layout_width="wrap_content"
+					android:layout_height="wrap_content"
+					android:layout_marginStart="3dp"
+					android:layout_marginLeft="3dp"
+					android:layout_marginTop="24dp"
+					android:text="@string/ayarlar"
+					android:textColor="@color/KoyuYazi"
+					app:layout_constraintStart_toStartOf="@+id/v_guideline3"
+					app:layout_constraintTop_toTopOf="parent" />
+
+				<View
+					android:id="@+id/view2"
+					android:layout_width="0dp"
+					android:layout_height="1dp"
+					android:background="@drawable/cizgi_koyugri"
+					android:layout_marginTop="8dp"
+					app:layout_constraintEnd_toStartOf="@+id/v_guideline4"
+					app:layout_constraintStart_toStartOf="@+id/v_guideline3"
+					app:layout_constraintTop_toBottomOf="@+id/lblAyarlar" />
+
+				<Button
+					android:id="@+id/btnEkranIsigi"
+					android:layout_width="0dp"
+					android:layout_height="wrap_content"
+					android:paddingStart="30dp"
+					android:paddingLeft="30dp"
+					android:background="@drawable/custom_button2"
+					android:drawableLeft="@drawable/ic_aydinlik"
+					android:drawableStart="@drawable/ic_aydinlik"
+					android:drawablePadding="10dp"
+					android:gravity="left|center_vertical"
+					android:text="@string/ekran_isigi"
+					android:textAppearance="@style/TextAppearance.AppCompat"
+					android:textColor="@color/KoyuYazi"
+					android:stateListAnimator="@null"
+					style="@style/TextAppearance.AppCompat.Small.Inverse"
+					app:layout_constraintEnd_toEndOf="parent"
+					app:layout_constraintStart_toStartOf="parent"
+					app:layout_constraintTop_toBottomOf="@+id/view2"
+					tools:targetApi="lollipop" />
+
+				<View
+					android:id="@+id/view3"
+					android:layout_width="0dp"
+					android:layout_height="1dp"
+					android:background="@drawable/cizgi_ortagri"
+					app:layout_constraintEnd_toStartOf="@+id/v_guideline4"
+					app:layout_constraintStart_toStartOf="@+id/v_guideline3"
+					app:layout_constraintTop_toBottomOf="@+id/btnEkranIsigi" />
+
+				<Button
+					android:id="@+id/btnRepertuvarIslemleri"
+					android:layout_width="0dp"
+					android:layout_height="wrap_content"
+					android:paddingStart="30dp"
+					android:paddingLeft="30dp"
+					android:background="@drawable/custom_button2"
+					android:drawableLeft="@drawable/ic_kitap"
+					android:drawableStart="@drawable/ic_kitap"
+					android:drawablePadding="10dp"
+					android:gravity="left|center_vertical"
+					android:text="@string/repertuvar_islemleri"
+					android:textAppearance="@style/TextAppearance.AppCompat"
+					android:textColor="@color/KoyuYazi"
+					android:stateListAnimator="@null"
+					style="@style/TextAppearance.AppCompat.Small.Inverse"
+					app:layout_constraintEnd_toEndOf="parent"
+					app:layout_constraintStart_toStartOf="parent"
+					app:layout_constraintTop_toBottomOf="@+id/view3"
+					tools:targetApi="lollipop" />
+
+				<View
+					android:id="@+id/view4"
+					android:layout_width="0dp"
+					android:layout_height="1dp"
+					android:background="@drawable/cizgi_ortagri"
+					app:layout_constraintEnd_toStartOf="@+id/v_guideline4"
+					app:layout_constraintStart_toStartOf="@+id/v_guideline3"
+					app:layout_constraintTop_toBottomOf="@+id/btnRepertuvarIslemleri" />
+
+				<TextView
+					android:id="@+id/lblDestek"
+					style="@style/TextAppearance.AppCompat.Small.Inverse"
+					android:layout_width="wrap_content"
+					android:layout_height="wrap_content"
+					android:layout_marginStart="3dp"
+					android:layout_marginLeft="3dp"
+					android:layout_marginTop="24dp"
+					android:text="@string/destek"
+					android:textColor="@color/KoyuYazi"
+					app:layout_constraintStart_toStartOf="@+id/v_guideline3"
+					app:layout_constraintTop_toBottomOf="@+id/btnRepertuvarIslemleri" />
+
+				<View
+					android:id="@+id/view5"
+					android:layout_width="0dp"
+					android:layout_height="1dp"
+					android:background="@drawable/cizgi_koyugri"
+					android:layout_marginTop="8dp"
+					app:layout_constraintEnd_toStartOf="@+id/v_guideline4"
+					app:layout_constraintStart_toStartOf="@+id/v_guideline3"
+					app:layout_constraintTop_toBottomOf="@+id/lblDestek" />
+
+				<Button
+					android:id="@+id/btnEgitim"
+					android:layout_width="0dp"
+					android:layout_height="wrap_content"
+					android:paddingStart="30dp"
+					android:paddingLeft="30dp"
+					android:background="@drawable/custom_button2"
+					android:drawableLeft="@drawable/ic_school"
+					android:drawableStart="@drawable/ic_school"
+					android:drawablePadding="10dp"
+					android:gravity="left|center_vertical"
+					android:text="@string/egitim"
+					android:textAppearance="@style/TextAppearance.AppCompat"
+					android:textColor="@color/KoyuYazi"
+					android:stateListAnimator="@null"
+					style="@style/TextAppearance.AppCompat.Small.Inverse"
+					app:layout_constraintEnd_toEndOf="parent"
+					app:layout_constraintStart_toStartOf="parent"
+					app:layout_constraintTop_toBottomOf="@+id/view5"
+					tools:targetApi="lollipop" />
+
+				<View
+					android:id="@+id/view6"
+					android:layout_width="0dp"
+					android:layout_height="1dp"
+					android:background="@drawable/cizgi_ortagri"
+					app:layout_constraintEnd_toStartOf="@+id/v_guideline4"
+					app:layout_constraintStart_toStartOf="@+id/v_guideline3"
+					app:layout_constraintTop_toBottomOf="@+id/btnEgitim" />
+
+				<Button
+					android:id="@+id/btnYardimMerkezi"
+					android:layout_width="0dp"
+					android:layout_height="wrap_content"
+					android:paddingStart="30dp"
+					android:paddingLeft="30dp"
+					android:background="@drawable/custom_button2"
+					android:drawableLeft="@drawable/ic_help_circle"
+					android:drawableStart="@drawable/ic_help_circle"
+					android:drawablePadding="10dp"
+					android:gravity="left|center_vertical"
+					android:text="@string/s_yardim_merkezi"
+					android:textAppearance="@style/TextAppearance.AppCompat"
+					android:textColor="@color/KoyuYazi"
+					android:stateListAnimator="@null"
+					style="@style/TextAppearance.AppCompat.Small.Inverse"
+					app:layout_constraintEnd_toEndOf="parent"
+					app:layout_constraintStart_toStartOf="parent"
+					app:layout_constraintTop_toBottomOf="@+id/view6"
+					tools:targetApi="lollipop" />
+
+				<View
+					android:id="@+id/view7"
+					android:layout_width="0dp"
+					android:layout_height="1dp"
+					android:background="@drawable/cizgi_ortagri"
+					app:layout_constraintEnd_toStartOf="@+id/v_guideline4"
+					app:layout_constraintStart_toStartOf="@+id/v_guideline3"
+					app:layout_constraintTop_toBottomOf="@+id/btnYardimMerkezi" />
+
+				<Button
+					android:id="@+id/btnSorunBildir"
+					android:layout_width="0dp"
+					android:layout_height="wrap_content"
+					android:paddingStart="30dp"
+					android:paddingLeft="30dp"
+					android:background="@drawable/custom_button2"
+					android:drawableLeft="@drawable/ic_bug"
+					android:drawableStart="@drawable/ic_bug"
+					android:drawablePadding="10dp"
+					android:gravity="left|center_vertical"
+					android:text="@string/sorun_bildir"
+					android:textAppearance="@style/TextAppearance.AppCompat"
+					android:textColor="@color/KoyuYazi"
+					android:stateListAnimator="@null"
+					style="@style/TextAppearance.AppCompat.Small.Inverse"
+					app:layout_constraintEnd_toEndOf="parent"
+					app:layout_constraintStart_toStartOf="parent"
+					app:layout_constraintTop_toBottomOf="@+id/view7"
+					tools:targetApi="lollipop" />
+
+				<View
+					android:id="@+id/view8"
+					android:layout_width="0dp"
+					android:layout_height="1dp"
+					android:background="@drawable/cizgi_ortagri"
+					app:layout_constraintEnd_toStartOf="@+id/v_guideline4"
+					app:layout_constraintStart_toStartOf="@+id/v_guideline3"
+					app:layout_constraintTop_toBottomOf="@+id/btnSorunBildir" />
+
+				<TextView
+					android:id="@+id/lblHakkinda"
+					style="@style/TextAppearance.AppCompat.Small.Inverse"
+					android:layout_width="wrap_content"
+					android:layout_height="wrap_content"
+					android:layout_marginStart="3dp"
+					android:layout_marginLeft="3dp"
+					android:layout_marginTop="24dp"
+					android:text="@string/hakkinda"
+					android:textColor="@color/KoyuYazi"
+					app:layout_constraintStart_toStartOf="@+id/v_guideline3"
+					app:layout_constraintTop_toBottomOf="@+id/view8" />
+
+				<View
+					android:id="@+id/view9"
+					android:layout_width="0dp"
+					android:layout_height="1dp"
+					android:background="@drawable/cizgi_koyugri"
+					android:layout_marginTop="8dp"
+					app:layout_constraintEnd_toStartOf="@+id/v_guideline4"
+					app:layout_constraintStart_toStartOf="@+id/v_guideline3"
+					app:layout_constraintTop_toBottomOf="@+id/lblHakkinda" />
+
+				<Button
+					android:id="@+id/btnOyVer"
+					android:layout_width="0dp"
+					android:layout_height="wrap_content"
+					android:paddingStart="30dp"
+					android:paddingLeft="30dp"
+					android:background="@drawable/custom_button2"
+					android:drawableLeft="@drawable/ic_star"
+					android:drawableStart="@drawable/ic_star"
+					android:drawablePadding="10dp"
+					android:gravity="left|center_vertical"
+					android:text="@string/oy_ver"
+					android:textAppearance="@style/TextAppearance.AppCompat"
+					android:textColor="@color/KoyuYazi"
+					android:stateListAnimator="@null"
+					style="@style/TextAppearance.AppCompat.Small.Inverse"
+					app:layout_constraintEnd_toEndOf="parent"
+					app:layout_constraintStart_toStartOf="parent"
+					app:layout_constraintTop_toBottomOf="@+id/view9"
+					tools:targetApi="lollipop" />
+
+				<View
+					android:id="@+id/view10"
+					android:layout_width="0dp"
+					android:layout_height="1dp"
+					android:background="@drawable/cizgi_ortagri"
+					app:layout_constraintEnd_toStartOf="@+id/v_guideline4"
+					app:layout_constraintStart_toStartOf="@+id/v_guideline3"
+					app:layout_constraintTop_toBottomOf="@+id/btnOyVer" />
+
+				<Button
+					android:id="@+id/btnGizlilikIlkesi"
+					android:layout_width="0dp"
+					android:layout_height="wrap_content"
+					android:paddingStart="30dp"
+					android:paddingLeft="30dp"
+					android:background="@drawable/custom_button2"
+					android:drawableLeft="@drawable/ic_file_document"
+					android:drawableStart="@drawable/ic_file_document"
+					android:drawablePadding="10dp"
+					android:gravity="left|center_vertical"
+					android:text="@string/gizlilik_sartlari"
+					android:textAppearance="@style/TextAppearance.AppCompat"
+					android:textColor="@color/KoyuYazi"
+					android:stateListAnimator="@null"
+					style="@style/TextAppearance.AppCompat.Small.Inverse"
+					app:layout_constraintEnd_toEndOf="parent"
+					app:layout_constraintStart_toStartOf="parent"
+					app:layout_constraintTop_toBottomOf="@+id/view10"
+					tools:targetApi="lollipop" />
+
+				<View
+					android:id="@+id/view11"
+					android:layout_width="0dp"
+					android:layout_height="1dp"
+					android:background="@drawable/cizgi_ortagri"
+					app:layout_constraintEnd_toStartOf="@+id/v_guideline4"
+					app:layout_constraintStart_toStartOf="@+id/v_guideline3"
+					app:layout_constraintTop_toBottomOf="@+id/btnGizlilikIlkesi" />
+
+				<Button
+					android:id="@+id/btnHizmetKosullari"
+					android:layout_width="0dp"
+					android:layout_height="wrap_content"
+					android:paddingStart="30dp"
+					android:paddingLeft="30dp"
+					android:background="@drawable/custom_button2"
+					android:drawableLeft="@drawable/ic_file_document"
+					android:drawableStart="@drawable/ic_file_document"
+					android:drawablePadding="10dp"
+					android:gravity="left|center_vertical"
+					android:text="@string/hizmet_kosullari"
+					android:textAppearance="@style/TextAppearance.AppCompat"
+					android:textColor="@color/KoyuYazi"
+					android:stateListAnimator="@null"
+					style="@style/TextAppearance.AppCompat.Small.Inverse"
+					app:layout_constraintEnd_toEndOf="parent"
+					app:layout_constraintStart_toStartOf="parent"
+					app:layout_constraintTop_toBottomOf="@+id/view11"
+					tools:targetApi="lollipop" />
+
+				<View
+					android:id="@+id/view12"
+					android:layout_width="0dp"
+					android:layout_height="1dp"
+					android:background="@drawable/cizgi_ortagri"
+					app:layout_constraintEnd_toStartOf="@+id/v_guideline4"
+					app:layout_constraintStart_toStartOf="@+id/v_guideline3"
+					app:layout_constraintTop_toBottomOf="@+id/btnHizmetKosullari" />
+
+				<Button
+					android:id="@+id/btnAcikKaynakKutuphaneleri"
+					android:layout_width="0dp"
+					android:layout_height="wrap_content"
+					android:paddingStart="30dp"
+					android:paddingLeft="30dp"
+					android:background="@drawable/custom_button2"
+					android:drawableLeft="@drawable/ic_code_tags"
+					android:drawableStart="@drawable/ic_code_tags"
+					android:drawablePadding="10dp"
+					android:gravity="left|center_vertical"
+					android:text="@string/acik_kaynak_kutuphaneleri"
+					android:textAppearance="@style/TextAppearance.AppCompat"
+					android:textColor="@color/KoyuYazi"
+					android:stateListAnimator="@null"
+					style="@style/TextAppearance.AppCompat.Small.Inverse"
+					app:layout_constraintEnd_toEndOf="parent"
+					app:layout_constraintStart_toStartOf="parent"
+					app:layout_constraintTop_toBottomOf="@+id/view12"
+					tools:targetApi="lollipop" />
+
+				<View
+					android:id="@+id/view13"
+					android:layout_width="0dp"
+					android:layout_height="1dp"
+					android:background="@drawable/cizgi_ortagri"
+					app:layout_constraintEnd_toStartOf="@+id/v_guideline4"
+					app:layout_constraintStart_toStartOf="@+id/v_guideline3"
+					app:layout_constraintTop_toBottomOf="@+id/btnAcikKaynakKutuphaneleri" />
+			</android.support.constraint.ConstraintLayout>
+		</ScrollView>
+
+	</android.support.constraint.ConstraintLayout>
+</android.support.design.widget.CoordinatorLayout>

@@ -1,22 +1,5 @@
 package com.cnbcyln.app.akordefterim;
 
-import com.cnbcyln.app.akordefterim.Interface.Interface_AsyncResponse;
-import com.cnbcyln.app.akordefterim.util.AkorDefterimSys;
-import com.facebook.CallbackManager;
-import com.facebook.FacebookCallback;
-import com.facebook.FacebookException;
-import com.facebook.FacebookSdk;
-import com.facebook.GraphRequest;
-import com.facebook.GraphResponse;
-import com.facebook.login.LoginManager;
-import com.facebook.login.LoginResult;
-import com.google.android.gms.auth.api.Auth;
-import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
-import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
-import com.google.android.gms.auth.api.signin.GoogleSignInResult;
-import com.google.android.gms.common.api.GoogleApiClient;
-import com.google.firebase.iid.FirebaseInstanceId;
-
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -45,6 +28,24 @@ import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.VideoView;
 
+import com.cnbcyln.app.akordefterim.Interface.Interface_AsyncResponse;
+import com.cnbcyln.app.akordefterim.util.AkorDefterimSys;
+import com.facebook.CallbackManager;
+import com.facebook.FacebookCallback;
+import com.facebook.FacebookException;
+import com.facebook.FacebookSdk;
+import com.facebook.GraphRequest;
+import com.facebook.GraphResponse;
+import com.facebook.login.LoginManager;
+import com.facebook.login.LoginResult;
+import com.google.android.gms.auth.api.signin.GoogleSignIn;
+import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
+import com.google.android.gms.auth.api.signin.GoogleSignInClient;
+import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
+import com.google.android.gms.common.api.ApiException;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.iid.FirebaseInstanceId;
+
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -59,7 +60,7 @@ public class Giris extends AppCompatActivity implements Interface_AsyncResponse 
 	SharedPreferences.Editor sharedPrefEditor;
 	Typeface YaziFontu;
 	CallbackManager mFacebookCallbackManager;
-	private GoogleApiClient mGoogleLoginApiClient;
+	GoogleSignInClient mGoogleSignInClient;
 	VideoView VideoArkaplan;
 	ViewPager VPGirisEkranPager;
 	AlertDialog ADDialog_PlayGoogleServisi, ADDialog_InternetErisimSorunu, ADDialog_HesapDurumu;
@@ -85,16 +86,6 @@ public class Giris extends AppCompatActivity implements Interface_AsyncResponse 
 		AkorDefterimSys.TransparanNotifyBar(); // Notification Bar'ı transparan yapıyoruz.
 		AkorDefterimSys.NotifyIkonParlakligi(); // Notification Bar'daki simgelerin parlaklığını aldık.
 
-		FirebaseToken = FirebaseInstanceId.getInstance().getToken();
-		OSID = Settings.Secure.getString(getContentResolver(), Settings.Secure.ANDROID_ID);
-		OSVersiyon = AkorDefterimSys.AndroidSurumBilgisi(Build.VERSION.SDK_INT);
-
-		try {
-			UygulamaVersiyon = activity.getPackageManager().getPackageInfo(activity.getPackageName(), 0).versionName;
-		} catch (PackageManager.NameNotFoundException e) {
-			e.printStackTrace();
-		}
-
 		VideoArkaplan = (VideoView) findViewById(R.id.VideoArkaplan);
 		VideoArkaplan.setVideoURI(Uri.parse("android.resource://" + getPackageName() + "/" + R.raw.bg_video));
 		VideoArkaplan.start();
@@ -118,8 +109,18 @@ public class Giris extends AppCompatActivity implements Interface_AsyncResponse 
 	protected void onStart() {
 		super.onStart();
 
+		FirebaseToken = FirebaseInstanceId.getInstance().getToken();
+		OSID = Settings.Secure.getString(getContentResolver(), Settings.Secure.ANDROID_ID);
+		OSVersiyon = AkorDefterimSys.AndroidSurumBilgisi(Build.VERSION.SDK_INT);
+
+		try {
+			UygulamaVersiyon = activity.getPackageManager().getPackageInfo(activity.getPackageName(), 0).versionName;
+		} catch (PackageManager.NameNotFoundException e) {
+			e.printStackTrace();
+		}
+
 		FacebookLoginInit();
-		GoogleAPIInit();
+		GoogleAPIInit(false);
 	}
 
 	@Override
@@ -129,10 +130,6 @@ public class Giris extends AppCompatActivity implements Interface_AsyncResponse 
 		AkorDefterimSys.DismissAlertDialog(ADDialog_PlayGoogleServisi);
 		AkorDefterimSys.DismissAlertDialog(ADDialog_InternetErisimSorunu);
 		AkorDefterimSys.DismissAlertDialog(ADDialog_HesapDurumu);
-
-		if(mGoogleLoginApiClient != null) {
-			if (mGoogleLoginApiClient.isConnected()) mGoogleLoginApiClient.disconnect();
-		}
 	}
 
 	@Override
@@ -191,14 +188,23 @@ public class Giris extends AppCompatActivity implements Interface_AsyncResponse 
 		switch (resultCode) {
 			case Activity.RESULT_OK: //Second activity normal olarak sonlanirsa RESULT_OK degeri döner.
 				if (requestCode == AkorDefterimSys.RC_GOOGLE_LOGIN) {
-					GoogleSignInResult result = Auth.GoogleSignInApi.getSignInResultFromIntent(data);
+					try {
+						Task<GoogleSignInAccount> task = GoogleSignIn.getSignedInAccountFromIntent(data);
+						GoogleSignInAccount acct = task.getResult(ApiException.class);
 
-					if (result.isSuccess()) {
-						GoogleSignInAccount acct = result.getSignInAccount();
+						if (acct != null) {
+							String AdSoyad = acct.getDisplayName();
+							//String personGivenName = acct.getGivenName();
+							//String personFamilyName = acct.getFamilyName();
+							String EPosta = acct.getEmail();
+							String GoogleID = acct.getId();
+							//Uri personPhoto = acct.getPhotoUrl();
+							//String ResimURL = (acct.getPhotoUrl() == null ? "":acct.getPhotoUrl().toString());
 
-						//String ResimURL = (acct.getPhotoUrl() == null ? "":acct.getPhotoUrl().toString());
-
-						AkorDefterimSys.HesapGirisYap("Google", FirebaseToken, OSID, OSVersiyon, UygulamaVersiyon, acct.getEmail(), "", acct.getId(), acct.getDisplayName());
+							AkorDefterimSys.HesapGirisYap("Google", FirebaseToken, OSID, OSVersiyon, UygulamaVersiyon, EPosta, "", GoogleID, AdSoyad);
+						}
+					} catch (ApiException e) {
+						e.printStackTrace();
 					}
 				}
 
@@ -211,16 +217,6 @@ public class Giris extends AppCompatActivity implements Interface_AsyncResponse 
 
 				break;
 		}
-	}
-
-	private void GoogleAPIInit() {
-		GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
-				.requestEmail()
-				.build();
-
-		mGoogleLoginApiClient = new GoogleApiClient.Builder(this)
-				.addApi(Auth.GOOGLE_SIGN_IN_API, gso)
-				.build();
 	}
 
 	private class ViewPagerAdapter extends android.support.v4.view.PagerAdapter {
@@ -302,12 +298,8 @@ public class Giris extends AppCompatActivity implements Interface_AsyncResponse 
 					btnGoogleLogin.setOnClickListener(new OnClickListener() {
 						@Override
 						public void onClick(View v) {
-							if (mGoogleLoginApiClient != null) {
-								mGoogleLoginApiClient.connect();
-
-								Intent signInIntent = Auth.GoogleSignInApi.getSignInIntent(mGoogleLoginApiClient);
-								startActivityForResult(signInIntent, AkorDefterimSys.RC_GOOGLE_LOGIN);
-							} else GoogleAPIInit();
+							Intent signInIntent = mGoogleSignInClient.getSignInIntent();
+							startActivityForResult(signInIntent, AkorDefterimSys.RC_GOOGLE_LOGIN);
 						}
 					});
 
@@ -668,6 +660,18 @@ public class Giris extends AppCompatActivity implements Interface_AsyncResponse 
 		} catch (JSONException e) {
 			e.printStackTrace();
 		}
+	}
+
+	private void GoogleAPIInit(Boolean GirisYapisinMi) {
+		GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+				.requestEmail()
+				.build();
+
+		//mGoogleLoginApiClient = new GoogleApiClient.Builder(this)
+		//.addApi(Auth.GOOGLE_SIGN_IN_API, gso)
+		//.build();
+
+		mGoogleSignInClient = GoogleSignIn.getClient(this, gso);
 	}
 
 	@SuppressLint("HardwareIds")

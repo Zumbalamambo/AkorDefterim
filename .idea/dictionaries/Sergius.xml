@@ -23,6 +23,8 @@
       <w>baslangic</w>
       <w>basvuru</w>
       <w>belirle</w>
+      <w>bildir</w>
+      <w>bildirim</w>
       <w>bilgi</w>
       <w>bilgiler</w>
       <w>bilgileri</w>
@@ -64,9 +66,11 @@
       <w>fazla</w>
       <w>foto</w>
       <w>fotograf</w>
+      <w>fotografcek</w>
       <w>fotografi</w>
       <w>galeriden</w>
       <w>gelinen</w>
+      <w>geribildirim</w>
       <w>getir</w>
       <w>geçerli</w>
       <w>girildi</w>
@@ -190,10 +194,12 @@
       <w>skor</w>
       <w>smsokuma</w>
       <w>sonraki</w>
+      <w>sorun</w>
       <w>sorunu</w>
       <w>sosyal</w>
       <w>soyad</w>
       <w>standart</w>
+      <w>suresi</w>
       <w>sıfırlama</w>
       <w>tamam</w>
       <w>tamamla</w>
@@ -221,6 +227,7 @@
       <w>versiyonu</w>
       <w>veya</w>
       <w>yada</w>
+      <w>yapildi</w>
       <w>yapıyoruz</w>
       <w>yardim</w>
       <w>yardimi</w>

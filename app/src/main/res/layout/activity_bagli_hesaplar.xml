@@ -1,0 +1,202 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.design.widget.CoordinatorLayout
+	xmlns:android="http://schemas.android.com/apk/res/android"
+	xmlns:app="http://schemas.android.com/apk/res-auto"
+	android:id="@+id/coordinatorLayout"
+	android:layout_width="match_parent"
+	android:layout_height="match_parent"
+	android:background="@color/Beyaz">
+
+	<android.support.constraint.ConstraintLayout
+		android:id="@+id/ConstraintLayout1"
+		android:layout_width="match_parent"
+		android:layout_height="match_parent"
+		android:descendantFocusability="beforeDescendants"
+		android:focusableInTouchMode="true"
+		android:keepScreenOn="true">
+
+		<android.support.constraint.Guideline
+			android:id="@+id/v_guideline1"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:orientation="vertical"
+			app:layout_constraintGuide_percent="0.05" />
+
+		<android.support.constraint.Guideline
+			android:id="@+id/v_guideline2"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:orientation="vertical"
+			app:layout_constraintGuide_percent="0.95" />
+
+		<android.support.constraint.Guideline
+			android:id="@+id/h_guideline1"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:orientation="horizontal"
+			app:layout_constraintGuide_percent="0.085" />
+
+		<ImageButton
+			android:id="@+id/btnGeri"
+			android:layout_width="60dp"
+			android:layout_height="0dp"
+			android:background="@drawable/custom_button2"
+			app:layout_constraintBottom_toTopOf="@+id/view1"
+			app:layout_constraintStart_toStartOf="parent"
+			app:layout_constraintTop_toTopOf="parent"
+			app:srcCompat="@drawable/ic_arrow_back_siyah"
+			android:contentDescription="@string/imageDesc" />
+
+		<TextView
+			android:id="@+id/lblBaslik"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:layout_marginLeft="12dp"
+			android:layout_marginStart="12dp"
+			android:text="@string/bagli_hesaplar"
+			android:textColor="@color/KoyuYazi"
+			style="@style/TextAppearance.AppCompat.Medium.Inverse"
+			app:layout_constraintBottom_toTopOf="@+id/view1"
+			app:layout_constraintStart_toEndOf="@+id/btnGeri"
+			app:layout_constraintTop_toTopOf="parent" />
+
+		<View
+			android:id="@+id/view1"
+			android:layout_width="0dp"
+			android:layout_height="1dp"
+			android:background="@drawable/cizgi_ortagri"
+			app:layout_constraintTop_toTopOf="@+id/h_guideline1" />
+
+		<ScrollView
+			android:id="@+id/scroll_view"
+			android:layout_width="0dp"
+			android:layout_height="0dp"
+			android:fillViewport="true"
+			app:layout_constraintBottom_toBottomOf="parent"
+			app:layout_constraintEnd_toEndOf="parent"
+			app:layout_constraintStart_toStartOf="parent"
+			app:layout_constraintTop_toTopOf="@+id/view1">
+
+			<android.support.constraint.ConstraintLayout
+				android:id="@+id/ConstraintLayout2"
+				android:layout_width="match_parent"
+				android:layout_height="wrap_content">
+
+				<android.support.constraint.Guideline
+					android:id="@+id/v_guideline3"
+					android:layout_width="wrap_content"
+					android:layout_height="wrap_content"
+					android:orientation="vertical"
+					app:layout_constraintGuide_percent="0.05" />
+
+				<android.support.constraint.Guideline
+					android:id="@+id/v_guideline4"
+					android:layout_width="wrap_content"
+					android:layout_height="wrap_content"
+					android:orientation="vertical"
+					app:layout_constraintGuide_percent="0.95" />
+
+				<TextView
+					android:id="@+id/lblBagliHesaplarAciklama"
+					android:layout_width="0dp"
+					android:layout_height="wrap_content"
+					android:layout_marginTop="16dp"
+					android:text="@string/bagli_hesaplar_aciklama"
+					android:textColor="@color/KoyuGri"
+					style="@style/TextAppearance.AppCompat.Small.Inverse"
+					app:layout_constraintEnd_toStartOf="@+id/v_guideline4"
+					app:layout_constraintStart_toStartOf="@+id/v_guideline3"
+					app:layout_constraintTop_toTopOf="parent" />
+
+				<View
+					android:id="@+id/view2"
+					android:layout_width="0dp"
+					android:layout_height="1dp"
+					android:layout_marginTop="16dp"
+					android:background="@drawable/cizgi_ortagri"
+					app:layout_constraintTop_toBottomOf="@+id/lblBagliHesaplarAciklama" />
+
+				<ImageView
+					android:id="@+id/ImgFacebookIcon"
+					android:layout_width="wrap_content"
+					android:layout_height="0dp"
+					android:contentDescription="@string/imageDesc"
+					app:layout_constraintBottom_toTopOf="@+id/view3"
+					app:layout_constraintStart_toStartOf="@+id/v_guideline3"
+					app:layout_constraintTop_toBottomOf="@+id/view2"
+					app:srcCompat="@drawable/layers_fb_icon" />
+
+				<TextView
+					android:id="@+id/lblFacebook"
+					android:layout_width="wrap_content"
+					android:layout_height="wrap_content"
+					android:layout_marginStart="16dp"
+					android:layout_marginLeft="16dp"
+					android:text="@string/facebook"
+					android:textColor="@color/KoyuGri"
+					style="@style/TextAppearance.AppCompat.Small.Inverse"
+					app:layout_constraintBottom_toTopOf="@+id/view3"
+					app:layout_constraintStart_toEndOf="@+id/ImgFacebookIcon"
+					app:layout_constraintTop_toBottomOf="@+id/view2" />
+
+				<Switch
+					android:id="@+id/SFacebook"
+					android:layout_width="wrap_content"
+					android:layout_height="wrap_content"
+					android:layout_marginTop="8dp"
+					app:layout_constraintEnd_toStartOf="@+id/v_guideline4"
+					app:layout_constraintTop_toBottomOf="@+id/view2" />
+
+				<View
+					android:id="@+id/view3"
+					android:layout_width="0dp"
+					android:layout_height="1dp"
+					android:layout_marginTop="8dp"
+					android:background="@drawable/cizgi_ortagri"
+					app:layout_constraintTop_toBottomOf="@+id/SFacebook" />
+
+				<ImageView
+					android:id="@+id/ImgGoogleIcon"
+					android:layout_width="wrap_content"
+					android:layout_height="0dp"
+					android:contentDescription="@string/imageDesc"
+					app:layout_constraintBottom_toTopOf="@+id/view4"
+					app:layout_constraintStart_toStartOf="@+id/v_guideline3"
+					app:layout_constraintTop_toBottomOf="@+id/view3"
+					app:srcCompat="@drawable/layers_google_icon" />
+
+				<TextView
+					android:id="@+id/lblGoogle"
+					android:layout_width="wrap_content"
+					android:layout_height="wrap_content"
+					android:layout_marginStart="16dp"
+					android:layout_marginLeft="16dp"
+					android:text="@string/google"
+					android:textColor="@color/KoyuGri"
+					style="@style/TextAppearance.AppCompat.Small.Inverse"
+					app:layout_constraintBottom_toTopOf="@+id/view4"
+					app:layout_constraintStart_toEndOf="@+id/ImgGoogleIcon"
+					app:layout_constraintTop_toBottomOf="@+id/view3" />
+
+				<Switch
+					android:id="@+id/SGoogle"
+					android:layout_width="wrap_content"
+					android:layout_height="wrap_content"
+					android:layout_marginTop="8dp"
+					app:layout_constraintEnd_toStartOf="@+id/v_guideline4"
+					app:layout_constraintTop_toBottomOf="@+id/view3" />
+
+				<View
+					android:id="@+id/view4"
+					android:layout_width="0dp"
+					android:layout_height="1dp"
+					android:layout_marginTop="8dp"
+					android:background="@drawable/cizgi_ortagri"
+					app:layout_constraintTop_toBottomOf="@+id/SGoogle" />
+
+
+			</android.support.constraint.ConstraintLayout>
+		</ScrollView>
+
+	</android.support.constraint.ConstraintLayout>
+</android.support.design.widget.CoordinatorLayout>

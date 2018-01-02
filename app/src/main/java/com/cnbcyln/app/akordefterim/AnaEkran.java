@@ -7,12 +7,9 @@ import android.app.AlertDialog;
 import android.app.Fragment;
 import android.app.FragmentTransaction;
 import android.content.Context;
-import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.graphics.Typeface;
-import android.media.Image;
-import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Process;
@@ -272,69 +269,9 @@ public class AnaEkran extends AppCompatActivity implements Interface_FragmentDat
                 FT.replace(R.id.LLSayfa, Fragment_Sayfa, Fragment_SayfaAdi); // FT.add(<Hangi layout içinde çağırılacaksa id'si>, <Çağırılan Fragment>, <Çağırılan Fragment Takma Adı>);
                 FT.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
                 FT.commit();// Çağırma işlemini yaptırıyoruz..
-                break;
-            case "guvenlik": // Güvenlik
-                FT.remove(Fragment_Sayfa); // Geçerli fragment'i sil
-
-                Fragment_Sayfa = new Frg_Guvenlik();// Fragment sayfa belirle
-                Fragment_SayfaAdi = "Frg_Guvenlik";
-                lblSayfaBaslik.setText(getString(R.string.guvenlik));
-
-                FT = activity.getFragmentManager().beginTransaction(); // Fragment methodunu kullanmak için sabit nesne
-                FT.replace(R.id.LLSayfa, Fragment_Sayfa, Fragment_SayfaAdi); // FT.add(<Hangi layout içinde çağırılacaksa id'si>, <Çağırılan Fragment>, <Çağırılan Fragment Takma Adı>);
-                FT.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
-                FT.commit();// Çağırma işlemini yaptırıyoruz..
-                break;*/
-            case "oyla": // Oyla
-                if(AkorDefterimSys.InternetErisimKontrolu()) { // İnternet kontrolü yap
-                    String appPackageName = activity.getPackageName(); // getPackageName() from Context or Activity object
-
-                    try {
-                        startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("market://details?id=" + appPackageName)));
-                    } catch (android.content.ActivityNotFoundException e) {
-                        startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("https://play.google.com/store/apps/details?id=" + appPackageName)));
-                    }
-                } else {
-                    if(!AkorDefterimSys.AlertDialogisShowing(ADDialog_InternetBaglantisi)) {
-                        ADDialog_InternetBaglantisi = AkorDefterimSys.CustomAlertDialog(activity,
-                                getString(R.string.internet_baglantisi),
-                                getString(R.string.internet_baglantisi_saglanamadi),
-                                getString(R.string.tamam),
-                                "ADDialog_InternetBaglantisi_Kapat");
-                        ADDialog_InternetBaglantisi.getWindow().getAttributes().windowAnimations = R.style.DialogAnimation;
-                        ADDialog_InternetBaglantisi.show();
-                    }
-                }
-
-                break;
-            /*case "ayarlar": // Ayarlar
-                FT.remove(Fragment_Sayfa); // Geçerli fragment'i sil
-
-                Fragment_Sayfa = new Frg_Ayarlar();// Fragment sayfa belirle
-                Fragment_SayfaAdi = "Frg_Ayarlar";
-                lblSayfaBaslik.setText(getString(R.string.ayarlar));
-
-                FT = activity.getFragmentManager().beginTransaction(); // Fragment methodunu kullanmak için sabit nesne
-                FT.replace(R.id.LLSayfa, Fragment_Sayfa, Fragment_SayfaAdi); // FT.add(<Hangi layout içinde çağırılacaksa id'si>, <Çağırılan Fragment>, <Çağırılan Fragment Takma Adı>);
-                FT.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
-                FT.commit();// Çağırma işlemini yaptırıyoruz..
                 break;*/
             case "girisyap": // Giriş Yap
                 AkorDefterimSys.CikisYap();
-
-                break;
-            case "cikisyap": // Giriş Yap
-                if(!AkorDefterimSys.AlertDialogisShowing(ADDialog_CikisYap)) {
-                    ADDialog_CikisYap = AkorDefterimSys.HButtonCustomAlertDialog(activity,
-                            getString(R.string.cikis_yap),
-                            getString(R.string.hesap_cikis_mesaji),
-                            getString(R.string.iptal),
-                            "ADDialog_CikisYap_Iptal",
-                            getString(R.string.cikis_yap),
-                            "ADDialog_CikisYap_CikisYap");
-                    ADDialog_CikisYap.getWindow().getAttributes().windowAnimations = R.style.DialogAnimation;
-                    ADDialog_CikisYap.show();
-                }
 
                 break;
             /*case "istekyap": // İstek Yap
@@ -441,11 +378,6 @@ public class AnaEkran extends AppCompatActivity implements Interface_FragmentDat
 
     @Override
     public void YayinAraciDurumBilgisiAl() {
-
-    }
-
-    @Override
-    public void EgitimEkraniGetir() {
 
     }
 

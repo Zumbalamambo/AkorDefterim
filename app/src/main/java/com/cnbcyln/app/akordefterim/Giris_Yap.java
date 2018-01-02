@@ -70,23 +70,10 @@ public class Giris_Yap extends AppCompatActivity implements Interface_AsyncRespo
 		//AkorDefterimSys.EkranAnimasyon("Explode");
 
 		coordinatorLayout = activity.findViewById(R.id.coordinatorLayout);
-		coordinatorLayout.setOnClickListener(new OnClickListener() {
-			@Override
-			public void onClick(View v) {
-				txtILEPostaKullaniciAdi.setError(null);
-                AkorDefterimSys.UnFocusEditText(txtEPostaKullaniciAdi);
-				txtILParola.setError(null);
-				AkorDefterimSys.UnFocusEditText(txtParola);
-			}
-		});
+		coordinatorLayout.setOnClickListener(this);
 
 		btnGeri = findViewById(R.id.btnGeri);
-		btnGeri.setOnClickListener(new OnClickListener() {
-			@Override
-			public void onClick(View v) {
-				onBackPressed();
-			}
-		});
+		btnGeri.setOnClickListener(this);
 
 		lblBaslik = findViewById(R.id.lblBaslik);
 		lblBaslik.setTypeface(YaziFontu, Typeface.BOLD);
@@ -175,6 +162,15 @@ public class Giris_Yap extends AppCompatActivity implements Interface_AsyncRespo
 	@Override
 	public void onClick(View v) {
 		switch (v.getId()) {
+			case R.id.coordinatorLayout:
+				txtILEPostaKullaniciAdi.setError(null);
+				AkorDefterimSys.UnFocusEditText(txtEPostaKullaniciAdi);
+				txtILParola.setError(null);
+				AkorDefterimSys.UnFocusEditText(txtParola);
+				break;
+			case R.id.btnGeri:
+				onBackPressed();
+				break;
 			case R.id.btnGirisYap:
 				Giris();
 				break;

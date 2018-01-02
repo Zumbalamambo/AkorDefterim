@@ -126,9 +126,8 @@
 				android:layout_width="match_parent"
 				android:layout_height="match_parent"
 				android:hint="@string/telefon_numarasi"
-				android:text="@string/labeltire"
-				android:importantForAutofill="noExcludeDescendants"
-				android:inputType="phone"
+				android:inputType="number"
+				android:digits="0123456789 ()"
 				android:maxLines="1"
 				android:textColor="@color/KoyuYazi"
 				tools:ignore="UnusedAttribute" />

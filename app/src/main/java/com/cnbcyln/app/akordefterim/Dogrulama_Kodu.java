@@ -45,7 +45,6 @@ public class Dogrulama_Kodu extends AppCompatActivity implements Interface_Async
 	Timer TEPostaDogrulamaKoduSayac, TSMSDogrulamaKoduSayac;
 	TimerTask TTEPostaDogrulamaKoduSayac, TTSMSDogrulamaKoduSayac;
 	Handler EPostaDogrulamaKoduHandler = new Handler(), SMSDogrulamaKoduHandler = new Handler();
-	Random rnd;
 	AlertDialog ADDialog;
 	ProgressDialog PDIslem, PDBilgilerGuncelleniyor;
 	Bundle mBundle;
@@ -66,7 +65,6 @@ public class Dogrulama_Kodu extends AppCompatActivity implements Interface_Async
 		activity = this;
 		AkorDefterimSys = new AkorDefterimSys(activity);
 		YaziFontu = AkorDefterimSys.FontGetir(activity, "anivers_regular"); // Genel yazı fontunu belirttik
-		rnd = new Random();
 
 		sharedPref = activity.getSharedPreferences(AkorDefterimSys.PrefAdi, Context.MODE_PRIVATE);
 
@@ -249,7 +247,7 @@ public class Dogrulama_Kodu extends AppCompatActivity implements Interface_Async
 								}
 
 								// 6 haneli onay kodu oluşturuldu
-								DogrulamaKodu = String.valueOf((100000 + rnd.nextInt(900000)));
+								DogrulamaKodu = AkorDefterimSys.KodUret(6, true, false, false, false);
 
 								// Onay kodu belirtilen eposta adresine gönderiliyor
 								AkorDefterimSys.EPostaGonder(EPosta, "", getString(R.string.dogrulama_kodu), getString(R.string.eposta_dosrulama_kodu_icerik, DogrulamaKodu, getString(R.string.uygulama_adi)));
@@ -271,7 +269,7 @@ public class Dogrulama_Kodu extends AppCompatActivity implements Interface_Async
 								}
 
 								// 6 haneli onay kodu oluşturuldu
-								DogrulamaKodu = String.valueOf((100000 + rnd.nextInt(900000)));
+								DogrulamaKodu = AkorDefterimSys.KodUret(6, true, false, false, false);
 
 								// Onay kodu belirtilen eposta adresine gönderiliyor
 								AkorDefterimSys.EPostaGonder(EPosta, "", getString(R.string.dogrulama_kodu), getString(R.string.eposta_dosrulama_kodu_icerik, DogrulamaKodu, getString(R.string.uygulama_adi)));
@@ -293,7 +291,7 @@ public class Dogrulama_Kodu extends AppCompatActivity implements Interface_Async
 								}
 
 								// 6 haneli onay kodu oluşturuldu
-								DogrulamaKodu = String.valueOf((100000 + rnd.nextInt(900000)));
+								DogrulamaKodu = AkorDefterimSys.KodUret(6, true, false, false, false);
 
 								// Onay kodu belirtilen cep telefonuna sms olarak gönderiliyor
 								AkorDefterimSys.SMSGonder(TelKodu, CepTelefonu, getString(R.string.sms_dosrulama_kodu_icerik, DogrulamaKodu, getString(R.string.uygulama_adi)));
@@ -608,7 +606,7 @@ public class Dogrulama_Kodu extends AppCompatActivity implements Interface_Async
 							PDBilgilerGuncelleniyor.show();
 						}
 
-						AkorDefterimSys.HesapBilgiGuncelle(sharedPref.getString("prefHesapID",""), FirebaseToken, OSID, OSVersiyon, "", "", "", EPosta, "", "", "", "", "", UygulamaVersiyon, "HesapBilgiGuncelle");
+						AkorDefterimSys.HesapBilgiGuncelle(sharedPref.getString("prefHesapID",""), "", "", FirebaseToken, OSID, OSVersiyon, "", "", "", EPosta, "", "", "", "", "", UygulamaVersiyon, "HesapBilgiGuncelle");
 					} else {
 						btnGeri.setEnabled(true);
 						btnDogrula.setEnabled(true);
@@ -635,7 +633,7 @@ public class Dogrulama_Kodu extends AppCompatActivity implements Interface_Async
 							PDBilgilerGuncelleniyor.show();
 						}
 
-						AkorDefterimSys.HesapBilgiGuncelle(sharedPref.getString("prefHesapID",""), FirebaseToken, OSID, OSVersiyon, "", "", "","", "", "", "", TelKodu, CepTelefonu, UygulamaVersiyon, "HesapBilgiGuncelle");
+						AkorDefterimSys.HesapBilgiGuncelle(sharedPref.getString("prefHesapID",""), "", "", FirebaseToken, OSID, OSVersiyon, "", "", "","", "", "", "", TelKodu, CepTelefonu, UygulamaVersiyon, "HesapBilgiGuncelle");
 					} else {
 						btnGeri.setEnabled(true);
 						btnDogrula.setEnabled(true);

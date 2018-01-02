@@ -46,7 +46,6 @@ public class EPosta_Degistir extends AppCompatActivity implements Interface_Asyn
 	AlertDialog ADDialog_HesapDurumu, ADDialog_Hata;
 	ProgressDialog PDIslem;
 	InputMethodManager imm;
-	Random rnd;
 	Timer TDogrulamaKoduSayac;
 	TimerTask TTDogrulamaKoduSayac;
 	Handler DogrulamaKoduHandler = new Handler();
@@ -68,7 +67,6 @@ public class EPosta_Degistir extends AppCompatActivity implements Interface_Asyn
 		activity = this;
 		AkorDefterimSys = new AkorDefterimSys(activity);
 		YaziFontu = AkorDefterimSys.FontGetir(activity, "anivers_regular"); // Genel yazı fontunu belirttik
-		rnd = new Random();
 
 		sharedPref = activity.getSharedPreferences(AkorDefterimSys.PrefAdi, Context.MODE_PRIVATE);
 
@@ -276,7 +274,7 @@ public class EPosta_Degistir extends AppCompatActivity implements Interface_Asyn
 							AkorDefterimSys.StandartSnackBarMsj(coordinatorLayout, getString(R.string.yeni_onay_kodu_talebi_hata));
 						} else {
 							// 6 haneli onay kodu oluşturuldu
-							DogrulamaKodu = String.valueOf((100000 + rnd.nextInt(900000)));
+							DogrulamaKodu = AkorDefterimSys.KodUret(6, true, false, false, false);
 
 							// Onay kodu belirtilen eposta adresine gönderiliyor
 							AkorDefterimSys.EPostaGonder(txtEPosta.getText().toString().trim(), "", getString(R.string.dogrulama_kodu), getString(R.string.eposta_dosrulama_kodu_icerik, DogrulamaKodu, getString(R.string.uygulama_adi)));

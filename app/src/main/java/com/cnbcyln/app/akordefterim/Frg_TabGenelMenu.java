@@ -1,21 +1,11 @@
 package com.cnbcyln.app.akordefterim;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import com.cnbcyln.app.akordefterim.Adaptorler.AdpGenelMenu;
-import com.cnbcyln.app.akordefterim.Interface.Interface_AsyncResponse;
-import com.cnbcyln.app.akordefterim.Interface.Interface_FragmentDataConn;
-import com.cnbcyln.app.akordefterim.Siniflar.SnfGenelMenu;
-import com.cnbcyln.app.akordefterim.util.AkorDefterimSys;
-
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
@@ -26,8 +16,17 @@ import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
+import com.cnbcyln.app.akordefterim.Adaptorler.AdpGenelMenu;
+import com.cnbcyln.app.akordefterim.Interface.Interface_AsyncResponse;
+import com.cnbcyln.app.akordefterim.Interface.Interface_FragmentDataConn;
+import com.cnbcyln.app.akordefterim.Siniflar.SnfGenelMenu;
+import com.cnbcyln.app.akordefterim.util.AkorDefterimSys;
+
 import org.json.JSONException;
 import org.json.JSONObject;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @SuppressLint("DefaultLocale")
 @SuppressWarnings("unused")
@@ -95,17 +94,10 @@ public class Frg_TabGenelMenu extends Fragment implements Interface_AsyncRespons
 					case "hesabim": // Hesabım
 						AkorDefterimSys.EkranGetir(new Intent(activity, Hesabim.class), "Slide");
 						break;
-					case "oyla": // Oyla
-						FragmentDataConn.FragmentSayfaGetir(SayfaAdi);
-						break;
-					case "egitim":
-						FragmentDataConn.EgitimEkraniGetir();
+					case "secenekler": // Seçenekler
+						AkorDefterimSys.EkranGetir(new Intent(activity, Secenekler.class), "Slide");
 						break;
 					case "girisyap":
-						Fragment_SayfaTag = "Frg_" + SayfaAdi;
-						FragmentDataConn.FragmentSayfaGetir(SayfaAdi);
-						break;
-					case "cikisyap":
 						FragmentDataConn.FragmentSayfaGetir(SayfaAdi);
 						break;
 					default:

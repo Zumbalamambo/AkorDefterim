@@ -61,8 +61,8 @@ public class AdpGenelMenu extends BaseAdapter {
 			satirView = inflater.inflate(R.layout.lstgenelmenu_satir, null);
 			
 			holder = new ViewHolder();
-			holder.ImgMenuIcon = (ImageView) satirView.findViewById(R.id.ImgMenuIcon);
-            holder.txtMenuAdi = (TextView) satirView.findViewById(R.id.txtMenuAdi);
+			holder.ImgMenuIcon = satirView.findViewById(R.id.ImgMenuIcon);
+            holder.txtMenuAdi = satirView.findViewById(R.id.txtMenuAdi);
             holder.txtMenuAdi.setTypeface(YaziFontu, Typeface.NORMAL);
             satirView.setTag(holder);
 	    } else {

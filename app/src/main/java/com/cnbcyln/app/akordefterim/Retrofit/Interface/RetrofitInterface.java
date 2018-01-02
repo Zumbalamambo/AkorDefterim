@@ -71,6 +71,8 @@ public interface RetrofitInterface {
 
     @GET("phpscriptleri/hesapislemleri/hesap_bilgi_guncelle.php")
     Call<SnfIslemSonuc> HesapBilgiGuncelle(@Query("HesapID") String mHesapID,
+                                           @Query("FacebookID") String mFacebookID,
+                                           @Query("GoogleID") String mGoogleID,
                                            @Query("FirebaseToken") String mFirebaseToken,
                                            @Query("OSID") String mOSID,
                                            @Query("OSVersiyon") String mOSVersiyon,
@@ -84,4 +86,17 @@ public interface RetrofitInterface {
                                            @Query("TelKodu") String mTelKodu,
                                            @Query("CepTelefon") String mCepTelefon,
                                            @Query("UygulamaVersiyon") String mUygulamaVersiyon);
+
+    /* **************************************
+       ***                                ***
+       ***     GERİ BİLDİRİM İŞLEMLERİ    ***
+       ***                                ***
+       **************************************/
+
+    @GET("phpscriptleri/genel/geribildirim_ekle.php")
+    Call<SnfIslemSonuc> GeriBildirimEkle(@Query("YenidenGeriBildirimGondermeSuresi") String mYenidenGeriBildirimGondermeSuresi,
+                                         @Query("HesapID") String mHesapID,
+                                         @Query("BildirimTipi") String mBildirimTipi,
+                                         @Query("Icerik") String mIcerik,
+                                         @Query("IPAdres") String mIPAdres);
 }

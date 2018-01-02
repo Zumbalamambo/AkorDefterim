@@ -2,7 +2,6 @@
 <android.support.design.widget.CoordinatorLayout
 	xmlns:android="http://schemas.android.com/apk/res/android"
 	xmlns:app="http://schemas.android.com/apk/res-auto"
-	xmlns:tools="http://schemas.android.com/tools"
 	android:id="@+id/coordinatorLayout"
 	android:layout_width="match_parent"
 	android:layout_height="match_parent"
@@ -109,51 +108,39 @@
 					app:layout_constraintGuide_percent="0.95" />
 
 				<TextView
-					android:id="@+id/lblGenelBilgiler"
-					android:layout_width="wrap_content"
-					android:layout_height="wrap_content"
-					android:layout_marginLeft="3dp"
-					android:layout_marginStart="3dp"
-					android:layout_marginTop="24dp"
-					android:text="@string/genel_bilgiler"
-					android:textColor="@color/KoyuYazi"
+					android:id="@+id/lblParolaAciklama"
 					style="@style/TextAppearance.AppCompat.Small.Inverse"
-					app:layout_constraintStart_toStartOf="@+id/v_guideline3"
-					app:layout_constraintEnd_toEndOf="parent"
-					app:layout_constraintTop_toTopOf="parent" />
-
-				<View
-					android:id="@+id/view4"
 					android:layout_width="0dp"
-					android:layout_height="1dp"
-					android:background="@drawable/cizgi_koyugri"
-					android:layout_marginTop="8dp"
+					android:layout_height="wrap_content"
+					android:layout_marginTop="16dp"
+					android:text="@string/parola_ekran_aciklama"
+					android:textColor="@color/KoyuGri"
 					app:layout_constraintEnd_toStartOf="@+id/v_guideline4"
 					app:layout_constraintStart_toStartOf="@+id/v_guideline3"
-					app:layout_constraintTop_toBottomOf="@+id/lblGenelBilgiler" />
+					app:layout_constraintTop_toTopOf="parent" />
 
 				<android.support.design.widget.TextInputLayout
 					android:id="@+id/txtILMevcutParola"
 					android:layout_width="0dp"
 					android:layout_height="wrap_content"
-					android:layout_marginLeft="8dp"
-					android:layout_marginStart="8dp"
-					android:layout_marginRight="8dp"
 					android:layout_marginEnd="8dp"
+					android:layout_marginLeft="8dp"
+					android:layout_marginRight="8dp"
+					android:layout_marginStart="8dp"
 					android:layout_marginTop="16dp"
 					android:textColorHint="@color/KoyuGri"
 					app:hintTextAppearance="@style/TextAppearance.AppCompat.Small.Inverse"
 					app:layout_constraintEnd_toStartOf="@+id/v_guideline4"
 					app:layout_constraintStart_toStartOf="@+id/v_guideline3"
-					app:layout_constraintTop_toBottomOf="@+id/view4">
+					app:layout_constraintTop_toBottomOf="@+id/lblParolaAciklama">
 
 					<com.cnbcyln.app.akordefterim.util.PasswordView
 						android:id="@+id/txtMevcutParola"
+						style="@style/TextAppearance.AppCompat.Small.Inverse"
 						android:layout_width="match_parent"
 						android:layout_height="match_parent"
 						android:hint="@string/mevcut_parola"
 						android:textColor="@color/KoyuYazi"
-						style="@style/TextAppearance.AppCompat.Small.Inverse"
 						app:useStrikeThrough="true" />
 				</android.support.design.widget.TextInputLayout>
 
@@ -161,10 +148,10 @@
 					android:id="@+id/txtILYeniParola"
 					android:layout_width="0dp"
 					android:layout_height="wrap_content"
-					android:layout_marginLeft="8dp"
-					android:layout_marginStart="8dp"
-					android:layout_marginRight="8dp"
 					android:layout_marginEnd="8dp"
+					android:layout_marginLeft="8dp"
+					android:layout_marginRight="8dp"
+					android:layout_marginStart="8dp"
 					android:layout_marginTop="8dp"
 					android:textColorHint="@color/KoyuGri"
 					app:hintTextAppearance="@style/TextAppearance.AppCompat.Small.Inverse"
@@ -174,61 +161,77 @@
 
 					<com.cnbcyln.app.akordefterim.util.PasswordView
 						android:id="@+id/txtYeniParola"
+						style="@style/TextAppearance.AppCompat.Small.Inverse"
 						android:layout_width="match_parent"
 						android:layout_height="match_parent"
 						android:hint="@string/yeni_parola"
 						android:textColor="@color/KoyuYazi"
-						style="@style/TextAppearance.AppCompat.Small.Inverse"
 						app:useStrikeThrough="true" />
 				</android.support.design.widget.TextInputLayout>
+
+				<LinearLayout
+					android:id="@+id/LLParolaGuvenligi"
+					android:layout_width="0dp"
+					android:layout_height="5dp"
+					android:layout_marginLeft="4dp"
+					android:layout_marginRight="4dp"
+					android:baselineAligned="false"
+					android:weightSum="1"
+					app:layout_constraintEnd_toEndOf="@+id/txtILYeniParola"
+					app:layout_constraintLeft_toLeftOf="@+id/v_guideline3"
+					app:layout_constraintRight_toLeftOf="@+id/v_guideline4"
+					app:layout_constraintStart_toStartOf="@+id/txtILYeniParola"
+					app:layout_constraintTop_toBottomOf="@+id/txtILYeniParola">
+
+					<LinearLayout
+						android:id="@+id/LLParolaGuvenligi1"
+						android:layout_width="0dp"
+						android:layout_height="match_parent"
+						android:layout_weight="0.333"
+						android:background="@color/Yesil2"
+						android:orientation="horizontal" />
+
+					<LinearLayout
+						android:id="@+id/LLParolaGuvenligi2"
+						android:layout_width="0dp"
+						android:layout_height="match_parent"
+						android:layout_weight="0.344"
+						android:background="@color/Yesil2"
+						android:orientation="horizontal" />
+
+					<LinearLayout
+						android:id="@+id/LLParolaGuvenligi3"
+						android:layout_width="0dp"
+						android:layout_height="match_parent"
+						android:layout_weight="0.333"
+						android:background="@color/Yesil2"
+						android:orientation="horizontal" />
+				</LinearLayout>
 
 				<android.support.design.widget.TextInputLayout
 					android:id="@+id/txtILYeniParolaTekrar"
 					android:layout_width="0dp"
 					android:layout_height="wrap_content"
-					android:layout_marginLeft="8dp"
-					android:layout_marginStart="8dp"
-					android:layout_marginRight="8dp"
 					android:layout_marginEnd="8dp"
+					android:layout_marginLeft="8dp"
+					android:layout_marginRight="8dp"
+					android:layout_marginStart="8dp"
 					android:layout_marginTop="8dp"
 					android:textColorHint="@color/KoyuGri"
 					app:hintTextAppearance="@style/TextAppearance.AppCompat.Small.Inverse"
 					app:layout_constraintEnd_toStartOf="@+id/v_guideline4"
 					app:layout_constraintStart_toStartOf="@+id/v_guideline3"
-					app:layout_constraintTop_toBottomOf="@+id/txtILYeniParola">
+					app:layout_constraintTop_toBottomOf="@+id/LLParolaGuvenligi">
 
 					<com.cnbcyln.app.akordefterim.util.PasswordView
 						android:id="@+id/txtYeniParolaTekrar"
+						style="@style/TextAppearance.AppCompat.Small.Inverse"
 						android:layout_width="match_parent"
 						android:layout_height="match_parent"
 						android:hint="@string/yeni_parola_tekrar"
 						android:textColor="@color/KoyuYazi"
-						style="@style/TextAppearance.AppCompat.Small.Inverse"
 						app:useStrikeThrough="true" />
 				</android.support.design.widget.TextInputLayout>
-
-				<View
-					android:id="@+id/view5"
-					android:layout_width="0dp"
-					android:layout_height="1dp"
-					android:background="@drawable/cizgi_koyugri"
-					android:layout_marginLeft="11dp"
-					android:layout_marginStart="11dp"
-					android:layout_marginRight="11dp"
-					android:layout_marginEnd="11dp"
-					android:layout_marginTop="8dp"
-					app:layout_constraintEnd_toStartOf="@+id/v_guideline4"
-					app:layout_constraintStart_toStartOf="@+id/v_guideline3"
-					app:layout_constraintTop_toBottomOf="@+id/txtILYeniParolaTekrar" />
-
-				<View
-					android:id="@+id/view_bosluk"
-					android:layout_width="0dp"
-					android:layout_height="1dp"
-					android:layout_marginTop="20dp"
-					app:layout_constraintEnd_toStartOf="@+id/v_guideline4"
-					app:layout_constraintStart_toStartOf="@+id/v_guideline3"
-					app:layout_constraintTop_toBottomOf="@+id/view5" />
 			</android.support.constraint.ConstraintLayout>
 		</ScrollView>
 

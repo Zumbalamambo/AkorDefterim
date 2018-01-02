@@ -16,7 +16,6 @@ import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.cnbcyln.app.akordefterim.Interface.Interface_AsyncResponse;
 import com.cnbcyln.app.akordefterim.util.AkorDefterimSys;
@@ -33,7 +32,7 @@ public class Hesabim extends AppCompatActivity implements Interface_AsyncRespons
 	SharedPreferences sharedPref;
 	SharedPreferences.Editor sharedPrefEditor;
 	Typeface YaziFontu;
-	AlertDialog ADDialog_HesapDurumu;
+	AlertDialog ADDialog;
 	ProgressDialog PDBilgilerAliniyor;
 
 	CoordinatorLayout coordinatorLayout;
@@ -41,7 +40,7 @@ public class Hesabim extends AppCompatActivity implements Interface_AsyncRespons
 	TextView lblBaslik, lblAdSoyad;
 	ImageView ImgBuyukProfilResim;
 	CircleImageView CImgKucukProfilResim, CImgSosyalAgFacebookIcon, CImgSosyalAgGoogleIcon;
-	Button btnProfiliDuzenle, btnBagliHesaplar, btnParolayiDegistir;
+	Button btnProfiliDuzenle, btnBagliHesaplar, btnParolayiDegistir, btnCikisYap;
 
 	String EPosta = "";
 
@@ -96,6 +95,10 @@ public class Hesabim extends AppCompatActivity implements Interface_AsyncRespons
 		btnParolayiDegistir = findViewById(R.id.btnParolayiDegistir);
 		btnParolayiDegistir.setTypeface(YaziFontu, Typeface.BOLD);
 		btnParolayiDegistir.setOnClickListener(this);
+
+		btnCikisYap = findViewById(R.id.btnCikisYap);
+		btnCikisYap.setTypeface(YaziFontu, Typeface.BOLD);
+		btnCikisYap.setOnClickListener(this);
 	}
 
 	@Override
@@ -134,15 +137,28 @@ public class Hesabim extends AppCompatActivity implements Interface_AsyncRespons
 				break;
 			case R.id.btnBagliHesaplar:
 				if(AkorDefterimSys.InternetErisimKontrolu()) {
-					AkorDefterimSys.ToastMsj(activity, "Bağlı Hesaplar", Toast.LENGTH_SHORT);
+					AkorDefterimSys.EkranGetir(new Intent(activity, Bagli_Hesaplar.class), "Slide");
 				} else AkorDefterimSys.StandartSnackBarMsj(coordinatorLayout, getString(R.string.internet_baglantisi_saglanamadi));
 
 				break;
 			case R.id.btnParolayiDegistir:
 				if(AkorDefterimSys.InternetErisimKontrolu()) {
-					AkorDefterimSys.ToastMsj(activity, "Parolayı Değiştir", Toast.LENGTH_SHORT);
+					AkorDefterimSys.EkranGetir(new Intent(activity, Parola_Degistir.class), "Slide");
 				} else AkorDefterimSys.StandartSnackBarMsj(coordinatorLayout, getString(R.string.internet_baglantisi_saglanamadi));
 
+				break;
+			case R.id.btnCikisYap:
+				if(!AkorDefterimSys.AlertDialogisShowing(ADDialog)) {
+					ADDialog = AkorDefterimSys.HButtonCustomAlertDialog(activity,
+							getString(R.string.cikis_yap),
+							getString(R.string.cikis_yap_uyari),
+							activity.getString(R.string.hayir),
+							"ADDialog_Kapat",
+							activity.getString(R.string.evet),
+							"ADDialog_Kapat_CikisYap");
+					ADDialog.getWindow().getAttributes().windowAnimations = R.style.DialogAnimation;
+					ADDialog.show();
+				}
 				break;
 		}
 	}
@@ -158,14 +174,14 @@ public class Hesabim extends AppCompatActivity implements Interface_AsyncRespons
 				case "HesapBilgiGetir":
 					if(JSONSonuc.getBoolean("Sonuc")) {
 						if(JSONSonuc.getString("HesapDurum").equals("Ban")) { // Eğer hesap banlanmışsa
-							if(!AkorDefterimSys.AlertDialogisShowing(ADDialog_HesapDurumu)) {
-								ADDialog_HesapDurumu = AkorDefterimSys.CustomAlertDialog(activity,
+							if(!AkorDefterimSys.AlertDialogisShowing(ADDialog)) {
+								ADDialog = AkorDefterimSys.CustomAlertDialog(activity,
 										getString(R.string.hesap_durumu),
 										getString(R.string.hesap_banlandi, JSONSonuc.getString("HesapDurumBilgi"), getString(R.string.uygulama_yapimci_site)),
 										activity.getString(R.string.tamam),
-										"ADDialog_HesapDurumu_Kapat_CikisYap");
-								ADDialog_HesapDurumu.getWindow().getAttributes().windowAnimations = R.style.DialogAnimation;
-								ADDialog_HesapDurumu.show();
+										"ADDialog_Kapat_CikisYap");
+								ADDialog.getWindow().getAttributes().windowAnimations = R.style.DialogAnimation;
+								ADDialog.show();
 							}
 						} else {
 							sharedPrefEditor = sharedPref.edit();
@@ -186,34 +202,32 @@ public class Hesabim extends AppCompatActivity implements Interface_AsyncRespons
 								}
 							}
 
-							if(!JSONSonuc.getString("FacebookID").equals("")) CImgSosyalAgFacebookIcon.setVisibility(View.VISIBLE);
-							else CImgSosyalAgFacebookIcon.setVisibility(View.GONE);
+							if(JSONSonuc.getString("FacebookID").equals("-")) CImgSosyalAgFacebookIcon.setVisibility(View.GONE);
+							else CImgSosyalAgFacebookIcon.setVisibility(View.VISIBLE);
 
-							if(!JSONSonuc.getString("GoogleID").equals("")) CImgSosyalAgGoogleIcon.setVisibility(View.VISIBLE);
-							else CImgSosyalAgGoogleIcon.setVisibility(View.GONE);
+							if(JSONSonuc.getString("GoogleID").equals("-")) CImgSosyalAgGoogleIcon.setVisibility(View.GONE);
+							else CImgSosyalAgGoogleIcon.setVisibility(View.VISIBLE);
 
 							lblAdSoyad.setText(JSONSonuc.getString("AdSoyad").toUpperCase());
 						}
 					} else {
-						if(!AkorDefterimSys.AlertDialogisShowing(ADDialog_HesapDurumu)) {
-							ADDialog_HesapDurumu = AkorDefterimSys.CustomAlertDialog(activity,
+						if(!AkorDefterimSys.AlertDialogisShowing(ADDialog)) {
+							ADDialog = AkorDefterimSys.CustomAlertDialog(activity,
 									getString(R.string.hesap_durumu),
 									getString(R.string.hesap_bilgileri_bulunamadi),
 									activity.getString(R.string.tamam),
-									"ADDialog_HesapDurumu_Kapat_CikisYap");
-							ADDialog_HesapDurumu.getWindow().getAttributes().windowAnimations = R.style.DialogAnimation;
-							ADDialog_HesapDurumu.show();
+									"ADDialog_Kapat_CikisYap");
+							ADDialog.getWindow().getAttributes().windowAnimations = R.style.DialogAnimation;
+							ADDialog.show();
 						}
 					}
 
 					break;
-				case "ADDialog_HesapDurumu_Kapat":
-					AkorDefterimSys.DismissAlertDialog(ADDialog_HesapDurumu);
-
-					AkorDefterimSys.CikisYap();
+				case "ADDialog_Kapat":
+					AkorDefterimSys.DismissAlertDialog(ADDialog);
 					break;
-				case "ADDialog_HesapDurumu_Kapat_CikisYap":
-					AkorDefterimSys.DismissAlertDialog(ADDialog_HesapDurumu);
+				case "ADDialog_Kapat_CikisYap":
+					AkorDefterimSys.DismissAlertDialog(ADDialog);
 
 					AkorDefterimSys.CikisYap();
 					break;

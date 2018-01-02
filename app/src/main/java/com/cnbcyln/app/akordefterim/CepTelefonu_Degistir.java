@@ -17,9 +17,7 @@ import android.support.annotation.NonNull;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.TextInputLayout;
 import android.support.v7.app.AppCompatActivity;
-import android.text.Editable;
 import android.text.TextUtils;
-import android.text.TextWatcher;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -32,13 +30,12 @@ import android.widget.TextView;
 import com.cnbcyln.app.akordefterim.Interface.Interface_AsyncResponse;
 import com.cnbcyln.app.akordefterim.util.AkorDefterimSys;
 import com.hbb20.CountryCodePicker;
+import com.redmadrobot.inputmask.MaskedTextChangedListener;
 
-import org.apache.commons.lang3.StringUtils;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.Locale;
-import java.util.Random;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -53,7 +50,6 @@ public class CepTelefonu_Degistir extends AppCompatActivity implements Interface
 	AlertDialog ADDialog;
 	ProgressDialog PDIslem;
 	InputMethodManager imm;
-	Random rnd;
 	Timer TDogrulamaKoduSayac;
 	TimerTask TTDogrulamaKoduSayac;
 	Handler DogrulamaKoduHandler = new Handler();
@@ -65,7 +61,7 @@ public class CepTelefonu_Degistir extends AppCompatActivity implements Interface
 	EditText txtCepTelefon;
 	TextView lblBaslik, lblKalanSure;
 
-	String DogrulamaKodu = "";
+	String DogrulamaKodu = "", YazilanCepTelefonu = "";
 	int KalanSure = 0;
 	private static final int SMSOKUMA_IZIN = 1;
 
@@ -77,7 +73,6 @@ public class CepTelefonu_Degistir extends AppCompatActivity implements Interface
 		activity = this;
 		AkorDefterimSys = new AkorDefterimSys(activity);
 		YaziFontu = AkorDefterimSys.FontGetir(activity, "anivers_regular"); // Genel yazı fontunu belirttik
-		rnd = new Random();
 
 		sharedPref = activity.getSharedPreferences(AkorDefterimSys.PrefAdi, Context.MODE_PRIVATE);
 
@@ -109,7 +104,7 @@ public class CepTelefonu_Degistir extends AppCompatActivity implements Interface
 		txtCepTelefon = findViewById(R.id.txtCepTelefon);
 		txtCepTelefon.setTypeface(YaziFontu, Typeface.NORMAL);
 		//txtEPosta.setText(sharedPref.getString("prefEPosta",""));
-		txtCepTelefon.addTextChangedListener(new TextWatcher() {
+		/*txtCepTelefon.addTextChangedListener(new TextWatcher() {
 			@Override
 			public void onTextChanged(CharSequence s, int start, int before, int count) {
 
@@ -124,7 +119,7 @@ public class CepTelefonu_Degistir extends AppCompatActivity implements Interface
 			public void afterTextChanged(Editable s) {
 				txtILCepTelefon.setError(null);
 			}
-		});
+		});*/
 		txtCepTelefon.setOnEditorActionListener(new TextView.OnEditorActionListener() {
 			@Override
 			public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
@@ -135,6 +130,24 @@ public class CepTelefonu_Degistir extends AppCompatActivity implements Interface
 				return false;
 			}
 		});
+
+		final MaskedTextChangedListener txtCepTelefonListener = new MaskedTextChangedListener(
+				"([000]) [000] [00] [00]",
+				true,
+				txtCepTelefon,
+				null,
+				new MaskedTextChangedListener.ValueListener() {
+					@Override
+					public void onTextChanged(boolean maskFilled, @NonNull final String extractedValue) {
+						YazilanCepTelefonu = extractedValue;
+						//Log.d(CepTelefonu_Degistir.class.getSimpleName(), String.valueOf(maskFilled));
+					}
+				}
+		);
+
+		txtCepTelefon.addTextChangedListener(txtCepTelefonListener);
+		txtCepTelefon.setOnFocusChangeListener(txtCepTelefonListener);
+		txtCepTelefon.setHint(txtCepTelefonListener.placeholder());
 
 		lblKalanSure = findViewById(R.id.lblKalanSure);
 		lblKalanSure.setTypeface(YaziFontu, Typeface.NORMAL);
@@ -216,10 +229,10 @@ public class CepTelefonu_Degistir extends AppCompatActivity implements Interface
 			case SMSOKUMA_IZIN:
 				if(grantResults[0] == PackageManager.PERMISSION_GRANTED) {
 					// 6 haneli onay kodu oluşturuldu
-					DogrulamaKodu = String.valueOf((100000 + rnd.nextInt(900000)));
+					DogrulamaKodu = AkorDefterimSys.KodUret(6, true, false, false, false);
 
 					// Onay kodu belirtilen eposta adresine gönderiliyor
-					AkorDefterimSys.SMSGonder(CCPTelKodu.getSelectedCountryCode(), txtCepTelefon.getText().toString().trim(), getString(R.string.sms_dosrulama_kodu_icerik, DogrulamaKodu, getString(R.string.uygulama_adi)));
+					AkorDefterimSys.SMSGonder(CCPTelKodu.getSelectedCountryCode(), YazilanCepTelefonu, getString(R.string.sms_dosrulama_kodu_icerik, DogrulamaKodu, getString(R.string.uygulama_adi)));
 				} else {
 					AkorDefterimSys.DismissProgressDialog(PDIslem);
 
@@ -312,7 +325,8 @@ public class CepTelefonu_Degistir extends AppCompatActivity implements Interface
 							}
 						} else {
 							if(!JSONSonuc.getString("TelKodu").equals("")) CCPTelKodu.setCountryForPhoneCode(Integer.parseInt(JSONSonuc.getString("TelKodu")));
-							txtCepTelefon.setText(JSONSonuc.getString("CepTelefon"));
+							YazilanCepTelefonu = JSONSonuc.getString("CepTelefon");
+							txtCepTelefon.setText(YazilanCepTelefonu);
 						}
 					} else {
 						if(!AkorDefterimSys.AlertDialogisShowing(ADDialog)) {
@@ -366,10 +380,10 @@ public class CepTelefonu_Degistir extends AppCompatActivity implements Interface
 									activity.requestPermissions(new String[]{Manifest.permission.RECEIVE_SMS}, SMSOKUMA_IZIN);
 								} else {
 									// 6 haneli onay kodu oluşturuldu
-									DogrulamaKodu = String.valueOf((100000 + rnd.nextInt(900000)));
+									DogrulamaKodu = AkorDefterimSys.KodUret(6, true, false, false, false);
 
 									// Onay kodu belirtilen eposta adresine gönderiliyor
-									AkorDefterimSys.SMSGonder(CCPTelKodu.getSelectedCountryCode(), txtCepTelefon.getText().toString().trim(), getString(R.string.sms_dosrulama_kodu_icerik, DogrulamaKodu, getString(R.string.uygulama_adi)));
+									AkorDefterimSys.SMSGonder(CCPTelKodu.getSelectedCountryCode(), YazilanCepTelefonu, getString(R.string.sms_dosrulama_kodu_icerik, DogrulamaKodu, getString(R.string.uygulama_adi)));
                                 }
 							} else {
 								btnIptal.setEnabled(true);
@@ -407,7 +421,7 @@ public class CepTelefonu_Degistir extends AppCompatActivity implements Interface
 						Intent mIntent = new Intent(activity, Dogrulama_Kodu.class);
 						mIntent.putExtra("Islem", "CepTelefonuDegisikligi");
 						mIntent.putExtra("TelKodu", CCPTelKodu.getSelectedCountryCode());
-						mIntent.putExtra("CepTelefonu", txtCepTelefon.getText().toString());
+						mIntent.putExtra("CepTelefonu", YazilanCepTelefonu);
 						mIntent.putExtra("DogrulamaKodu", String.valueOf(DogrulamaKodu));
 
 						AkorDefterimSys.EkranGetir(mIntent, "Slide");
@@ -441,25 +455,22 @@ public class CepTelefonu_Degistir extends AppCompatActivity implements Interface
 		AkorDefterimSys.KlavyeKapat();
 
 		if(AkorDefterimSys.InternetErisimKontrolu()) {
-			txtCepTelefon.setText(txtCepTelefon.getText().toString().trim());
-			String CepTelefon = txtCepTelefon.getText().toString();
-
-			if(TextUtils.isEmpty(CepTelefon)) {
+			if(TextUtils.isEmpty(YazilanCepTelefonu)) {
 				txtILCepTelefon.setError(getString(R.string.hata_bos_alan));
 				txtCepTelefon.requestFocus();
 				txtCepTelefon.setSelection(txtCepTelefon.length());
 				imm.showSoftInput(txtCepTelefon, 0);
-			} else if(!StringUtils.isNumeric(CepTelefon)) {
-				txtILCepTelefon.setError(getString(R.string.hata_format_sadece_sayi));
+			} else if(!AkorDefterimSys.isValid(YazilanCepTelefonu, "CepTelefonu")) {
+				txtILCepTelefon.setError(getString(R.string.hata_cep_telefonu));
 				txtCepTelefon.requestFocus();
 				txtCepTelefon.setSelection(txtCepTelefon.length());
 				imm.showSoftInput(txtCepTelefon, 0);
-			} else if(CepTelefon.length() != 10) {
+			} else if(YazilanCepTelefonu.length() != 10) {
 				txtILCepTelefon.setError(getString(R.string.hata_basinda_sifir_olmadan_10_hane));
 				txtCepTelefon.requestFocus();
 				txtCepTelefon.setSelection(txtCepTelefon.length());
 				imm.showSoftInput(txtCepTelefon, 0);
-			} else if(!CepTelefon.subSequence(0, 1).equals("5")) {
+			} else if(!YazilanCepTelefonu.subSequence(0, 1).equals("5")) {
 				txtILCepTelefon.setError(getString(R.string.hata_basinda_sifir_olmadan_10_hane));
 				txtCepTelefon.requestFocus();
 				txtCepTelefon.setSelection(txtCepTelefon.length());
@@ -476,7 +487,7 @@ public class CepTelefonu_Degistir extends AppCompatActivity implements Interface
 					PDIslem.show();
 				}
 
-				AkorDefterimSys.HesapBilgiGetir(null, "", CCPTelKodu.getSelectedCountryCode(), CepTelefon, "HesapBilgiGetir_CepTelefon_Kontrol");
+				AkorDefterimSys.HesapBilgiGetir(null, "", CCPTelKodu.getSelectedCountryCode(), YazilanCepTelefonu, "HesapBilgiGetir_CepTelefon_Kontrol");
 			}
 		} else AkorDefterimSys.StandartSnackBarMsj(coordinatorLayout, getString(R.string.internet_baglantisi_saglanamadi));
 	}

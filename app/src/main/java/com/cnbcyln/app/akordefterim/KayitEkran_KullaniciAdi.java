@@ -65,8 +65,8 @@ public class KayitEkran_KullaniciAdi extends AppCompatActivity implements Interf
 	SharedPreferences.Editor sharedPrefEditor;
 	Typeface YaziFontu;
 	File SecilenProfilResmiFile;
-	ProgressDialog PDKayitIslem;
-	AlertDialog ADDialog_HesapKayitHata;
+	ProgressDialog PDIslem;
+	AlertDialog ADDialog;
 	InputMethodManager imm;
 
 	CoordinatorLayout coordinatorLayout;
@@ -159,7 +159,7 @@ public class KayitEkran_KullaniciAdi extends AppCompatActivity implements Interf
 
 		lblKullanimKosullariAciklama = findViewById(R.id.lblKullanimKosullariAciklama);
 		lblKullanimKosullariAciklama.setTypeface(YaziFontu, Typeface.NORMAL);
-		lblKullanimKosullariAciklama.setText(getString(R.string.kullanim_kosullari_aciklama, getString(R.string.uygulama_adi), getString(R.string.kullanici_sozlesmesi), getString(R.string.gizlilik_sartlari)));
+		lblKullanimKosullariAciklama.setText(getString(R.string.hizmet_kosullari_aciklama, getString(R.string.uygulama_adi), getString(R.string.hizmet_kosullari_link), getString(R.string.gizlilik_sartlari_link)));
 		AkorDefterimSys.setTextViewHTML(lblKullanimKosullariAciklama);
 
 		btnTamamla = findViewById(R.id.btnTamamla);
@@ -170,7 +170,7 @@ public class KayitEkran_KullaniciAdi extends AppCompatActivity implements Interf
 	@Override
 	public void onBackPressed() {
 		AkorDefterimSys.KlavyeKapat();
-		AkorDefterimSys.DismissAlertDialog(ADDialog_HesapKayitHata);
+		AkorDefterimSys.DismissAlertDialog(ADDialog);
 
 		super.onBackPressed();
 	}
@@ -232,7 +232,7 @@ public class KayitEkran_KullaniciAdi extends AppCompatActivity implements Interf
 						AkorDefterimSys.HesapEkle(FirebaseToken, OSID, OSVersiyon, AdSoyad, DogumTarih, SecilenProfilResmiFile != null, EPosta, Parola, ParolaSHA1, KullaniciAdi, UygulamaVersiyon);
 					} else {
 						btnTamamla.setEnabled(true);
-						AkorDefterimSys.DismissProgressDialog(PDKayitIslem);
+						AkorDefterimSys.DismissProgressDialog(PDIslem);
 
 						AkorDefterimSys.StandartSnackBarMsj(coordinatorLayout, getString(R.string.kullaniciadi_kayitli));
 					}
@@ -254,7 +254,7 @@ public class KayitEkran_KullaniciAdi extends AppCompatActivity implements Interf
 						else new ProfilResimYukle().execute();
 					} else { // Kayıt yapılmadıysa
 						btnTamamla.setEnabled(true);
-						AkorDefterimSys.DismissProgressDialog(PDKayitIslem);
+						AkorDefterimSys.DismissProgressDialog(PDIslem);
 
 						AkorDefterimSys.StandartSnackBarMsj(coordinatorLayout, getString(R.string.islem_yapilirken_bir_hata_olustu));
 					}
@@ -304,9 +304,9 @@ public class KayitEkran_KullaniciAdi extends AppCompatActivity implements Interf
 				btnTamamla.setEnabled(false);
 				AkorDefterimSys.UnFocusEditText(txtKullaniciAdi);
 
-				if(!AkorDefterimSys.ProgressDialogisShowing(PDKayitIslem)) {
-					PDKayitIslem = AkorDefterimSys.CustomProgressDialog(getString(R.string.profiliniz_olusturuluyor_lutfen_bekleyiniz), false, AkorDefterimSys.ProgressBarTimeoutSuresi, "");
-					PDKayitIslem.show();
+				if(!AkorDefterimSys.ProgressDialogisShowing(PDIslem)) {
+					PDIslem = AkorDefterimSys.CustomProgressDialog(getString(R.string.profiliniz_olusturuluyor_lutfen_bekleyiniz), false, AkorDefterimSys.ProgressBarTimeoutSuresi, "");
+					PDIslem.show();
 				}
 
 				AkorDefterimSys.HesapBilgiGetir(null, "", "", KullaniciAdi, "HesapBilgiGetir");
@@ -322,7 +322,7 @@ public class KayitEkran_KullaniciAdi extends AppCompatActivity implements Interf
 		@Override
 		protected void onPreExecute() {
 			super.onPreExecute();
-			PDKayitIslem.setMessage(getString(R.string.profil_resmi_yukleniyor, "0%"));
+			PDIslem.setMessage(getString(R.string.profil_resmi_yukleniyor, "0%"));
 		}
 
 		@Override
@@ -351,7 +351,7 @@ public class KayitEkran_KullaniciAdi extends AppCompatActivity implements Interf
 				// Adding file data to http body
 				entity.addPart("Dosya", new FileBody(SecilenProfilResmiFile));
 				entity.addPart("Dizin", new StringBody(AkorDefterimSys.PHPProfilResimleriDizini));
-				entity.addPart("HesapID", new StringBody(EklenenHesapID));
+				entity.addPart("DosyaAdi", new StringBody(EklenenHesapID));
 
 				totalSize = entity.getContentLength();
 				httppost.setEntity(entity);
@@ -427,8 +427,8 @@ public class KayitEkran_KullaniciAdi extends AppCompatActivity implements Interf
 					break;
 			}
 
-			// PDKayitIslem Progress Dialog'u kapattık
-			AkorDefterimSys.DismissProgressDialog(PDKayitIslem);
+			// PDIslem Progress Dialog'u kapattık
+			AkorDefterimSys.DismissProgressDialog(PDIslem);
 		}
 
 		@Override
@@ -436,7 +436,7 @@ public class KayitEkran_KullaniciAdi extends AppCompatActivity implements Interf
 			activity.runOnUiThread(new Runnable() {
 				@Override
 				public void run() {
-					PDKayitIslem.setMessage(getString(R.string.profil_resmi_yukleniyor, String.valueOf(Deger[0]) + "%"));
+					PDIslem.setMessage(getString(R.string.profil_resmi_yukleniyor, String.valueOf(Deger[0]) + "%"));
 				}
 			});
 		}
@@ -444,14 +444,14 @@ public class KayitEkran_KullaniciAdi extends AppCompatActivity implements Interf
 		@Override
 		protected void onCancelled(String Sonuc) {
 			super.onCancelled(Sonuc);
-			// PDKayitIslem Progress Dialog'u kapattık
-			AkorDefterimSys.DismissProgressDialog(PDKayitIslem);
+			// PDIslem Progress Dialog'u kapattık
+			AkorDefterimSys.DismissProgressDialog(PDIslem);
 		}
 	}
 
 	private void SonrakiEkran() {
 		btnTamamla.setEnabled(true);
-		AkorDefterimSys.DismissProgressDialog(PDKayitIslem);
+		AkorDefterimSys.DismissProgressDialog(PDIslem);
 
 		Intent mIntent = new Intent(activity, AnaEkran.class);
 		//mIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);

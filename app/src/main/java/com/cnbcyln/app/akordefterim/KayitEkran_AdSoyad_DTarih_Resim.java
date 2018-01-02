@@ -324,7 +324,6 @@ public class KayitEkran_AdSoyad_DTarih_Resim extends AppCompatActivity implement
 			} else txtILDogumTarih.setError(null);
 
 			if(txtILAdSoyad.getError() == null && txtILDogumTarih.getError() == null) {
-				btnIleri.setEnabled(false);
 				AkorDefterimSys.UnFocusEditText(txtAdSoyad);
 				AkorDefterimSys.UnFocusEditText(txtDogumTarih);
 

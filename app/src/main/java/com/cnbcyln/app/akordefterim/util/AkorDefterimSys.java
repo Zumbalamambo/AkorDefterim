@@ -74,6 +74,7 @@ import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.CursorLoader;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -81,6 +82,7 @@ import android.content.pm.ActivityInfo;
 import android.content.pm.PackageManager;
 import android.content.res.Configuration;
 import android.content.res.Resources;
+import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.BitmapFactory.Options;
@@ -219,6 +221,8 @@ public class AkorDefterimSys {
 
 	public String RepertuvarListesiKlasoruDizini = "/rep_listeleri/";
 	public String OnlineRepertuvarListesiKlasoruDizin = "../../../httpdocs/akordefterim/rep_listeleri/";
+
+	public String PHPGeriBildirimEkranGoruntuleriDizini = "../../geri_bildirim_img/";
 
 	// **** Genel İşlemler
 	public String PHPDosyaYukle = "/araclar/genel/dosyayukle.php";
@@ -1616,6 +1620,13 @@ public class AkorDefterimSys {
 				activity.startActivityForResult(intent, Integer.parseInt(Data[2]));
 
 				break;
+			case "ResimKirp2":
+				Intent intent2 = CropImage.activity(Uri.parse(Data[1]))
+						.setFixAspectRatio(false)
+						.getIntent(activity.getBaseContext());
+				activity.startActivityForResult(intent2, Integer.parseInt(Data[2]));
+
+				break;
 		}
     }
 
@@ -1651,7 +1662,7 @@ public class AkorDefterimSys {
 		return TelKodu + " " +  CepTelefon.substring(0,3) + " *** ** " + CepTelefon.substring(CepTelefon.length() - 2, CepTelefon.length());
 	}
 
-	public String ParolaUret(int Uzunluk, Boolean Sayi, Boolean Kucukharf, Boolean Buyukharf, Boolean Semboller) {
+	public String KodUret(int Uzunluk, Boolean Sayi, Boolean Kucukharf, Boolean Buyukharf, Boolean Semboller) {
     	String Karakterler = "";
 
     	if(Sayi) Karakterler = Karakterler.concat("1234567890");
@@ -1850,11 +1861,36 @@ public class AkorDefterimSys {
 		});
 	}
 
-	public void HesapBilgiGuncelle(String mHesapID, String mFirebaseToken, String mOSID, String mOSVersiyon, String mAdSoyad, String mDogumTarih, String mResimURL, String mEPosta, String mParola, String mParolaSHA1, String mKullaniciAdi, String mTelKodu, String mCepTelefon, String mUygulamaVersiyon, final String mIslem) {
+	public void HesapBilgiGuncelle(String mHesapID, String mFacebookID, String mGoogleID, String mFirebaseToken, String mOSID, String mOSVersiyon, String mAdSoyad, String mDogumTarih, String mResimURL, String mEPosta, String mParola, String mParolaSHA1, String mKullaniciAdi, String mTelKodu, String mCepTelefon, String mUygulamaVersiyon, final String mIslem) {
 		RetrofitInterface retrofitInterface = RetrofitServiceGenerator.createService(activity, RetrofitInterface.class);
 		final Interface_AsyncResponse AsyncResponse = (Interface_AsyncResponse) activity;
 
-		Call<SnfIslemSonuc> snfIslemSonucCall = retrofitInterface.HesapBilgiGuncelle(mHesapID, mFirebaseToken, mOSID, mOSVersiyon, mAdSoyad, mDogumTarih, mResimURL, mEPosta, mParola, mParolaSHA1, mKullaniciAdi, mTelKodu, mCepTelefon, mUygulamaVersiyon);
+		Call<SnfIslemSonuc> snfIslemSonucCall = retrofitInterface.HesapBilgiGuncelle(mHesapID, mFacebookID, mGoogleID, mFirebaseToken, mOSID, mOSVersiyon, mAdSoyad, mDogumTarih, mResimURL, mEPosta, mParola, mParolaSHA1, mKullaniciAdi, mTelKodu, mCepTelefon, mUygulamaVersiyon);
+		snfIslemSonucCall.enqueue(new Callback<SnfIslemSonuc>() {
+			@Override
+			public void onResponse(Call<SnfIslemSonuc> call, Response<SnfIslemSonuc> response) {
+				if(response.isSuccessful()) {
+					SnfIslemSonuc snfIslemSonuc = response.body();
+
+					// getHata'nin false olması durumu hata yok demektir..
+					if(!snfIslemSonuc.getHata())
+						AsyncResponse.AsyncTaskReturnValue("{\"Islem\":\"" + mIslem + "\", \"Sonuc\":" + snfIslemSonuc.getSonuc() + ", \"Aciklama\":\"" + snfIslemSonuc.getAciklama() + "\"}");
+					else AsyncResponse.AsyncTaskReturnValue("{\"Islem\":\"" + mIslem + "\", \"Sonuc\":false, \"Aciklama\":\"\"}");
+				} else AsyncResponse.AsyncTaskReturnValue("{\"Islem\":\"" + mIslem + "\", \"Sonuc\":false, \"Aciklama\":\"\"}");
+			}
+
+			@Override
+			public void onFailure(Call<SnfIslemSonuc> call, Throwable t) {
+				AsyncResponse.AsyncTaskReturnValue("{\"Islem\":\"HesapBilgiGuncelle\", \"Sonuc\":false}");
+			}
+		});
+	}
+
+	public void GeriBildirimEkle(String mHesapID, String mBildirimTipi, String mIcerik, String mIPAdres, String mYenidenGeriBildirimGondermeSuresi, final String mIslem) {
+		RetrofitInterface retrofitInterface = RetrofitServiceGenerator.createService(activity, RetrofitInterface.class);
+		final Interface_AsyncResponse AsyncResponse = (Interface_AsyncResponse) activity;
+
+		Call<SnfIslemSonuc> snfIslemSonucCall = retrofitInterface.GeriBildirimEkle(mYenidenGeriBildirimGondermeSuresi, mHesapID, mBildirimTipi, mIcerik, mIPAdres);
 		snfIslemSonucCall.enqueue(new Callback<SnfIslemSonuc>() {
 			@Override
 			public void onResponse(Call<SnfIslemSonuc> call, Response<SnfIslemSonuc> response) {
@@ -2269,6 +2305,7 @@ public class AkorDefterimSys {
 		}
 	}
 
+	@SuppressLint("DefaultLocale")
 	@SuppressWarnings("static-access")
 	public String getIpAddr(Activity activity) {
 		WifiManager wifiManager = (WifiManager) activity.getApplicationContext().getSystemService(activity.WIFI_SERVICE);
@@ -2564,6 +2601,8 @@ public class AkorDefterimSys {
 
 			case "Sifre":
 				return txt.matches("^(?=.*[0-9])(?=.*[a-zığüşöç])(?=.*[A-ZĞÜŞIÖÇ]).{1,}$");
+			case "CepTelefonu":
+				return txt.matches("^[0-9() ]*$");
 			case "EPosta":
 				return android.util.Patterns.EMAIL_ADDRESS.matcher(txt).matches();
 			case "FakeEPosta":
@@ -5292,4 +5331,24 @@ public class AkorDefterimSys {
 
 		return Fark;
 	}
+
+	public String getRealPathFromURI(Uri contentUri) {
+		String[] proj = { MediaStore.Images.Media.DATA };
+
+		//This method was deprecated in API level 11
+		//Cursor cursor = managedQuery(contentUri, proj, null, null, null);
+
+		CursorLoader cursorLoader = new CursorLoader(activity, contentUri, proj, null, null, null);
+		Cursor cursor = cursorLoader.loadInBackground();
+
+		int column_index = cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATA);
+		cursor.moveToFirst();
+		return cursor.getString(column_index);
+	}
+
+	/*public Bitmap takeScreenshot() {
+		View rootView = findViewById(android.R.id.content).getRootView();
+		rootView.setDrawingCacheEnabled(true);
+		return rootView.getDrawingCache();
+	}*/
 }

@@ -1,0 +1,222 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+	xmlns:app="http://schemas.android.com/apk/res-auto"
+	android:id="@+id/coordinatorLayout"
+	android:layout_width="match_parent"
+	android:layout_height="match_parent"
+	android:background="@color/Beyaz">
+
+	<android.support.constraint.ConstraintLayout
+		android:id="@+id/constraintLayout"
+		android:layout_width="match_parent"
+		android:layout_height="match_parent"
+		android:descendantFocusability="beforeDescendants"
+		android:focusableInTouchMode="true"
+		android:keepScreenOn="true">
+
+		<android.support.constraint.Guideline
+			android:id="@+id/v_guideline1"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:orientation="vertical"
+			app:layout_constraintGuide_percent="0.05" />
+
+		<android.support.constraint.Guideline
+			android:id="@+id/v_guideline2"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:orientation="vertical"
+			app:layout_constraintGuide_percent="0.95" />
+
+		<android.support.constraint.Guideline
+			android:id="@+id/h_guideline1"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:orientation="horizontal"
+			app:layout_constraintGuide_percent="0.085" />
+
+		<ImageButton
+			android:id="@+id/btnKapat"
+			android:layout_width="60dp"
+			android:layout_height="0dp"
+			android:background="@drawable/custom_button2"
+			android:contentDescription="@string/imageDesc"
+			app:layout_constraintBottom_toTopOf="@+id/view1"
+			app:layout_constraintStart_toStartOf="parent"
+			app:layout_constraintTop_toTopOf="parent"
+			app:srcCompat="@drawable/ic_close_siyah" />
+
+		<TextView
+			android:id="@+id/lblBaslik"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:layout_marginLeft="12dp"
+			android:layout_marginStart="12dp"
+			android:text="@string/labeltire"
+			android:textColor="@color/KoyuYazi"
+			style="@style/TextAppearance.AppCompat.Medium.Inverse"
+			app:layout_constraintBottom_toTopOf="@+id/view1"
+			app:layout_constraintStart_toEndOf="@+id/btnKapat"
+			app:layout_constraintTop_toTopOf="parent" />
+
+		<ImageButton
+			android:id="@+id/btnGonder"
+			android:layout_width="60dp"
+			android:layout_height="0dp"
+			android:background="@drawable/custom_button2"
+			android:contentDescription="@string/imageDesc"
+			app:layout_constraintBottom_toTopOf="@+id/view1"
+			app:layout_constraintEnd_toEndOf="parent"
+			app:layout_constraintTop_toTopOf="parent"
+			app:srcCompat="@drawable/ic_send" />
+
+		<View
+			android:id="@+id/view1"
+			android:layout_width="0dp"
+			android:layout_height="1dp"
+			android:background="@drawable/cizgi_ortagri"
+			app:layout_constraintTop_toTopOf="@+id/h_guideline1" />
+
+		<ScrollView
+			android:id="@+id/scroll_view"
+			android:layout_width="0dp"
+			android:layout_height="0dp"
+			android:fillViewport="true"
+			app:layout_constraintBottom_toBottomOf="parent"
+			app:layout_constraintEnd_toEndOf="parent"
+			app:layout_constraintStart_toStartOf="parent"
+			app:layout_constraintTop_toTopOf="@+id/view1">
+
+			<android.support.constraint.ConstraintLayout
+				android:id="@+id/ConstraintLayout2"
+				android:layout_width="match_parent"
+				android:layout_height="wrap_content">
+
+				<android.support.constraint.Guideline
+					android:id="@+id/v_guideline3"
+					android:layout_width="wrap_content"
+					android:layout_height="wrap_content"
+					android:orientation="vertical"
+					app:layout_constraintGuide_percent="0.05" />
+
+				<android.support.constraint.Guideline
+					android:id="@+id/v_guideline4"
+					android:layout_width="wrap_content"
+					android:layout_height="wrap_content"
+					android:orientation="vertical"
+					app:layout_constraintGuide_percent="0.95" />
+
+				<TextView
+					android:id="@+id/lblGeriBildirimAciklama"
+					android:layout_width="0dp"
+					android:layout_height="wrap_content"
+					android:layout_marginTop="16dp"
+					android:text="@string/labeltire"
+					android:textColor="@color/KoyuGri"
+					style="@style/TextAppearance.AppCompat.Small.Inverse"
+					app:layout_constraintEnd_toStartOf="@+id/v_guideline4"
+					app:layout_constraintStart_toStartOf="@+id/v_guideline3"
+					app:layout_constraintTop_toTopOf="parent" />
+
+				<LinearLayout
+					android:id="@+id/LLIcerik"
+					android:layout_width="0dp"
+					android:layout_height="wrap_content"
+					android:layout_marginTop="16dp"
+					android:background="@color/Gri"
+					android:orientation="vertical"
+					android:padding="10dp"
+					app:layout_constraintEnd_toStartOf="@+id/v_guideline4"
+					app:layout_constraintStart_toStartOf="@+id/v_guideline3"
+					app:layout_constraintTop_toBottomOf="@+id/lblGeriBildirimAciklama">
+
+					<com.rengwuxian.materialedittext.MaterialEditText
+						android:id="@+id/txtIcerik"
+						style="@style/TextAppearance.AppCompat.Small.Inverse"
+						android:layout_width="match_parent"
+						android:layout_height="wrap_content"
+						android:background="@color/Gri"
+						android:textColorHint="@color/KoyuYazi"
+						android:gravity="top|left"
+						android:inputType="textMultiLine"
+						android:lines="6"
+						android:maxLines="6"
+						android:minLines="6"
+						android:scrollbars="vertical" />
+				</LinearLayout>
+
+				<TextView
+					android:id="@+id/lblEkranGoruntusu"
+					style="@style/TextAppearance.AppCompat.Small.Inverse"
+					android:layout_width="0dp"
+					android:layout_height="wrap_content"
+					android:layout_marginTop="24dp"
+					android:text="@string/ekran_goruntusu"
+					android:textColor="@color/KoyuYazi"
+					app:layout_constraintEnd_toStartOf="@+id/v_guideline4"
+					app:layout_constraintStart_toStartOf="@+id/v_guideline3"
+					app:layout_constraintTop_toBottomOf="@+id/LLIcerik" />
+
+				<View
+					android:id="@+id/view2"
+					android:layout_width="0dp"
+					android:layout_height="1dp"
+					android:background="@drawable/cizgi_koyugri"
+					android:layout_marginTop="8dp"
+					app:layout_constraintEnd_toStartOf="@+id/v_guideline4"
+					app:layout_constraintStart_toStartOf="@+id/v_guideline3"
+					app:layout_constraintTop_toBottomOf="@+id/lblEkranGoruntusu" />
+
+				<LinearLayout
+					android:id="@+id/LLEkranGoruntusu"
+					android:layout_width="0dp"
+					android:layout_height="wrap_content"
+					android:layout_marginTop="8dp"
+					android:orientation="horizontal"
+					app:layout_constraintEnd_toStartOf="@+id/v_guideline4"
+					app:layout_constraintStart_toStartOf="@+id/v_guideline3"
+					app:layout_constraintTop_toBottomOf="@+id/view2">
+
+					<ImageButton
+						android:id="@+id/btnEkranGoruntusu1"
+						android:layout_width="100dp"
+						android:layout_height="150dp"
+						android:background="@drawable/custom_button"
+						android:contentDescription="@string/imageDesc"
+						android:scaleType="fitCenter"
+						app:srcCompat="@drawable/ic_plus_box_beyaz_48dp"
+						app:layout_constraintStart_toStartOf="@+id/v_guideline3"
+						app:layout_constraintTop_toBottomOf="@+id/LLSorun" />
+
+					<ImageButton
+						android:id="@+id/btnEkranGoruntusu2"
+						android:layout_width="100dp"
+						android:layout_height="150dp"
+						android:layout_marginLeft="8dp"
+						android:layout_marginStart="8dp"
+						android:background="@drawable/custom_button"
+						android:contentDescription="@string/imageDesc"
+						android:scaleType="fitCenter"
+						app:srcCompat="@drawable/ic_plus_box_beyaz_48dp"
+						app:layout_constraintStart_toStartOf="@+id/v_guideline3"
+						app:layout_constraintTop_toBottomOf="@+id/LLSorun" />
+
+					<ImageButton
+						android:id="@+id/btnEkranGoruntusu3"
+						android:layout_width="100dp"
+						android:layout_height="150dp"
+						android:layout_marginLeft="8dp"
+						android:layout_marginStart="8dp"
+						android:background="@drawable/custom_button"
+						android:contentDescription="@string/imageDesc"
+						android:scaleType="fitCenter"
+						app:srcCompat="@drawable/ic_plus_box_beyaz_48dp"
+						app:layout_constraintStart_toStartOf="@+id/v_guideline3"
+						app:layout_constraintTop_toBottomOf="@+id/LLSorun" />
+				</LinearLayout>
+
+			</android.support.constraint.ConstraintLayout>
+		</ScrollView>
+
+	</android.support.constraint.ConstraintLayout>
+</android.support.design.widget.CoordinatorLayout>

@@ -39,10 +39,6 @@ public class SplashEkran extends Activity implements Interface_AsyncResponse {
 	AlertDialog ADDialog_PlayGoogleServisi, ADDialog_SistemDurum, ADDialog_Guncelleme, ADDialog_InternetErisimSorunu, ADDialog_HesapDurumu;
 	Intent mIntent;
 
-	//private GoogleApiClient mGoogleLoginApiClient;
-
-	//CallbackManager mFacebookCallbackManager;
-
 	RelativeLayout RLBG;
 	TextView lblVersiyonNo;
 
@@ -53,9 +49,6 @@ public class SplashEkran extends Activity implements Interface_AsyncResponse {
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		//FacebookSdk.sdkInitialize(getApplicationContext());
-		//mFacebookCallbackManager = CallbackManager.Factory.create();
-
 		setContentView(R.layout.activity_splash_ekran);
 
 		activity = this;
@@ -100,8 +93,6 @@ public class SplashEkran extends Activity implements Interface_AsyncResponse {
 		super.onStart();
 
 		if (AkorDefterimSys.checkPlayServices(activity)) {
-			//GoogleAPIInit();
-
 			if (AkorDefterimSys.InternetErisimKontrolu()) { // İnternet bağlantısı var ise
 				if(!AkorDefterimSys.ProgressDialogisShowing(PDSistemKontrol)) {
 					PDSistemKontrol = AkorDefterimSys.CustomProgressDialog(getString(R.string.lutfen_bekleyiniz), false, AkorDefterimSys.ProgressBarTimeoutSuresi, "PDSistemKontrol_Timeout");

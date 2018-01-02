@@ -267,5 +267,35 @@
 			app:layout_constraintStart_toStartOf="@+id/v_guideline1"
 			app:layout_constraintTop_toBottomOf="@+id/btnParolayiDegistir" />
 
+		<Button
+			android:id="@+id/btnCikisYap"
+			android:layout_width="0dp"
+			android:layout_height="wrap_content"
+			android:paddingStart="30dp"
+			android:paddingLeft="30dp"
+			android:background="@drawable/custom_button2"
+			android:drawableStart="@drawable/ic_logout2"
+			android:drawableLeft="@drawable/ic_logout2"
+			android:drawablePadding="10dp"
+			android:gravity="left|center_vertical"
+			android:text="@string/cikis_yap"
+			android:textAppearance="@style/TextAppearance.AppCompat"
+			android:textColor="@color/KoyuYazi"
+			android:stateListAnimator="@null"
+			style="@style/TextAppearance.AppCompat.Small.Inverse"
+			app:layout_constraintEnd_toEndOf="parent"
+			app:layout_constraintStart_toStartOf="parent"
+			app:layout_constraintTop_toBottomOf="@+id/view6"
+			tools:targetApi="lollipop" />
+
+		<View
+			android:id="@+id/view7"
+			android:layout_width="0dp"
+			android:layout_height="1dp"
+			android:background="@drawable/cizgi_ortagri"
+			app:layout_constraintEnd_toStartOf="@+id/v_guideline2"
+			app:layout_constraintStart_toStartOf="@+id/v_guideline1"
+			app:layout_constraintTop_toBottomOf="@+id/btnCikisYap" />
+
 	</android.support.constraint.ConstraintLayout>
 </android.support.design.widget.CoordinatorLayout>

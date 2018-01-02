@@ -21,7 +21,6 @@ public interface Interface_FragmentDataConn {
 	void YayinAraci_KonumBilgileriThread(Boolean Durum);
 	void YayinAraci_CanliIstek(Boolean Durum);
 	void YayinAraciDurumBilgisiAl();
-	void EgitimEkraniGetir();
 	void GoogleSatinAlma();
 	void SarkiPaylas(String Platform, String Baslik, String Icerik, String URL);
 

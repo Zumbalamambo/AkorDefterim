@@ -134,7 +134,7 @@
 			android:layout_width="0dp"
 			android:layout_height="wrap_content"
 			android:layout_marginTop="8dp"
-			android:text="@string/kullanim_kosullari_aciklama"
+			android:text="@string/hizmet_kosullari_aciklama"
 			android:textColor="@color/KoyuGri"
 			style="@style/TextAppearance.AppCompat.Small.Inverse"
 			app:layout_constraintLeft_toLeftOf="@+id/v_guideline1"

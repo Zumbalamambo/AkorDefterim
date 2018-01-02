@@ -2,7 +2,6 @@ package com.cnbcyln.app.akordefterim;
 
 import android.app.Activity;
 import android.app.AlertDialog;
-import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -24,23 +23,18 @@ import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import com.cnbcyln.app.akordefterim.Interface.Interface_AsyncResponse;
 import com.cnbcyln.app.akordefterim.util.AkorDefterimSys;
 import com.cnbcyln.app.akordefterim.util.PasswordView;
 
-import org.json.JSONException;
-import org.json.JSONObject;
-
 @SuppressWarnings({"deprecation", "ResultOfMethodCallIgnored", "ConstantConditions"})
-public class KayitEkran_Parola_Belirle extends AppCompatActivity implements Interface_AsyncResponse, OnClickListener {
+public class KayitEkran_Parola_Belirle extends AppCompatActivity implements OnClickListener {
 
 	private Activity activity;
 	private AkorDefterimSys AkorDefterimSys;
 	SharedPreferences sharedPref;
 	SharedPreferences.Editor sharedPrefEditor;
 	Typeface YaziFontu;
-	AlertDialog ADDialog_ParolaBelirle;
-	ProgressDialog PDParolaBelirle;
+	AlertDialog ADDialog;
 	InputMethodManager imm;
 
 	CoordinatorLayout coordinatorLayout;
@@ -178,7 +172,7 @@ public class KayitEkran_Parola_Belirle extends AppCompatActivity implements Inte
 	@Override
 	public void onBackPressed() {
 		AkorDefterimSys.KlavyeKapat();
-		AkorDefterimSys.DismissAlertDialog(ADDialog_ParolaBelirle);
+		AkorDefterimSys.DismissAlertDialog(ADDialog);
 
 		super.onBackPressed();
 	}
@@ -208,107 +202,58 @@ public class KayitEkran_Parola_Belirle extends AppCompatActivity implements Inte
 		}
 	}
 
-	@Override
-	public void AsyncTaskReturnValue(String sonuc) {
-		try {
-			JSONObject JSONSonuc = new JSONObject(sonuc);
-
-			switch (JSONSonuc.getString("Islem")) {
-				case "HesapParolaDegistir":
-					// PDParolaBelirle Progress Dialog'u kapattık
-					AkorDefterimSys.DismissProgressDialog(PDParolaBelirle);
-
-					if(JSONSonuc.getBoolean("Sonuc")) {
-						ADDialog_ParolaBelirle = AkorDefterimSys.CustomAlertDialog(activity, R.mipmap.ic_launcher,
-								getString(R.string.hesap_bilgileri),
-								getString(R.string.parola_degistirildi),
-								activity.getString(R.string.tamam));
-						ADDialog_ParolaBelirle.getWindow().getAttributes().windowAnimations = R.style.DialogAnimation;
-						ADDialog_ParolaBelirle.show();
-
-						ADDialog_ParolaBelirle.getButton(AlertDialog.BUTTON_POSITIVE).setOnClickListener(new OnClickListener() {
-							@Override
-							public void onClick(View v) {
-								ADDialog_ParolaBelirle.dismiss();
-
-								sharedPrefEditor = sharedPref.edit();
-								sharedPrefEditor.putString("Action", "Vazgec");
-								sharedPrefEditor.apply();
-
-								onBackPressed();
-							}
-						});
-					} else AkorDefterimSys.StandartSnackBarMsj(coordinatorLayout, getString(R.string.islem_yapilirken_bir_hata_olustu));
-					break;
-			}
-
-		} catch (JSONException e) {
-			e.printStackTrace();
-		}
-	}
-
 	private void IleriIslem() {
-		btnIleri.setEnabled(false);
 		AkorDefterimSys.KlavyeKapat();
 
-		txtParola.setText(txtParola.getText().toString().trim());
-		String Parola = txtParola.getText().toString().trim();
+		if(AkorDefterimSys.InternetErisimKontrolu()) {
+			txtParola.setText(txtParola.getText().toString().trim());
+			String Parola = txtParola.getText().toString().trim();
 
-		txtParolaTekrar.setText(txtParolaTekrar.getText().toString().trim());
+			txtParolaTekrar.setText(txtParolaTekrar.getText().toString().trim());
 
-		if(TextUtils.isEmpty(Parola)) { // Parola alanı boş ise
-			txtILParola.setError(getString(R.string.txtsifre_hata1));
-			txtParola.requestFocus();
-			txtParola.setSelection(txtParola.length());
-			imm.showSoftInput(txtParola, 0);
-			LLParolaGuvenligi1.setBackgroundColor(getResources().getColor(R.color.Kirmizi));
-			LLParolaGuvenligi2.setBackgroundColor(0);
-			LLParolaGuvenligi3.setBackgroundColor(0);
-		} else if(AkorDefterimSys.EditTextKarakterKontrolMIN(Parola, getResources().getInteger(R.integer.ParolaKarakterSayisi_MIN))) {
-			txtILParola.setError(getString(R.string.hata_en_az_karakter, String.valueOf(getResources().getInteger(R.integer.ParolaKarakterSayisi_MIN))));
-			txtParola.requestFocus();
-			txtParola.setSelection(txtParola.length());
-			imm.showSoftInput(txtParola, 0);
-			LLParolaGuvenligi1.setBackgroundColor(getResources().getColor(R.color.Kirmizi));
-			LLParolaGuvenligi2.setBackgroundColor(0);
-			LLParolaGuvenligi3.setBackgroundColor(0);
-		} else if(AkorDefterimSys.EditTextKarakterKontrolMAX(Parola, getResources().getInteger(R.integer.ParolaKarakterSayisi_MAX))) {
-			txtILParola.setError(getString(R.string.hata_en_fazla_karakter, String.valueOf(getResources().getInteger(R.integer.ParolaKarakterSayisi_MAX))));
-			txtParola.requestFocus();
-			txtParola.setSelection(txtParola.length());
-			imm.showSoftInput(txtParola, 0);
-		} else txtILParola.setError(null);
+			if(TextUtils.isEmpty(Parola)) { // Parola alanı boş ise
+				txtILParola.setError(getString(R.string.txtsifre_hata1));
+				txtParola.requestFocus();
+				txtParola.setSelection(txtParola.length());
+				imm.showSoftInput(txtParola, 0);
+				LLParolaGuvenligi1.setBackgroundColor(getResources().getColor(R.color.Kirmizi));
+				LLParolaGuvenligi2.setBackgroundColor(0);
+				LLParolaGuvenligi3.setBackgroundColor(0);
+			} else if(AkorDefterimSys.EditTextKarakterKontrolMIN(Parola, getResources().getInteger(R.integer.ParolaKarakterSayisi_MIN))) {
+				txtILParola.setError(getString(R.string.hata_en_az_karakter, String.valueOf(getResources().getInteger(R.integer.ParolaKarakterSayisi_MIN))));
+				txtParola.requestFocus();
+				txtParola.setSelection(txtParola.length());
+				imm.showSoftInput(txtParola, 0);
+				LLParolaGuvenligi1.setBackgroundColor(getResources().getColor(R.color.Kirmizi));
+				LLParolaGuvenligi2.setBackgroundColor(0);
+				LLParolaGuvenligi3.setBackgroundColor(0);
+			} else if(AkorDefterimSys.EditTextKarakterKontrolMAX(Parola, getResources().getInteger(R.integer.ParolaKarakterSayisi_MAX))) {
+				txtILParola.setError(getString(R.string.hata_en_fazla_karakter, String.valueOf(getResources().getInteger(R.integer.ParolaKarakterSayisi_MAX))));
+				txtParola.requestFocus();
+				txtParola.setSelection(txtParola.length());
+				imm.showSoftInput(txtParola, 0);
+			} else txtILParola.setError(null);
 
-		if(!AkorDefterimSys.EditTextisMatching(txtParola, txtParolaTekrar)) { // Parolalar aynı değil ise
-			txtILParolaTekrar.setError(getString(R.string.txtparolatekrar_hata1));
-			txtParolaTekrar.requestFocus();
-			txtParolaTekrar.setSelection(txtParolaTekrar.length());
-			imm.showSoftInput(txtParolaTekrar, 0);
-		} else txtILParolaTekrar.setError(null);
+			if(!AkorDefterimSys.EditTextisMatching(txtParola, txtParolaTekrar)) { // Parolalar aynı değil ise
+				txtILParolaTekrar.setError(getString(R.string.txtparolatekrar_hata1));
+				txtParolaTekrar.requestFocus();
+				txtParolaTekrar.setSelection(txtParolaTekrar.length());
+				imm.showSoftInput(txtParolaTekrar, 0);
+			} else txtILParolaTekrar.setError(null);
 
-		if(txtILParola.getError() == null && txtILParolaTekrar.getError() == null) {
-			AkorDefterimSys.UnFocusEditText(txtParola);
-			AkorDefterimSys.UnFocusEditText(txtParolaTekrar);
+			if(txtILParola.getError() == null && txtILParolaTekrar.getError() == null) {
+				btnIleri.setEnabled(false);
+				AkorDefterimSys.UnFocusEditText(txtParola);
+				AkorDefterimSys.UnFocusEditText(txtParolaTekrar);
 
-			if(AkorDefterimSys.InternetErisimKontrolu()) {
-				if(Islem.equals("Kayit")) {
-					Intent mIntent = new Intent(activity, KayitEkran_AdSoyad_DTarih_Resim.class);
-					mIntent.putExtra("EPosta", EPosta);
-					mIntent.putExtra("Parola", txtParola.getText().toString().trim());
+				Intent mIntent = new Intent(activity, KayitEkran_AdSoyad_DTarih_Resim.class);
+				mIntent.putExtra("EPosta", EPosta);
+				mIntent.putExtra("Parola", txtParola.getText().toString().trim());
 
-					AkorDefterimSys.EkranGetir(mIntent, "Slide");
+				AkorDefterimSys.EkranGetir(mIntent, "Slide");
 
-					btnIleri.setEnabled(true);
-				} /*else if(Islem.equals("Giris_Yardimi")) {
-					PDParolaBelirle = AkorDefterimSys.CustomProgressDialog(getString(R.string.islem_yapiliyor), false, AkorDefterimSys.ProgressBarTimeoutSuresi);
-					//PDParolaBelirle.show();
-
-					//AkorDefterimSys.HesapParolaDegistir(EPosta, Parola, Strings.getSHA1(Parola));
-				}*/
-			} else {
 				btnIleri.setEnabled(true);
-				AkorDefterimSys.StandartSnackBarMsj(coordinatorLayout, getString(R.string.internet_baglantisi_saglanamadi));
 			}
-		} else btnIleri.setEnabled(true);
+		} else AkorDefterimSys.StandartSnackBarMsj(coordinatorLayout, getString(R.string.internet_baglantisi_saglanamadi));
 	}
 }

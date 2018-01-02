@@ -8,6 +8,7 @@ import android.content.SharedPreferences;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.os.Handler;
+import android.support.annotation.NonNull;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.TextInputLayout;
 import android.support.v7.app.AppCompatActivity;
@@ -28,6 +29,7 @@ import com.cnbcyln.app.akordefterim.Interface.Interface_AsyncResponse;
 import com.cnbcyln.app.akordefterim.util.AkorDefterimSys;
 import com.github.ybq.android.spinkit.SpinKitView;
 import com.hbb20.CountryCodePicker;
+import com.redmadrobot.inputmask.MaskedTextChangedListener;
 
 import org.apache.commons.lang3.StringUtils;
 import org.json.JSONException;
@@ -61,6 +63,7 @@ public class Hesabina_Eris_Sms_Gonder extends AppCompatActivity implements Inter
 	TextView lblBaslik, lblSmsGonder, lblHesabiniBulSmsGonderAciklama;
 	CountryCodePicker CCPTelKodu;
 
+	String YazilanCepTelefonu = "";
 	int KalanSure = 0;
 
 	@Override
@@ -128,7 +131,7 @@ public class Hesabina_Eris_Sms_Gonder extends AppCompatActivity implements Inter
 				return false;
 			}
 		});
-		txtCepTelefon.addTextChangedListener(new TextWatcher() {
+		/*txtCepTelefon.addTextChangedListener(new TextWatcher() {
 			@Override
 			public void beforeTextChanged(CharSequence s, int start, int count, int after) {
 
@@ -143,7 +146,25 @@ public class Hesabina_Eris_Sms_Gonder extends AppCompatActivity implements Inter
 			public void afterTextChanged(Editable s) {
 				txtCepTelefon.setError(null);
 			}
-		});
+		});*/
+
+		final MaskedTextChangedListener txtCepTelefonListener = new MaskedTextChangedListener(
+				"([000]) [000] [00] [00]",
+				true,
+				txtCepTelefon,
+				null,
+				new MaskedTextChangedListener.ValueListener() {
+					@Override
+					public void onTextChanged(boolean maskFilled, @NonNull final String extractedValue) {
+						YazilanCepTelefonu = extractedValue;
+						//Log.d(CepTelefonu_Degistir.class.getSimpleName(), String.valueOf(maskFilled));
+					}
+				}
+		);
+
+		txtCepTelefon.addTextChangedListener(txtCepTelefonListener);
+		txtCepTelefon.setOnFocusChangeListener(txtCepTelefonListener);
+		txtCepTelefon.setHint(txtCepTelefonListener.placeholder());
 
 		lblHesabiniBulSmsGonderAciklama = findViewById(R.id.lblHesabiniBulSmsGonderAciklama);
 		lblHesabiniBulSmsGonderAciklama.setTypeface(YaziFontu, Typeface.NORMAL);
@@ -275,7 +296,7 @@ public class Hesabina_Eris_Sms_Gonder extends AppCompatActivity implements Inter
 								btnIleri.setEnabled(true);
 								SKVLoader.setVisibility(View.GONE);
 								AkorDefterimSys.DismissProgressDialog(PDIslem);
-							} else AkorDefterimSys.SMSGonder(CCPTelKodu.getSelectedCountryCode(), txtCepTelefon.getText().toString().trim(), getString(R.string.sms_parola_gonderildi_icerik, JSONSonuc.getString("AdSoyad"), JSONSonuc.getString("Parola"), getString(R.string.uygulama_adi)));
+							} else AkorDefterimSys.SMSGonder(CCPTelKodu.getSelectedCountryCode(), YazilanCepTelefonu, getString(R.string.sms_parola_gonderildi_icerik, JSONSonuc.getString("AdSoyad"), JSONSonuc.getString("Parola"), getString(R.string.uygulama_adi)));
                         }
 					} else {
 						btnIleri.setEnabled(true);
@@ -292,7 +313,7 @@ public class Hesabina_Eris_Sms_Gonder extends AppCompatActivity implements Inter
 						if(!AkorDefterimSys.AlertDialogisShowing(ADDialog)) {
 							ADDialog = AkorDefterimSys.CustomAlertDialog(activity,
 									getString(R.string.sms_gonderilemedi),
-									getString(R.string.sms_parola_gonderildi_mesaj, AkorDefterimSys.CepTelefonSifrele(CCPTelKodu.getSelectedCountryCode(), txtCepTelefon.getText().toString().trim())),
+									getString(R.string.sms_parola_gonderildi_mesaj, AkorDefterimSys.CepTelefonSifrele(CCPTelKodu.getSelectedCountryCode(), YazilanCepTelefonu)),
 									activity.getString(R.string.tamam),
 									"ADDialog_Kapat");
 							ADDialog.getWindow().getAttributes().windowAnimations = R.style.DialogAnimation;
@@ -315,7 +336,7 @@ public class Hesabina_Eris_Sms_Gonder extends AppCompatActivity implements Inter
 						if(!AkorDefterimSys.AlertDialogisShowing(ADDialog)) {
 							ADDialog = AkorDefterimSys.CustomAlertDialog(activity,
 									getString(R.string.sms_gonderildi),
-									getString(R.string.sms_parola_gonderildi_mesaj, AkorDefterimSys.CepTelefonSifrele(CCPTelKodu.getSelectedCountryCode(), txtCepTelefon.getText().toString().trim())),
+									getString(R.string.sms_parola_gonderildi_mesaj, AkorDefterimSys.CepTelefonSifrele(CCPTelKodu.getSelectedCountryCode(), YazilanCepTelefonu)),
 									activity.getString(R.string.tamam),
 									"ADDialog_Kapat");
 							ADDialog.getWindow().getAttributes().windowAnimations = R.style.DialogAnimation;
@@ -362,25 +383,22 @@ public class Hesabina_Eris_Sms_Gonder extends AppCompatActivity implements Inter
 		AkorDefterimSys.KlavyeKapat();
 
 		if(AkorDefterimSys.InternetErisimKontrolu()) {
-			txtCepTelefon.setText(txtCepTelefon.getText().toString().trim());
-			String CepTelefon = txtCepTelefon.getText().toString();
-
-			if(TextUtils.isEmpty(CepTelefon)) {
+			if(TextUtils.isEmpty(YazilanCepTelefonu)) {
 				txtILCepTelefon.setError(getString(R.string.hata_bos_alan));
 				txtCepTelefon.requestFocus();
 				txtCepTelefon.setSelection(txtCepTelefon.length());
 				imm.showSoftInput(txtCepTelefon, 0);
-			} else if(!StringUtils.isNumeric(CepTelefon)) {
-				txtILCepTelefon.setError(getString(R.string.hata_format_sadece_sayi));
+			} else if(!AkorDefterimSys.isValid(YazilanCepTelefonu, "CepTelefonu")) {
+				txtILCepTelefon.setError(getString(R.string.hata_cep_telefonu));
 				txtCepTelefon.requestFocus();
 				txtCepTelefon.setSelection(txtCepTelefon.length());
 				imm.showSoftInput(txtCepTelefon, 0);
-			} else if(CepTelefon.length() != 10) {
+			} else if(YazilanCepTelefonu.length() != 10) {
 				txtILCepTelefon.setError(getString(R.string.hata_basinda_sifir_olmadan_10_hane));
 				txtCepTelefon.requestFocus();
 				txtCepTelefon.setSelection(txtCepTelefon.length());
 				imm.showSoftInput(txtCepTelefon, 0);
-			} else if(!CepTelefon.subSequence(0, 1).equals("5")) {
+			} else if(!YazilanCepTelefonu.subSequence(0, 1).equals("5")) {
 				txtILCepTelefon.setError(getString(R.string.hata_basinda_sifir_olmadan_10_hane));
 				txtCepTelefon.requestFocus();
 				txtCepTelefon.setSelection(txtCepTelefon.length());
@@ -397,7 +415,7 @@ public class Hesabina_Eris_Sms_Gonder extends AppCompatActivity implements Inter
 					PDIslem.show();
 				}
 
-				AkorDefterimSys.HesapBilgiGetir(null, "", CCPTelKodu.getSelectedCountryCode(), CepTelefon, "HesapBilgiGetir");
+				AkorDefterimSys.HesapBilgiGetir(null, "", CCPTelKodu.getSelectedCountryCode(), YazilanCepTelefonu, "HesapBilgiGetir");
 			}
 		} else AkorDefterimSys.StandartSnackBarMsj(coordinatorLayout, getString(R.string.internet_baglantisi_saglanamadi));
 	}

@@ -353,10 +353,10 @@ public class Profil_Duzenle extends AppCompatActivity implements Interface_Async
 					menu.add(0, 1, 0, aResimDuzenleContextMenu.subSequence(aResimDuzenleContextMenu.indexOf("_") + 1, aResimDuzenleContextMenu.length()));
 					break;
 				case "facebooktanaktar":
-					if(!FacebookID.equals("")) menu.add(0, 2, 0, aResimDuzenleContextMenu.subSequence(aResimDuzenleContextMenu.indexOf("_") + 1, aResimDuzenleContextMenu.length()));
+					if(!FacebookID.equals("-")) menu.add(0, 2, 0, aResimDuzenleContextMenu.subSequence(aResimDuzenleContextMenu.indexOf("_") + 1, aResimDuzenleContextMenu.length()));
 					break;
 				case "googledanaktar":
-					if(!GoogleID.equals("")) menu.add(0, 3, 0, aResimDuzenleContextMenu.subSequence(aResimDuzenleContextMenu.indexOf("_") + 1, aResimDuzenleContextMenu.length()));
+					if(!GoogleID.equals("-")) menu.add(0, 3, 0, aResimDuzenleContextMenu.subSequence(aResimDuzenleContextMenu.indexOf("_") + 1, aResimDuzenleContextMenu.length()));
 					break;
 				case "fotografikaldir":
 					menu.add(0, 4, 0, aResimDuzenleContextMenu.subSequence(aResimDuzenleContextMenu.indexOf("_") + 1, aResimDuzenleContextMenu.length()));
@@ -404,7 +404,7 @@ public class Profil_Duzenle extends AppCompatActivity implements Interface_Async
 					PDBilgilerGuncelleniyor.show();
 				}
 
-				AkorDefterimSys.HesapBilgiGuncelle(sharedPref.getString("prefHesapID",""), FirebaseToken, OSID, OSVersiyon, "", "", "-","", "", "", "", "", "", UygulamaVersiyon, "HesapBilgiGuncelle_Profil_Resim2");
+				AkorDefterimSys.HesapBilgiGuncelle(sharedPref.getString("prefHesapID",""), "", "", FirebaseToken, OSID, OSVersiyon, "", "", "-","", "", "", "", "", "", UygulamaVersiyon, "HesapBilgiGuncelle_Profil_Resim2");
 				break;
 			default:
 				return false;
@@ -558,7 +558,7 @@ public class Profil_Duzenle extends AppCompatActivity implements Interface_Async
 							PDBilgilerGuncelleniyor.show();
 						}
 
-						AkorDefterimSys.HesapBilgiGuncelle(sharedPref.getString("prefHesapID",""), FirebaseToken, OSID, OSVersiyon, "", "", ResimURL_Google,"", "", "", "", "", "", UygulamaVersiyon, "HesapBilgiGuncelle_Profil_Resim2");
+						AkorDefterimSys.HesapBilgiGuncelle(sharedPref.getString("prefHesapID",""), "", "", FirebaseToken, OSID, OSVersiyon, "", "", ResimURL_Google,"", "", "", "", "", "", UygulamaVersiyon, "HesapBilgiGuncelle_Profil_Resim2");
 					}
 					break;
 			}
@@ -592,11 +592,8 @@ public class Profil_Duzenle extends AppCompatActivity implements Interface_Async
 							sharedPrefEditor.putString("prefParolaSHA1", JSONSonuc.getString("ParolaSHA1"));
 							sharedPrefEditor.apply();
 
-							if(!JSONSonuc.getString("FacebookID").equals("")) FacebookID = JSONSonuc.getString("FacebookID");
-							else FacebookID = "";
-
-							if(!JSONSonuc.getString("GoogleID").equals("")) GoogleID = JSONSonuc.getString("GoogleID");
-							else GoogleID = "";
+							FacebookID = JSONSonuc.getString("FacebookID");
+							GoogleID = JSONSonuc.getString("GoogleID");
 
 							if(JSONSonuc.getString("ResimURL").equals("-")) {
 								ImgBuyukProfilResim.setImageResource(R.drawable.bos_profil);
@@ -785,7 +782,7 @@ public class Profil_Duzenle extends AppCompatActivity implements Interface_Async
 				// Adding file data to http body
 				entity.addPart("Dosya", new FileBody(SecilenProfilResmiFile));
 				entity.addPart("Dizin", new StringBody(AkorDefterimSys.PHPProfilResimleriDizini));
-				entity.addPart("HesapID", new StringBody(sharedPref.getString("prefHesapID","")));
+				entity.addPart("DosyaAdi",new StringBody(sharedPref.getString("prefHesapID","")));
 
 				totalSize = entity.getContentLength();
 				httppost.setEntity(entity);
@@ -838,7 +835,7 @@ public class Profil_Duzenle extends AppCompatActivity implements Interface_Async
 
 							PDBilgilerGuncelleniyor.setMessage(getString(R.string.bilgileriniz_guncelleniyor));
 
-							AkorDefterimSys.HesapBilgiGuncelle(sharedPref.getString("prefHesapID",""), FirebaseToken, OSID, OSVersiyon, "", "", ResimURL,"", "", "", "", "", "", UygulamaVersiyon, "HesapBilgiGuncelle_Profil_Resim");
+							AkorDefterimSys.HesapBilgiGuncelle(sharedPref.getString("prefHesapID",""), "", "", FirebaseToken, OSID, OSVersiyon, "", "", ResimURL,"", "", "", "", "", "", UygulamaVersiyon, "HesapBilgiGuncelle_Profil_Resim");
 						}
 					});
 					break;
@@ -900,100 +897,102 @@ public class Profil_Duzenle extends AppCompatActivity implements Interface_Async
 
 	@SuppressLint("SimpleDateFormat")
 	private void Kaydet() {
-		btnKaydet.setEnabled(false);
 		AkorDefterimSys.KlavyeKapat();
 
-		txtAdSoyad.setText(txtAdSoyad.getText().toString().trim());
-		String AdSoyad = txtAdSoyad.getText().toString();
+		if(AkorDefterimSys.InternetErisimKontrolu()) {
+			txtAdSoyad.setText(txtAdSoyad.getText().toString().trim());
+			String AdSoyad = txtAdSoyad.getText().toString();
 
-		txtDogumTarih.setText(txtDogumTarih.getText().toString().trim());
-		String DogumTarih = txtDogumTarih.getText().toString().trim();
+			txtDogumTarih.setText(txtDogumTarih.getText().toString().trim());
+			String DogumTarih = txtDogumTarih.getText().toString().trim();
 
-		txtKullaniciAdi.setText(txtKullaniciAdi.getText().toString().trim());
-		String KullaniciAdi = txtKullaniciAdi.getText().toString().trim();
+			txtKullaniciAdi.setText(txtKullaniciAdi.getText().toString().trim());
+			String KullaniciAdi = txtKullaniciAdi.getText().toString().trim();
 
-		if (TextUtils.isEmpty(AdSoyad)) {
-			txtILAdSoyad.setError(getString(R.string.hata_bos_alan));
-			txtAdSoyad.requestFocus();
-			txtAdSoyad.setSelection(txtAdSoyad.length());
-			imm.showSoftInput(txtAdSoyad, 0);
-		} else if (!AkorDefterimSys.isValid(AdSoyad, "SadeceKucukHarfBuyukHarfBosluklu")) {
-			txtILAdSoyad.setError(getString(R.string.hata_format_sadece_sayi_kucukharf_buyukharf_bosluklu));
-			txtAdSoyad.requestFocus();
-			txtAdSoyad.setSelection(txtAdSoyad.length());
-			imm.showSoftInput(txtAdSoyad, 0);
-		} else if(AdSoyad.length() < getResources().getInteger(R.integer.AdSoyadKarakterSayisi_MIN)) {
-			txtILAdSoyad.setError(getString(R.string.hata_en_az_karakter, String.valueOf(getResources().getInteger(R.integer.KullaniciAdiKarakterSayisi_MIN))));
-			txtAdSoyad.requestFocus();
-			txtAdSoyad.setSelection(txtAdSoyad.length());
-			imm.showSoftInput(txtAdSoyad, 0);
-		} else txtILAdSoyad.setError(null);
+			if (TextUtils.isEmpty(AdSoyad)) {
+				txtILAdSoyad.setError(getString(R.string.hata_bos_alan));
+				txtAdSoyad.requestFocus();
+				txtAdSoyad.setSelection(txtAdSoyad.length());
+				imm.showSoftInput(txtAdSoyad, 0);
+			} else if (!AkorDefterimSys.isValid(AdSoyad, "SadeceKucukHarfBuyukHarfBosluklu")) {
+				txtILAdSoyad.setError(getString(R.string.hata_format_sadece_sayi_kucukharf_buyukharf_bosluklu));
+				txtAdSoyad.requestFocus();
+				txtAdSoyad.setSelection(txtAdSoyad.length());
+				imm.showSoftInput(txtAdSoyad, 0);
+			} else if(AdSoyad.length() < getResources().getInteger(R.integer.AdSoyadKarakterSayisi_MIN)) {
+				txtILAdSoyad.setError(getString(R.string.hata_en_az_karakter, String.valueOf(getResources().getInteger(R.integer.KullaniciAdiKarakterSayisi_MIN))));
+				txtAdSoyad.requestFocus();
+				txtAdSoyad.setSelection(txtAdSoyad.length());
+				imm.showSoftInput(txtAdSoyad, 0);
+			} else txtILAdSoyad.setError(null);
 
-		if(TextUtils.isEmpty(DogumTarih))
-			txtILDogumTarih.setError(getString(R.string.hata_bos_alan));
-		else
-			txtILDogumTarih.setError(null);
+			if(TextUtils.isEmpty(DogumTarih))
+				txtILDogumTarih.setError(getString(R.string.hata_bos_alan));
+			else
+				txtILDogumTarih.setError(null);
 
-		if (TextUtils.isEmpty(KullaniciAdi)) {
-			txtILKullaniciAdi.setError(getString(R.string.hata_bos_alan));
-			txtKullaniciAdi.requestFocus();
-			txtKullaniciAdi.setSelection(txtKullaniciAdi.length());
-			imm.showSoftInput(txtKullaniciAdi, 0);
-		} else if (KullaniciAdi.length() < KullaniciAdiKarakterSayisiMIN) {
-			txtILKullaniciAdi.setError(getString(R.string.hata_en_az_karakter, String.valueOf(KullaniciAdiKarakterSayisiMIN)));
-			txtKullaniciAdi.requestFocus();
-			txtKullaniciAdi.setSelection(txtKullaniciAdi.length());
-			imm.showSoftInput(txtKullaniciAdi, 0);
-		} else if (KullaniciAdi.length() > KullaniciAdiKarakterSayisiMAX) {
-			txtILKullaniciAdi.setError(getString(R.string.hata_en_fazla_karakter, String.valueOf(KullaniciAdiKarakterSayisiMAX)));
-			txtKullaniciAdi.requestFocus();
-			txtKullaniciAdi.setSelection(txtKullaniciAdi.length());
-			imm.showSoftInput(txtKullaniciAdi, 0);
-		} else if(!AkorDefterimSys.isValid(KullaniciAdi, "KullaniciAdi")) {
-			txtILKullaniciAdi.setError(getString(R.string.hata_format_sadece_sayi_kucukharf));
-			txtKullaniciAdi.requestFocus();
-			txtKullaniciAdi.setSelection(txtKullaniciAdi.length());
-			imm.showSoftInput(txtKullaniciAdi, 0);
-		} else if(!StringUtils.isAlpha(KullaniciAdi.substring(0, KullaniciAdiBastakiHarfKarakterSayisi))) {
-			txtILKullaniciAdi.setError(getString(R.string.hata_format_bastaki_karakterler_harf_olmak_zorunda, String.valueOf(KullaniciAdiBastakiHarfKarakterSayisi)));
-			txtKullaniciAdi.requestFocus();
-			txtKullaniciAdi.setSelection(txtKullaniciAdi.length());
-			imm.showSoftInput(txtKullaniciAdi, 0);
-		} else txtILKullaniciAdi.setError(null);
+			if (TextUtils.isEmpty(KullaniciAdi)) {
+				txtILKullaniciAdi.setError(getString(R.string.hata_bos_alan));
+				txtKullaniciAdi.requestFocus();
+				txtKullaniciAdi.setSelection(txtKullaniciAdi.length());
+				imm.showSoftInput(txtKullaniciAdi, 0);
+			} else if (KullaniciAdi.length() < KullaniciAdiKarakterSayisiMIN) {
+				txtILKullaniciAdi.setError(getString(R.string.hata_en_az_karakter, String.valueOf(KullaniciAdiKarakterSayisiMIN)));
+				txtKullaniciAdi.requestFocus();
+				txtKullaniciAdi.setSelection(txtKullaniciAdi.length());
+				imm.showSoftInput(txtKullaniciAdi, 0);
+			} else if (KullaniciAdi.length() > KullaniciAdiKarakterSayisiMAX) {
+				txtILKullaniciAdi.setError(getString(R.string.hata_en_fazla_karakter, String.valueOf(KullaniciAdiKarakterSayisiMAX)));
+				txtKullaniciAdi.requestFocus();
+				txtKullaniciAdi.setSelection(txtKullaniciAdi.length());
+				imm.showSoftInput(txtKullaniciAdi, 0);
+			} else if(!AkorDefterimSys.isValid(KullaniciAdi, "KullaniciAdi")) {
+				txtILKullaniciAdi.setError(getString(R.string.hata_format_sadece_sayi_kucukharf));
+				txtKullaniciAdi.requestFocus();
+				txtKullaniciAdi.setSelection(txtKullaniciAdi.length());
+				imm.showSoftInput(txtKullaniciAdi, 0);
+			} else if(!StringUtils.isAlpha(KullaniciAdi.substring(0, KullaniciAdiBastakiHarfKarakterSayisi))) {
+				txtILKullaniciAdi.setError(getString(R.string.hata_format_bastaki_karakterler_harf_olmak_zorunda, String.valueOf(KullaniciAdiBastakiHarfKarakterSayisi)));
+				txtKullaniciAdi.requestFocus();
+				txtKullaniciAdi.setSelection(txtKullaniciAdi.length());
+				imm.showSoftInput(txtKullaniciAdi, 0);
+			} else txtILKullaniciAdi.setError(null);
 
-		if(txtILAdSoyad.getError() == null && txtILDogumTarih.getError() == null && txtILKullaniciAdi.getError() == null) {
-			AkorDefterimSys.UnFocusEditText(txtAdSoyad);
-			AkorDefterimSys.UnFocusEditText(txtDogumTarih);
-			AkorDefterimSys.UnFocusEditText(txtKullaniciAdi);
+			if(txtILAdSoyad.getError() == null && txtILDogumTarih.getError() == null && txtILKullaniciAdi.getError() == null) {
+				btnKaydet.setEnabled(false);
+				AkorDefterimSys.UnFocusEditText(txtAdSoyad);
+				AkorDefterimSys.UnFocusEditText(txtDogumTarih);
+				AkorDefterimSys.UnFocusEditText(txtKullaniciAdi);
 
-			String FirebaseToken = FirebaseInstanceId.getInstance().getToken();
-			@SuppressLint("HardwareIds")
-			String OSID = Settings.Secure.getString(getContentResolver(), Settings.Secure.ANDROID_ID);
-			String OSVersiyon = AkorDefterimSys.AndroidSurumBilgisi(Build.VERSION.SDK_INT);
-			String UygulamaVersiyon = "";
+				String FirebaseToken = FirebaseInstanceId.getInstance().getToken();
+				@SuppressLint("HardwareIds")
+				String OSID = Settings.Secure.getString(getContentResolver(), Settings.Secure.ANDROID_ID);
+				String OSVersiyon = AkorDefterimSys.AndroidSurumBilgisi(Build.VERSION.SDK_INT);
+				String UygulamaVersiyon = "";
 
-			try {
-				UygulamaVersiyon = activity.getPackageManager().getPackageInfo(activity.getPackageName(), 0).versionName;
-			} catch (PackageManager.NameNotFoundException e) {
-				e.printStackTrace();
+				try {
+					UygulamaVersiyon = activity.getPackageManager().getPackageInfo(activity.getPackageName(), 0).versionName;
+				} catch (PackageManager.NameNotFoundException e) {
+					e.printStackTrace();
+				}
+
+				try {
+					SimpleDateFormat format = new SimpleDateFormat("dd/MM/yyyy");
+					Date inputDate = format.parse(DogumTarih + " 00:00:00");
+					format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+					DogumTarih = format.format(inputDate);
+				} catch (ParseException e) {
+					e.printStackTrace();
+				}
+
+				if(!AkorDefterimSys.ProgressDialogisShowing(PDBilgilerGuncelleniyor)) {
+					PDBilgilerGuncelleniyor = AkorDefterimSys.CustomProgressDialog(getString(R.string.bilgileriniz_guncelleniyor), false, AkorDefterimSys.ProgressBarTimeoutSuresi, "PDBilgilerGuncelleniyor_Timeout");
+					PDBilgilerGuncelleniyor.show();
+				}
+
+				AkorDefterimSys.HesapBilgiGuncelle(sharedPref.getString("prefHesapID",""), "", "", FirebaseToken, OSID, OSVersiyon, AdSoyad, DogumTarih, "","", "", "", KullaniciAdi, "", "", UygulamaVersiyon, "HesapBilgiGuncelle_Profil");
 			}
-
-			try {
-				SimpleDateFormat format = new SimpleDateFormat("dd/MM/yyyy");
-				Date inputDate = format.parse(DogumTarih + " 00:00:00");
-				format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-				DogumTarih = format.format(inputDate);
-			} catch (ParseException e) {
-				e.printStackTrace();
-			}
-
-			if(!AkorDefterimSys.ProgressDialogisShowing(PDBilgilerGuncelleniyor)) {
-				PDBilgilerGuncelleniyor = AkorDefterimSys.CustomProgressDialog(getString(R.string.bilgileriniz_guncelleniyor), false, AkorDefterimSys.ProgressBarTimeoutSuresi, "PDBilgilerGuncelleniyor_Timeout");
-				PDBilgilerGuncelleniyor.show();
-			}
-
-			AkorDefterimSys.HesapBilgiGuncelle(sharedPref.getString("prefHesapID",""), FirebaseToken, OSID, OSVersiyon, AdSoyad, DogumTarih, "","", "", "", KullaniciAdi, "", "", UygulamaVersiyon, "HesapBilgiGuncelle_Profil");
-		} else btnKaydet.setEnabled(true);
+		} else AkorDefterimSys.StandartSnackBarMsj(coordinatorLayout, getString(R.string.internet_baglantisi_saglanamadi));
 	}
 
 	private void GoogleAPIInit() {
@@ -1025,7 +1024,7 @@ public class Profil_Duzenle extends AppCompatActivity implements Interface_Async
 									PDBilgilerGuncelleniyor.show();
 								}
 
-								AkorDefterimSys.HesapBilgiGuncelle(sharedPref.getString("prefHesapID",""), FirebaseToken, OSID, OSVersiyon, "", "", ResimURL_Facebook,"", "", "", "", "", "", UygulamaVersiyon, "HesapBilgiGuncelle_Profil_Resim2");
+								AkorDefterimSys.HesapBilgiGuncelle(sharedPref.getString("prefHesapID",""), "", "", FirebaseToken, OSID, OSVersiyon, "", "", ResimURL_Facebook,"", "", "", "", "", "", UygulamaVersiyon, "HesapBilgiGuncelle_Profil_Resim2");
 							} catch (JSONException e) {
 								e.printStackTrace();
 							}

@@ -101,16 +101,16 @@ public class Hesabina_Eris_Hesabini_Bul2 extends AppCompatActivity implements In
 
 		CImgKucukProfilResim = findViewById(R.id.CImgKucukProfilResim);
 
-		if(ResimURL.equals("")) CImgKucukProfilResim.setImageResource(R.drawable.bos_profil);
+		if(ResimURL.equals("-")) CImgKucukProfilResim.setImageResource(R.drawable.bos_profil);
 		else new AkorDefterimSys.NettenResimYukle(CImgKucukProfilResim).execute(AkorDefterimSys.CBCAPP_HttpsAdres + ResimURL);
 
 		CImgSosyalAgFacebookIcon = findViewById(R.id.CImgSosyalAgFacebookIcon);
-		if(!FacebookID.equals("")) CImgSosyalAgFacebookIcon.setVisibility(View.VISIBLE);
-		else CImgSosyalAgFacebookIcon.setVisibility(View.GONE);
+		if(FacebookID.equals("-")) CImgSosyalAgFacebookIcon.setVisibility(View.GONE);
+		else CImgSosyalAgFacebookIcon.setVisibility(View.VISIBLE);
 
 		CImgSosyalAgGoogleIcon = findViewById(R.id.CImgSosyalAgGoogleIcon);
-		if(!GoogleID.equals("")) CImgSosyalAgGoogleIcon.setVisibility(View.VISIBLE);
-		else CImgSosyalAgGoogleIcon.setVisibility(View.GONE);
+		if(GoogleID.equals("-")) CImgSosyalAgGoogleIcon.setVisibility(View.GONE);
+		else CImgSosyalAgGoogleIcon.setVisibility(View.VISIBLE);
 
 		lblAdSoyad = findViewById(R.id.lblAdSoyad);
 		lblAdSoyad.setTypeface(YaziFontu, Typeface.BOLD);
