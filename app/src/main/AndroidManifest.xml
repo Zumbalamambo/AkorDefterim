@@ -99,7 +99,7 @@
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>
-        <activity android:name=".AnaEkran" >
+        <activity android:name=".AnaEkran">
             <intent-filter>
                 <action android:name="android.intent.action.ANAEKRAN" />
 
@@ -253,9 +253,16 @@
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>
-        <activity android:name=".Screenshot" >
+        <activity android:name=".Sarki_Ekle" >
             <intent-filter>
-                <action android:name="android.intent.action.SCREENSHOT" />
+                <action android:name="android.intent.action.SARKI_EKLE" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
+        <activity android:name=".Sarki_Ekle_Icerik" >
+            <intent-filter>
+                <action android:name="android.intent.action.SARKI_EKLE_ICERIK" />
 
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>

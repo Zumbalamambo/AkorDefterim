@@ -1,5 +1,6 @@
 package com.cnbcyln.app.akordefterim.Adaptorler;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import com.cnbcyln.app.akordefterim.R;
@@ -14,6 +15,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.Filter;
+import android.widget.Filterable;
 import android.widget.TextView;
 
 public class AdpListeler extends BaseAdapter {
@@ -52,7 +55,7 @@ public class AdpListeler extends BaseAdapter {
 		
 		satirView = inflater.inflate(R.layout.spinner_satir, null); // create layout from
 		
-		TextView lblspinner_satir = (TextView) satirView.findViewById(R.id.lblspinner_satir); // user name
+		TextView lblspinner_satir = satirView.findViewById(R.id.lblspinner_satir); // user name
 		SnfListeler RepertuvarListeleri = SnfListeler.get(position);
 		lblspinner_satir.setTypeface(YaziFontu);
 		lblspinner_satir.setText(RepertuvarListeleri.getListeAdi());
@@ -67,7 +70,7 @@ public class AdpListeler extends BaseAdapter {
 		
 		satirView = inflater.inflate(R.layout.spinner_dropdown_satir, null); // create layout from
 		
-		TextView lblspinner_satir = (TextView) satirView.findViewById(R.id.lblspinner_satir); // user name
+		TextView lblspinner_satir = satirView.findViewById(R.id.lblspinner_satir); // user name
 		SnfListeler RepertuvarListeleri = SnfListeler.get(position);
 		lblspinner_satir.setTypeface(YaziFontu);
 		lblspinner_satir.setText(RepertuvarListeleri.getListeAdi());

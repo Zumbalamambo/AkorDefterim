@@ -1,0 +1,376 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.design.widget.CoordinatorLayout
+	xmlns:android="http://schemas.android.com/apk/res/android"
+	xmlns:app="http://schemas.android.com/apk/res-auto"
+	xmlns:tools="http://schemas.android.com/tools"
+	android:id="@+id/coordinatorLayout"
+	android:layout_width="match_parent"
+	android:layout_height="match_parent"
+	android:background="@color/Beyaz">
+
+	<android.support.constraint.ConstraintLayout
+		android:id="@+id/ConstraintLayout1"
+		android:layout_width="match_parent"
+		android:layout_height="match_parent"
+		android:descendantFocusability="beforeDescendants"
+		android:focusableInTouchMode="true"
+		android:keepScreenOn="true">
+
+		<RelativeLayout
+			android:id="@+id/RLToolBar"
+			android:layout_width="match_parent"
+			android:layout_height="?android:attr/actionBarSize"
+			android:background="@color/Beyaz">
+
+			<ImageButton
+				android:id="@+id/btnGeri"
+				android:layout_width="60dp"
+				android:layout_height="match_parent"
+				android:layout_centerVertical="true"
+				android:background="@drawable/custom_button2"
+				app:srcCompat="@drawable/ic_arrow_back_siyah"
+				android:contentDescription="@string/imageDesc" />
+
+			<TextView
+				android:id="@+id/lblBaslik"
+				style="@style/TextAppearance.AppCompat.Medium.Inverse"
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				android:layout_marginLeft="8dp"
+				android:layout_centerVertical="true"
+				android:layout_toEndOf="@+id/btnGeri"
+				android:layout_toRightOf="@+id/btnGeri"
+				android:text="@string/sarki_ekle"
+				android:textColor="@color/KoyuYazi"
+				tools:ignore="RelativeOverlap" />
+		</RelativeLayout>
+
+		<View
+			android:id="@+id/view1"
+			android:layout_width="0dp"
+			android:layout_height="1dp"
+			android:background="@drawable/cizgi_ortagri"
+			app:layout_constraintTop_toBottomOf="@+id/RLToolBar" />
+
+		<ScrollView
+			android:id="@+id/scroll_view"
+			android:layout_width="0dp"
+			android:layout_height="0dp"
+			android:fillViewport="true"
+			app:layout_constraintBottom_toBottomOf="parent"
+			app:layout_constraintEnd_toEndOf="parent"
+			app:layout_constraintStart_toStartOf="parent"
+			app:layout_constraintTop_toTopOf="@+id/view1">
+
+			<android.support.constraint.ConstraintLayout
+				android:id="@+id/ConstraintLayout2"
+				android:layout_width="match_parent"
+				android:layout_height="wrap_content">
+
+				<android.support.constraint.Guideline
+					android:id="@+id/v_guideline1"
+					android:layout_width="wrap_content"
+					android:layout_height="wrap_content"
+					android:orientation="vertical"
+					app:layout_constraintGuide_percent="0.05" />
+
+				<android.support.constraint.Guideline
+					android:id="@+id/v_guideline2"
+					android:layout_width="wrap_content"
+					android:layout_height="wrap_content"
+					android:orientation="vertical"
+					app:layout_constraintGuide_percent="0.95" />
+
+				<android.support.design.widget.TextInputLayout
+					android:id="@+id/txtILSanatciAdi"
+					android:layout_width="0dp"
+					android:layout_height="wrap_content"
+					android:layout_marginEnd="4dp"
+					android:layout_marginStart="4dp"
+					android:layout_marginTop="16dp"
+					android:textColorHint="@color/KoyuGri"
+					app:layout_constraintEnd_toStartOf="@+id/v_guideline2"
+					app:layout_constraintStart_toStartOf="@+id/v_guideline1"
+					app:layout_constraintTop_toTopOf="parent">
+
+					<EditText
+						android:id="@+id/txtSanatciAdi"
+						style="@style/TextAppearance.AppCompat.Small.Inverse"
+						android:layout_width="match_parent"
+						android:layout_height="match_parent"
+						android:hint="@string/sanatci_adi"
+						android:importantForAutofill="noExcludeDescendants"
+						android:inputType="text"
+						android:textColor="@color/KoyuYazi"
+						tools:ignore="UnusedAttribute" />
+				</android.support.design.widget.TextInputLayout>
+
+				<android.support.design.widget.TextInputLayout
+					android:id="@+id/txtILSarkiAdi"
+					android:layout_width="0dp"
+					android:layout_height="wrap_content"
+					android:layout_marginEnd="4dp"
+					android:layout_marginStart="4dp"
+					android:layout_marginTop="16dp"
+					android:textColorHint="@color/KoyuGri"
+					app:layout_constraintEnd_toStartOf="@+id/v_guideline2"
+					app:layout_constraintStart_toStartOf="@+id/v_guideline1"
+					app:layout_constraintTop_toBottomOf="@+id/txtILSanatciAdi">
+
+					<EditText
+						android:id="@+id/txtSarkiAdi"
+						style="@style/TextAppearance.AppCompat.Small.Inverse"
+						android:layout_width="match_parent"
+						android:layout_height="match_parent"
+						android:hint="@string/sarki_adi"
+						android:importantForAutofill="noExcludeDescendants"
+						android:inputType="text"
+						android:textColor="@color/KoyuYazi"
+						tools:ignore="UnusedAttribute" />
+				</android.support.design.widget.TextInputLayout>
+
+				<TextView
+					android:id="@+id/lblListeler"
+					android:layout_width="0dp"
+					android:layout_height="wrap_content"
+					android:layout_marginEnd="8dp"
+					android:layout_marginStart="8dp"
+					android:layout_marginTop="16dp"
+					android:text="@string/listeler"
+					android:textColor="@color/KoyuYazi"
+					style="@style/TextAppearance.AppCompat.Small.Inverse"
+					app:layout_constraintEnd_toStartOf="@+id/v_guideline2"
+					app:layout_constraintStart_toStartOf="@+id/v_guideline1"
+					app:layout_constraintTop_toBottomOf="@+id/txtILSarkiAdi" />
+
+				<Spinner
+					android:id="@+id/spnListeler"
+					android:layout_width="0dp"
+					android:layout_height="wrap_content"
+					android:layout_marginEnd="8dp"
+					android:layout_marginStart="8dp"
+					android:layout_marginTop="8dp"
+					android:background="@drawable/custom_spinner"
+					app:layout_constraintEnd_toStartOf="@+id/btnListeEkle"
+					app:layout_constraintStart_toStartOf="@+id/v_guideline1"
+					app:layout_constraintTop_toBottomOf="@+id/lblListeler" />
+
+				<ImageButton
+					android:id="@+id/btnListeEkle"
+					android:layout_width="30dp"
+					android:layout_height="30dp"
+					android:layout_centerVertical="true"
+					android:layout_marginRight="8dp"
+					android:layout_marginEnd="8dp"
+					android:layout_marginTop="8dp"
+					android:background="@drawable/custom_button2"
+					android:contentDescription="@string/imageDesc"
+					app:layout_constraintEnd_toStartOf="@+id/btnListeSil"
+					app:layout_constraintTop_toBottomOf="@+id/lblListeler"
+					app:srcCompat="@drawable/ic_plus_siyah" />
+
+				<ImageButton
+					android:id="@+id/btnListeSil"
+					android:layout_width="30dp"
+					android:layout_height="30dp"
+					android:layout_centerVertical="true"
+					android:layout_marginRight="8dp"
+					android:layout_marginEnd="8dp"
+					android:layout_marginTop="8dp"
+					android:background="@drawable/custom_button2"
+					android:contentDescription="@string/imageDesc"
+					app:layout_constraintEnd_toStartOf="@+id/btnListeDuzenle"
+					app:layout_constraintTop_toBottomOf="@+id/lblListeler"
+					app:srcCompat="@drawable/ic_negative_siyah" />
+
+				<ImageButton
+					android:id="@+id/btnListeDuzenle"
+					android:layout_width="30dp"
+					android:layout_height="30dp"
+					android:layout_centerVertical="true"
+					android:layout_marginTop="8dp"
+					android:layout_marginRight="8dp"
+					android:layout_marginEnd="8dp"
+					android:background="@drawable/custom_button2"
+					android:contentDescription="@string/imageDesc"
+					app:layout_constraintEnd_toStartOf="@+id/v_guideline2"
+					app:layout_constraintTop_toBottomOf="@+id/lblListeler"
+					app:srcCompat="@drawable/ic_pencil_siyah" />
+
+				<TextView
+					android:id="@+id/lblKategoriler"
+					android:layout_width="0dp"
+					android:layout_height="wrap_content"
+					android:layout_marginEnd="8dp"
+					android:layout_marginStart="8dp"
+					android:layout_marginTop="16dp"
+					android:text="@string/kategoriler"
+					android:textColor="@color/KoyuYazi"
+					style="@style/TextAppearance.AppCompat.Small.Inverse"
+					app:layout_constraintEnd_toStartOf="@+id/v_guideline2"
+					app:layout_constraintStart_toStartOf="@+id/v_guideline1"
+					app:layout_constraintTop_toBottomOf="@+id/spnListeler" />
+
+				<Spinner
+					android:id="@+id/spnKategoriler"
+					android:layout_width="0dp"
+					android:layout_height="wrap_content"
+					android:layout_marginEnd="8dp"
+					android:layout_marginStart="8dp"
+					android:layout_marginTop="8dp"
+					android:background="@drawable/custom_spinner"
+					app:layout_constraintEnd_toStartOf="@+id/btnKategoriEkle"
+					app:layout_constraintStart_toStartOf="@+id/v_guideline1"
+					app:layout_constraintTop_toBottomOf="@+id/lblKategoriler" />
+
+				<ImageButton
+					android:id="@+id/btnKategoriEkle"
+					android:layout_width="30dp"
+					android:layout_height="30dp"
+					android:layout_centerVertical="true"
+					android:layout_marginRight="8dp"
+					android:layout_marginEnd="8dp"
+					android:layout_marginTop="8dp"
+					android:background="@drawable/custom_button2"
+					android:contentDescription="@string/imageDesc"
+					app:layout_constraintEnd_toStartOf="@+id/btnKategoriSil"
+					app:layout_constraintTop_toBottomOf="@+id/lblKategoriler"
+					app:srcCompat="@drawable/ic_plus_siyah" />
+
+				<ImageButton
+					android:id="@+id/btnKategoriSil"
+					android:layout_width="30dp"
+					android:layout_height="30dp"
+					android:layout_centerVertical="true"
+					android:layout_marginRight="8dp"
+					android:layout_marginEnd="8dp"
+					android:layout_marginTop="8dp"
+					android:background="@drawable/custom_button2"
+					android:contentDescription="@string/imageDesc"
+					app:layout_constraintEnd_toStartOf="@+id/btnKategoriDuzenle"
+					app:layout_constraintTop_toBottomOf="@+id/lblKategoriler"
+					app:srcCompat="@drawable/ic_negative_siyah" />
+
+				<ImageButton
+					android:id="@+id/btnKategoriDuzenle"
+					android:layout_width="30dp"
+					android:layout_height="30dp"
+					android:layout_centerVertical="true"
+					android:layout_marginTop="8dp"
+					android:layout_marginRight="8dp"
+					android:layout_marginEnd="8dp"
+					android:background="@drawable/custom_button2"
+					android:contentDescription="@string/imageDesc"
+					app:layout_constraintEnd_toStartOf="@+id/v_guideline2"
+					app:layout_constraintTop_toBottomOf="@+id/lblKategoriler"
+					app:srcCompat="@drawable/ic_pencil_siyah" />
+
+				<TextView
+					android:id="@+id/lblTarzlar"
+					android:layout_width="0dp"
+					android:layout_height="wrap_content"
+					android:layout_marginEnd="8dp"
+					android:layout_marginStart="8dp"
+					android:layout_marginTop="16dp"
+					android:text="@string/tarzlar"
+					android:textColor="@color/KoyuYazi"
+					style="@style/TextAppearance.AppCompat.Small.Inverse"
+					app:layout_constraintEnd_toStartOf="@+id/v_guideline2"
+					app:layout_constraintStart_toStartOf="@+id/v_guideline1"
+					app:layout_constraintTop_toBottomOf="@+id/spnKategoriler" />
+
+				<Spinner
+					android:id="@+id/spnTarzlar"
+					android:layout_width="0dp"
+					android:layout_height="wrap_content"
+					android:layout_marginEnd="8dp"
+					android:layout_marginStart="8dp"
+					android:layout_marginTop="8dp"
+					android:background="@drawable/custom_spinner"
+					app:layout_constraintEnd_toStartOf="@+id/btnTarzEkle"
+					app:layout_constraintStart_toStartOf="@+id/v_guideline1"
+					app:layout_constraintTop_toBottomOf="@+id/lblTarzlar" />
+
+				<ImageButton
+					android:id="@+id/btnTarzEkle"
+					android:layout_width="30dp"
+					android:layout_height="30dp"
+					android:layout_centerVertical="true"
+					android:layout_marginRight="8dp"
+					android:layout_marginEnd="8dp"
+					android:layout_marginTop="8dp"
+					android:background="@drawable/custom_button2"
+					android:contentDescription="@string/imageDesc"
+					app:layout_constraintEnd_toStartOf="@+id/btnTarzSil"
+					app:layout_constraintTop_toBottomOf="@+id/lblTarzlar"
+					app:srcCompat="@drawable/ic_plus_siyah" />
+
+				<ImageButton
+					android:id="@+id/btnTarzSil"
+					android:layout_width="30dp"
+					android:layout_height="30dp"
+					android:layout_centerVertical="true"
+					android:layout_marginRight="8dp"
+					android:layout_marginEnd="8dp"
+					android:layout_marginTop="8dp"
+					android:background="@drawable/custom_button2"
+					android:contentDescription="@string/imageDesc"
+					app:layout_constraintEnd_toStartOf="@+id/btnTarzDuzenle"
+					app:layout_constraintTop_toBottomOf="@+id/lblTarzlar"
+					app:srcCompat="@drawable/ic_negative_siyah" />
+
+				<ImageButton
+					android:id="@+id/btnTarzDuzenle"
+					android:layout_width="30dp"
+					android:layout_height="30dp"
+					android:layout_centerVertical="true"
+					android:layout_marginTop="8dp"
+					android:layout_marginRight="8dp"
+					android:layout_marginEnd="8dp"
+					android:background="@drawable/custom_button2"
+					android:contentDescription="@string/imageDesc"
+					app:layout_constraintEnd_toStartOf="@+id/v_guideline2"
+					app:layout_constraintTop_toBottomOf="@+id/lblTarzlar"
+					app:srcCompat="@drawable/ic_pencil_siyah" />
+
+				<CheckBox
+					android:id="@+id/ChkIcerikGonder"
+					android:layout_width="0dp"
+					android:layout_height="wrap_content"
+					android:layout_marginEnd="8dp"
+					android:layout_marginStart="8dp"
+					android:layout_marginTop="32dp"
+					android:text="@string/sarkiyi_public_paylas"
+					app:layout_constraintEnd_toStartOf="@+id/v_guideline2"
+					app:layout_constraintStart_toStartOf="@+id/v_guideline1"
+					app:layout_constraintTop_toBottomOf="@+id/spnTarzlar" />
+
+				<Button
+					android:id="@+id/btnIleri"
+					android:layout_width="wrap_content"
+					android:layout_height="48dp"
+					android:layout_marginTop="16dp"
+					android:background="@drawable/custom_button_mavi"
+					android:drawableEnd="@drawable/ic_btn_arrow_forward"
+					android:drawableRight="@drawable/ic_btn_arrow_forward"
+					android:paddingEnd="5dp"
+					android:paddingLeft="15dp"
+					android:paddingRight="15dp"
+					android:paddingStart="15dp"
+					android:text="@string/ileri"
+					android:textAppearance="@style/TextAppearance.AppCompat"
+					android:textColor="@color/Beyaz"
+					style="@style/TextAppearance.AppCompat.Small.Inverse"
+					app:layout_constraintRight_toLeftOf="@+id/v_guideline2"
+					app:layout_constraintTop_toBottomOf="@+id/ChkIcerikGonder" />
+
+				<View
+					android:id="@+id/view_bosluk"
+					android:layout_width="0dp"
+					android:layout_height="1dp"
+					android:layout_marginTop="16dp"
+					app:layout_constraintTop_toBottomOf="@+id/btnIleri" />
+			</android.support.constraint.ConstraintLayout>
+		</ScrollView>
+	</android.support.constraint.ConstraintLayout>
+</android.support.design.widget.CoordinatorLayout>

@@ -80,9 +80,10 @@ dependencies {
     compile 'com.google.firebase:firebase-messaging:11.8.0'
     compile 'com.google.firebase:firebase-config:11.8.0'
     //compile 'com.google.android.gms:play-services-maps:9.2.0'
-    compile 'com.facebook.android:facebook-android-sdk:4.28.0'
+    compile 'com.facebook.android:facebook-android-sdk:4.29.0'
     //compile 'com.jeremyfeinstein.slidingmenu:library:1.3@aar'
-    compile 'com.jpardogo.materialtabstrip:library:1.1.0'
+    compile project(':app:libraries:slidingrootnav') // Sliding Menu
+    compile 'com.jpardogo.materialtabstrip:library:1.1.1'
     //compile 'com.github.shell-software:fab:1.1.2'
     //compile 'org.apache.poi:poi:3.14'
     //compile 'org.apache.poi:poi-scratchpad:3.14'
@@ -105,6 +106,7 @@ dependencies {
     compile 'com.xw.repo:bubbleseekbar:3.10' // Custom Seekbar
     compile 'com.redmadrobot:inputmask:2.3.0' // Custom EditText Maskeleme Örn: +1 534 518 47 76
     compile 'com.rengwuxian.materialedittext:library:2.1.4' // Custom EditText
+    compile 'com.github.mthli:Knife:v1.1' // Android-RichEditor
 }
 
 apply plugin: 'com.google.gms.google-services'

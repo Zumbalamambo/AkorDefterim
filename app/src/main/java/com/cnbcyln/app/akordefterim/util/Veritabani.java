@@ -39,7 +39,7 @@ public class Veritabani extends SQLiteOpenHelper {
 		db.execSQL("CREATE TABLE tblListeler (id INTEGER PRIMARY KEY AUTOINCREMENT, ListeAdi TEXT);");
 		db.execSQL("CREATE TABLE tblKategoriler (id INTEGER PRIMARY KEY AUTOINCREMENT, KategoriAdi TEXT);");
 		db.execSQL("CREATE TABLE tblTarzlar (id INTEGER PRIMARY KEY AUTOINCREMENT, TarzAdi TEXT);");
-		db.execSQL("CREATE TABLE tblSarkilar (id INTEGER PRIMARY KEY AUTOINCREMENT, ListeID INTEGER, KategoriID INTEGER, TarzID INTEGER, SanatciAdi TEXT, SarkiAdi TEXT, Icerik TEXT, EklenmeTarihi DATETIME, DuzenlenmeTarihi DATETIME DEFAULT CURRENT_TIMESTAMP);");
+		db.execSQL("CREATE TABLE tblSarkilar (id INTEGER PRIMARY KEY AUTOINCREMENT, ListeID INTEGER, KategoriID INTEGER, TarzID INTEGER, SanatciAdi TEXT, SarkiAdi TEXT, Icerik TEXT, KilitliMi INTEGER, EklenmeTarihi DATETIME, DuzenlenmeTarihi DATETIME DEFAULT CURRENT_TIMESTAMP);");
 		db.execSQL("CREATE TABLE tblIstekler (id INTEGER PRIMARY KEY AUTOINCREMENT, SarkiID INTEGER, ClientID TEXT, ClientAdSoyad TEXT, ClientIP TEXT, ClientNot TEXT, IstekTarihi DATETIME);");
 	}
 
@@ -52,7 +52,7 @@ public class Veritabani extends SQLiteOpenHelper {
 		//db.execSQL("DROP TABLE IF EXISTS tblIstekler;");
 		//onCreate(db);
 
-		db.execSQL("CREATE TABLE tblIstekler (id INTEGER PRIMARY KEY AUTOINCREMENT, SarkiID INTEGER, ClientID TEXT, ClientAdSoyad TEXT, ClientIP TEXT, ClientNot TEXT, IstekTarihi DATETIME);");
+		//db.execSQL("CREATE TABLE tblIstekler (id INTEGER PRIMARY KEY AUTOINCREMENT, SarkiID INTEGER, ClientID TEXT, ClientAdSoyad TEXT, ClientIP TEXT, ClientNot TEXT, IstekTarihi DATETIME);");
 	}
 
 	public void VeritabaniSifirla() {
@@ -130,7 +130,7 @@ public class Veritabani extends SQLiteOpenHelper {
 		}
 	}
 
-	public List<SnfListeler> lst_ListeGetir(String HesapTipi) {
+	public List<SnfListeler> lst_ListeGetir(String OturumTipi) {
 		List<SnfListeler> SnfListeler = new ArrayList<>();
 		SQLiteDatabase db = this.getWritableDatabase();
 		String Sorgu = "SELECT * FROM tblListeler";
@@ -139,7 +139,7 @@ public class Veritabani extends SQLiteOpenHelper {
 		try {
 			Cursor cursor = db.rawQuery(Sorgu, null);
 
-			if(!HesapTipi.equals("Cevrimdisi")) {
+			if(OturumTipi.equals("Cevrimici")) {
 				Listeler = new SnfListeler();
 				Listeler.setId(0);
 				Listeler.setListeAdi(context.getString(R.string.uygulama_adi));
@@ -162,7 +162,7 @@ public class Veritabani extends SQLiteOpenHelper {
 				} else {
 					Listeler = new SnfListeler();
 					Listeler.setId(0);
-					Listeler.setListeAdi(context.getString(R.string.labeltire));
+					Listeler.setListeAdi("");
 					SnfListeler.add(Listeler);
 				}
 			}
@@ -384,7 +384,7 @@ public class Veritabani extends SQLiteOpenHelper {
 			} else {
 				SnfKategoriler Kategori = new SnfKategoriler();
 				Kategori.setId(0);
-				Kategori.setKategoriAdi(context.getString(R.string.labeltire));
+				Kategori.setKategoriAdi("");
 				SnfKategoriler.add(Kategori);
 			}
 		} catch (Exception e) {
@@ -604,7 +604,7 @@ public class Veritabani extends SQLiteOpenHelper {
 		} else {
 			SnfTarzlar Tarz = new SnfTarzlar();
 			Tarz.setId(0);
-			Tarz.setTarzAdi(context.getString(R.string.labeltire));
+			Tarz.setTarzAdi("");
 			lstTarzlar.add(Tarz);
 		}
 
@@ -728,7 +728,7 @@ public class Veritabani extends SQLiteOpenHelper {
 
 	// ##### ŞARKILAR #####
 
-	public boolean SarkiEkle(int ListeID, int KategoriID, int TarzID, String SarkiAdi, String SanatciAdi, String Icerik) {
+	public boolean SarkiEkle(int ListeID, int KategoriID, int TarzID, int KilitliMi, String SarkiAdi, String SanatciAdi, String Icerik) {
 		SQLiteDatabase db = this.getWritableDatabase();
 		ContentValues values = new ContentValues();
 
@@ -739,6 +739,7 @@ public class Veritabani extends SQLiteOpenHelper {
 			values.put("SanatciAdi", SanatciAdi);
 			values.put("SarkiAdi", SarkiAdi);
 			values.put("Icerik", Icerik);
+			values.put("KilitliMi", KilitliMi);
 			values.put("EklenmeTarihi", new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date()));
 			values.put("DuzenlenmeTarihi", new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date()));
 
@@ -814,58 +815,58 @@ public class Veritabani extends SQLiteOpenHelper {
 		}
 	}
 
-	public List<SnfSarkilar> lst_SarkiGetir(int SecilenListeID, int SecilenKategoriID, int SecilenTarzID, int SecilenListelemeTipi) {
+	public List<SnfSarkilar> lst_SarkiGetir(int ListeID, int KategoriID, int TarzID, int ListelemeTipi) {
 		List<SnfSarkilar> snfSarkilarListesi = new ArrayList<>();
 		SQLiteDatabase db = this.getWritableDatabase();
 		String Sorgu = null;
 
-		if ((SecilenKategoriID == 0) && (SecilenTarzID == 0)) {
-			switch (SecilenListelemeTipi) {
+		if ((KategoriID == 0) && (TarzID == 0)) {
+			switch (ListelemeTipi) {
 				case 0:
-					Sorgu = "SELECT * FROM tblSarkilar WHERE ListeID = " + SecilenListeID + " Order By SanatciAdi, SarkiAdi ASC";
+					Sorgu = "SELECT * FROM tblSarkilar WHERE ListeID = " + ListeID + " Order By SanatciAdi, SarkiAdi ASC";
 					break;
 				case 1:
-					Sorgu = "SELECT * FROM tblSarkilar WHERE ListeID = " + SecilenListeID + " Order By SarkiAdi ASC";
+					Sorgu = "SELECT * FROM tblSarkilar WHERE ListeID = " + ListeID + " Order By SarkiAdi ASC";
 					break;
 				case 2:
-					Sorgu = "SELECT * FROM tblSarkilar WHERE ListeID = " + SecilenListeID + " Order By id DESC";
+					Sorgu = "SELECT * FROM tblSarkilar WHERE ListeID = " + ListeID + " Order By id DESC";
 					break;
 			}
 		} else {
-			if (SecilenKategoriID == 0) {
-				switch (SecilenListelemeTipi) {
+			if (KategoriID == 0) {
+				switch (ListelemeTipi) {
 					case 0:
-						Sorgu = "SELECT * FROM tblSarkilar WHERE ListeID = " + SecilenListeID + " AND TarzID = " + SecilenTarzID + " Order By SanatciAdi, SarkiAdi ASC";
+						Sorgu = "SELECT * FROM tblSarkilar WHERE ListeID = " + ListeID + " AND TarzID = " + ListeID + " Order By SanatciAdi, SarkiAdi ASC";
 						break;
 					case 1:
-						Sorgu = "SELECT * FROM tblSarkilar WHERE ListeID = " + SecilenListeID + " AND TarzID = " + SecilenTarzID + " Order By SarkiAdi ASC";
+						Sorgu = "SELECT * FROM tblSarkilar WHERE ListeID = " + ListeID + " AND TarzID = " + ListeID + " Order By SarkiAdi ASC";
 						break;
 					case 2:
-						Sorgu = "SELECT * FROM tblSarkilar WHERE ListeID = " + SecilenListeID + " AND TarzID = " + SecilenTarzID + " Order By id DESC";
+						Sorgu = "SELECT * FROM tblSarkilar WHERE ListeID = " + ListeID + " AND TarzID = " + ListeID + " Order By id DESC";
 						break;
 				}
-			} else if (SecilenTarzID == 0) {
-				switch (SecilenListelemeTipi) {
+			} else if (TarzID == 0) {
+				switch (ListelemeTipi) {
 					case 0:
-						Sorgu = "SELECT * FROM tblSarkilar WHERE ListeID = " + SecilenListeID + " AND KategoriID = " + SecilenKategoriID + " Order By SanatciAdi, SarkiAdi ASC";
+						Sorgu = "SELECT * FROM tblSarkilar WHERE ListeID = " + ListeID + " AND KategoriID = " + KategoriID + " Order By SanatciAdi, SarkiAdi ASC";
 						break;
 					case 1:
-						Sorgu = "SELECT * FROM tblSarkilar WHERE ListeID = " + SecilenListeID + " AND KategoriID = " + SecilenKategoriID + " Order By SarkiAdi ASC";
+						Sorgu = "SELECT * FROM tblSarkilar WHERE ListeID = " + ListeID + " AND KategoriID = " + KategoriID + " Order By SarkiAdi ASC";
 						break;
 					case 2:
-						Sorgu = "SELECT * FROM tblSarkilar WHERE ListeID = " + SecilenListeID + " AND KategoriID = " + SecilenKategoriID + " Order By id DESC";
+						Sorgu = "SELECT * FROM tblSarkilar WHERE ListeID = " + ListeID + " AND KategoriID = " + KategoriID + " Order By id DESC";
 						break;
 				}
 			} else {
-				switch (SecilenListelemeTipi) {
+				switch (ListelemeTipi) {
 					case 0:
-						Sorgu = "SELECT * FROM tblSarkilar WHERE ListeID = " + SecilenListeID + " AND KategoriID = " + SecilenKategoriID + " AND TarzID = " + SecilenTarzID + " Order By SanatciAdi, SarkiAdi ASC";
+						Sorgu = "SELECT * FROM tblSarkilar WHERE ListeID = " + ListeID + " AND KategoriID = " + KategoriID + " AND TarzID = " + TarzID + " Order By SanatciAdi, SarkiAdi ASC";
 						break;
 					case 1:
-						Sorgu = "SELECT * FROM tblSarkilar WHERE ListeID = " + SecilenListeID + " AND KategoriID = " + SecilenKategoriID + " AND TarzID = " + SecilenTarzID + " Order By SarkiAdi ASC";
+						Sorgu = "SELECT * FROM tblSarkilar WHERE ListeID = " + ListeID + " AND KategoriID = " + KategoriID + " AND TarzID = " + TarzID + " Order By SarkiAdi ASC";
 						break;
 					case 2:
-						Sorgu = "SELECT * FROM tblSarkilar WHERE ListeID = " + SecilenListeID + " AND KategoriID = " + SecilenKategoriID + " AND TarzID = " + SecilenTarzID + " Order By id DESC";
+						Sorgu = "SELECT * FROM tblSarkilar WHERE ListeID = " + ListeID + " AND KategoriID = " + KategoriID + " AND TarzID = " + TarzID + " Order By id DESC";
 						break;
 				}
 			}
@@ -876,7 +877,6 @@ public class Veritabani extends SQLiteOpenHelper {
 		while (cursor.moveToNext()) {
 			SnfSarkilar Sarkilar = new SnfSarkilar();
 			Sarkilar.setId(cursor.getInt(0));
-			Sarkilar.setDepolamaAlani("Cihaz");
 			Sarkilar.setListeID(cursor.getInt(1));
 			Sarkilar.setKategoriID(cursor.getInt(2));
 			Sarkilar.setTarzID(cursor.getInt(3));
@@ -1054,6 +1054,44 @@ public class Veritabani extends SQLiteOpenHelper {
 	public boolean CihazdaSecilenSarkiVarMi(int SarkiID) {
 		SQLiteDatabase db = this.getWritableDatabase();
 		String Sorgu = "SELECT id FROM tblSarkilar WHERE id = " + SarkiID;
+		Boolean KayitVarMi = false;
+
+		try {
+			Cursor cursor = db.rawQuery(Sorgu, null);
+
+			while (cursor.moveToNext()) {
+				KayitVarMi = true;
+			}
+		} catch (Exception e) {
+			System.out.println("Bir hata oluştu: " + e);
+		} finally {
+			db.close();
+			return KayitVarMi;
+		}
+	}
+
+	public boolean CihazdaSecilenSarkiVarMi(String SanatciAdi, String SarkiAdi) {
+		SQLiteDatabase db = this.getWritableDatabase();
+		String Sorgu = "SELECT id FROM tblSarkilar WHERE SanatciAdi = '" + SanatciAdi + "' AND SarkiAdi = '" + SarkiAdi;
+		Boolean KayitVarMi = false;
+
+		try {
+			Cursor cursor = db.rawQuery(Sorgu, null);
+
+			while (cursor.moveToNext()) {
+				KayitVarMi = true;
+			}
+		} catch (Exception e) {
+			System.out.println("Bir hata oluştu: " + e);
+		} finally {
+			db.close();
+			return KayitVarMi;
+		}
+	}
+
+	public boolean CihazdaSecilenSarkiVarMi(int ListeID, String SanatciAdi, String SarkiAdi) {
+		SQLiteDatabase db = this.getWritableDatabase();
+		String Sorgu = "SELECT id FROM tblSarkilar WHERE ListeID = " + ListeID + " AND SanatciAdi = '" + SanatciAdi + "' AND SarkiAdi = '" + SarkiAdi;
 		Boolean KayitVarMi = false;
 
 		try {

@@ -382,6 +382,7 @@ public class PageHandler implements HttpRequestHandler {
 											JSONWebGelenVeri.getInt("ListeID"),
 											JSONWebGelenVeri.getInt("KategoriID"),
 											JSONWebGelenVeri.getInt("TarzID"),
+											0,
 											JSONWebGelenVeri.getString("SarkiAdi"),
 											JSONWebGelenVeri.getString("SanatciAdi"),
 											JSONWebGelenVeri.getString("SarkiIcerik"))) {

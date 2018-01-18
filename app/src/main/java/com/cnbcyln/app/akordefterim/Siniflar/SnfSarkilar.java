@@ -6,7 +6,6 @@ public class SnfSarkilar implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	private int id;
-	private String DepolamaAlani;
 	private int ListeID;
 	private int KategoriID;
 	private int TarzID;
@@ -21,10 +20,9 @@ public class SnfSarkilar implements Serializable {
 		super();
 	}
 	
-	public SnfSarkilar(int id, String DepolamaAlani, int ListeID, int KategoriID, int TarzID, String SanatciAdi, String SarkiAdi, String Icerik, String EklenmeTarihi, String DuzenlenmeTarihi, Boolean Secim) {
+	public SnfSarkilar(int id, int ListeID, int KategoriID, int TarzID, String SanatciAdi, String SarkiAdi, String Icerik, String EklenmeTarihi, String DuzenlenmeTarihi, Boolean Secim) {
 		super();
 		this.id = id;
-		this.DepolamaAlani = DepolamaAlani;
 		this.ListeID = ListeID;
 		this.KategoriID = KategoriID;
 		this.TarzID = TarzID;
@@ -42,14 +40,6 @@ public class SnfSarkilar implements Serializable {
 	
 	public void setId(int id) {
 		this.id = id;
-	}
-
-	public String getDepolamaAlani() {
-		return DepolamaAlani;
-	}
-
-	public void setDepolamaAlani(String DepolamaAlani) {
-		this.DepolamaAlani = DepolamaAlani;
 	}
 
 	public int getListeID() {

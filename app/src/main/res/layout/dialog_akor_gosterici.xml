@@ -1,64 +1,92 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="wrap_content"
-    android:layout_height="match_parent"
-    android:orientation="horizontal"
-	android:background="@color/Gri">
+	xmlns:app="http://schemas.android.com/apk/res-auto"
+	android:id="@+id/Dialog_LLAkorCetveli"
+	android:layout_width="match_parent"
+	android:layout_height="match_parent"
+	android:background="@color/Beyaz">
 
-	<RelativeLayout
-		android:layout_width="0dp"
-		android:layout_weight="0.12"
+	<android.support.constraint.ConstraintLayout
+		android:id="@+id/Dialog_CLAkorCetveli"
+		android:layout_width="match_parent"
 		android:layout_height="match_parent">
+
+		<android.support.constraint.Guideline
+			android:id="@+id/v_guideline1"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:orientation="vertical"
+			app:layout_constraintGuide_percent="0.15" />
+
+		<android.support.constraint.Guideline
+			android:id="@+id/v_guideline2"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:orientation="vertical"
+			app:layout_constraintGuide_percent="0.40" />
 
 		<TextView
 			android:id="@+id/Dialog_txtTon"
-			android:layout_width="wrap_content"
+			style="@style/TextAppearance.AppCompat.Medium.Inverse"
+			android:layout_width="0dp"
 			android:layout_height="wrap_content"
-			android:layout_centerHorizontal="true"
-			android:layout_marginBottom="5dp"
+			android:layout_marginTop="5dp"
 			android:text="@string/ton"
-			android:textColor="@color/KoyuYazi" />
+			android:textAlignment="center"
+			android:textColor="@color/KoyuYazi"
+			app:layout_constraintEnd_toStartOf="@+id/v_guideline1"
+			app:layout_constraintStart_toStartOf="parent"
+			app:layout_constraintTop_toTopOf="parent" />
 
 		<ListView
 			android:id="@+id/Dialog_lstTonlar"
-			android:layout_width="match_parent"
-			android:layout_height="match_parent"
-			android:layout_below="@+id/Dialog_txtTon"
-			android:background="@color/Gri" />
-	</RelativeLayout>
-
-	<RelativeLayout
-		android:layout_width="0dp"
-		android:layout_weight="0.22"
-		android:layout_height="match_parent">
+			android:layout_width="0dp"
+			android:layout_height="0dp"
+			android:background="@color/transparent"
+			app:layout_constraintBottom_toBottomOf="parent"
+			app:layout_constraintEnd_toStartOf="@+id/v_guideline1"
+			app:layout_constraintStart_toStartOf="parent"
+			app:layout_constraintTop_toBottomOf="@+id/Dialog_txtTon" />
 
 		<TextView
 			android:id="@+id/Dialog_txtAkor"
-			android:layout_width="wrap_content"
+			style="@style/TextAppearance.AppCompat.Medium.Inverse"
+			android:layout_width="0dp"
 			android:layout_height="wrap_content"
-			android:layout_centerHorizontal="true"
-			android:layout_marginBottom="5dp"
+			android:layout_marginTop="5dp"
 			android:text="@string/akor"
-			android:textColor="@color/KoyuYazi" />
+			android:textAlignment="center"
+			android:textColor="@color/KoyuYazi"
+			app:layout_constraintEnd_toStartOf="@+id/v_guideline2"
+			app:layout_constraintStart_toStartOf="@+id/v_guideline1"
+			app:layout_constraintTop_toTopOf="parent" />
 
 		<ListView
 			android:id="@+id/Dialog_lstAkorlar"
-			android:layout_width="match_parent"
-			android:layout_height="match_parent"
+			android:layout_width="0dp"
+			android:layout_height="0dp"
 			android:layout_below="@+id/Dialog_txtAkor"
-			android:background="@color/Gri" />
-	</RelativeLayout>
+			android:background="@color/transparent"
+			app:layout_constraintBottom_toBottomOf="parent"
+			app:layout_constraintEnd_toStartOf="@+id/v_guideline2"
+			app:layout_constraintStart_toStartOf="@+id/v_guideline1"
+			app:layout_constraintTop_toBottomOf="@+id/Dialog_txtTon" />
 
-	<ScrollView
-		android:layout_width="0dp"
-		android:layout_weight="0.56"
-		android:layout_height="match_parent"
-		android:orientation="vertical" >
+		<ScrollView
+			android:id="@+id/Dialog_SVGitarKlavye"
+			android:layout_width="0dp"
+			android:layout_height="0dp"
+			android:orientation="vertical"
+			app:layout_constraintBottom_toBottomOf="parent"
+			app:layout_constraintEnd_toEndOf="parent"
+			app:layout_constraintStart_toStartOf="@+id/v_guideline2"
+			app:layout_constraintTop_toTopOf="parent">
 
-		<ImageView
-			android:id="@+id/Dialog_ImgGitarKlavye"
-			android:layout_width="wrap_content"
-			android:layout_height="wrap_content"
-			android:contentDescription="@string/imageDesc"/>
-	</ScrollView>
+			<ImageView
+				android:id="@+id/Dialog_ImgGitarKlavye"
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				android:contentDescription="@string/imageDesc" />
+		</ScrollView>
+	</android.support.constraint.ConstraintLayout>
 </LinearLayout>

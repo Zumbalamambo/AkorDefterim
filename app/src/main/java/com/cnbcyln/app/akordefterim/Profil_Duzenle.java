@@ -236,7 +236,7 @@ public class Profil_Duzenle extends AppCompatActivity implements Interface_Async
 
 		txtKullaniciAdi = findViewById(R.id.txtKullaniciAdi);
 		txtKullaniciAdi.setTypeface(YaziFontu, Typeface.BOLD);
-		txtKullaniciAdi.addTextChangedListener(new TextWatcher() {
+		/*txtKullaniciAdi.addTextChangedListener(new TextWatcher() {
 			@Override
 			public void onTextChanged(CharSequence s, int start, int before, int count) {
 
@@ -256,7 +256,7 @@ public class Profil_Duzenle extends AppCompatActivity implements Interface_Async
 					if(btnKaydet.isEnabled()) AkorDefterimSys.HesapBilgiGetir(null, "", "", txtKullaniciAdi.getText().toString(), "KullaniciAdiKontrol");
 				} else AkorDefterimSys.StandartSnackBarMsj(coordinatorLayout, getString(R.string.internet_baglantisi_saglanamadi));
 			}
-		});
+		});*/
 		txtKullaniciAdi.setOnEditorActionListener(new TextView.OnEditorActionListener() {
 			@Override
 			public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
@@ -920,7 +920,12 @@ public class Profil_Duzenle extends AppCompatActivity implements Interface_Async
 				txtAdSoyad.setSelection(txtAdSoyad.length());
 				imm.showSoftInput(txtAdSoyad, 0);
 			} else if(AdSoyad.length() < getResources().getInteger(R.integer.AdSoyadKarakterSayisi_MIN)) {
-				txtILAdSoyad.setError(getString(R.string.hata_en_az_karakter, String.valueOf(getResources().getInteger(R.integer.KullaniciAdiKarakterSayisi_MIN))));
+				txtILAdSoyad.setError(getString(R.string.hata_en_az_karakter, String.valueOf(getResources().getInteger(R.integer.AdSoyadKarakterSayisi_MIN))));
+				txtAdSoyad.requestFocus();
+				txtAdSoyad.setSelection(txtAdSoyad.length());
+				imm.showSoftInput(txtAdSoyad, 0);
+			} else if(AdSoyad.length() > getResources().getInteger(R.integer.AdSoyadKarakterSayisi_MAX)) {
+				txtILAdSoyad.setError(getString(R.string.hata_en_fazla_karakter, String.valueOf(getResources().getInteger(R.integer.AdSoyadKarakterSayisi_MAX))));
 				txtAdSoyad.requestFocus();
 				txtAdSoyad.setSelection(txtAdSoyad.length());
 				imm.showSoftInput(txtAdSoyad, 0);

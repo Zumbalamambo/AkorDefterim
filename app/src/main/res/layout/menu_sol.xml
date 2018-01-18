@@ -1,124 +1,107 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout
+<android.support.design.widget.CoordinatorLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/CLMenu"
+    android:id="@+id/coordinatorLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@android:color/white">
-
-    <ImageView
-        android:id="@+id/ImgMenuBG"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:contentDescription="@string/imageDesc"
-        android:scaleType="centerCrop"
-        android:src="@drawable/bg"
-        tools:layout_constraintTop_creator="1"
-        tools:layout_constraintRight_creator="1"
-        tools:layout_constraintBottom_creator="1"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        tools:layout_constraintLeft_creator="1"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <android.support.constraint.Guideline
-        android:id="@+id/v_guideline1"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        app:layout_constraintGuide_percent="0.75"
-        tools:layout_editor_absoluteY="0dp"
-        tools:layout_editor_absoluteX="309dp" />
-
-    <!--<android.support.constraint.Guideline
-        android:id="@+id/h_guideline1"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        app:layout_constraintGuide_percent="0.57" />
-
-    <android.support.constraint.Guideline
-        android:id="@+id/h_guideline2"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        app:layout_constraintGuide_percent="0.95" />-->
+    android:background="@color/Beyaz">
 
     <android.support.constraint.ConstraintLayout
-        android:id="@+id/CLMenuContainer"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:background="@color/transparent"
-        android:orientation="vertical"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintRight_toLeftOf="@+id/v_guideline1">
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
 
-        <RelativeLayout
-            android:id="@+id/RLBanner"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintTop_toTopOf="parent">
-
-            <com.cnbcyln.app.akordefterim.util.ResizableImageView
-                android:id="@+id/ImgBanner"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:src="@drawable/banner_trans" />
-
-            <TextView
-                android:id="@+id/lblVersiyonNo"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignBottom="@+id/ImgBanner"
-                android:layout_alignEnd="@+id/ImgBanner"
-                android:layout_alignRight="@+id/ImgBanner"
-                android:layout_margin="10dp"
-                android:gravity="center"
-                android:text="@string/labeltire"
-                android:textColor="#f6edf3"
-                android:textStyle="bold" />
-        </RelativeLayout>
-
-        <LinearLayout
+        <ImageView
+            android:id="@+id/ImgMenuBG"
             android:layout_width="0dp"
             android:layout_height="0dp"
-            android:background="@color/Gri"
+            android:contentDescription="@string/imageDesc"
+            android:scaleType="centerCrop"
+            android:src="@drawable/bg"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <android.support.constraint.Guideline
+            android:id="@+id/v_guideline1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintGuide_percent="0.75" />
+
+        <android.support.constraint.ConstraintLayout
+            android:id="@+id/CLMenuContainer"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:background="@color/transparent"
             android:orientation="vertical"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/RLBanner"
-            app:layout_constraintVertical_bias="1.0"
-            android:layout_marginBottom="0dp"
-            android:layout_marginRight="0dp">
+            app:layout_constraintRight_toLeftOf="@+id/v_guideline1"
+            app:layout_constraintTop_toTopOf="parent">
 
-            <com.astuetz.PagerSlidingTabStrip
-                android:id="@+id/PSTTabs"
-                android:layout_width="match_parent"
-                android:layout_height="48dp"
-                android:background="@drawable/background_tabs"
-                app:pstsIndicatorColor="#072d40"
-                app:pstsIndicatorHeight="4dp"
-                app:pstsDividerColor="#072d40"
-                app:pstsDividerWidth="1dp"
-                app:pstsDividerPadding="12dp"
-                app:pstsTabTextAllCaps="true"
-                app:pstsTabTextSize="12sp"/>
+            <RelativeLayout
+                android:id="@+id/RLBanner"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toTopOf="parent">
 
-            <android.support.v4.view.ViewPager
-                android:id="@+id/VPSolMenuPager"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent">
-            </android.support.v4.view.ViewPager>
-        </LinearLayout>
+                <com.cnbcyln.app.akordefterim.util.ResizableImageView
+                    android:id="@+id/ImgBanner"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:src="@drawable/banner_trans" />
+
+                <TextView
+                    android:id="@+id/lblVersiyonNo"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignBottom="@+id/ImgBanner"
+                    android:layout_alignEnd="@+id/ImgBanner"
+                    android:layout_alignRight="@+id/ImgBanner"
+                    android:layout_margin="10dp"
+                    android:gravity="center"
+                    android:text="@string/labeltire"
+                    android:textColor="#f6edf3"
+                    android:textStyle="bold" />
+            </RelativeLayout>
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:layout_marginBottom="0dp"
+                android:layout_marginRight="0dp"
+                android:background="@color/Gri"
+                android:orientation="vertical"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/RLBanner"
+                app:layout_constraintVertical_bias="1.0">
+
+                <com.astuetz.PagerSlidingTabStrip
+                    android:id="@+id/PSTTabs"
+                    android:layout_width="match_parent"
+                    android:layout_height="48dp"
+                    android:background="@drawable/background_tabs"
+                    app:pstsDividerColor="@color/KoyuMavi"
+                    app:pstsDividerPadding="12dp"
+                    app:pstsDividerWidth="1dp"
+                    app:pstsIndicatorColor="@color/KoyuMavi"
+                    app:pstsIndicatorHeight="4dp"
+                    app:pstsTabBackground="@color/Beyaz"
+                    app:pstsTabTextAllCaps="true"
+                    app:pstsTabTextSize="12sp" />
+
+                <android.support.v4.view.ViewPager
+                    android:id="@+id/VPSolMenuPager"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"/>
+            </LinearLayout>
+        </android.support.constraint.ConstraintLayout>
     </android.support.constraint.ConstraintLayout>
-
-</android.support.constraint.ConstraintLayout>
+</android.support.design.widget.CoordinatorLayout>

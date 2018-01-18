@@ -329,7 +329,7 @@ public class KayitEkran_AdSoyad_DTarih_Resim extends AppCompatActivity implement
 
 				if(SecilenProfilResmiFile == null) {
 					if(!AkorDefterimSys.AlertDialogisShowing(ADDialog_Profil_Resim)) {
-						ADDialog_Profil_Resim = AkorDefterimSys.HButtonCustomAlertDialog(activity,
+						ADDialog_Profil_Resim = AkorDefterimSys.H2ButtonCustomAlertDialog(activity,
 								getString(R.string.profil_resmi),
 								getString(R.string.profil_resmi_secmemissin_devam_etmek_istiyormusun),
 								activity.getString(R.string.hayir),

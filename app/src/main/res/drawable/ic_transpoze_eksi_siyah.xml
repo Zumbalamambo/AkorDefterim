@@ -1,0 +1,32 @@
+<!-- drawable/music_note.xml -->
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:height="24dp"
+    android:width="24dp"
+    android:viewportWidth="24"
+    android:viewportHeight="24">
+
+    <path
+        android:fillColor="@color/KoyuYazi"
+        android:strokeColor="@color/KoyuYazi"
+        android:strokeWidth="1"
+        android:strokeLineJoin="round"
+        android:pathData="M 6.29133 12.09762 C 8.33344704528 12.09762 9.98891 13.7530829547 9.98891 15.7952 C 9.98891 17.8373170453 8.33344704528 19.49278 6.29133 19.49278 C 4.24921295472 19.49278 2.59375 17.8373170453 2.59375 15.7952 C 2.59375 13.7530829547 4.24921295472 12.09762 6.29133 12.09762 Z" />
+    <path
+        android:fillColor="@color/KoyuYazi"
+        android:strokeColor="@color/KoyuYazi"
+        android:strokeWidth="1"
+        android:strokeLineJoin="round"
+        android:pathData="M 8.4803 1.95145 H 9.98891 V 15.58815 H 8.4803 V 1.95145 Z" />
+    <path
+        android:fillColor="@color/KoyuYazi"
+        android:strokeColor="@color/KoyuYazi"
+        android:strokeWidth="1"
+        android:strokeLineJoin="round"
+        android:pathData="M 8.4803 1.92188 H 14.28125 V 3.60798 H 8.4803 V 1.92188 Z" />
+    <path
+        android:fillColor="@color/KoyuYazi"
+        android:strokeColor="@color/KoyuYazi"
+        android:strokeWidth="1"
+        android:strokeLineJoin="round"
+        android:pathData="M 13.3268 17.4523 H 21.65628 V 19.0033 H 13.3268 V 17.4523 Z" />
+</vector>

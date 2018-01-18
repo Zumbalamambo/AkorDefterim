@@ -112,7 +112,7 @@
 					android:id="@+id/view2"
 					android:layout_width="0dp"
 					android:layout_height="1dp"
-					android:background="@drawable/cizgi_koyugri"
+					android:background="@drawable/cizgi_ortagri"
 					android:layout_marginTop="40dp"
 					app:layout_constraintEnd_toStartOf="@+id/v_guideline4"
 					app:layout_constraintStart_toStartOf="@+id/v_guideline3"

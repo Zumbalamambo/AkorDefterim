@@ -17,6 +17,7 @@ import android.graphics.Typeface;
 import android.os.AsyncTask;
 import android.os.Bundle;
 
+import android.os.SystemClock;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.Snackbar;
 import android.support.v4.widget.SwipeRefreshLayout;
@@ -24,8 +25,11 @@ import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
+import android.widget.Toast;
 
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
@@ -52,7 +56,7 @@ public class Frg_Anasayfa extends Fragment implements SwipeRefreshLayout.OnRefre
 	SharedPreferences sharedPref;
 	Interface_FragmentDataConn FragmentDataConn;
 	Typeface YaziFontu;
-	CoordinatorLayout coordinatorLayout;
+	CoordinatorLayout coordinatorLayout_Anasayfa;
 	SwipeRefreshLayout SRLAnasayfa;
     RecyclerView RVAnasayfa;
 
@@ -74,7 +78,7 @@ public class Frg_Anasayfa extends Fragment implements SwipeRefreshLayout.OnRefre
 		
 		YaziFontu = AkorDefterimSys.FontGetir(activity, "anivers_regular");
 
-		coordinatorLayout = activity.findViewById(R.id.coordinatorLayout);
+		coordinatorLayout_Anasayfa = activity.findViewById(R.id.coordinatorLayout_Anasayfa);
 
         SRLAnasayfa = activity.findViewById(R.id.SRLAnasayfa);
         SRLAnasayfa.setOnRefreshListener(this);
@@ -98,77 +102,24 @@ public class Frg_Anasayfa extends Fragment implements SwipeRefreshLayout.OnRefre
 	}
 
 	public void SRLAnasayfa_ListeGuncelle() {
-		if(AkorDefterimSys.InternetErisimKontrolu()) { // İnternet bağlantısı var ise
-			if(sharedPref.getString("prefHesapID", "").equals("")) { // Çevrimdışı ise
-				AkorDefterimSys.StandartSnackBarMsj(coordinatorLayout, getString(R.string.bu_sayfayi_cevrimdisi_kullanamazsiniz));
+		if(sharedPref.getString("prefOturumTipi", "Cevrimdisi").equals("Cevrimici")) {
+			if(AkorDefterimSys.InternetErisimKontrolu()) {
+				SRLAnasayfa.setRefreshing(true);
+				AkorDefterimSys.AnasayfaGetir();
+			} else {
 				SRLAnasayfa.setRefreshing(false);
-			} else // Çevrimiçi ise
-				new Anasayfa_ListeGuncelle().execute();
-		} else { // İnternet bağlantısı yok ise
-			SRLAnasayfa.setRefreshing(false);
-
-			Snackbar snackbar = AkorDefterimSys.SnackBar(coordinatorLayout, getString(R.string.internet_baglantisi_saglanamadi),
-					R.color.Beyaz,
-					R.color.TuruncuYazi,
-					R.integer.SnackBar_GurunumSuresi_10);
-
-			snackbar.setAction(getString(R.string.yeniden_dene), new View.OnClickListener() {
-				@Override
-				public void onClick(View view) {
-					SRLAnasayfa.setRefreshing(true);
-					SRLAnasayfa_ListeGuncelle();
-				}
-			});
-
-			snackbar.show();
-		}
+				AkorDefterimSys.StandartSnackBarMsj(coordinatorLayout_Anasayfa, getString(R.string.internet_baglantisi_saglanamadi));
+			}
+		} else SRLAnasayfa.setRefreshing(false);
 	}
 
-	@SuppressLint({"InflateParams", "StaticFieldLeak"})
-	private class Anasayfa_ListeGuncelle extends AsyncTask<String, String, String> {
-		@Override
-		protected void onPreExecute() {
-			super.onPreExecute();
+	public void AnasayfaDoldur(String Icerik) {
+		try {
+			SRLAnasayfa.setRefreshing(false);
 
-			SRLAnasayfa.setRefreshing(true);
-		}
-
-		@Override
-		protected String doInBackground(String... parametre) {
-			String sonuc = "";
-
-			try{
-				HttpClient httpClient = new DefaultHttpClient();
-				HttpPost httpPost = new HttpPost(AkorDefterimSys.AnasayfaURL);
-
-				//httpPost.setEntity(new UrlEncodedFormEntity(nameValuePairs, HTTP.UTF_8));
-				HttpResponse response = httpClient.execute(httpPost);
-				HttpEntity entity = response.getEntity();
-				InputStream is = entity.getContent();
-				BufferedReader reader = new BufferedReader(new InputStreamReader(is, "UTF-8"), 8);
-				StringBuilder sb = new StringBuilder();
-
-				String line;
-
-				while ((line = reader.readLine()) != null)
-					sb.append(line).append("\n");
-
-				sonuc = sb.toString();
-			} catch (IOException e) {
-				e.printStackTrace();
-				SRLAnasayfa.setRefreshing(false);
-			}
-
-			return sonuc;
-		}
-
-		@Override
-		protected void onPostExecute(String Sonuc) {
-			try {
-				JSONArray JSONGelenVeriArr = new JSONArray(Sonuc);
+			if(!Icerik.equals("")) {
+				JSONArray JSONGelenVeriArr = new JSONArray(Icerik);
 				JSONObject JSONGelenVeri;
-
-				SRLAnasayfa.setRefreshing(false);
 
 				List<SnfAnasayfa> snfAnasayfa = new ArrayList<>();
 
@@ -192,28 +143,13 @@ public class Frg_Anasayfa extends Fragment implements SwipeRefreshLayout.OnRefre
 
 				AdpAnasayfa adpAnasayfa = new AdpAnasayfa(activity, snfAnasayfa);
 
-                RVAnasayfa.setHasFixedSize(true);
-                RVAnasayfa.setAdapter(adpAnasayfa);
-                RVAnasayfa.setItemAnimator(new DefaultItemAnimator());
-			} catch (JSONException e) {
-				e.printStackTrace();
-			}
+				RVAnasayfa.setHasFixedSize(true);
+				RVAnasayfa.setAdapter(adpAnasayfa);
+				RVAnasayfa.setItemAnimator(new DefaultItemAnimator());
+			} else AkorDefterimSys.StandartSnackBarMsj(coordinatorLayout_Anasayfa, getString(R.string.icerik_bulunamadi));
+		} catch (JSONException e) {
+			e.printStackTrace();
 		}
-
-		@Override
-		protected void onProgressUpdate(String... Deger) {
-			super.onProgressUpdate(Deger);
-		}
-
-		@Override
-		protected void onCancelled(String Sonuc) {
-			super.onCancelled(Sonuc);
-            SRLAnasayfa.setRefreshing(false);
-		}
-	}
-
-	public void AsyncTaskReturnValue(JSONObject JSONSonuc) {
-
 	}
 
 	/*public void SonEklenenSarkilar_ListeGuncelle() {

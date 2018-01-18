@@ -149,7 +149,7 @@ public class Hesabim extends AppCompatActivity implements Interface_AsyncRespons
 				break;
 			case R.id.btnCikisYap:
 				if(!AkorDefterimSys.AlertDialogisShowing(ADDialog)) {
-					ADDialog = AkorDefterimSys.HButtonCustomAlertDialog(activity,
+					ADDialog = AkorDefterimSys.H2ButtonCustomAlertDialog(activity,
 							getString(R.string.cikis_yap),
 							getString(R.string.cikis_yap_uyari),
 							activity.getString(R.string.hayir),

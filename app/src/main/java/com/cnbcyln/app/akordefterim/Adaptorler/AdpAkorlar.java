@@ -74,7 +74,7 @@ public class AdpAkorlar extends BaseAdapter {
 	    } else holder = (ViewHolder) satirView.getTag();
 
 		if(snfAkorlar.get(position).getSecimBG()) {
-			holder.LLTonAdiAkorAdi.setBackgroundColor(activity.getResources().getColor(R.color.AcikMavi));
+			holder.LLTonAdiAkorAdi.setBackgroundColor(activity.getResources().getColor(R.color.KoyuMavi2));
 
 			if(snfAkorlar.get(position).getSecimYazi()) {
 				holder.txtTonAdiAkorAdi.setTextColor(activity.getResources().getColor(R.color.TuruncuYazi));

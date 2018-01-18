@@ -87,8 +87,8 @@ public class AdpSarkiListesi extends BaseAdapter implements SectionIndexer {
 			satirView = inflater.inflate(R.layout.lstreperttuvar_listesi_item, null);
 
 			holder = new ViewHolder();
-			holder.lblsanatcisarkiadi = (TextView) satirView.findViewById(R.id.lblsanatcisarkiadi);
-			holder.ChkSarkiSec = (CheckBox) satirView.findViewById(R.id.ChkSarkiSec);
+			holder.lblsanatcisarkiadi = satirView.findViewById(R.id.lblsanatcisarkiadi);
+			holder.ChkSarkiSec = satirView.findViewById(R.id.ChkSarkiSec);
 			holder.ChkSarkiSec.setOnClickListener(new View.OnClickListener() {
 				@Override
 				public void onClick(View v) {

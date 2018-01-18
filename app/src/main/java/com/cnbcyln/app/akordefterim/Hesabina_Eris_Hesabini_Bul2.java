@@ -96,13 +96,20 @@ public class Hesabina_Eris_Hesabini_Bul2 extends AppCompatActivity implements In
 
 		ImgBuyukProfilResim = findViewById(R.id.ImgBuyukProfilResim);
 
-		if(ResimURL.equals("")) ImgBuyukProfilResim.setImageResource(R.drawable.bos_profil);
-		else new AkorDefterimSys.NettenResimYukle(ImgBuyukProfilResim).execute(AkorDefterimSys.CBCAPP_HttpsAdres + ResimURL);
-
 		CImgKucukProfilResim = findViewById(R.id.CImgKucukProfilResim);
 
-		if(ResimURL.equals("-")) CImgKucukProfilResim.setImageResource(R.drawable.bos_profil);
-		else new AkorDefterimSys.NettenResimYukle(CImgKucukProfilResim).execute(AkorDefterimSys.CBCAPP_HttpsAdres + ResimURL);
+		if(ResimURL.equals("-")) {
+			ImgBuyukProfilResim.setImageResource(R.drawable.bos_profil);
+			CImgKucukProfilResim.setImageResource(R.drawable.bos_profil);
+		} else {
+			if (ResimURL.startsWith("http://") || ResimURL.startsWith("https://")) {
+				new AkorDefterimSys.NettenResimYukle(ImgBuyukProfilResim).execute(ResimURL);
+				new AkorDefterimSys.NettenResimYukle(CImgKucukProfilResim).execute(ResimURL);
+			} else {
+				new AkorDefterimSys.NettenResimYukle(ImgBuyukProfilResim).execute(AkorDefterimSys.CBCAPP_HttpsAdres + ResimURL);
+				new AkorDefterimSys.NettenResimYukle(CImgKucukProfilResim).execute(AkorDefterimSys.CBCAPP_HttpsAdres + ResimURL);
+			}
+		}
 
 		CImgSosyalAgFacebookIcon = findViewById(R.id.CImgSosyalAgFacebookIcon);
 		if(FacebookID.equals("-")) CImgSosyalAgFacebookIcon.setVisibility(View.GONE);

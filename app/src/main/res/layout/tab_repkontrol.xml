@@ -1,105 +1,169 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
-	xmlns:ripple="http://schemas.android.com/apk/res-auto"
-	android:layout_width="fill_parent"
-	android:layout_height="fill_parent"
-	android:orientation="vertical"
-	android:fillViewport="true"
-	android:background="#dedede"
-	android:scrollbarThumbVertical="@drawable/scroll_vertical_thumb_bar">
-    
-	<LinearLayout
-	    android:layout_width="fill_parent"
-	    android:layout_height="wrap_content"
-	    android:padding="5dp"
-	    android:orientation="vertical" >
-	    
-	    <LinearLayout
-	        android:layout_width="fill_parent"
-	        android:layout_height="wrap_content"
-			android:orientation="vertical">
-			
-	        <TextView
-			    android:id="@+id/lblListeler"
-			    android:layout_width="wrap_content"
-			    android:layout_height="wrap_content"
-			    android:layout_marginBottom="5dp"
-			    android:text="@string/liste"
-			    android:textColor="@color/TuruncuYazi" />
-			
-			<Spinner
-				android:id="@+id/spnListeler"
-			    android:layout_width="fill_parent"
-			    android:layout_height="wrap_content"
-			    android:layout_marginBottom="15dp"
-				android:background="@drawable/custom_spinner" />
-			
-			<TextView
-			    android:id="@+id/lblKategori"
-			    android:layout_width="wrap_content"
-			    android:layout_height="wrap_content"
-			    android:layout_marginBottom="5dp"
-			    android:text="@string/kategori"
-			    android:textColor="@color/TuruncuYazi" />
-			
-			<Spinner
-				android:id="@+id/spnKategori"
-			    android:layout_width="fill_parent"
-			    android:layout_height="wrap_content"
-			    android:layout_marginBottom="15dp"
-			    android:background="@drawable/custom_spinner" />
-			
-			<TextView
-			    android:id="@+id/lblTarz"
-			    android:layout_width="wrap_content"
-				android:layout_height="wrap_content"
-			    android:layout_marginBottom="5dp"
-			    android:text="@string/tarz"
-			    android:textColor="@color/TuruncuYazi" />
-			
-			<Spinner
-			    android:id="@+id/spnTarz"
-			    android:layout_width="fill_parent"
-			    android:layout_height="wrap_content"
-			    android:layout_marginBottom="15dp"
-			    android:background="@drawable/custom_spinner" />
-			
-			<TextView
-			    android:id="@+id/lblListelemeTipi"
-			    android:layout_width="wrap_content"
-			    android:layout_height="wrap_content"
-			    android:layout_marginBottom="5dp"
-			    android:text="@string/listelemetipi"
-			    android:textColor="@color/TuruncuYazi" />
-			
-			<Spinner
-			    android:id="@+id/spnListelemeTipi"
-			    android:layout_width="fill_parent"
-			    android:layout_height="wrap_content"
-			    android:layout_marginBottom="20dp"
-			    android:background="@drawable/custom_spinner" />
-	    </LinearLayout>
-	    
-	    <RelativeLayout
-	        android:layout_width="fill_parent"
-			android:layout_height="wrap_content"
-			android:orientation="vertical">
+<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+	xmlns:app="http://schemas.android.com/apk/res-auto"
+	xmlns:tools="http://schemas.android.com/tools"
+	android:id="@+id/coordinatorLayout"
+	android:layout_width="match_parent"
+	android:layout_height="match_parent"
+	android:keepScreenOn="true"
+	android:background="@color/Beyaz">
 
-			<com.andexert.library.RippleView
+	<ScrollView
+		android:id="@+id/scroll_view"
+		android:layout_width="match_parent"
+		android:layout_height="match_parent"
+		android:fillViewport="true">
+
+		<android.support.constraint.ConstraintLayout
+			android:id="@+id/constraintLayout"
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content">
+
+			<android.support.constraint.Guideline
+				android:id="@+id/v_guideline1"
 				android:layout_width="wrap_content"
 				android:layout_height="wrap_content"
-				ripple:rv_alpha="@integer/Ripple_Alpha"
-				ripple:rv_rippleDuration="@integer/Ripple_Duration"
-				ripple:rv_color="@color/RippleEffectColor">
+				android:orientation="vertical"
+				app:layout_constraintGuide_percent="0.05" />
 
-				<Button
-					android:id="@+id/btnListele"
-					android:layout_width="fill_parent"
-					android:layout_height="wrap_content"
-					android:background="@drawable/custom_button"
-					android:text="@string/listele"
-					android:textColor="@color/KoyuYazi" />
-			</com.andexert.library.RippleView>
-	    </RelativeLayout>
-	</LinearLayout>
-</ScrollView>
+			<android.support.constraint.Guideline
+				android:id="@+id/v_guideline2"
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				android:orientation="vertical"
+				app:layout_constraintGuide_percent="0.95" />
+
+			<TextView
+				android:id="@+id/lblListeler"
+				android:layout_width="0dp"
+				android:layout_height="wrap_content"
+				android:layout_marginTop="16dp"
+				android:text="@string/listeler"
+				android:textColor="@color/KoyuYazi"
+				style="@style/TextAppearance.AppCompat.Small.Inverse"
+				app:layout_constraintEnd_toStartOf="@+id/v_guideline2"
+				app:layout_constraintStart_toStartOf="@+id/v_guideline1"
+				app:layout_constraintTop_toTopOf="parent" />
+
+			<Spinner
+				android:id="@+id/spnListeler"
+				android:layout_width="0dp"
+				android:layout_height="wrap_content"
+				android:layout_marginTop="8dp"
+				android:background="@drawable/custom_spinner"
+				app:layout_constraintEnd_toStartOf="@+id/v_guideline2"
+				app:layout_constraintStart_toStartOf="@+id/v_guideline1"
+				app:layout_constraintTop_toBottomOf="@+id/lblListeler" />
+
+			<TextView
+				android:id="@+id/lblKategoriler"
+				android:layout_width="0dp"
+				android:layout_height="wrap_content"
+				android:layout_marginTop="24dp"
+				android:text="@string/kategoriler"
+				android:textColor="@color/KoyuYazi"
+				style="@style/TextAppearance.AppCompat.Small.Inverse"
+				app:layout_constraintEnd_toStartOf="@+id/v_guideline2"
+				app:layout_constraintStart_toStartOf="@+id/v_guideline1"
+				app:layout_constraintTop_toBottomOf="@+id/spnListeler" />
+
+			<Spinner
+				android:id="@+id/spnKategoriler"
+				android:layout_width="0dp"
+				android:layout_height="wrap_content"
+				android:layout_marginTop="8dp"
+				android:background="@drawable/custom_spinner"
+				app:layout_constraintEnd_toStartOf="@+id/v_guideline2"
+				app:layout_constraintStart_toStartOf="@+id/v_guideline1"
+				app:layout_constraintTop_toBottomOf="@+id/lblKategoriler"/>
+
+			<TextView
+				android:id="@+id/lblTarzlar"
+				android:layout_width="0dp"
+				android:layout_height="wrap_content"
+				android:layout_marginTop="24dp"
+				android:text="@string/tarzlar"
+				android:textColor="@color/KoyuYazi"
+				style="@style/TextAppearance.AppCompat.Small.Inverse"
+				app:layout_constraintEnd_toStartOf="@+id/v_guideline2"
+				app:layout_constraintStart_toStartOf="@+id/v_guideline1"
+				app:layout_constraintTop_toBottomOf="@+id/spnKategoriler" />
+
+			<Spinner
+				android:id="@+id/spnTarzlar"
+				android:layout_width="0dp"
+				android:layout_height="wrap_content"
+				android:layout_marginTop="8dp"
+				android:background="@drawable/custom_spinner"
+				app:layout_constraintEnd_toStartOf="@+id/v_guideline2"
+				app:layout_constraintStart_toStartOf="@+id/v_guideline1"
+				app:layout_constraintTop_toBottomOf="@+id/lblTarzlar"/>
+
+			<TextView
+				android:id="@+id/lblListelemeTipi"
+				android:layout_width="0dp"
+				android:layout_height="wrap_content"
+				android:layout_marginTop="24dp"
+				android:text="@string/listelemetipi"
+				android:textColor="@color/KoyuYazi"
+				style="@style/TextAppearance.AppCompat.Small.Inverse"
+				app:layout_constraintEnd_toStartOf="@+id/v_guideline2"
+				app:layout_constraintStart_toStartOf="@+id/v_guideline1"
+				app:layout_constraintTop_toBottomOf="@+id/spnTarzlar" />
+
+			<Spinner
+				android:id="@+id/spnListelemeTipi"
+				android:layout_width="0dp"
+				android:layout_height="wrap_content"
+				android:layout_marginTop="8dp"
+				android:background="@drawable/custom_spinner"
+				app:layout_constraintEnd_toStartOf="@+id/v_guideline2"
+				app:layout_constraintStart_toStartOf="@+id/v_guideline1"
+				app:layout_constraintTop_toBottomOf="@+id/lblListelemeTipi"/>
+
+			<View
+				android:id="@+id/view1"
+				android:layout_width="0dp"
+				android:layout_height="1dp"
+				android:background="@drawable/cizgi_ortagri"
+				android:layout_marginTop="32dp"
+				app:layout_constraintEnd_toStartOf="@+id/v_guideline2"
+				app:layout_constraintStart_toStartOf="@+id/v_guideline1"
+				app:layout_constraintTop_toBottomOf="@+id/spnListelemeTipi" />
+
+			<Button
+				android:id="@+id/btnListele"
+				android:layout_width="0dp"
+				android:layout_height="wrap_content"
+				android:background="@drawable/custom_button2"
+				android:gravity="center"
+				android:text="@string/listele"
+				android:textAppearance="@style/TextAppearance.AppCompat"
+				android:textColor="@color/KoyuYazi"
+				android:stateListAnimator="@null"
+				style="@style/TextAppearance.AppCompat.Small.Inverse"
+				app:layout_constraintEnd_toEndOf="parent"
+				app:layout_constraintStart_toStartOf="parent"
+				app:layout_constraintTop_toBottomOf="@+id/view1"
+				tools:targetApi="lollipop" />
+
+			<View
+				android:id="@+id/view2"
+				android:layout_width="0dp"
+				android:layout_height="1dp"
+				android:background="@drawable/cizgi_ortagri"
+				app:layout_constraintEnd_toStartOf="@+id/v_guideline2"
+				app:layout_constraintStart_toStartOf="@+id/v_guideline1"
+				app:layout_constraintTop_toBottomOf="@+id/btnListele" />
+
+			<View
+				android:id="@+id/view_bosluk"
+				android:layout_width="0dp"
+				android:layout_height="1dp"
+				android:layout_marginTop="20dp"
+				app:layout_constraintEnd_toStartOf="@+id/v_guideline2"
+				app:layout_constraintStart_toStartOf="@+id/v_guideline1"
+				app:layout_constraintTop_toBottomOf="@+id/view2" />
+		</android.support.constraint.ConstraintLayout>
+	</ScrollView>
+</android.support.design.widget.CoordinatorLayout>

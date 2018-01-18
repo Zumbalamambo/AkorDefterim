@@ -50,9 +50,11 @@ public class Egitim extends AppCompatActivity implements View.OnClickListener {
         dotsLayout = findViewById(R.id.layoutDots);
 
         btnSonraki = findViewById(R.id.btnSonraki);
+        btnSonraki.setTypeface(YaziFontu, Typeface.BOLD);
         btnSonraki.setOnClickListener(this);
 
         btnGec = findViewById(R.id.btnGec);
+        btnGec.setTypeface(YaziFontu, Typeface.BOLD);
         btnGec.setOnClickListener(this);
 
         sayfalar = new int[]{
@@ -173,6 +175,7 @@ public class Egitim extends AppCompatActivity implements View.OnClickListener {
                     TextView lblegitim_1_icerik = view.findViewById(R.id.lblegitim_1_icerik);
                     lblegitim_1_icerik.setTypeface(YaziFontu, Typeface.NORMAL);
                     lblegitim_1_icerik.setText(getString(R.string.egitim_1_icerik, getString(R.string.uygulama_adi)));
+                    AkorDefterimSys.setTextViewHTML(lblegitim_1_icerik);
                     break;
                 case 1:
                     TextView lblegitim_2_baslik = view.findViewById(R.id.lblegitim_2_baslik);
@@ -180,6 +183,8 @@ public class Egitim extends AppCompatActivity implements View.OnClickListener {
 
                     TextView lblegitim_2_icerik = view.findViewById(R.id.lblegitim_2_icerik);
                     lblegitim_2_icerik.setTypeface(YaziFontu, Typeface.NORMAL);
+                    lblegitim_2_icerik.setText(getString(R.string.egitim_2_icerik, getString(R.string.uygulama_adi)));
+                    AkorDefterimSys.setTextViewHTML(lblegitim_2_icerik);
                     break;
                 case 2:
                     TextView lblegitim_3_baslik = view.findViewById(R.id.lblegitim_3_baslik);
@@ -187,6 +192,7 @@ public class Egitim extends AppCompatActivity implements View.OnClickListener {
 
                     TextView lblegitim_3_icerik = view.findViewById(R.id.lblegitim_3_icerik);
                     lblegitim_3_icerik.setTypeface(YaziFontu, Typeface.NORMAL);
+                    AkorDefterimSys.setTextViewHTML(lblegitim_3_icerik);
                     break;
                 case 3:
                     TextView lblegitim_4_baslik = view.findViewById(R.id.lblegitim_4_baslik);
@@ -194,6 +200,7 @@ public class Egitim extends AppCompatActivity implements View.OnClickListener {
 
                     TextView lblegitim_4_icerik = view.findViewById(R.id.lblegitim_4_icerik);
                     lblegitim_4_icerik.setTypeface(YaziFontu, Typeface.NORMAL);
+                    AkorDefterimSys.setTextViewHTML(lblegitim_4_icerik);
                     break;
                 case 4:
                     TextView lblegitim_5_baslik = view.findViewById(R.id.lblegitim_5_baslik);
@@ -201,6 +208,7 @@ public class Egitim extends AppCompatActivity implements View.OnClickListener {
 
                     TextView lblegitim_5_icerik = view.findViewById(R.id.lblegitim_5_icerik);
                     lblegitim_5_icerik.setTypeface(YaziFontu, Typeface.NORMAL);
+                    AkorDefterimSys.setTextViewHTML(lblegitim_5_icerik);
                     break;
                 case 5:
                     TextView lblegitim_6_baslik = view.findViewById(R.id.lblegitim_6_baslik);
@@ -208,6 +216,7 @@ public class Egitim extends AppCompatActivity implements View.OnClickListener {
 
                     TextView lblegitim_6_icerik = view.findViewById(R.id.lblegitim_6_icerik);
                     lblegitim_6_icerik.setTypeface(YaziFontu, Typeface.NORMAL);
+                    AkorDefterimSys.setTextViewHTML(lblegitim_6_icerik);
                     break;
                 case 6:
                     TextView lblegitim_7_baslik = view.findViewById(R.id.lblegitim_7_baslik);
@@ -215,6 +224,7 @@ public class Egitim extends AppCompatActivity implements View.OnClickListener {
 
                     TextView lblegitim_7_icerik = view.findViewById(R.id.lblegitim_7_icerik);
                     lblegitim_7_icerik.setTypeface(YaziFontu, Typeface.NORMAL);
+                    AkorDefterimSys.setTextViewHTML(lblegitim_7_icerik);
                     break;
                 case 7:
                     TextView lblegitim_8_baslik = view.findViewById(R.id.lblegitim_8_baslik);
@@ -222,6 +232,7 @@ public class Egitim extends AppCompatActivity implements View.OnClickListener {
 
                     TextView lblegitim_8_icerik = view.findViewById(R.id.lblegitim_8_icerik);
                     lblegitim_8_icerik.setTypeface(YaziFontu, Typeface.NORMAL);
+                    AkorDefterimSys.setTextViewHTML(lblegitim_8_icerik);
                     break;
                 case 8:
                     TextView lblegitim_9_baslik = view.findViewById(R.id.lblegitim_9_baslik);
@@ -229,6 +240,7 @@ public class Egitim extends AppCompatActivity implements View.OnClickListener {
 
                     TextView lblegitim_9_icerik = view.findViewById(R.id.lblegitim_9_icerik);
                     lblegitim_9_icerik.setTypeface(YaziFontu, Typeface.NORMAL);
+                    AkorDefterimSys.setTextViewHTML(lblegitim_9_icerik);
                     break;
                 case 9:
                     TextView lblegitim_10_baslik = view.findViewById(R.id.lblegitim_10_baslik);
@@ -236,6 +248,7 @@ public class Egitim extends AppCompatActivity implements View.OnClickListener {
 
                     TextView lblegitim_10_icerik = view.findViewById(R.id.lblegitim_10_icerik);
                     lblegitim_10_icerik.setTypeface(YaziFontu, Typeface.NORMAL);
+                    AkorDefterimSys.setTextViewHTML(lblegitim_10_icerik);
                     break;
                 case 10:
                     TextView lblegitim_11_baslik = view.findViewById(R.id.lblegitim_11_baslik);
@@ -243,6 +256,7 @@ public class Egitim extends AppCompatActivity implements View.OnClickListener {
 
                     TextView lblegitim_11_icerik = view.findViewById(R.id.lblegitim_11_icerik);
                     lblegitim_11_icerik.setTypeface(YaziFontu, Typeface.NORMAL);
+                    AkorDefterimSys.setTextViewHTML(lblegitim_11_icerik);
                     break;
             }
 

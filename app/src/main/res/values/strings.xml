@@ -9,15 +9,18 @@
     <string name="uygulama_copyright">%s - Copyright © 2016</string> <!-- %s = Uygulama Adı -->
     <!-- <string name="uygulama_telif_hakki_yazisi">Bu uygulama %s tarafından yazılmıştır. Tüm hakları saklıdır.</string> --> <!-- %s = Uygulama Yapımcı Adı -->
     <string name="uygulama_telif_hakki_yazisi">Tüm hakları saklıdır..</string> <!-- %s = Uygulama Yapımcı Adı -->
-    <string name="yenilikler_icerik">Yeni neler yaptık?\n\n(Yeni Sürüm 1.4.8)\n* Genel yazılımsal hatalar giderildi.\n* Görsel düzenlemeler yapıldı.</string>
+    <string name="yenilikler_icerik">Yeni neler yaptık?&lt;br&gt;%s&lt;br&gt;(Yeni Sürüm 2.0.0)&lt;br&gt;* Tasarım tamamiyle değişti.&lt;br&gt;* Tüm yazılımsal alt yapı geliştirildi.</string>
 
     <!-- Genel -->
+    <string name="bosluk"> </string>
     <string name="labeltire">---</string>
     <string name="imageDesc">ImageDesc</string>
     <string name="kabul_et">Kabul et</string>
     <string name="reddet">Reddet</string>
     <string name="ara">Ara</string>
-    <string name="sarki_sanatci_adi">Sanatçı/Şarkı Adı</string>
+    <string name="sanatci_adi">Sanatçı adı</string>
+    <string name="sarki_adi">Şarkı adı</string>
+    <string name="sarki_sanatci_adi">Sanatçı ya da şarkı adı</string>
     <string name="yeniden_dene">Yeniden dene</string>
     <string name="yeniden_gonder">Yeniden gönder</string>
     <string name="cevrimdisi">Çevrimdışı</string>
@@ -117,7 +120,7 @@
     <string name="repertuvar_sifirlama">Repertuvar Sıfırlama</string>
     <string name="istek_detay">Istek Detay</string>
     <string name="guc_tasarrufu">Güç Tasarrufu</string>
-    <string name="akor_cetveli">Akor Cetveli%s</string>
+    <string name="akor_cetveli">Akor Cetveli</string>
     <string name="google_play_servis_baslik">Google Play Servisi</string>
     <string name="hesap_durumu">Hesap Durumu</string>
     <string name="uygulama_izni">Uygulama İzni</string>
@@ -233,6 +236,8 @@
     <string name="son_eklenen_sarkiyi_ac">Son eklenen şarkıyı aç</string>
     <string name="sanatciya_ait_sarki_listesini_getir">Sanatçıya ait şarkı listesini getir</string>
     <string name="destek">Destek</string>
+    <string name="bold_yazi">B</string>
+    <string name="italic_yazi">I</string>
 
     <!-- Crop Sistem Değişkenleri -->
     <string name="crop_image_activity_title">Görüntü Kırp</string>
@@ -278,9 +283,9 @@
     <string name="wifi_baglantisi_bulunamadi">Wifi bağlantısı bulunamadı</string>
     <string name="guc_tasarrufu_aktif">Güç tasarrufu aktif</string>
     <string name="web_yonetim_servis_kapali">Servis Kapalı</string>
-    <string name="liste">Liste</string>
-    <string name="kategori">Kategori</string>
-    <string name="tarz">Tarz</string>
+    <string name="listeler">Liste(ler)</string>
+    <string name="kategoriler">Kategori(ler)</string>
+    <string name="tarzlar">Tarz(lar)</string>
     <string name="listelemetipi">Listeleme Tipi</string>
     <string name="parolami_unuttum">Parolamı Unuttum</string>
     <string name="giris_yardimi">Giriş Yardımı</string>
@@ -321,8 +326,8 @@
     <string name="ekleyen">Ekleyen</string>
     <string name="ekleme_tarihi">Eklenme Tarihi</string>
     <string name="yeni">Yeni</string>
-    <string name="sarki_paylas_facebook_icerik">%1$s, \"%2$s - %3$s\" isimli şarkıyı paylaştı. Görüntülemek için tıklayın.</string>
-    <string name="sarki_paylas_google_icerik">%1$s, \"%2$s - %3$s\" isimli şarkıyı paylaştı. Görüntülemek için aşağıdaki linke tıklayın.\n\n%4$s</string>
+    <string name="sarki_paylas_facebook_icerik">\"%1$s - %2$s\" isimli şarkıyı sevdim ve akorlarını paylaştım. Görmek ister misin? :)</string>
+    <string name="sarki_paylas_google_icerik">\"%1$s - %2$s\" isimli şarkıyı sevdim ve akorlarını paylaştım. Görmek ister misin? :) Aşağıdaki linke tıkla..\n\n%3$s</string>
     <string name="bir_daha_gosterme">Bir daha gösterme</string>
     <string name="cok_yakinda">Çok Yakında</string>
     <string name="yukleniyor">Yükleniyor..</string>
@@ -375,6 +380,13 @@
     <string name="ekran_goruntusu_al">Ekran Görüntüsü Al</string>
     <string name="galeriden_ekle" tools:ignore="Typos">Galeri\'den Ekle</string>
     <string name="egitim">Eğitim</string>
+    <string name="egitime_katilmak_istermisin">Eğitimini tamamlamamışsın. Katılmak ister misin?</string>
+    <string name="sarki_ekle">Şarkı Ekle</string>
+    <string name="sarkiyi_public_paylas">Katkıda bulunmak ister misin? Bu içeriği bizlere gönder. Gönderdiğin içerik onay verildiğinde genel repertuvar listesinde görüntülenecek.&lt;br&gt;&lt;br&gt;&lt;b&gt;Önemli: İçerikte akor ya da tab varsa şarkının tonu orjinal olmalıdır. İnternet bağlantısı gerektirir..&lt;/b&gt;</string>
+    <string name="liste_adi">Liste Adı</string>
+    <string name="kategori_adi">Kategori Adı</string>
+    <string name="tarz_adi">Tarz Adı</string>
+    <string name="duzenle">Düzenle</string>
 
     <!-- EditText Hint'ler -->
     <string name="sanatci_adina_gore_ara">Ara (Sanatçı adına göre)</string>
@@ -397,7 +409,7 @@
     <string name="hata_basinda_sifir_olmadan_10_hane">Başında 0(sıfır) olmadan 10 hane olarak giriniz.</string>
     <string name="hata_format_sadece_sayi">Yalnızca sayı kullanabilirsin.</string>
     <string name="hata_format_sadece_sayi_kucukharf">Yalnızca sayı ve küçük harf (Türkçe hariç) kullanabilirsin.</string>
-    <string name="hata_format_sadece_sayi_kucukharf_buyukharf_bosluklu">Yalnızca küçük ve büyük harf kullanabilirsin.</string>
+    <string name="hata_format_sadece_sayi_kucukharf_buyukharf_bosluklu">Yalnızca sayı, küçük ve büyük harf kullanabilirsin.</string>
     <string name="hata_format_bastaki_karakterler_harf_olmak_zorunda">Baştaki %s karakter harf olmak zorunda.</string>
     <string name="hata_format_eposta">Lütfen geçerli bir E-Posta adresi gir.</string>
     <string name="hata_hesap_durum">&lt;b&gt;%1$s&lt;/b&gt;&lt;br&gt;E-Posta adresine kayıtlı hesap&lt;b&gt;%2$s&lt;/b&gt; mevcut.&lt;br&gt;&lt;br&gt;Giriş yap ya da farklı bir E-Posta adresi dene.</string>
@@ -470,13 +482,13 @@
     <string name="yerel_repertuvar_guncellendi">Yerel repertuvar güncellendi.</string>
     <string name="hesap_kullanima_kisitlidir">Hesabınız kullanıma kısıtlıdır. Lütfen Hesabım sayfasından Email aktivasyonunu tamamlayınız.</string>
     <string name="islem_yapilirken_bir_hata_olustu">İşlem yapılırken bir hata oluştu. Yeniden deneyiniz.</string>
-    <string name="liste_bulunamadi">Cihazınızda kayıtlı liste bulunamadı. Web Yönetim panelinden ekleyin.</string>
-    <string name="kategori_bulunamadi">Cihazınızda kayıtlı Kategori bulunamadı. Web Yönetim panelinden ekleyin.</string>
-    <string name="tarz_bulunamadi">Cihazınızda kayıtlı Tarz bulunamadı. Web Yönetim panelinden ekleyin.</string>
+    <string name="liste_bulunamadi">Cihazında kayıtlı Liste bulunamadı.</string>
+    <string name="kategori_bulunamadi">Cihazında kayıtlı Kategori bulunamadı. </string>
+    <string name="tarz_bulunamadi">Cihazında kayıtlı Tarz bulunamadı.</string>
     <string name="sure_bitmeden_yeni_onay_kodu_telebinde_bulunamazsiniz">Süre bitmeden yeni onay kodu telebinde bulunamazsiniz.</string>
     <string name="sure_bitmeden_yeni_eposta_telebinde_bulunamazsiniz">Süre bitmeden yeni e-posta telebinde bulunamazsınız.</string>
     <string name="sure_bitmeden_yeni_sms_telebinde_bulunamazsiniz">Süre bitmeden yeni sms telebinde bulunamazsınız.</string>
-    <string name="secilen_sarki_cihazda_bulunamadi">Seçilen şarkı bulunamadı. Lütfen listenizi yenileyin.</string>
+    <string name="secilen_sarki_bulunamadi">Seçilen şarkı bulunamadı. Lütfen listenizi yenileyin.</string>
     <string name="repertuvar_yedeklendi">Repertuvarınız başarıyla yedeklendi.</string>
     <string name="repertuvar_geri_yuklendi">Repertuvarınız başarıyla geri yüklendi.</string>
     <string name="geri_yukleme_dosyasi_bulunamadi">Geri yükleme dosyası bulunamadı. Lütfen yeniden yedekleme yapın.</string>
@@ -488,6 +500,7 @@
     <string name="buyuk_profil_resim_hatasi">Seçtiğin profil resmi en fazla %sMB büyüklüğünde olmalıdır.</string>
     <string name="dosya_bulunamadi">Dosya bulunamadı.</string>
     <string name="icerik_gonderildi">İçerik gönderildi. Onaylandığında bilgilendirileceksiniz.</string>
+    <string name="icerik_bulunamadi">İçerik bulunamadı.</string>
     <string name="akor_bulunamadi">Akor bulunamadı..</string>
     <string name="hatali_kullanici_adi_sifre">Kullanıcı adı ya da şifrenizi hatalı girdiniz. Kontrol edip yeniden deneyiniz.</string>
     <string name="uygulama_cikis_mesaji">Çıkmak için geri tuşuna yeniden dokunun.</string>
@@ -544,8 +557,8 @@
     </string-array>
 
     <string-array name="SarkiPaylasContextMenu">
-        <item>Google</item>
-        <item>Facebook</item>
+        <item>Google\'da Paylaş</item>
+        <item>Facebook\'ta Paylaş</item>
     </string-array>
 
     <!-- Ayarlar Sayfası -->
@@ -596,13 +609,13 @@
 
     <!-- Eğitim -->
     <string name="egitim_1_baslik">Merhaba</string>
-    <string name="egitim_1_icerik">%s mobil uygulaması eğitim ekranına hoşgeldiniz. Bu eğitim ile uygulamayı nasıl kullanacağınızı öğreneceksiniz..</string>
+    <string name="egitim_1_icerik" tools:ignore="Typos">Eğitim ekranına hoşgeldin. Bu eğitim ile &lt;b&gt;%1$s&lt;/b&gt;\'ni nasıl etkin bir şekilde kullanacağını öğreneceksin.</string>
     <string name="egitim_2_baslik">Giriş Ekranı</string>
-    <string name="egitim_2_icerik">Giriş ekranından uygulamaya giriş yapabilmektesiniz. İster kayıt olarak, ister sosyal medya hesabınız ile kolayca giriş yapabilirsiniz. Ya da çevrimiçi değilseniz bile çevrimdışı olarakta giriş yapabilirsiniz..</string>
+    <string name="egitim_2_icerik" tools:ignore="Typos">Giriş ekranından ister kayıt olarak, ister sosyal medya hesabınla ya da internetin yoksa bile çevrimdışı olarak giriş yapabilirsin. Böylelikle &lt;b&gt;%s&lt;/b&gt;\'ni kesintisiz kullanmış olursun.</string>
     <string name="egitim_3_baslik">Anasayfa (Son Eklenen Şarkılar)</string>
-    <string name="egitim_3_icerik">Bu ekranda son eklenen şarkıları ve detaylarını görebilirsiniz.\n(Not: Yukarıdan aşağı kaydırdığınızda liste yenilenir.)</string>
+    <string name="egitim_3_icerik" tools:ignore="Typos">Bu ekranda son eklenen şarkıları ve detaylarını görebilirsiniz.&lt;br&gt;&lt;br&gt;&lt;b&gt;Not: Yukarıdan aşağı kaydırdığınızda liste yenilenir.&lt;/b&gt;</string>
     <string name="egitim_4_baslik">Genel Menü</string>
-    <string name="egitim_4_icerik">Uygulamayı yönetebileceğiniz genel menü\n(Not: Ekranın sağ ve sol üst köşelerindeki liste tuşuna basarak ya da ekranın sağ ve sol kenarından sürüklerek açılır.)</string>
+    <string name="egitim_4_icerik" tools:ignore="Typos">Uygulamayı yönetebileceğiniz genel menü&lt;br&gt;&lt;br&gt;&lt;b&gt;Not: Ekranın sağ ve sol üst köşelerindeki liste tuşuna basarak ya da ekranın sağ ve sol kenarından sürüklerek açılır.&lt;/b&gt;</string>
     <string name="egitim_5_baslik">Hesabım Ekranı</string>
     <string name="egitim_5_icerik">Bu ekrandan hesap bilgilerine ulaşabilir ve güncelleyebilirsiniz.</string>
     <string name="egitim_6_baslik">Ayarlar Ekranı</string>
@@ -694,79 +707,37 @@
     <string name="web_daha_fazla_bilgi">Daha fazla bilgi</string>
 
     <!-- Kategori Yönetimi -->
-    <string name="web_kategori_yonetimi_sayfa_yazisi">Aşağıdan kategori ekleyebilir, düzenleyebilir ya da silebilirsiniz..</string>
-    <string name="web_kategori_listesi">Kategori Listesi</string>
-    <string name="web_kategori_adi">Kategori Adı</string>
-    <string name="web_kategori_adi_hata_bos">Kategori adını boş bırakamazsınız..</string>
-    <string name="web_kategori_adi_hata_enaz3">Kategori adı alanına en az 3 karakter girmelisiniz..</string>
-    <string name="web_kategori_ekle">Kategori Ekle</string>
-    <string name="web_kategori_eklendi1">Kategori Eklendi</string>
-    <string name="web_kategori_eklendi2">Kategori başarıyla eklendi..</string>
-    <string name="web_kategori_eklenemedi1">Kategori Eklenemedi</string>
-    <string name="web_kategori_eklenemedi2">Kategori eklenemedi!</string>
-    <string name="web_kategori_eklenemedi3">%s isimli kategori bulunmaktadır. Lütfen farklı bir isim deneyin..</string>
-    <string name="web_kategori_duzenle">Kategori Düzenle</string>
-    <string name="web_kategori_duzenlendi1">Kategori Düzenlendi</string>
-    <string name="web_kategori_duzenlendi2">%1$s isimli kategori, %2$s olarak değiştirildi..</string> <!-- %1$s = Kategori Adı / %2$s = Kategori Adı -->
-    <string name="web_kategori_duzenlenemedi1">Kategori Düzenlenemedi</string>
-    <string name="web_kategori_duzenlenemedi2">Kategori düzenlenemedi!</string>
-    <string name="web_kategori_sil">Kategori Sil</string>
-    <string name="web_kategori_sil_soru">%s isimli kategoriyi silmek istiyor musunuz?</string> <!-- %s = Kategori Adı -->
-    <string name="web_kategori_silindi1">Kategori Silindi</string>
-    <string name="web_kategori_silindi2">%s isimli kategori başarıyla silindi..</string> <!-- %s = Kategori Adı -->
-    <string name="web_kategori_silinemedi1">Kategori Silinemedi</string>
-    <string name="web_kategori_silinemedi2">Kategori silinemedi!</string>
-    <string name="web_kategori_silinemedi3">Kategoriye ait şarkı bulunmaktadır. Gerekli düzenlemeleri yapın..</string>
+    <string name="kategori_ekle">Kategori Ekle</string>
+    <string name="kategori_eklendi">%s isimli kategori eklendi.</string>
+    <string name="kategori_eklenemedi_hata1">%s isimli kategori bulunmaktadır. Farklı bir isim dene.</string>
+    <string name="kategori_duzenle">Kategori Düzenle</string>
+    <string name="kategori_duzenlendi">%1$s isimli kategori, %2$s olarak düzenlendi.</string>
+    <string name="kategori_sil">Kategori Sil</string>
+    <string name="kategori_sil_soru">%s isimli kategoriyi silmek istiyor musunuz?</string>
+    <string name="kategori_silindi">%s isimli kategori silindi.</string>
+    <string name="kategori_silinemedi_hata1">Kategoriye ait şarkı bulunmaktadır. Gerekli düzenlemeleri yapın..</string>
 
     <!-- Tarz Yönetimi -->
-    <string name="web_tarz_yonetimi_sayfa_yazisi">Aşağıdan tarz ekleyebilir, düzenleyebilir ya da silebilirsiniz..</string>
-    <string name="web_tarz_listesi">Tarz Listesi</string>
-    <string name="web_tarz_adi">Tarz Adı</string>
-    <string name="web_tarz_adi_hata_bos">Tarz adını boş bırakamazsınız..</string>
-    <string name="web_tarz_adi_hata_enaz3">Tarz adı alanına en az 3 karakter girmelisiniz..</string>
-    <string name="web_tarz_ekle">Tarz Ekle</string>
-    <string name="web_tarz_eklendi1">Tarz Eklendi</string>
-    <string name="web_tarz_eklendi2">Tarz başarıyla eklendi..</string>
-    <string name="web_tarz_eklenemedi1">Tarz Eklenemedi</string>
-    <string name="web_tarz_eklenemedi2">Tarz eklenemedi!</string>
-    <string name="web_tarz_eklenemedi3">%s isimli tarz bulunmaktadır. Lütfen farklı bir isim deneyin..</string>
-    <string name="web_tarz_duzenle">Tarz Düzenle</string>
-    <string name="web_tarz_duzenlendi1">Tarz Düzenlendi</string>
-    <string name="web_tarz_duzenlendi2">%1$s isimli tarz, %2$s olarak değiştirildi..</string> <!-- %1$s = Tarz Adı / %2$s = Tarz Adı -->
-    <string name="web_tarz_duzenlenemedi1">Tarz Düzenlenemedi</string>
-    <string name="web_tarz_duzenlenemedi2">Tarz düzenlenemedi!</string>
-    <string name="web_tarz_sil">Tarz Sil</string>
-    <string name="web_tarz_sil_soru">%s isimli tarzı silmek istiyor musunuz?</string> <!-- %s = Tarz Adı -->
-    <string name="web_tarz_silindi1">Tarz Silindi</string>
-    <string name="web_tarz_silindi2">%s isimli tarz başarıyla silindi..</string> <!-- %s = Tarz Adı -->
-    <string name="web_tarz_silinemedi1">Tarz Silinemedi</string>
-    <string name="web_tarz_silinemedi2">Tarz silinemedi!</string>
-    <string name="web_tarz_silinemedi3">Tarza ait şarkı bulunmaktadır. Gerekli düzenlemeleri yapın..</string>
+    <string name="tarz_ekle">Tarz Ekle</string>
+    <string name="tarz_eklendi">%s isimli tarz eklendi.</string>
+    <string name="tarz_eklenemedi_hata1">%s isimli tarz bulunmaktadır. Farklı bir isim dene.</string>
+    <string name="tarz_duzenle">Tarz Düzenle</string>
+    <string name="tarz_duzenlendi">%1$s isimli tarz, %2$s olarak düzenlendi.</string>
+    <string name="tarz_sil">Tarz Sil</string>
+    <string name="tarz_sil_soru">%s isimli tarzı silmek istiyor musunuz?</string>
+    <string name="tarz_silindi">%s isimli tarz silindi.</string>
+    <string name="tarz_silinemedi_hata1">Tarza ait şarkı bulunmaktadır. Gerekli düzenlemeleri yapın..</string>
 
     <!-- Liste Yönetimi -->
-    <string name="web_liste_yonetimi_sayfa_yazisi">Aşağıdan liste ekleyebilir, düzenleyebilir ya da silebilirsiniz..</string>
-    <string name="web_listeler">Listeler</string>
-    <string name="web_liste_adi">Liste Adı</string>
-    <string name="web_liste_adi_hata_bos">Liste adını boş bırakamazsınız..</string>
-    <string name="web_liste_adi_hata_enaz3">Liste adı alanına en az 3 karakter girmelisiniz..</string>
-    <string name="web_liste_ekle">Liste Ekle</string>
-    <string name="web_liste_eklendi1">Liste Eklendi</string>
-    <string name="web_liste_eklendi2">Liste başarıyla eklendi..</string>
-    <string name="web_liste_eklenemedi1">Liste Eklenemedi</string>
-    <string name="web_liste_eklenemedi2">Liste eklenemedi!</string>
-    <string name="web_liste_eklenemedi3">%s isimli liste bulunmaktadır. Lütfen farklı bir isim deneyin..</string>
-    <string name="web_liste_duzenle">Liste Düzenle</string>
-    <string name="web_liste_duzenlendi1">Liste Düzenlendi</string>
-    <string name="web_liste_duzenlendi2">%1$s isimli liste, %2$s olarak değiştirildi..</string> <!-- %1$s = Liste Adı / %2$s = Liste Adı -->
-    <string name="web_liste_duzenlenemedi1">Liste Düzenlenemedi</string>
-    <string name="web_liste_duzenlenemedi2">Liste düzenlenemedi!</string>
-    <string name="web_liste_sil">Liste Sil</string>
-    <string name="web_liste_sil_soru">%s isimli listeyi silmek istiyor musunuz?</string> <!-- %s = Liste Adı -->
-    <string name="web_liste_silindi1">Liste Silindi</string>
-    <string name="web_liste_silindi2">%s isimli liste başarıyla silindi..</string> <!-- %s = Liste Adı -->
-    <string name="web_liste_silinemedi1">Liste Silinemedi</string>
-    <string name="web_liste_silinemedi2">Liste silinemedi!</string>
-    <string name="web_liste_silinemedi3">Listeye ait şarkı bulunmaktadır. Gerekli düzenlemeleri yapın..</string>
+    <string name="liste_ekle">Liste Ekle</string>
+    <string name="liste_eklendi">%s isimli liste eklendi.</string>
+    <string name="liste_eklenemedi_hata1">%s isimli liste bulunmaktadır. Farklı bir isim dene.</string>
+    <string name="liste_duzenle">Liste Düzenle</string>
+    <string name="liste_duzenlendi">%1$s isimli liste, %2$s olarak düzenlendi.</string>
+    <string name="liste_sil">Liste Sil</string>
+    <string name="liste_sil_soru">%s isimli listeyi silmek istiyor musunuz?</string>
+    <string name="liste_silindi">%s isimli liste silindi.</string>
+    <string name="liste_silinemedi_hata1">Listeye ait şarkı bulunmaktadır. Gerekli düzenlemeleri yapın..</string>
 
     <!-- Şarkılar Yönetimi -->
     <string name="web_sarki_yonetimi_sayfa_yazisi">Aşağıdan şarkı ekleyebilir, düzenleyebilir ya da silebilirsiniz..</string>
@@ -786,7 +757,7 @@
     <string name="web_sarkilar_sarki_icerik_hata_enaz10">Şarkı içerik alanına en az 10 karakter girmelisiniz..</string>
     <string name="web_sarkilar_ekle">Şarkı Ekle</string>
     <string name="web_sarkilar_eklendi1">Şarkı Eklendi</string>
-    <string name="web_sarkilar_eklendi2">Şarkı başarıyla eklendi..</string>
+    <string name="sarki_eklendi">%s isimli şarkı eklendi.</string>
     <string name="web_sarkilar_eklenemedi1">Şarkı Eklenemedi</string>
     <string name="web_sarkilar_eklenemedi2">Şarkı eklenemedi!</string>
     <string name="web_sarkilar_duzenle">Şarkı Düzenle</string>

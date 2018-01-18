@@ -105,17 +105,27 @@
 			app:layout_constraintStart_toStartOf="@+id/v_guideline1"
 			app:layout_constraintTop_toBottomOf="@+id/lblSmsGonder" />
 
+		<ImageView
+			android:id="@+id/ImgCepTelefon"
+			android:layout_width="wrap_content"
+			android:layout_height="0dp"
+			android:layout_marginBottom="8dp"
+			android:layout_marginStart="8dp"
+			android:layout_marginLeft="8dp"
+			android:contentDescription="@string/imageDesc"
+			app:layout_constraintBottom_toBottomOf="@+id/txtILCepTelefon"
+			app:layout_constraintStart_toStartOf="@+id/v_guideline1"
+			app:srcCompat="@drawable/ic_telefon" />
+
 		<com.hbb20.CountryCodePicker
 			android:id="@+id/CCPTelKodu"
 			android:layout_width="wrap_content"
 			android:layout_height="wrap_content"
-			android:layout_marginBottom="8dp"
-			android:layout_marginStart="8dp"
-			android:layout_marginLeft="8dp"
-			android:layout_marginTop="8dp"
-			app:layout_constraintBottom_toTopOf="@+id/lblHesabiniBulSmsGonderAciklama"
-			app:layout_constraintStart_toStartOf="@+id/v_guideline1"
-			app:layout_constraintTop_toTopOf="@+id/view2"
+			android:layout_marginStart="6dp"
+			android:layout_marginLeft="6dp"
+			android:layout_marginBottom="2dp"
+			app:layout_constraintBottom_toBottomOf="@+id/txtILCepTelefon"
+			app:layout_constraintStart_toEndOf="@+id/ImgCepTelefon"
 			app:ccp_showFullName="false"
 			app:ccp_showPhoneCode="true"
 			app:ccp_showNameCode="false"
@@ -129,12 +139,12 @@
 			android:layout_height="wrap_content"
 			android:layout_marginLeft="8dp"
 			android:layout_marginStart="8dp"
-			android:layout_marginTop="8dp"
+			android:layout_marginTop="16dp"
 			android:textColorHint="@color/KoyuGri"
-			app:hintTextAppearance="@style/TextAppearance.AppCompat.Small.Inverse"
-			app:layout_constraintEnd_toStartOf="@+id/v_guideline2"
+			app:layout_constraintLeft_toLeftOf="@+id/v_guideline1"
+			app:layout_constraintRight_toLeftOf="@+id/v_guideline2"
 			app:layout_constraintStart_toEndOf="@+id/CCPTelKodu"
-			app:layout_constraintTop_toBottomOf="@+id/view2">
+			app:layout_constraintTop_toTopOf="@+id/view2">
 
 			<EditText
 				android:id="@+id/txtCepTelefon"

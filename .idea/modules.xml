@@ -5,7 +5,9 @@
       <module fileurl="file://$PROJECT_DIR$/AkorDefterim.iml" filepath="$PROJECT_DIR$/AkorDefterim.iml" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
       <module fileurl="file://$PROJECT_DIR$/app/libraries/libraries.iml" filepath="$PROJECT_DIR$/app/libraries/libraries.iml" />
+      <module fileurl="file://$PROJECT_DIR$/app/libraries/richeditor/richeditor.iml" filepath="$PROJECT_DIR$/app/libraries/richeditor/richeditor.iml" />
       <module fileurl="file://$PROJECT_DIR$/app/libraries/rippleeffect/rippleeffect.iml" filepath="$PROJECT_DIR$/app/libraries/rippleeffect/rippleeffect.iml" />
+      <module fileurl="file://$PROJECT_DIR$/app/libraries/slidingrootnav/slidingrootnav.iml" filepath="$PROJECT_DIR$/app/libraries/slidingrootnav/slidingrootnav.iml" />
     </modules>
   </component>
 </project>

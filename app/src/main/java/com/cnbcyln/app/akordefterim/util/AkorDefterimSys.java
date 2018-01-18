@@ -47,23 +47,35 @@ import com.cnbcyln.app.akordefterim.Interface.Interface_FragmentDataConn;
 import com.cnbcyln.app.akordefterim.R;
 import com.cnbcyln.app.akordefterim.Retrofit.Interface.RetrofitInterface;
 import com.cnbcyln.app.akordefterim.Retrofit.Network.RetrofitServiceGenerator;
+import com.cnbcyln.app.akordefterim.Retrofit.Siniflar.SnfAnasayfaGetir;
 import com.cnbcyln.app.akordefterim.Retrofit.Siniflar.SnfHesapBilgiGetir;
 import com.cnbcyln.app.akordefterim.Retrofit.Siniflar.SnfHesapEkle;
 import com.cnbcyln.app.akordefterim.Retrofit.Siniflar.SnfHesapGirisYap;
 import com.cnbcyln.app.akordefterim.Retrofit.Siniflar.SnfIslemSonuc;
+import com.cnbcyln.app.akordefterim.Retrofit.Siniflar.SnfKategoriListesiGetir;
+import com.cnbcyln.app.akordefterim.Retrofit.Siniflar.SnfSarkiGetir;
+import com.cnbcyln.app.akordefterim.Retrofit.Siniflar.SnfSarkiListesiGetir;
 import com.cnbcyln.app.akordefterim.Retrofit.Siniflar.SnfSistemDurum;
 import com.cnbcyln.app.akordefterim.Retrofit.Siniflar.SnfTarihSaat;
+import com.cnbcyln.app.akordefterim.Retrofit.Siniflar.SnfTarzListesiGetir;
 import com.cnbcyln.app.akordefterim.Siniflar.SnfAkorlar;
+import com.cnbcyln.app.akordefterim.Siniflar.SnfSarkilar;
 import com.cnbcyln.app.akordefterim.Siniflar.SnfTonlar;
-import com.cnbcyln.app.akordefterim.util.SlideNav.SlideGravity;
-import com.cnbcyln.app.akordefterim.util.SlideNav.SlidingRootNav;
-import com.cnbcyln.app.akordefterim.util.SlideNav.SlidingRootNavBuilder;
-import com.cnbcyln.app.akordefterim.util.SlideNav.callback.DragListener;
+import com.facebook.share.model.ShareHashtag;
+import com.facebook.share.model.ShareLinkContent;
+import com.facebook.share.widget.ShareDialog;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GooglePlayServicesUtil;
+import com.google.android.gms.plus.PlusShare;
 import com.mhk.android.passcodeview.PasscodeView;
 import com.theartofdev.edmodo.cropper.CropImage;
+import com.yarolegovich.slidingrootnav.SlideGravity;
+import com.yarolegovich.slidingrootnav.SlidingRootNav;
+import com.yarolegovich.slidingrootnav.SlidingRootNavBuilder;
+import com.yarolegovich.slidingrootnav.callback.DragListener;
 
+import android.animation.Animator;
+import android.animation.AnimatorListenerAdapter;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -104,9 +116,13 @@ import android.os.Handler;
 import android.os.Message;
 import android.os.PowerManager;
 import android.provider.MediaStore;
+import android.support.annotation.NonNull;
+import android.support.annotation.RequiresApi;
 import android.support.constraint.ConstraintLayout;
+import android.support.constraint.Guideline;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.Snackbar;
+import android.support.design.widget.TextInputLayout;
 import android.support.v4.app.ActivityOptionsCompat;
 import android.support.v4.content.FileProvider;
 import android.support.v7.widget.PopupMenu;
@@ -132,6 +148,8 @@ import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewAnimationUtils;
+import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
 import android.view.animation.AnimationUtils;
@@ -142,8 +160,12 @@ import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.RelativeLayout;
+import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -161,6 +183,7 @@ import org.apache.http.conn.ssl.SSLSocketFactory;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.message.BasicNameValuePair;
 import org.apache.http.protocol.HTTP;
+import org.jetbrains.annotations.Contract;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -233,7 +256,6 @@ public class AkorDefterimSys {
 	// **** Repertuvar İşlemleri
 	//public String PHPSarkiListesiGetir = AkorDefterimHttpAdres + "/araclar/repertuvarislemleri/sarkilistesigetir.php";
 	public String PHPSarkiGetir = "/araclar/repertuvarislemleri/sarkigetir.php";
-	public String PHPKategoriListesiGetir = "/araclar/repertuvarislemleri/kategorilistesigetir.php";
 	public String PHPTarzListesiGetir = "/araclar/repertuvarislemleri/tarzlistesigetir.php";
 	public String PHPRepertuvarIcerikGonder = "/araclar/repertuvarislemleri/rep_icerik_gonder.php";
 
@@ -354,6 +376,7 @@ public class AkorDefterimSys {
 		}
 	}
 
+	@NonNull
 	private float[] EkranDPGetir() {
 		Display display = activity.getWindowManager().getDefaultDisplay();
 		DisplayMetrics outMetrics = new DisplayMetrics();
@@ -367,7 +390,7 @@ public class AkorDefterimSys {
 	}
 
 	public SlidingRootNav SetupSlidingMenu(Bundle savedInstanceState, View ViewSlidingContainer, final boolean Alpha, final boolean Scale) {
-        final ConstraintLayout CLContainer = ViewSlidingContainer.findViewById(R.id.CLMenu);
+        final CoordinatorLayout CLContainer = ViewSlidingContainer.findViewById(R.id.coordinatorLayout);
         if(Alpha) CLContainer.setAlpha(0.0f);
         if(Scale) {
             CLContainer.setScaleX(1.1f);
@@ -399,6 +422,15 @@ public class AkorDefterimSys {
 		InputMethodManager imm = (InputMethodManager) activity.getSystemService(Context.INPUT_METHOD_SERVICE); // İstenildiği zaman klavyeyi gizlemeye yarayan kod tanımlayıcısı
 
 		View view = activity.getCurrentFocus();
+
+		// Klavyeyi kapatıyoruz.
+		if (view != null) if (imm != null) {
+			imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
+		}
+	}
+
+	public void DialogKlavyeKapat(View view) {
+		InputMethodManager imm = (InputMethodManager) activity.getSystemService(Context.INPUT_METHOD_SERVICE); // İstenildiği zaman klavyeyi gizlemeye yarayan kod tanımlayıcısı
 
 		// Klavyeyi kapatıyoruz.
 		if (view != null) if (imm != null) {
@@ -530,7 +562,7 @@ public class AkorDefterimSys {
 	public void HesapPrefSifirla() {
 		sharedPrefEditor = sharedPref.edit();
 		sharedPrefEditor.remove("prefHesapID");
-		sharedPrefEditor.remove("prefEPostaKullaniciAdiTelefon");
+		sharedPrefEditor.remove("prefEPosta");
 		sharedPrefEditor.remove("prefParolaSHA1");
 		sharedPrefEditor.remove("prefOturumTipi");
 		sharedPrefEditor.apply();
@@ -986,7 +1018,37 @@ public class AkorDefterimSys {
 	}
 
 	@SuppressLint("InflateParams")
-	public AlertDialog HButtonCustomAlertDialog(Activity activity, String Baslik, String Mesaj, String Button1MsjText, final String Button1Islem, String Button2MsjText, final String Button2Islem) {
+	public AlertDialog CustomAlertDialog(Activity activity, String Baslik, View DialogLayoutContent, String ButtonMsjText, final String ButtonIslem) {
+		final Interface_AsyncResponse AsyncResponse = (Interface_AsyncResponse) activity;
+		LayoutInflater inflater = activity.getLayoutInflater();
+		View ViewDialogBaslik;
+		Resources res = activity.getResources();
+		Typeface YaziFontu = FontGetir(activity, "anivers_regular");
+
+		ViewDialogBaslik = inflater.inflate(R.layout.dialog_custom_baslik, null);
+
+		TextView lblDialogBaslik = ViewDialogBaslik.findViewById(R.id.lblDialogBaslik);
+		lblDialogBaslik.setTypeface(YaziFontu, Typeface.BOLD);
+		lblDialogBaslik.setText(new SpannableStringBuilder(Html.fromHtml(Baslik)));
+		lblDialogBaslik.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				AsyncResponse.AsyncTaskReturnValue("{\"Islem\":\"" + ButtonIslem + "\"}");
+			}
+		});
+
+		AlertDialog Dialog = new AlertDialog.Builder(activity)
+				.setCustomTitle(ViewDialogBaslik)
+				.setView(DialogLayoutContent)
+				.setNeutralButton(ButtonMsjText, null)
+				.setCancelable(false)
+				.create();
+
+		return Dialog;
+	}
+
+	@SuppressLint("InflateParams")
+	public AlertDialog H2ButtonCustomAlertDialog(Activity activity, String Baslik, String Mesaj, String Button1MsjText, final String Button1Islem, String Button2MsjText, final String Button2Islem) {
 		final Interface_AsyncResponse AsyncResponse = (Interface_AsyncResponse) activity;
 		LayoutInflater inflater = activity.getLayoutInflater();
 		View ViewDialogCustom;
@@ -1024,6 +1086,69 @@ public class AkorDefterimSys {
 
 		return new AlertDialog.Builder(activity)
 				.setView(ViewDialogCustom)
+				.setCancelable(false)
+				.create();
+	}
+
+	@SuppressLint("InflateParams")
+	public AlertDialog H2Button_TextInput_CustomAlertDialog(final Activity activity, String Baslik, final String txtDialogInputText, String txtDialogInputHint, final View DialogLayoutContent, String Button1MsjText, final String Button1Islem, String Button2MsjText, final String Button2Islem) {
+		final Interface_AsyncResponse AsyncResponse = (Interface_AsyncResponse) activity;
+		Typeface YaziFontu = FontGetir(activity, "anivers_regular");
+
+		TextView lblDialogBaslik = DialogLayoutContent.findViewById(R.id.lblDialogBaslik);
+		lblDialogBaslik.setTypeface(YaziFontu, Typeface.BOLD);
+		lblDialogBaslik.setText(new SpannableStringBuilder(Html.fromHtml(Baslik)));
+
+		final TextInputLayout txtILDialogInput = DialogLayoutContent.findViewById(R.id.txtILDialogInput);
+		txtILDialogInput.setTypeface(YaziFontu);
+
+		final EditText txtDialogInput = DialogLayoutContent.findViewById(R.id.txtDialogInput);
+		txtDialogInput.setTypeface(YaziFontu);
+		txtDialogInput.setText(txtDialogInputText);
+		txtDialogInput.setHint(txtDialogInputHint);
+
+		Button btnDialogButton1 = DialogLayoutContent.findViewById(R.id.btnDialogButton1);
+		btnDialogButton1.setTypeface(YaziFontu, Typeface.BOLD);
+		btnDialogButton1.setText(Button1MsjText);
+		btnDialogButton1.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				DialogKlavyeKapat(DialogLayoutContent);
+
+				txtDialogInput.setText(txtDialogInput.getText().toString().trim());
+				String Input = txtDialogInput.getText().toString();
+
+				if(TextUtils.isEmpty(Input)) {
+					txtILDialogInput.setError(activity.getString(R.string.hata_bos_alan));
+					txtDialogInput.requestFocus();
+					txtDialogInput.setSelection(txtDialogInput.length());
+				} else if(!isValid(Input, "SadeceSayiKucukHarfBuyukHarfBosluklu")) {
+					txtILDialogInput.setError(activity.getString(R.string.hata_format_sadece_sayi_kucukharf_buyukharf_bosluklu));
+					txtDialogInput.requestFocus();
+					txtDialogInput.setSelection(txtDialogInput.length());
+				} else txtILDialogInput.setError(null);
+
+				if(txtILDialogInput.getError() == null) {
+					UnFocusEditText(txtDialogInput);
+
+					AsyncResponse.AsyncTaskReturnValue("{\"Islem\":\"" + Button1Islem + "\", \"InputIcerik\":\"" + txtDialogInput.getText().toString() + "\", \"InputEskiIcerik\":\"" + txtDialogInputText + "\"}");
+				}
+			}
+		});
+
+		Button btnDialogButton2 = DialogLayoutContent.findViewById(R.id.btnDialogButton2);
+		btnDialogButton2.setTypeface(YaziFontu, Typeface.BOLD);
+		btnDialogButton2.setText(Button2MsjText);
+		btnDialogButton2.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				DialogKlavyeKapat(DialogLayoutContent);
+				AsyncResponse.AsyncTaskReturnValue("{\"Islem\":\"" + Button2Islem + "\"}");
+			}
+		});
+
+		return new AlertDialog.Builder(activity)
+				.setView(DialogLayoutContent)
 				.setCancelable(false)
 				.create();
 	}
@@ -1259,22 +1384,30 @@ public class AkorDefterimSys {
 
 	@SuppressLint("InflateParams")
 	public AlertDialog CustomAlertDialog(Activity activity, int Icon, String Baslik, View DialogLayoutContent, String OnayButtonMsjText, String IptalButtonMsjText, Boolean KapanabilirMi) {
-		LayoutInflater inflater = activity.getLayoutInflater();
-		View ViewDialogBaslik;
 		Resources res = activity.getResources();
 		Typeface YaziFontu = FontGetir(activity, "anivers_regular");
 
-		ViewDialogBaslik = inflater.inflate(R.layout.dialog_custom_baslik, null);
-
-		ImageView ImgDialogIcon = ViewDialogBaslik.findViewById(R.id.ImgDialogIcon);
+		ImageView ImgDialogIcon = DialogLayoutContent.findViewById(R.id.ImgDialogIcon);
 		ImgDialogIcon.setImageDrawable(res.getDrawable(Icon));
 
-		TextView lblDialogBaslik = ViewDialogBaslik.findViewById(R.id.lblDialogBaslik);
+		TextView lblDialogBaslik = DialogLayoutContent.findViewById(R.id.lblDialogBaslik);
 		lblDialogBaslik.setTypeface(YaziFontu, Typeface.BOLD);
 		lblDialogBaslik.setText(new SpannableStringBuilder(Html.fromHtml(Baslik)));
 
 		AlertDialog Dialog = new AlertDialog.Builder(activity)
-				.setCustomTitle(ViewDialogBaslik)
+				.setCustomTitle(DialogLayoutContent)
+				.setView(DialogLayoutContent)
+				.setPositiveButton(OnayButtonMsjText, null)
+				.setNegativeButton(IptalButtonMsjText, null)
+				.setCancelable(KapanabilirMi)
+				.create();
+
+		return Dialog;
+	}
+
+	@SuppressLint("InflateParams")
+	public AlertDialog CustomAlertDialog(Activity activity, View DialogLayoutContent, String OnayButtonMsjText, String IptalButtonMsjText, Boolean KapanabilirMi) {
+		AlertDialog Dialog = new AlertDialog.Builder(activity)
 				.setView(DialogLayoutContent)
 				.setPositiveButton(OnayButtonMsjText, null)
 				.setNegativeButton(IptalButtonMsjText, null)
@@ -1549,6 +1682,191 @@ public class AkorDefterimSys {
         }
     }
 
+	public void UnFocusAll(LinearLayout LLLayout, RelativeLayout RLLayout, FrameLayout FLLayout, CoordinatorLayout CoorLLayout, ConstraintLayout ConsLLayout) {
+		int count, txtILInputCount, FLLayoutCount;
+		View view1, view2, view3;
+
+		if(LLLayout != null) {
+			count = LLLayout.getChildCount();
+
+			for(int i = 0; i < count; i++) {
+				view1 = LLLayout.getChildAt(i);
+
+				if (view1 instanceof TextInputLayout) {
+					TextInputLayout txtILInput = (TextInputLayout) view1;
+					txtILInput.setError(null);
+
+					txtILInputCount = txtILInput.getChildCount();
+
+					for(int x = 0; x < txtILInputCount; x++) {
+						view2 = txtILInput.getChildAt(x);
+
+						if (view2 instanceof FrameLayout) {
+							FrameLayout mFrameLayout = (FrameLayout) view2;
+							FLLayoutCount = mFrameLayout.getChildCount();
+
+							for(int y = 0; y < FLLayoutCount; y++) {
+								view3 = mFrameLayout.getChildAt(y);
+
+								if (view3 instanceof EditText) {
+									EditText txtInput = (EditText) view3;
+									UnFocusEditText(txtInput);
+								}
+							}
+						}
+					}
+				} else if (view1 instanceof EditText) {
+					EditText txtInput = (EditText) view1;
+					UnFocusEditText(txtInput);
+				}
+			}
+		}
+
+		if(RLLayout != null) {
+			count = RLLayout.getChildCount();
+
+			for(int i = 0; i < count; i++) {
+				view1 = RLLayout.getChildAt(i);
+
+				if (view1 instanceof TextInputLayout) {
+					TextInputLayout txtILInput = (TextInputLayout) view1;
+					txtILInput.setError(null);
+
+					txtILInputCount = txtILInput.getChildCount();
+
+					for(int x = 0; x < txtILInputCount; x++) {
+						view2 = txtILInput.getChildAt(x);
+
+						if (view2 instanceof FrameLayout) {
+							FrameLayout mFrameLayout = (FrameLayout) view2;
+							FLLayoutCount = mFrameLayout.getChildCount();
+
+							for(int y = 0; y < FLLayoutCount; y++) {
+								view3 = mFrameLayout.getChildAt(y);
+
+								if (view3 instanceof EditText) {
+									EditText txtInput = (EditText) view3;
+									UnFocusEditText(txtInput);
+								}
+							}
+						}
+					}
+				} else if (view1 instanceof EditText) {
+					EditText txtInput = (EditText) view1;
+					UnFocusEditText(txtInput);
+				}
+			}
+		}
+
+		if(FLLayout != null) {
+			count = FLLayout.getChildCount();
+
+			for(int i = 0; i < count; i++) {
+				view1 = FLLayout.getChildAt(i);
+
+				if (view1 instanceof TextInputLayout) {
+					TextInputLayout txtILInput = (TextInputLayout) view1;
+					txtILInput.setError(null);
+
+					txtILInputCount = txtILInput.getChildCount();
+
+					for(int x = 0; x < txtILInputCount; x++) {
+						view2 = txtILInput.getChildAt(x);
+
+						if (view2 instanceof FrameLayout) {
+							FrameLayout mFrameLayout = (FrameLayout) view2;
+							FLLayoutCount = mFrameLayout.getChildCount();
+
+							for(int y = 0; y < FLLayoutCount; y++) {
+								view3 = mFrameLayout.getChildAt(y);
+
+								if (view3 instanceof EditText) {
+									EditText txtInput = (EditText) view3;
+									UnFocusEditText(txtInput);
+								}
+							}
+						}
+					}
+				} else if (view1 instanceof EditText) {
+					EditText txtInput = (EditText) view1;
+					UnFocusEditText(txtInput);
+				}
+			}
+		}
+
+		if(CoorLLayout != null) {
+			count = CoorLLayout.getChildCount();
+
+			for(int i = 0; i < count; i++) {
+				view1 = CoorLLayout.getChildAt(i);
+
+				if (view1 instanceof TextInputLayout) {
+					TextInputLayout txtILInput = (TextInputLayout) view1;
+					txtILInput.setError(null);
+
+					txtILInputCount = txtILInput.getChildCount();
+
+					for(int x = 0; x < txtILInputCount; x++) {
+						view2 = txtILInput.getChildAt(x);
+
+						if (view2 instanceof FrameLayout) {
+							FrameLayout mFrameLayout = (FrameLayout) view2;
+							FLLayoutCount = mFrameLayout.getChildCount();
+
+							for(int y = 0; y < FLLayoutCount; y++) {
+								view3 = mFrameLayout.getChildAt(y);
+
+								if (view3 instanceof EditText) {
+									EditText txtInput = (EditText) view3;
+									UnFocusEditText(txtInput);
+								}
+							}
+						}
+					}
+				} else if (view1 instanceof EditText) {
+					EditText txtInput = (EditText) view1;
+					UnFocusEditText(txtInput);
+				}
+			}
+		}
+
+		if(ConsLLayout != null) {
+			count = ConsLLayout.getChildCount();
+
+			for(int i = 0; i < count; i++) {
+				view1 = ConsLLayout.getChildAt(i);
+
+				if (view1 instanceof TextInputLayout) {
+					TextInputLayout txtILInput = (TextInputLayout) view1;
+					txtILInput.setError(null);
+
+					txtILInputCount = txtILInput.getChildCount();
+
+					for(int x = 0; x < txtILInputCount; x++) {
+						view2 = txtILInput.getChildAt(x);
+
+						if (view2 instanceof FrameLayout) {
+							FrameLayout mFrameLayout = (FrameLayout) view2;
+							FLLayoutCount = mFrameLayout.getChildCount();
+
+							for(int y = 0; y < FLLayoutCount; y++) {
+								view3 = mFrameLayout.getChildAt(y);
+
+								if (view3 instanceof EditText) {
+									EditText txtInput = (EditText) view3;
+									UnFocusEditText(txtInput);
+								}
+							}
+						}
+					}
+				} else if (view1 instanceof EditText) {
+					EditText txtInput = (EditText) view1;
+					UnFocusEditText(txtInput);
+				}
+			}
+		}
+	}
+
     @SuppressWarnings({"EmptyTryBlock", "ResultOfMethodCallIgnored"})
 	public void IntentGetir(String[] Data) {
 		/*
@@ -1673,6 +1991,44 @@ public class AkorDefterimSys {
 		return RandomStringUtils.random(Uzunluk, Karakterler);
 	}
 
+	public void SosyalMedyaSarkiPaylas(String Platform, String Baslik, String Icerik, String URL) {
+		switch (Platform) {
+			case "Google":
+				Intent shareIntent = new PlusShare.Builder(activity)
+						.setType("text/plain")
+						.setText(Baslik + "\n\n" + Icerik)
+						.setContentUrl(Uri.parse(URL))
+						.getIntent();
+
+				activity.startActivityForResult(shareIntent, 0);
+
+				break;
+			case "Facebook":
+				ShareDialog shareDialog = new ShareDialog(activity);
+
+				if (ShareDialog.canShow(ShareLinkContent.class)) {
+					shareDialog.show(new ShareLinkContent.Builder()
+							.setContentTitle(Baslik)
+							.setImageUrl(Uri.parse("https://www.cbcapp.net/wp-content/uploads/2016/12/AkorDefterimLogo.png"))
+							.setContentDescription(Icerik)
+							.setContentUrl(Uri.parse(URL))
+							.setShareHashtag(new ShareHashtag.Builder()
+									.setHashtag("#AkorDefterim")
+									.build())
+							.build(), ShareDialog.Mode.AUTOMATIC);
+				}
+
+				break;
+		}
+	}
+
+	public void txtInputHataMesajiGoster(InputMethodManager imm, TextInputLayout txtILInput, EditText txtInput, String Mesaj) {
+		txtILInput.setError(Mesaj);
+		txtInput.requestFocus();
+		txtInput.setSelection(txtInput.length());
+		imm.showSoftInput(txtInput, 0);
+	}
+
 	// PHP İŞLEMLERİ - Retrofit 2
 
 	public void TarihSaatGetir(final String Islem) {
@@ -1766,6 +2122,28 @@ public class AkorDefterimSys {
 			@Override
 			public void onFailure(Call<SnfIslemSonuc> call, Throwable t) {
 				AsyncResponse.AsyncTaskReturnValue("{\"Islem\":\"SMSGonder\", \"Sonuc\":false}");
+			}
+		});
+	}
+
+	public void AnasayfaGetir() {
+		RetrofitInterface retrofitInterface = RetrofitServiceGenerator.createService(activity, RetrofitInterface.class);
+		final Interface_AsyncResponse AsyncResponse = (Interface_AsyncResponse) activity;
+
+		final Call<SnfAnasayfaGetir> snfAnasayfaGetirCall = retrofitInterface.AnasayfaGetir();
+		snfAnasayfaGetirCall.enqueue(new Callback<SnfAnasayfaGetir>() {
+			@Override
+			public void onResponse(Call<SnfAnasayfaGetir> call, Response<SnfAnasayfaGetir> response) {
+				if(response.isSuccessful()) {
+					SnfAnasayfaGetir snfAnasayfaGetir = response.body();
+
+					AsyncResponse.AsyncTaskReturnValue("{\"Islem\":\"AnasayfaGetir\", \"Sonuc\":true, \"SarkiListesi\":" + snfAnasayfaGetir.getSarkiListesi() + "}");
+				} else AsyncResponse.AsyncTaskReturnValue("{\"Islem\":\"AnasayfaGetir\", \"Sonuc\":false}");
+			}
+
+			@Override
+			public void onFailure(Call<SnfAnasayfaGetir> call, Throwable t) {
+				AsyncResponse.AsyncTaskReturnValue("{\"Islem\":\"AnasayfaGetir\", \"Sonuc\":false}");
 			}
 		});
 	}
@@ -1911,30 +2289,129 @@ public class AkorDefterimSys {
 		});
 	}
 
-	/*public void HesapParolaDegistir(String mEPosta, String mParola, String mParolaSHA1) {
+	public void KategoriListesiGetir(String mStrTumu) {
 		RetrofitInterface retrofitInterface = RetrofitServiceGenerator.createService(activity, RetrofitInterface.class);
 		final Interface_AsyncResponse AsyncResponse = (Interface_AsyncResponse) activity;
 
-		Call<SnfIslemSonuc> snfIslemSonucCall = retrofitInterface.HesapParolaDegistir(mEPosta, mParola, mParolaSHA1);
-		snfIslemSonucCall.enqueue(new Callback<SnfIslemSonuc>() {
+		Call<SnfKategoriListesiGetir> snfKategoriListesiGetirCall = retrofitInterface.KategoriListesiGetir(mStrTumu);
+		snfKategoriListesiGetirCall.enqueue(new Callback<SnfKategoriListesiGetir>() {
 			@Override
-			public void onResponse(Call<SnfIslemSonuc> call, Response<SnfIslemSonuc> response) {
+			public void onResponse(Call<SnfKategoriListesiGetir> call, Response<SnfKategoriListesiGetir> response) {
 				if(response.isSuccessful()) {
-					SnfIslemSonuc snfIslemSonuc = response.body();
+					SnfKategoriListesiGetir snfKategoriListesiGetir = response.body();
 
-					// getHata'nin false olması durumu hata yok demektir..
-					if(!snfIslemSonuc.getHata())
-						AsyncResponse.AsyncTaskReturnValue("{\"Islem\":\"HesapParolaDegistir\", \"Sonuc\":" + snfIslemSonuc.getSonuc() + "}");
-					else AsyncResponse.AsyncTaskReturnValue("{\"Islem\":\"HesapParolaDegistir\", \"Sonuc\":false}");
-				} else AsyncResponse.AsyncTaskReturnValue("{\"Islem\":\"HesapParolaDegistir\", \"Sonuc\":false}");
+					AsyncResponse.AsyncTaskReturnValue("{\"Islem\":\"KategoriListesiGetir\", \"Sonuc\":true, \"KategoriListesi\":" + snfKategoriListesiGetir.getKategoriListesi() + "}");
+				} else AsyncResponse.AsyncTaskReturnValue("{\"Islem\":\"KategoriListesiGetir\", \"Sonuc\":false}");
 			}
 
 			@Override
-			public void onFailure(Call<SnfIslemSonuc> call, Throwable t) {
-				AsyncResponse.AsyncTaskReturnValue("{\"Islem\":\"HesapParolaDegistir\", \"Sonuc\":false}");
+			public void onFailure(Call<SnfKategoriListesiGetir> call, Throwable t) {
+				AsyncResponse.AsyncTaskReturnValue("{\"Islem\":\"KategoriListesiGetir\", \"Sonuc\":false}");
 			}
 		});
-	}*/
+	}
+
+	public void TarzListesiGetir(String mStrTumu) {
+		RetrofitInterface retrofitInterface = RetrofitServiceGenerator.createService(activity, RetrofitInterface.class);
+		final Interface_AsyncResponse AsyncResponse = (Interface_AsyncResponse) activity;
+
+		Call<SnfTarzListesiGetir> snfTarzListesiGetirCall = retrofitInterface.TarzListesiGetir(mStrTumu);
+		snfTarzListesiGetirCall.enqueue(new Callback<SnfTarzListesiGetir>() {
+			@Override
+			public void onResponse(Call<SnfTarzListesiGetir> call, Response<SnfTarzListesiGetir> response) {
+				if(response.isSuccessful()) {
+					SnfTarzListesiGetir snfTarzListesiGetir = response.body();
+
+					AsyncResponse.AsyncTaskReturnValue("{\"Islem\":\"TarzListesiGetir\", \"Sonuc\":true, \"TarzListesi\":" + snfTarzListesiGetir.getTarzListesi() + "}");
+				} else AsyncResponse.AsyncTaskReturnValue("{\"Islem\":\"TarzListesiGetir\", \"Sonuc\":false}");
+			}
+
+			@Override
+			public void onFailure(Call<SnfTarzListesiGetir> call, Throwable t) {
+				AsyncResponse.AsyncTaskReturnValue("{\"Islem\":\"TarzListesiGetir\", \"Sonuc\":false}");
+			}
+		});
+	}
+
+	public void SarkiListesiGetir(Veritabani veritabani, final String mListeID, String mKategoriID, String mTarzID, final String mListelemeTipi) {
+		RetrofitInterface retrofitInterface = RetrofitServiceGenerator.createService(activity, RetrofitInterface.class);
+		final Interface_AsyncResponse AsyncResponse = (Interface_AsyncResponse) activity;
+
+		if(mListeID.equals("0")) {
+			Call<SnfSarkiListesiGetir> snfSarkiListesiGetirCall = retrofitInterface.SarkiListesiGetir(mKategoriID, mTarzID, mListelemeTipi);
+			snfSarkiListesiGetirCall.enqueue(new Callback<SnfSarkiListesiGetir>() {
+				@Override
+				public void onResponse(Call<SnfSarkiListesiGetir> call, Response<SnfSarkiListesiGetir> response) {
+					if(response.isSuccessful()) {
+						SnfSarkiListesiGetir snfSarkiListesiGetir = response.body();
+
+						AsyncResponse.AsyncTaskReturnValue("{\"Islem\":\"SarkiListesiGetir\", \"Sonuc\":true, \"ListeID\":\"" + mListeID + "\",  \"ListelemeTipi\":\"" + mListelemeTipi + "\", \"SarkiListesi\":" + snfSarkiListesiGetir.getSarkiListesi() + "}");
+					} else AsyncResponse.AsyncTaskReturnValue("{\"Islem\":\"SarkiListesiGetir\", \"Sonuc\":false}");
+				}
+
+				@Override
+				public void onFailure(Call<SnfSarkiListesiGetir> call, Throwable t) {
+					AsyncResponse.AsyncTaskReturnValue("{\"Islem\":\"SarkiListesiGetir\", \"Sonuc\":false}");
+				}
+			});
+		} else {
+			List<SnfSarkilar> snfSarkilar = veritabani.lst_SarkiGetir(Integer.parseInt(mListeID), Integer.parseInt(mKategoriID), Integer.parseInt(mTarzID), Integer.parseInt(mListelemeTipi));
+
+			if(snfSarkilar.size() > 0) {
+				JSONObject JSONSarki = new JSONObject();
+				JSONArray JSONArrSarkilar = new JSONArray();
+
+				for(int i = 0; i < snfSarkilar.size(); i++) {
+					try {
+						JSONSarki.put("id", snfSarkilar.get(i).getId());
+						JSONSarki.put("TarzID", snfSarkilar.get(i).getTarzID());
+						JSONSarki.put("KategoriID", snfSarkilar.get(i).getKategoriID());
+						JSONSarki.put("SanatciAdi", snfSarkilar.get(i).getSanatciAdi());
+						JSONSarki.put("SarkiAdi", snfSarkilar.get(i).getSarkiAdi());
+
+						JSONArrSarkilar.put(JSONSarki);
+					} catch (JSONException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+				}
+
+				AsyncResponse.AsyncTaskReturnValue("{\"Islem\":\"SarkiListesiGetir\", \"Sonuc\":true, \"ListeID\":\"" + mListeID + "\",  \"ListelemeTipi\":\"" + mListelemeTipi + "\", \"SarkiListesi\":" + JSONArrSarkilar.toString() + "}");
+			} else AsyncResponse.AsyncTaskReturnValue("{\"Islem\":\"SarkiListesiGetir\", \"Sonuc\":false}");
+		}
+	}
+
+	public void SarkiGetir(Veritabani veritabani, final String mListeID, final String mSarkiID, final String mSanatciAdi, final String mSarkiAdi) {
+		RetrofitInterface retrofitInterface = RetrofitServiceGenerator.createService(activity, RetrofitInterface.class);
+		final Interface_AsyncResponse AsyncResponse = (Interface_AsyncResponse) activity;
+
+		if(mListeID.equals("0")) {
+			Call<SnfSarkiGetir> snfSarkiGetirCall = retrofitInterface.SarkiGetir(mSarkiID);
+			snfSarkiGetirCall.enqueue(new Callback<SnfSarkiGetir>() {
+				@Override
+				public void onResponse(Call<SnfSarkiGetir> call, Response<SnfSarkiGetir> response) {
+					if(response.isSuccessful()) {
+						SnfSarkiGetir snfSarkiGetir = response.body();
+
+						// getHata'nin false olması durumu hata yok demektir..
+						if(!snfSarkiGetir.getHata())
+							AsyncResponse.AsyncTaskReturnValue("{\"Islem\":\"SarkiGetir\", \"Sonuc\":" + snfSarkiGetir.getSonuc() + ", \"SarkiID\":" + Integer.parseInt(mSarkiID) + ", \"ListeID\":" + Integer.parseInt(mListeID) + ", \"SanatciAdi\":\"" + mSanatciAdi + "\", \"SarkiAdi\":\"" + mSarkiAdi + "\", \"Icerik\":\"" + snfSarkiGetir.getIcerik().replace("\"","\\\"") + "\"}");
+						else AsyncResponse.AsyncTaskReturnValue("{\"Islem\":\"SarkiGetir\", \"Sonuc\":false}");
+					} else AsyncResponse.AsyncTaskReturnValue("{\"Islem\":\"SarkiGetir\", \"Sonuc\":false}");
+				}
+
+				@Override
+				public void onFailure(Call<SnfSarkiGetir> call, Throwable t) {
+					AsyncResponse.AsyncTaskReturnValue("{\"Islem\":\"SarkiGetir\", \"Sonuc\":false}");
+				}
+			});
+		} else {
+			if (veritabani.CihazdaSecilenSarkiVarMi(Integer.parseInt(mSarkiID))) {
+				AsyncResponse.AsyncTaskReturnValue("{\"Islem\":\"SarkiGetir\", \"Sonuc\":true, \"SarkiID\":" + Integer.parseInt(mSarkiID) + ", \"ListeID\":" + Integer.parseInt(mListeID) + ", \"SanatciAdi\":\"" + mSanatciAdi + "\", \"SarkiAdi\":\"" + mSarkiAdi + "\", \"Icerik\":\"" + veritabani.SarkiIcerikGetir(Integer.parseInt(mSarkiID)).replace("\"","\\\"") + "\"}");
+			} else AsyncResponse.AsyncTaskReturnValue("{\"Islem\":\"SarkiGetir\", \"Sonuc\":false}");
+		}
+	}
+
 
 
 
@@ -2097,41 +2574,45 @@ public class AkorDefterimSys {
 		}
 	}
 
-	public void YeniSurumYeniliklerDialog(int GecerliVersiyonCode, String GecerliVersiyonAdi) {
-		sharedPref = activity.getSharedPreferences(PrefAdi, MODE_PRIVATE);
+	public void YeniSurumYeniliklerDialog() {
+		try {
+			int GecerliVersiyonCode = activity.getPackageManager().getPackageInfo(activity.getPackageName(), 0).versionCode;
+			String GecerliVersiyonAdi = activity.getPackageManager().getPackageInfo(activity.getPackageName(), 0).versionName;
+			sharedPref = activity.getSharedPreferences(PrefAdi, MODE_PRIVATE);
 
-		if (GecerliVersiyonCode > sharedPref.getInt("prefEskiVersiyonCode", 1)) {
-			Typeface YaziFontu = FontGetir(activity, "anivers_regular");
-			LayoutInflater inflater = activity.getLayoutInflater();
-			View ViewDialogContent = inflater.inflate(R.layout.dialog_uygulama_yenilikler, null);
+			if (GecerliVersiyonCode > sharedPref.getInt("prefEskiVersiyonCode", 1)) {
+				Typeface YaziFontu = FontGetir(activity, "anivers_regular");
+				LayoutInflater inflater = activity.getLayoutInflater();
+				View ViewDialogContent = inflater.inflate(R.layout.dialog_uygulama_yenilikler, null);
 
-			ADDialog = CustomAlertDialog(activity, R.mipmap.ic_launcher, activity.getString(R.string.yenilikler), ViewDialogContent, activity.getString(R.string.tamam));
-			ADDialog.getWindow().getAttributes().windowAnimations = R.style.DialogAnimation;
+				ADDialog = CustomAlertDialog(activity,
+						activity.getString(R.string.yenilikler),
+						ViewDialogContent,
+						activity.getString(R.string.tamam),
+						"ADDialog_Kapat");
+				ADDialog.getWindow().getAttributes().windowAnimations = R.style.DialogAnimation;
 
-			TextView Dialog_lblVersiyonNo = ViewDialogContent.findViewById(R.id.Dialog_lblVersiyonNo);
-			Dialog_lblVersiyonNo.setTypeface(YaziFontu);
-			Dialog_lblVersiyonNo.setText(String.valueOf("v").concat(GecerliVersiyonAdi));
+				TextView Dialog_lblVersiyonNo = ViewDialogContent.findViewById(R.id.Dialog_lblVersiyonNo);
+				Dialog_lblVersiyonNo.setTypeface(YaziFontu);
+				Dialog_lblVersiyonNo.setText(String.format("%s%s", "v", GecerliVersiyonAdi));
 
-			TextView Dialog_lblYenilikler = ViewDialogContent.findViewById(R.id.Dialog_lblYenilikler);
-			Dialog_lblYenilikler.setTypeface(YaziFontu);
+				TextView Dialog_lblYenilikler = ViewDialogContent.findViewById(R.id.Dialog_lblYenilikler);
+				Dialog_lblYenilikler.setTypeface(YaziFontu);
 
-			TextView Dialog_lblYenilikler_Icerik = ViewDialogContent.findViewById(R.id.Dialog_lblYenilikler_Icerik);
-			Dialog_lblYenilikler_Icerik.setTypeface(YaziFontu);
-			Dialog_lblYenilikler_Icerik.setText(activity.getString(R.string.yenilikler_icerik));
-			Dialog_lblYenilikler_Icerik.setMovementMethod(ScrollingMovementMethod.getInstance());
+				TextView Dialog_lblYenilikler_Icerik = ViewDialogContent.findViewById(R.id.Dialog_lblYenilikler_Icerik);
+				Dialog_lblYenilikler_Icerik.setTypeface(YaziFontu);
+				Dialog_lblYenilikler_Icerik.setText(activity.getString(R.string.yenilikler_icerik));
+				setTextViewHTML(Dialog_lblYenilikler_Icerik);
+				Dialog_lblYenilikler_Icerik.setMovementMethod(ScrollingMovementMethod.getInstance());
 
-			ADDialog.show();
+				ADDialog.show();
 
-			ADDialog.getButton(AlertDialog.BUTTON_NEUTRAL).setOnClickListener(new View.OnClickListener() {
-				@Override
-				public void onClick(View v) {
-					ADDialog.cancel();
-				}
-			});
-
-			sharedPrefEditor = sharedPref.edit();
-			sharedPrefEditor.putInt("prefEskiVersiyonCode", GecerliVersiyonCode);
-			sharedPrefEditor.apply();
+				sharedPrefEditor = sharedPref.edit();
+				sharedPrefEditor.putInt("prefEskiVersiyonCode", GecerliVersiyonCode);
+				sharedPrefEditor.apply();
+			}
+		} catch (PackageManager.NameNotFoundException e) {
+			e.printStackTrace();
 		}
 	}
 
@@ -2916,17 +3397,28 @@ public class AkorDefterimSys {
         LayoutInflater inflater = activity.getLayoutInflater();
         View ViewDialogContent = inflater.inflate(R.layout.dialog_akor_gosterici, null);
 
-        final AlertDialog ADDialogAkorGosterici = CustomAlertDialog(activity, R.mipmap.ic_launcher, activity.getString(R.string.akor_cetveli, SecilenAkor.equals("") ? "" : " - " + SecilenAkor + " " + activity.getString(R.string.akoru)), ViewDialogContent, activity.getString(R.string.kapat));
+        final AlertDialog ADDialogAkorGosterici = CustomAlertDialog(activity, R.mipmap.ic_launcher, activity.getString(R.string.akor_cetveli), ViewDialogContent, activity.getString(R.string.kapat));
         ADDialogAkorGosterici.getWindow().getAttributes().windowAnimations = R.style.DialogAnimation;
+
+		final LinearLayout Dialog_LLAkorCetveli = ViewDialogContent.findViewById(R.id.Dialog_LLAkorCetveli);
+
+		final ConstraintLayout Dialog_CLAkorCetveli = ViewDialogContent.findViewById(R.id.Dialog_CLAkorCetveli);
+		Dialog_CLAkorCetveli.getLayoutParams().height = ADDialogAkorGosterici.getWindow().getWindowManager().getDefaultDisplay().getHeight() - 750;
+
+		final Guideline v_guideline2 = ViewDialogContent.findViewById(R.id.v_guideline2);
 
 		TextView Dialog_txtTon = ViewDialogContent.findViewById(R.id.Dialog_txtTon);
 		Dialog_txtTon.setTypeface(YaziFontu, Typeface.BOLD);
 
+		final ListView Dialog_lstTonlar = ViewDialogContent.findViewById(R.id.Dialog_lstTonlar);
+
 		TextView Dialog_txtAkor = ViewDialogContent.findViewById(R.id.Dialog_txtAkor);
 		Dialog_txtAkor.setTypeface(YaziFontu, Typeface.BOLD);
 
-        final ListView Dialog_lstTonlar = ViewDialogContent.findViewById(R.id.Dialog_lstTonlar);
         final ListView Dialog_lstAkorlar = ViewDialogContent.findViewById(R.id.Dialog_lstAkorlar);
+
+		final ScrollView Dialog_SVGitarKlavye = ViewDialogContent.findViewById(R.id.Dialog_SVGitarKlavye);
+
         final ImageView Dialog_ImgGitarKlavye = ViewDialogContent.findViewById(R.id.Dialog_ImgGitarKlavye);
 		
 		String SecilenTon;
@@ -3014,7 +3506,7 @@ public class AkorDefterimSys {
         }
 
 		Dialog_ImgGitarKlavye.setImageBitmap(GitarUzerindeAkorGetir(activity, ADDialogAkorGosterici, YaziFontu, SecilenAkorDizisi[0]));
-        Dialog_ImgGitarKlavye.setScaleType(ImageView.ScaleType.FIT_XY);
+		Dialog_ImgGitarKlavye.setScaleType(ImageView.ScaleType.FIT_START);
 
 		final AdpTonlar AdpTonlar2 = AdpTonlar;
 		final AdpAkorlar[] AdpAkorlar2 = {AdpAkorlar};
@@ -3049,8 +3541,8 @@ public class AkorDefterimSys {
 					AdpAkorlar2[0] = new AdpAkorlar(activity, snfAkorlar);
 					Dialog_lstAkorlar.setAdapter(AdpAkorlar2[0]);
 
-					Dialog_ImgGitarKlavye.setImageBitmap(GitarUzerindeAkorGetir(activity, ADDialogAkorGosterici, YaziFontu, SecilenAkorDizisi[0]));
-					Dialog_ImgGitarKlavye.setScaleType(ImageView.ScaleType.FIT_XY);
+					Dialog_ImgGitarKlavye.setImageBitmap(ImageScaleToFitWidth(GitarUzerindeAkorGetir(activity, ADDialogAkorGosterici, YaziFontu, SecilenAkorDizisi[0]), Dialog_LLAkorCetveli.getWidth()));
+					Dialog_ImgGitarKlavye.setScaleType(ImageView.ScaleType.FIT_START);
 				} catch (JSONException e) {
 					e.printStackTrace();
 				}
@@ -3064,10 +3556,8 @@ public class AkorDefterimSys {
 
 				String AkorDizi = snfAkorlar.get(position).getDizi();
 
-				//ToastMsj(activity, AkorDizi, Toast.LENGTH_SHORT);
-
-                Dialog_ImgGitarKlavye.setImageBitmap(GitarUzerindeAkorGetir(activity, ADDialogAkorGosterici, YaziFontu, AkorDizi));
-                Dialog_ImgGitarKlavye.setScaleType(ImageView.ScaleType.FIT_XY);
+				Dialog_ImgGitarKlavye.setImageBitmap(ImageScaleToFitWidth(GitarUzerindeAkorGetir(activity, ADDialogAkorGosterici, YaziFontu, AkorDizi), Dialog_LLAkorCetveli.getWidth()));
+				Dialog_ImgGitarKlavye.setScaleType(ImageView.ScaleType.FIT_START);
 			}
 		});
 
@@ -3083,7 +3573,111 @@ public class AkorDefterimSys {
 		if(!AkorBulunduMu) ToastMsj(activity, activity.getString(R.string.akor_bulunamadi), Toast.LENGTH_LONG);
 	}
 
-	private String JSONTonAkorGetir(int i) {
+	public Boolean SecilenStringAkorMu(String SecilenString) {
+		Boolean AkorBulunduMu = false;
+
+		try {
+			String SecilenTon = SecilenString.substring(0,1); // Seçilen akor içindeki ilk karakter alınıyor..
+			JSONArray JSONArrTonlar;
+			JSONArray JSONArrAkorlar;
+			int SecilenTonNo = 0;
+
+			// Alınan ilk karakter yani akor tonu A,B,C,D,E,F,G tonlarından birisiyse (Yani ton ise)
+			if(SecilenTon.equals("A") || SecilenTon.equals("B") || SecilenTon.equals("C") || SecilenTon.equals("D") || SecilenTon.equals("E") || SecilenTon.equals("F") || SecilenTon.equals("G")) {
+				if(SecilenString.length() > 1) {
+					if(SecilenString.substring(1,2).equals("#")) { // Seçilen akor'un ikinci karakteri alınıyor ve alınan karakter # ise
+						SecilenTon = SecilenString.substring(0,2);
+
+						switch (SecilenTon) {
+							case "A#":
+								SecilenTonNo = 1;
+								break;
+							case "C#":
+								SecilenTonNo = 4;
+								break;
+							case "D#":
+								SecilenTonNo = 6;
+								break;
+							case "F#":
+								SecilenTonNo = 9;
+								break;
+							case "G#":
+								SecilenTonNo = 11;
+								break;
+						}
+					} else { // Seçilen akor'un ikinci karakteri # değilse
+						switch (SecilenTon) {
+							case "A":
+								SecilenTonNo = 0;
+								break;
+							case "B":
+								SecilenTonNo = 2;
+								break;
+							case "C":
+								SecilenTonNo = 3;
+								break;
+							case "D":
+								SecilenTonNo = 5;
+								break;
+							case "E":
+								SecilenTonNo = 7;
+								break;
+							case "F":
+								SecilenTonNo = 8;
+								break;
+							case "G":
+								SecilenTonNo = 10;
+								break;
+						}
+					}
+				} else {
+					switch (SecilenTon) {
+						case "A":
+							SecilenTonNo = 0;
+							break;
+						case "B":
+							SecilenTonNo = 2;
+							break;
+						case "C":
+							SecilenTonNo = 3;
+							break;
+						case "D":
+							SecilenTonNo = 5;
+							break;
+						case "E":
+							SecilenTonNo = 7;
+							break;
+						case "F":
+							SecilenTonNo = 8;
+							break;
+						case "G":
+							SecilenTonNo = 10;
+							break;
+					}
+				}
+
+				JSONArrTonlar = new JSONArray(new JSONObject(new JSONObject(JSONTonAkorGetir(SecilenTonNo)).getString("AkorCetveli")).getString("Tonlar"));
+				JSONArrAkorlar = new JSONArray(new JSONObject(JSONArrTonlar.getString(0)).getString("Akorlari"));
+				String Akor;
+
+				for(int i = 0; i < JSONArrAkorlar.length(); i++) {
+					Akor = new JSONObject(JSONArrAkorlar.getString(i)).getString("AkorAdi");
+
+					if(SecilenString.equals(Akor)) {
+						AkorBulunduMu = true;
+						break;
+					}
+				}
+			}
+		} catch (JSONException e) {
+			e.printStackTrace();
+		}
+
+		return AkorBulunduMu;
+	}
+
+	@Contract(pure = true)
+	public String JSONTonAkorGetir(int i) {
 		String JSONTonAkorData = null;
 
 		switch (i){
@@ -5012,6 +5606,16 @@ public class AkorDefterimSys {
 		return JSONTonAkorData;
 	}
 
+	public Bitmap ImageScaleToFitWidth(Bitmap b, int width) {
+		float factor = width / (float) b.getWidth();
+		return Bitmap.createScaledBitmap(b, width, (int) (b.getHeight() * factor), true);
+	}
+
+	public Bitmap ImageScaleToFitHeight(Bitmap b, int height) {
+		float factor = height / (float) b.getHeight();
+		return Bitmap.createScaledBitmap(b, (int) (b.getWidth() * factor), height, true);
+	}
+
 	private Bitmap GitarUzerindeAkorGetir(Activity activity, AlertDialog ADDialogAkorGosterici, Typeface YaziFontu, String AkorDizi) {
 		/** Gitar Klavye Grafik Değişkenleri **/
 		int EkranWidth = activity.getWindowManager().getDefaultDisplay().getWidth();
@@ -5023,7 +5627,7 @@ public class AkorDefterimSys {
 		int BaslangicPerdesiKalinligi = 40;
 
 		int ToplamFredSayisi = 20;
-		int FredlerArasiMesafe = 175;
+		int FredlerArasiMesafe = 250;
 		int FredKalinligi = 20;
 
 		int ToplamTelSayisi = 6;
@@ -5351,4 +5955,41 @@ public class AkorDefterimSys {
 		rootView.setDrawingCacheEnabled(true);
 		return rootView.getDrawingCache();
 	}*/
+
+	@RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
+	public void circleReveal(int viewID, int posFromRight, boolean containsOverflow, final boolean isShow) {
+		final View myView = activity.findViewById(viewID);
+
+		int width = myView.getWidth();
+
+		if(posFromRight > 0) width -= (posFromRight * activity.getResources().getDimensionPixelSize(R.dimen.abc_action_button_min_width_material))-(activity.getResources().getDimensionPixelSize(R.dimen.abc_action_button_min_width_material)/ 2);
+
+		if(containsOverflow) width -= activity.getResources().getDimensionPixelSize(R.dimen.abc_action_button_min_width_overflow_material);
+
+		int cx = width;
+		int cy = myView.getHeight()/2;
+
+		Animator anim;
+		if(isShow) anim = ViewAnimationUtils.createCircularReveal(myView, cx, cy, 0,(float)width);
+		else anim = ViewAnimationUtils.createCircularReveal(myView, cx, cy, (float)width, 0);
+
+		anim.setDuration((long)220);
+
+		// make the view invisible when the animation is done
+		anim.addListener(new AnimatorListenerAdapter() {
+			@Override
+			public void onAnimationEnd(Animator animation) {
+				if(!isShow) {
+					super.onAnimationEnd(animation);
+					myView.setVisibility(View.INVISIBLE);
+				}
+			}
+		});
+
+		// make the view visible and start the animation
+		if(isShow) myView.setVisibility(View.VISIBLE);
+
+		// start the animation
+		anim.start();
+	}
 }

@@ -61,15 +61,15 @@ public class AdpTonlar extends BaseAdapter {
 			satirView = inflater.inflate(R.layout.lsttonlarakorlar_satir, null);
 			
 			holder = new ViewHolder();
-			holder.LLTonAdiAkorAdi = (LinearLayout) satirView.findViewById(R.id.LLTonAdiAkorAdi);
+			holder.LLTonAdiAkorAdi = satirView.findViewById(R.id.LLTonAdiAkorAdi);
 
-            holder.txtTonAdiAkorAdi = (TextView) satirView.findViewById(R.id.txtTonAdiAkorAdi);
+            holder.txtTonAdiAkorAdi = satirView.findViewById(R.id.txtTonAdiAkorAdi);
             holder.txtTonAdiAkorAdi.setTypeface(YaziFontu, Typeface.NORMAL);
             satirView.setTag(holder);
 	    } else holder = (ViewHolder) satirView.getTag();
 
 		if(snfTonlar.get(position).getSecim()) {
-			holder.LLTonAdiAkorAdi.setBackgroundColor(activity.getResources().getColor(R.color.AcikMavi));
+			holder.LLTonAdiAkorAdi.setBackgroundColor(activity.getResources().getColor(R.color.KoyuMavi2));
 			holder.txtTonAdiAkorAdi.setTextColor(activity.getResources().getColor(R.color.Beyaz));
 		}
 		else {

@@ -1,11 +1,16 @@
 package com.cnbcyln.app.akordefterim.Retrofit.Interface;
 
+import com.cnbcyln.app.akordefterim.Retrofit.Siniflar.SnfAnasayfaGetir;
 import com.cnbcyln.app.akordefterim.Retrofit.Siniflar.SnfHesapBilgiGetir;
 import com.cnbcyln.app.akordefterim.Retrofit.Siniflar.SnfHesapEkle;
 import com.cnbcyln.app.akordefterim.Retrofit.Siniflar.SnfHesapGirisYap;
 import com.cnbcyln.app.akordefterim.Retrofit.Siniflar.SnfIslemSonuc;
+import com.cnbcyln.app.akordefterim.Retrofit.Siniflar.SnfKategoriListesiGetir;
+import com.cnbcyln.app.akordefterim.Retrofit.Siniflar.SnfSarkiGetir;
+import com.cnbcyln.app.akordefterim.Retrofit.Siniflar.SnfSarkiListesiGetir;
 import com.cnbcyln.app.akordefterim.Retrofit.Siniflar.SnfSistemDurum;
 import com.cnbcyln.app.akordefterim.Retrofit.Siniflar.SnfTarihSaat;
+import com.cnbcyln.app.akordefterim.Retrofit.Siniflar.SnfTarzListesiGetir;
 
 import retrofit2.Call;
 import retrofit2.http.GET;
@@ -35,6 +40,9 @@ public interface RetrofitInterface {
     Call<SnfIslemSonuc> SMSGonder(@Query("TelKodu") String mTelKodu,
                                   @Query("CepTelefon") String mCepTelefon,
                                   @Query("Mesaj") String mMesaj);
+
+    @GET("phpscriptleri/genel/anasayfa.php")
+    Call<SnfAnasayfaGetir> AnasayfaGetir();
 
     /* **************************************
        ***                                ***
@@ -99,4 +107,24 @@ public interface RetrofitInterface {
                                          @Query("BildirimTipi") String mBildirimTipi,
                                          @Query("Icerik") String mIcerik,
                                          @Query("IPAdres") String mIPAdres);
+
+    /* **************************************
+       ***                                ***
+       ***       REPERTUVAR İŞLEMLERİ     ***
+       ***                                ***
+       **************************************/
+
+    @GET("phpscriptleri/repertuvarislemleri/kategori_listesi_getir.php")
+    Call<SnfKategoriListesiGetir> KategoriListesiGetir(@Query("StrTumu") String mStrTumu);
+
+    @GET("phpscriptleri/repertuvarislemleri/tarz_listesi_getir.php")
+    Call<SnfTarzListesiGetir> TarzListesiGetir(@Query("StrTumu") String mStrTumu);
+
+    @GET("phpscriptleri/repertuvarislemleri/sarki_listesi_getir.php")
+    Call<SnfSarkiListesiGetir> SarkiListesiGetir(@Query("KategoriID") String mKategoriID,
+                                                 @Query("TarzID") String mTarzID,
+                                                 @Query("ListelemeTipi") String mListelemeTipi);
+
+    @GET("phpscriptleri/repertuvarislemleri/sarki_getir.php")
+    Call<SnfSarkiGetir> SarkiGetir(@Query("SarkiID") String mSarkiID);
 }

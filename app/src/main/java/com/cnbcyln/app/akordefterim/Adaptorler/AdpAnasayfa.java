@@ -43,10 +43,10 @@ public class AdpAnasayfa extends RecyclerView.Adapter<AdpAnasayfa.ViewHolder> {
 		public ViewHolder(View view) {
 			super(view);
 
-			ImgSanatciResim = (ImageView)view.findViewById(R.id.ImgSanatciResim);
-			lblSanatciAdi = (TextView)view.findViewById(R.id.lblSanatciAdi);
-			lblToplamSarki = (TextView)view.findViewById(R.id.lblToplamSarki);
-			ImgMenu = (ImageView)view.findViewById(R.id.ImgMenu);
+			ImgSanatciResim = view.findViewById(R.id.ImgSanatciResim);
+			lblSanatciAdi = view.findViewById(R.id.lblSanatciAdi);
+			lblToplamSarki = view.findViewById(R.id.lblToplamSarki);
+			ImgMenu = view.findViewById(R.id.ImgMenu);
 		}
 	}
 
@@ -154,6 +154,7 @@ public class AdpAnasayfa extends RecyclerView.Adapter<AdpAnasayfa.ViewHolder> {
 					AkorDefterimSys.ToastMsj(activity, "Şarkı açıldı. Sanatçı ID:" + SanatciID, Toast.LENGTH_SHORT);
 					return true;
 				case R.id.action_sanatciya_ait_sarki_listesini_getir:
+
 					AkorDefterimSys.ToastMsj(activity, "Liste getirildi. Sanatçı ID:" + SanatciID, Toast.LENGTH_SHORT);
 					return true;
 				default:

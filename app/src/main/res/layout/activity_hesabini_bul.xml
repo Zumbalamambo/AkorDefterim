@@ -2,6 +2,7 @@
 <android.support.design.widget.CoordinatorLayout
 	xmlns:android="http://schemas.android.com/apk/res/android"
 	xmlns:app="http://schemas.android.com/apk/res-auto"
+	xmlns:tools="http://schemas.android.com/tools"
 	android:id="@+id/coordinatorLayout"
 	android:layout_width="match_parent"
 	android:layout_height="match_parent"
@@ -109,13 +110,13 @@
 			android:id="@+id/ImgEmail"
 			android:layout_width="wrap_content"
 			android:layout_height="0dp"
+			android:layout_marginBottom="8dp"
 			android:layout_marginLeft="8dp"
 			android:layout_marginStart="8dp"
+			android:contentDescription="@string/imageDesc"
 			app:layout_constraintBottom_toBottomOf="@+id/txtILEPostaKullaniciAdi"
 			app:layout_constraintStart_toStartOf="@+id/v_guideline1"
-			app:layout_constraintTop_toBottomOf="@+id/view2"
-			app:srcCompat="@drawable/ic_user"
-			android:contentDescription="@string/imageDesc" />
+			app:srcCompat="@drawable/ic_user" />
 
 		<android.support.design.widget.TextInputLayout
 			android:id="@+id/txtILEPostaKullaniciAdi"
@@ -125,7 +126,6 @@
 			android:layout_marginStart="8dp"
 			android:layout_marginTop="8dp"
 			android:textColorHint="@color/KoyuGri"
-			app:hintTextAppearance="@style/TextAppearance.AppCompat.Small.Inverse"
 			app:layout_constraintEnd_toStartOf="@+id/v_guideline2"
 			app:layout_constraintStart_toEndOf="@+id/ImgEmail"
 			app:layout_constraintTop_toBottomOf="@+id/view2">

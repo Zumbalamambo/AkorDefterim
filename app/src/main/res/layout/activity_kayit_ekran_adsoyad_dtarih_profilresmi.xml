@@ -114,8 +114,7 @@
 					android:id="@+id/txtILAdSoyad"
 					android:layout_width="match_parent"
 					android:layout_height="wrap_content"
-					android:textColorHint="@color/KoyuGri"
-					app:hintTextAppearance="@style/TextAppearance.AppCompat.Small.Inverse">
+					android:textColorHint="@color/KoyuGri">
 
 					<EditText
 						android:id="@+id/txtAdSoyad"
@@ -131,8 +130,8 @@
 					android:id="@+id/txtILDogumTarih"
 					android:layout_width="match_parent"
 					android:layout_height="wrap_content"
-					android:textColorHint="@color/KoyuGri"
-					app:hintTextAppearance="@style/TextAppearance.AppCompat.Small.Inverse">
+					android:layout_marginTop="8dp"
+					android:textColorHint="@color/KoyuGri">
 
 					<EditText
 						android:id="@+id/txtDogumTarih"
@@ -169,7 +168,7 @@
 					android:layout_alignRight="@+id/CImgProfilResim"
 					android:layout_alignEnd="@+id/CImgProfilResim"
 					android:contentDescription="@string/imageDesc"
-					app:srcCompat="@drawable/ic_photo_camera" />
+					app:srcCompat="@drawable/ic_photo_camera_renkli" />
 
 				<ImageView
 					android:id="@+id/ImgSilIcon"
@@ -179,7 +178,7 @@
 					android:layout_alignLeft="@+id/CImgProfilResim"
 					android:layout_alignStart="@+id/CImgProfilResim"
 					android:contentDescription="@string/imageDesc"
-					app:srcCompat="@drawable/ic_cancel" />
+					app:srcCompat="@drawable/ic_close_circle_renkli" />
 			</RelativeLayout>
 		</LinearLayout>
 
