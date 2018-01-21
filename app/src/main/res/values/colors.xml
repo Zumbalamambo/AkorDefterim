@@ -49,6 +49,7 @@
     <color name="SnackBarBG">#081015</color>
     <color name="TransparanVideoLayer">#64000000</color>
     <color name="album_title">#4c4c4c</color>
+    <color name="charcoal">#FF394249</color>
 
     <!-- Gri Button -->
     <color name="custom_gri_button_normal">#f1f1f1</color>

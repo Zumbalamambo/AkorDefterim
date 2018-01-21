@@ -31,7 +31,6 @@
             app:layout_constraintGuide_percent="0.25" />
 
         <RelativeLayout
-            android:id="@+id/linearLayout2"
             android:layout_width="0dp"
             android:layout_height="0dp"
             app:layout_constraintBottom_toBottomOf="parent"
@@ -120,6 +119,16 @@
                     android:layout_height="match_parent"
                     android:background="@color/Beyaz"
                     android:choiceMode="multipleChoice" />
+
+                <TextView
+                    android:id="@+id/lblOrtaMesaj"
+                    style="@style/TextAppearance.AppCompat.Medium.Inverse"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerHorizontal="true"
+                    android:layout_centerVertical="true"
+                    android:text="@string/liste_bos"
+                    android:textColor="@color/KoyuYazi" />
             </RelativeLayout>
         </RelativeLayout>
 

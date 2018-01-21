@@ -1058,11 +1058,13 @@ public class AkorDefterimSys {
 
 		TextView lblDialogBaslik = ViewDialogCustom.findViewById(R.id.lblDialogBaslik);
 		lblDialogBaslik.setTypeface(YaziFontu, Typeface.BOLD);
-		lblDialogBaslik.setText(new SpannableStringBuilder(Html.fromHtml(Baslik)));
+		lblDialogBaslik.setText(Baslik);
+		setTextViewHTML(lblDialogBaslik);
 
 		TextView lblDialogIcerik = ViewDialogCustom.findViewById(R.id.lblDialogIcerik);
 		lblDialogIcerik.setTypeface(YaziFontu, Typeface.NORMAL);
-		lblDialogIcerik.setText(new SpannableStringBuilder(Html.fromHtml(Mesaj)));
+		lblDialogIcerik.setText(Mesaj);
+		setTextViewHTML(lblDialogIcerik);
 
 		Button btnDialogButton1 = ViewDialogCustom.findViewById(R.id.btnDialogButton1);
 		btnDialogButton1.setTypeface(YaziFontu, Typeface.BOLD);
@@ -1164,11 +1166,13 @@ public class AkorDefterimSys {
 
 		TextView lblDialogBaslik = ViewDialogCustom.findViewById(R.id.lblDialogBaslik);
 		lblDialogBaslik.setTypeface(YaziFontu, Typeface.BOLD);
-		lblDialogBaslik.setText(new SpannableStringBuilder(Html.fromHtml(Baslik)));
+		lblDialogBaslik.setText(Baslik);
+		setTextViewHTML(lblDialogBaslik);
 
 		TextView lblDialogIcerik = ViewDialogCustom.findViewById(R.id.lblDialogIcerik);
 		lblDialogIcerik.setTypeface(YaziFontu, Typeface.NORMAL);
-		lblDialogIcerik.setText(new SpannableStringBuilder(Html.fromHtml(Mesaj)));
+		lblDialogIcerik.setText(Mesaj);
+		setTextViewHTML(lblDialogIcerik);
 
 		Button btnDialogButton1 = ViewDialogCustom.findViewById(R.id.btnDialogButton1);
 		btnDialogButton1.setTypeface(YaziFontu, Typeface.BOLD);
@@ -1207,11 +1211,13 @@ public class AkorDefterimSys {
 
 		TextView lblDialogBaslik = ViewDialogCustom.findViewById(R.id.lblDialogBaslik);
 		lblDialogBaslik.setTypeface(YaziFontu, Typeface.BOLD);
-		lblDialogBaslik.setText(new SpannableStringBuilder(Html.fromHtml(Baslik)));
+		lblDialogBaslik.setText(Baslik);
+		setTextViewHTML(lblDialogBaslik);
 
 		TextView lblDialogIcerik = ViewDialogCustom.findViewById(R.id.lblDialogIcerik);
 		lblDialogIcerik.setTypeface(YaziFontu, Typeface.NORMAL);
-		lblDialogIcerik.setText(new SpannableStringBuilder(Html.fromHtml(Mesaj)));
+		lblDialogIcerik.setText(Mesaj);
+		setTextViewHTML(lblDialogIcerik);
 
 		Button btnDialogButton1 = ViewDialogCustom.findViewById(R.id.btnDialogButton1);
 		btnDialogButton1.setTypeface(YaziFontu, Typeface.BOLD);
@@ -1260,11 +1266,13 @@ public class AkorDefterimSys {
 
 		TextView lblDialogBaslik = ViewDialogCustom.findViewById(R.id.lblDialogBaslik);
 		lblDialogBaslik.setTypeface(YaziFontu, Typeface.BOLD);
-		lblDialogBaslik.setText(new SpannableStringBuilder(Html.fromHtml(Baslik)));
+		lblDialogBaslik.setText(Baslik);
+		setTextViewHTML(lblDialogBaslik);
 
 		TextView lblDialogIcerik = ViewDialogCustom.findViewById(R.id.lblDialogIcerik);
 		lblDialogIcerik.setTypeface(YaziFontu, Typeface.NORMAL);
-		lblDialogIcerik.setText(new SpannableStringBuilder(Html.fromHtml(Mesaj)));
+		lblDialogIcerik.setText(Mesaj);
+		setTextViewHTML(lblDialogIcerik);
 
 		PasscodeView txtDialogOnayKodu = ViewDialogCustom.findViewById(R.id.txtDialogOnayKodu);
 		txtDialogOnayKodu.setPasscodeEntryListener(new PasscodeView.PasscodeEntryListener() {
@@ -2073,7 +2081,7 @@ public class AkorDefterimSys {
 
 			@Override
 			public void onFailure(Call<SnfSistemDurum> call, Throwable t) {
-				AsyncResponse.AsyncTaskReturnValue("{\"Islem\":\"SistemDurumKontrol\", \"Durum\":false, \"Baslik\":\"" + activity.getString(R.string.hata) + "\", \"Icerik\":\"" + activity.getString(R.string.islem_yapilirken_bir_hata_olustu) + "\"}");
+				AsyncResponse.AsyncTaskReturnValue("{\"Islem\":\"SistemDurumKontrol\", \"Durum\":false, \"Baslik\":\"" + activity.getString(R.string.hata) + "\", \"Icerik\":\"" + activity.getString(R.string.sunucu_baglantisi_kurulamiyor) + "\"}");
 			}
 		});
 	}

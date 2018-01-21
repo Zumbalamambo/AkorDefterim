@@ -16,7 +16,6 @@ import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
-import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.Button;
@@ -27,7 +26,7 @@ import android.widget.Spinner;
 import android.widget.TextView;
 
 import com.cnbcyln.app.akordefterim.Adaptorler.AdpKategori;
-import com.cnbcyln.app.akordefterim.Adaptorler.AdpListeler;
+import com.cnbcyln.app.akordefterim.Adaptorler.AdpListelerSPN;
 import com.cnbcyln.app.akordefterim.Adaptorler.AdpTarz;
 import com.cnbcyln.app.akordefterim.Interface.Interface_AsyncResponse;
 import com.cnbcyln.app.akordefterim.Siniflar.SnfKategoriler;
@@ -130,7 +129,7 @@ public class Sarki_Ekle extends AppCompatActivity implements Interface_AsyncResp
 				SecilenListeID = snfListeler.get(position).getId();
 				SecilenListeAdi = snfListeler.get(position).getListeAdi();
 
-				snfKategoriler = veritabani.lst_KategoriGetir(false);
+				snfKategoriler = veritabani.SnfKategoriGetir(false);
 				AdpKategori AdpKategoriler = new AdpKategori(activity, snfKategoriler);
 				spnKategoriler.setAdapter(AdpKategoriler);
 
@@ -146,7 +145,7 @@ public class Sarki_Ekle extends AppCompatActivity implements Interface_AsyncResp
 					btnKategoriDuzenle.setImageResource(R.drawable.ic_pencil_siyah);
 				}
 
-				snfTarzlar = veritabani.lst_TarzGetir(false);
+				snfTarzlar = veritabani.SnfTarzGetir(false);
 				AdpTarz AdpTarzlar = new AdpTarz(activity, snfTarzlar);
 				spnTarzlar.setAdapter(AdpTarzlar);
 
@@ -292,7 +291,7 @@ public class Sarki_Ekle extends AppCompatActivity implements Interface_AsyncResp
 				if(!AkorDefterimSys.AlertDialogisShowing(ADDialog)) {
 					ViewDialogContent = inflater.inflate(R.layout.dialog_text_input, null);
 					ADDialog = AkorDefterimSys.H2Button_TextInput_CustomAlertDialog(activity,
-							getString(R.string.liste_ekle),
+							getString(R.string.ekle),
 							"",
 							getString(R.string.liste_adi),
 							ViewDialogContent,
@@ -316,7 +315,7 @@ public class Sarki_Ekle extends AppCompatActivity implements Interface_AsyncResp
 
 				if(!AkorDefterimSys.AlertDialogisShowing(ADDialog)) {
 					ADDialog = AkorDefterimSys.H2ButtonCustomAlertDialog(activity,
-							getString(R.string.liste_sil),
+							getString(R.string.sil),
 							getString(R.string.liste_sil_soru, SecilenListeAdi),
 							getString(R.string.evet),"ADDialog_ListeSil",
 							getString(R.string.hayir),"ADDialog_Kapat");
@@ -333,7 +332,7 @@ public class Sarki_Ekle extends AppCompatActivity implements Interface_AsyncResp
 				if(!AkorDefterimSys.AlertDialogisShowing(ADDialog)) {
 					ViewDialogContent = inflater.inflate(R.layout.dialog_text_input, null);
 					ADDialog = AkorDefterimSys.H2Button_TextInput_CustomAlertDialog(activity,
-							getString(R.string.liste_duzenle),
+							getString(R.string.duzenle),
 							SecilenListeAdi,
 							getString(R.string.liste_adi),
 							ViewDialogContent,
@@ -349,7 +348,7 @@ public class Sarki_Ekle extends AppCompatActivity implements Interface_AsyncResp
 				if(!AkorDefterimSys.AlertDialogisShowing(ADDialog)) {
 					ViewDialogContent = inflater.inflate(R.layout.dialog_text_input, null);
 					ADDialog = AkorDefterimSys.H2Button_TextInput_CustomAlertDialog(activity,
-							getString(R.string.kategori_ekle),
+							getString(R.string.ekle),
 							"",
 							getString(R.string.kategori_adi),
 							ViewDialogContent,
@@ -367,7 +366,7 @@ public class Sarki_Ekle extends AppCompatActivity implements Interface_AsyncResp
 
 				if(!AkorDefterimSys.AlertDialogisShowing(ADDialog)) {
 					ADDialog = AkorDefterimSys.H2ButtonCustomAlertDialog(activity,
-							getString(R.string.kategori_sil),
+							getString(R.string.sil),
 							getString(R.string.kategori_sil_soru, SecilenKategoriAdi),
 							getString(R.string.evet),"ADDialog_KategoriSil",
 							getString(R.string.hayir),"ADDialog_Kapat");
@@ -384,7 +383,7 @@ public class Sarki_Ekle extends AppCompatActivity implements Interface_AsyncResp
 				if(!AkorDefterimSys.AlertDialogisShowing(ADDialog)) {
 					ViewDialogContent = inflater.inflate(R.layout.dialog_text_input, null);
 					ADDialog = AkorDefterimSys.H2Button_TextInput_CustomAlertDialog(activity,
-							getString(R.string.kategori_duzenle),
+							getString(R.string.duzenle),
 							SecilenKategoriAdi,
 							getString(R.string.kategori_adi),
 							ViewDialogContent,
@@ -400,7 +399,7 @@ public class Sarki_Ekle extends AppCompatActivity implements Interface_AsyncResp
 				if(!AkorDefterimSys.AlertDialogisShowing(ADDialog)) {
 					ViewDialogContent = inflater.inflate(R.layout.dialog_text_input, null);
 					ADDialog = AkorDefterimSys.H2Button_TextInput_CustomAlertDialog(activity,
-							getString(R.string.tarz_ekle),
+							getString(R.string.ekle),
 							"",
 							getString(R.string.tarz_adi),
 							ViewDialogContent,
@@ -418,7 +417,7 @@ public class Sarki_Ekle extends AppCompatActivity implements Interface_AsyncResp
 
 				if(!AkorDefterimSys.AlertDialogisShowing(ADDialog)) {
 					ADDialog = AkorDefterimSys.H2ButtonCustomAlertDialog(activity,
-							getString(R.string.tarz_sil),
+							getString(R.string.sil),
 							getString(R.string.tarz_sil_soru, SecilenTarzAdi),
 							getString(R.string.evet),"ADDialog_TarzSil",
 							getString(R.string.hayir),"ADDialog_Kapat");
@@ -435,7 +434,7 @@ public class Sarki_Ekle extends AppCompatActivity implements Interface_AsyncResp
 				if(!AkorDefterimSys.AlertDialogisShowing(ADDialog)) {
 					ViewDialogContent = inflater.inflate(R.layout.dialog_text_input, null);
 					ADDialog = AkorDefterimSys.H2Button_TextInput_CustomAlertDialog(activity,
-							getString(R.string.tarz_duzenle),
+							getString(R.string.duzenle),
 							SecilenTarzAdi,
 							getString(R.string.tarz_adi),
 							ViewDialogContent,
@@ -554,9 +553,9 @@ public class Sarki_Ekle extends AppCompatActivity implements Interface_AsyncResp
 	}
 
 	public void spnListeGetir() {
-		snfListeler = veritabani.lst_ListeGetir("Cevrimdisi");
-		AdpListeler AdpListeler = new AdpListeler(activity, snfListeler);
-		spnListeler.setAdapter(AdpListeler);
+		snfListeler = veritabani.SnfListeGetir("Cevrimdisi");
+		AdpListelerSPN AdpListelerSPN = new AdpListelerSPN(activity, snfListeler);
+		spnListeler.setAdapter(AdpListelerSPN);
 
 		if(snfListeler.get(0).getListeAdi().equals("")) {
 			btnListeSil.setEnabled(false);

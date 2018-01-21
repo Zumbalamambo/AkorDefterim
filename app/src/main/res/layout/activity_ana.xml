@@ -30,25 +30,20 @@
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                app:srcCompat="@drawable/custom_btnsolmenu" />
+                app:layout_constraintRight_toLeftOf="@+id/HScrollViewSayfaBaslik"
+                app:srcCompat="@drawable/ic_list1_36dp_beyaz" />
 
             <HorizontalScrollView
                 android:id="@+id/HScrollViewSayfaBaslik"
                 android:layout_width="0dp"
                 android:layout_height="0dp"
-                android:layout_marginBottom="0dp"
-                android:layout_marginLeft="8dp"
-                android:layout_marginRight="8dp"
-                android:layout_marginTop="0dp"
                 android:background="@color/colorPrimary"
                 android:requiresFadingEdge="horizontal"
                 android:scrollbars="none"
-
                 android:singleLine="true"
                 android:scrollHorizontally="true"
                 android:ellipsize="marquee"
                 android:marqueeRepeatLimit ="marquee_forever"
-
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintLeft_toRightOf="@+id/btnSolMenu"
                 app:layout_constraintRight_toLeftOf="@+id/btnSagMenu"
@@ -79,7 +74,7 @@
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                app:srcCompat="@drawable/custom_btnsolmenu" />
+                app:srcCompat="@drawable/ic_list1_36dp_beyaz" />
 
         </android.support.constraint.ConstraintLayout>
 

@@ -58,7 +58,7 @@ public class AdpIstekler extends BaseAdapter {
 			
 			holder = new ViewHolder();
 			//holder.ImgMenuIcon = (ImageView) satirView.findViewById(R.id.ImgMenuIcon);
-            holder.txtSanatciAdiSarkiAdi = (TextView) satirView.findViewById(R.id.txtSanatciAdiSarkiAdi);
+            holder.txtSanatciAdiSarkiAdi = satirView.findViewById(R.id.txtSanatciAdiSarkiAdi);
             holder.txtSanatciAdiSarkiAdi.setTypeface(YaziFontu, Typeface.NORMAL);
             satirView.setTag(holder);
 	    } else {

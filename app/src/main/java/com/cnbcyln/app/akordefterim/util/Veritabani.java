@@ -130,7 +130,7 @@ public class Veritabani extends SQLiteOpenHelper {
 		}
 	}
 
-	public List<SnfListeler> lst_ListeGetir(String OturumTipi) {
+	public List<SnfListeler> SnfListeGetir(String OturumTipi) {
 		List<SnfListeler> SnfListeler = new ArrayList<>();
 		SQLiteDatabase db = this.getWritableDatabase();
 		String Sorgu = "SELECT * FROM tblListeler";
@@ -174,7 +174,7 @@ public class Veritabani extends SQLiteOpenHelper {
 		}
 	}
 
-	public List<SnfListeler> RepYedekleme_lst_ListeGetir() {
+	public List<SnfListeler> RepYedekleme_SnfListeGetir() {
 		List<SnfListeler> SnfListeler = new ArrayList<>();
 		SQLiteDatabase db = this.getWritableDatabase();
 		String Sorgu = "SELECT * FROM tblListeler Order By id ASC";
@@ -294,6 +294,24 @@ public class Veritabani extends SQLiteOpenHelper {
 		}
 	}
 
+	public int ListeyeAitSarkiSayisiGetir(int ListeID) {
+		SQLiteDatabase db = this.getWritableDatabase();
+		String Sorgu = "SELECT Count(*) FROM tblSarkilar WHERE ListeID = " + ListeID;
+		int ToplamSarkiSayisi = 0;
+
+		try {
+			Cursor cursor = db.rawQuery(Sorgu, null);
+
+			while (cursor.moveToNext()) {
+				ToplamSarkiSayisi = cursor.getInt(0);
+			}
+		} catch (Exception e) {
+			System.out.println("Bir hata oluştu: " + e);
+		} finally {
+			db.close();
+			return ToplamSarkiSayisi;
+		}
+	}
 
 	// ##### KATEGORİLER #####
 	public boolean KategoriEkle(String KategoriAdi) {
@@ -359,7 +377,7 @@ public class Veritabani extends SQLiteOpenHelper {
 		}
 	}
 
-	public List<SnfKategoriler> lst_KategoriGetir(boolean TumuSecenegi) {
+	public List<SnfKategoriler> SnfKategoriGetir(boolean TumuSecenegi) {
 		List<SnfKategoriler> SnfKategoriler = new ArrayList<SnfKategoriler>();
 		SQLiteDatabase db = this.getWritableDatabase();
 		String Sorgu = "SELECT * FROM tblKategoriler";
@@ -395,7 +413,7 @@ public class Veritabani extends SQLiteOpenHelper {
 		}
 	}
 
-	public List<SnfKategoriler> RepYedekleme_lst_KategoriGetir() {
+	public List<SnfKategoriler> RepYedekleme_SnfKategoriGetir() {
 		List<SnfKategoriler> SnfKategoriler = new ArrayList<SnfKategoriler>();
 		SQLiteDatabase db = this.getWritableDatabase();
 		String Sorgu = "SELECT * FROM tblKategoriler Order By id ASC";
@@ -515,6 +533,24 @@ public class Veritabani extends SQLiteOpenHelper {
 		}
 	}
 
+	public int KategoriyeAitSarkiSayisiGetir(int KategoriID) {
+		SQLiteDatabase db = this.getWritableDatabase();
+		String Sorgu = "SELECT Count(*) FROM tblSarkilar WHERE KategoriID = " + KategoriID;
+		int ToplamSarkiSayisi = 0;
+
+		try {
+			Cursor cursor = db.rawQuery(Sorgu, null);
+
+			while (cursor.moveToNext()) {
+				ToplamSarkiSayisi = cursor.getInt(0);
+			}
+		} catch (Exception e) {
+			System.out.println("Bir hata oluştu: " + e);
+		} finally {
+			db.close();
+			return ToplamSarkiSayisi;
+		}
+	}
 
 	// ##### TARZLAR #####
 	public boolean TarzEkle(String TarzAdi) {
@@ -580,7 +616,7 @@ public class Veritabani extends SQLiteOpenHelper {
 		}
 	}
 
-	public List<SnfTarzlar> lst_TarzGetir(boolean TumuSecenegi) {
+	public List<SnfTarzlar> SnfTarzGetir(boolean TumuSecenegi) {
 		List<SnfTarzlar> lstTarzlar = new ArrayList<SnfTarzlar>();
 		SQLiteDatabase db = this.getWritableDatabase();
 		String Sorgu = "SELECT * FROM tblTarzlar";
@@ -611,7 +647,7 @@ public class Veritabani extends SQLiteOpenHelper {
 		return lstTarzlar;
 	}
 
-	public List<SnfTarzlar> RepYedekleme_lst_TarzGetir() {
+	public List<SnfTarzlar> RepYedekleme_SnfTarzGetir() {
 		List<SnfTarzlar> lstTarzlar = new ArrayList<SnfTarzlar>();
 		SQLiteDatabase db = this.getWritableDatabase();
 		String Sorgu = "SELECT * FROM tblTarzlar Order By id ASC";
@@ -725,6 +761,24 @@ public class Veritabani extends SQLiteOpenHelper {
 		}
 	}
 
+	public int TarzaAitSarkiSayisiGetir(int TarzID) {
+		SQLiteDatabase db = this.getWritableDatabase();
+		String Sorgu = "SELECT Count(*) FROM tblSarkilar WHERE TarzID = " + TarzID;
+		int ToplamSarkiSayisi = 0;
+
+		try {
+			Cursor cursor = db.rawQuery(Sorgu, null);
+
+			while (cursor.moveToNext()) {
+				ToplamSarkiSayisi = cursor.getInt(0);
+			}
+		} catch (Exception e) {
+			System.out.println("Bir hata oluştu: " + e);
+		} finally {
+			db.close();
+			return ToplamSarkiSayisi;
+		}
+	}
 
 	// ##### ŞARKILAR #####
 

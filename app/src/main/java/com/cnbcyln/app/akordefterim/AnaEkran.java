@@ -36,13 +36,14 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.astuetz.PagerSlidingTabStrip;
-import com.cnbcyln.app.akordefterim.Adaptorler.AdpSarkiListesi;
+import com.cnbcyln.app.akordefterim.Adaptorler.AdpSarkiListesiLST;
 import com.cnbcyln.app.akordefterim.FastScrollListview.FastScroller_Listview;
 import com.cnbcyln.app.akordefterim.Interface.Interface_AsyncResponse;
 import com.cnbcyln.app.akordefterim.Interface.Interface_FragmentDataConn;
 import com.cnbcyln.app.akordefterim.Siniflar.SnfSarkilar;
 import com.cnbcyln.app.akordefterim.util.AkorDefterimSys;
 import com.cnbcyln.app.akordefterim.util.Veritabani;
+import com.special.ResideMenu.ResideMenu;
 import com.yarolegovich.slidingrootnav.SlidingRootNav;
 import com.yarolegovich.slidingrootnav.SlidingRootNavLayout;
 
@@ -78,7 +79,7 @@ public class AnaEkran extends AppCompatActivity implements Interface_FragmentDat
     // AnaEkran Değişken Tanımlamaları
     ImageButton btnSolMenu, btnSagMenu;
     LinearLayout LLSayfa;
-    TextView lblSayfaBaslik;
+    TextView lblSayfaBaslik, lblOrtaMesaj;
     CoordinatorLayout coordinatorLayout;
 
     // Sliding Menü Sağ Değişkenler Tanımlamaları
@@ -132,6 +133,14 @@ public class AnaEkran extends AppCompatActivity implements Interface_FragmentDat
         FT = getFragmentManager().beginTransaction(); // Fragment methodunu kullanmak için sabit nesne
 
         layoutInflater = (LayoutInflater) activity.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+
+        ResideMenu resideMenu = new ResideMenu(activity, R.layout.menu_sol, R.layout.menu_sag);
+        resideMenu.setBackground(R.drawable.bg);
+        resideMenu.attachToActivity(activity);
+        resideMenu.setScaleValue(0.5f);
+
+        resideMenu.setSwipeDirectionDisable(ResideMenu.DIRECTION_RIGHT);
+        resideMenu.setSwipeDirectionDisable(ResideMenu.DIRECTION_LEFT);
 
         /* **************************************
            ***                                ***
@@ -193,8 +202,21 @@ public class AnaEkran extends AppCompatActivity implements Interface_FragmentDat
                         }
                     }
 
-                    AdpSarkiListesi AdpSarkiListesi2 = new AdpSarkiListesi(activity, snfSarkilarTemp, true, SecilenListelemeTipi);
-                    lstSarkiListesi.setAdapter(AdpSarkiListesi2);
+                    if(snfSarkilarTemp.size() <= 0) {
+                        lblOrtaMesaj.setVisibility(View.VISIBLE);
+                        lblOrtaMesaj.setText(getString(R.string.liste_bos));
+                        lstSarkiListesi.setVisibility(View.GONE);
+                    } else {
+                        lblOrtaMesaj.setVisibility(View.GONE);
+                        lstSarkiListesi.setVisibility(View.VISIBLE);
+
+                        // Elde ettiğimiz snfSarkilar sıfındaki tüm kayıtları AdpSarkiListesiLST ile lstSarkiListesi isimli Listview'a set ediyoruz..
+                        // Eğer kayıt sayısı 25'ten fazla ise FastScroll'u aktif et
+                        AdpSarkiListesiLST adpSarkiListesiLST2 = new AdpSarkiListesiLST(activity, snfSarkilarTemp, true, SecilenListelemeTipi);
+
+                        lstSarkiListesi.setFastScrollEnabled(snfSarkilar.size() > 25);
+                        lstSarkiListesi.setAdapter(adpSarkiListesiLST2);
+                    }
                 }
             }
 
@@ -208,6 +230,9 @@ public class AnaEkran extends AppCompatActivity implements Interface_FragmentDat
 
             }
         });
+
+        lblOrtaMesaj = ViewSlidingSagMenuContainer.findViewById(R.id.lblOrtaMesaj);
+        lblOrtaMesaj.setTypeface(YaziFontu, Typeface.BOLD);
 
         lstSarkiListesi = ViewSlidingSagMenuContainer.findViewById(R.id.lstSarkiListesi);
         lstSarkiListesi.setFastScrollEnabled(true);
@@ -243,22 +268,22 @@ public class AnaEkran extends AppCompatActivity implements Interface_FragmentDat
         lstSarkiListesi.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
             @Override
             public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
-                /*if (RLSarkiListesi_SarkiAramaPanel.getVisibility() != View.VISIBLE && !AdpSarkiListesi.isSelectable()) { //Şarkı listesinde şarkılar seçilebilir durumda mı? Yani checkbox görünüyor mu? => Görünmüyorsa..
-                    AdpSarkiListesi.setSelectable(position);
+                /*if (RLSarkiListesi_SarkiAramaPanel.getVisibility() != View.VISIBLE && !AdpSarkiListesiLST.isSelectable()) { //Şarkı listesinde şarkılar seçilebilir durumda mı? Yani checkbox görünüyor mu? => Görünmüyorsa..
+                    AdpSarkiListesiLST.setSelectable(position);
                 }*/
 
                 return true;
             }
         });
 
-        mSlidingRootNavSag = AkorDefterimSys.SetupSlidingMenu(savedInstanceState, ViewSlidingSagMenuContainer, true, true);
-        ((SlidingRootNavLayout) mSlidingRootNavSag).setOnTouchListener(new View.OnTouchListener() {
+        //mSlidingRootNavSag = AkorDefterimSys.SetupSlidingMenu(savedInstanceState, ViewSlidingSagMenuContainer, true, true);
+        /*((SlidingRootNavLayout) mSlidingRootNavSag).setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View v, MotionEvent event) {
                 if(!mSlidingRootNavSol.isMenuClosed()) mSlidingRootNavSag.closeMenu();
                 return false;
             }
-        });
+        });*/
 
         /* **************************************
            ***                                ***
@@ -289,14 +314,14 @@ public class AnaEkran extends AppCompatActivity implements Interface_FragmentDat
         PSTTabs.setTextColor(R.color.KoyuYazi);
         PSTTabs.setTypeface(YaziFontu, Typeface.BOLD);
 
-        mSlidingRootNavSol = AkorDefterimSys.SetupSlidingMenu(savedInstanceState, ViewSlidingSolMenuContainer, true, true);
+        /*mSlidingRootNavSol = AkorDefterimSys.SetupSlidingMenu(savedInstanceState, ViewSlidingSolMenuContainer, true, true);
         ((SlidingRootNavLayout) mSlidingRootNavSol).setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View v, MotionEvent event) {
                 if(!mSlidingRootNavSag.isMenuClosed()) mSlidingRootNavSol.closeMenu();
                 return false;
             }
-        });
+        });*/
 
         /* **************************************
            ***                                ***
@@ -341,6 +366,29 @@ public class AnaEkran extends AppCompatActivity implements Interface_FragmentDat
 	}
 
     @Override
+    public void onSaveInstanceState(Bundle savedInstanceState) {
+        switch (Fragment_SayfaAdi) {
+            case "Frg_Anasayfa":
+                savedInstanceState.putString("SayfaAdi", "anasayfa");
+                break;
+            case "Frg_Sarki":
+                savedInstanceState.putString("SayfaAdi", "sarki");
+                break;
+            default:
+                savedInstanceState.putString("SayfaAdi", "anasayfa");
+                break;
+        }
+        super.onSaveInstanceState(savedInstanceState);
+    }
+
+    public void onRestoreInstanceState(Bundle savedInstanceState) {
+        // Görünüm hiyerarşisini tekrar yüklemek için superclass olarak çağrılır.
+        super.onRestoreInstanceState(savedInstanceState);
+        // Bilgileri geri yükle
+        FragmentSayfaGetir(savedInstanceState.getString("SayfaAdi"));
+    }
+
+    @Override
     protected void onStart() {
         super.onStart();
 
@@ -383,8 +431,12 @@ public class AnaEkran extends AppCompatActivity implements Interface_FragmentDat
             txtAra_AramaPanel.setText("");
             AkorDefterimSys.KlavyeKapat();
 
-            RLSarkiListesi_AnaPanel.setVisibility(View.VISIBLE);
-            RLSarkiListesi_AramaPanel.setVisibility(View.GONE);
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                AkorDefterimSys.circleReveal(R.id.RLSarkiListesi_AramaPanel,1, true, false);
+            } else {
+                RLSarkiListesi_AnaPanel.setVisibility(View.VISIBLE);
+                RLSarkiListesi_AramaPanel.setVisibility(View.GONE);
+            }
         } else if(!mSlidingRootNavSol.isMenuClosed())
             mSlidingRootNavSol.closeMenu();
         else if(!mSlidingRootNavSag.isMenuClosed())
@@ -693,9 +745,21 @@ public class AnaEkran extends AppCompatActivity implements Interface_FragmentDat
                         // Yalnızca şarkıcı adına göre ya da şarkı adına göre listelendiğinde alfabetik sıraya diz..
                         if (SecilenListelemeTipi == 0 || SecilenListelemeTipi == 1) Collections.sort(snfSarkilar, new SnfRepertuvarComparatorRepertuvar());
 
-                        // Elde ettiğimiz snfSarkilar sıfındaki tüm kayıtları AdpSarkiListesi ile lstSarkiListesi isimli Listview'a set ediyoruz..
-                        AdpSarkiListesi adpSarkiListesi = new AdpSarkiListesi(activity, snfSarkilar, true, SecilenListelemeTipi);
-                        lstSarkiListesi.setAdapter(adpSarkiListesi);
+                        if(snfSarkilar.size() <= 0) {
+                            lblOrtaMesaj.setVisibility(View.VISIBLE);
+                            lblOrtaMesaj.setText(getString(R.string.liste_bos));
+                            lstSarkiListesi.setVisibility(View.GONE);
+                        } else {
+                            lblOrtaMesaj.setVisibility(View.GONE);
+                            lstSarkiListesi.setVisibility(View.VISIBLE);
+
+                            // Elde ettiğimiz snfSarkilar sıfındaki tüm kayıtları AdpSarkiListesiLST ile lstSarkiListesi isimli Listview'a set ediyoruz..
+                            // Eğer kayıt sayısı 25'ten fazla ise FastScroll'u aktif et
+                            AdpSarkiListesiLST adpSarkiListesiLST = new AdpSarkiListesiLST(activity, snfSarkilar, snfSarkilar.size() > 25, SecilenListelemeTipi);
+
+                            lstSarkiListesi.setFastScrollEnabled(snfSarkilar.size() > 25);
+                            lstSarkiListesi.setAdapter(adpSarkiListesiLST);
+                        }
 
                         /* Ve şimdi geldim en önemli yere. Normalde kullanmış olduğum Sliding Menu kütüphanesi yalnızca tek menü kullanmaya izin veriyordu.
                            Bu nedenle ekstra fonksiyon yazarak bunu hem sağ, hemsa sol menü olarak kullanabildim. Ancak bu durumda bir sorun oluştu ve bu sorunu bir türlü gideremiyordum.
@@ -789,36 +853,40 @@ public class AnaEkran extends AppCompatActivity implements Interface_FragmentDat
                 else mSlidingRootNavSag.openMenu(true);
                 break;
             case R.id.btnSarkiEkle_AnaPanel:
-                Intent mIntent = new Intent(activity, Sarki_Ekle.class);
+                /*Intent mIntent = new Intent(activity, Sarki_Ekle.class);
                 mIntent.putExtra("Islem", "YeniSarkiEkle");
                 mIntent.putExtra("SecilenSanatciAdi", "");
                 mIntent.putExtra("SecilenSarkiAdi", "");
                 mIntent.putExtra("SecilenSarkiIcerik", "");
 
-                AkorDefterimSys.EkranGetir(mIntent, "Slide");
+                AkorDefterimSys.EkranGetir(mIntent, "Slide");*/
+
+                veritabani.VeritabaniSifirla();
                 break;
             case R.id.btnAra_AnaPanel:
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
                     AkorDefterimSys.circleReveal(R.id.RLSarkiListesi_AramaPanel,1, true, true);
+                } else {
+                    RLSarkiListesi_AnaPanel.setVisibility(View.GONE);
+                    RLSarkiListesi_AramaPanel.setVisibility(View.VISIBLE);
                 }
 
                 txtAra_AramaPanel.setText("");
                 txtAra_AramaPanel.requestFocus();
                 imm.showSoftInput(txtAra_AramaPanel, 0);
 
-                //RLSarkiListesi_AnaPanel.setVisibility(View.GONE);
-                //RLSarkiListesi_AramaPanel.setVisibility(View.VISIBLE);
                 break;
             case R.id.btnGeri_AramaPanel:
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                    AkorDefterimSys.circleReveal(R.id.RLSarkiListesi_AramaPanel,1, true, false);
-                }
-
                 txtAra_AramaPanel.setText("");
                 AkorDefterimSys.KlavyeKapat();
 
-                //RLSarkiListesi_AnaPanel.setVisibility(View.VISIBLE);
-                //RLSarkiListesi_AramaPanel.setVisibility(View.GONE);
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                    AkorDefterimSys.circleReveal(R.id.RLSarkiListesi_AramaPanel,1, true, false);
+                } else {
+                    RLSarkiListesi_AnaPanel.setVisibility(View.VISIBLE);
+                    RLSarkiListesi_AramaPanel.setVisibility(View.GONE);
+                }
+
                 break;
         }
     }

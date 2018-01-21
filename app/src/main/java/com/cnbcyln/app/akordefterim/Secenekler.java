@@ -74,7 +74,6 @@ public class Secenekler extends AppCompatActivity implements OnClickListener {
         btnEgitim.setTypeface(YaziFontu, Typeface.NORMAL);
         btnEgitim.setOnClickListener(this);
 
-
         btnYardimMerkezi = findViewById(R.id.btnYardimMerkezi);
         btnYardimMerkezi.setTypeface(YaziFontu, Typeface.NORMAL);
         btnYardimMerkezi.setText(getString(R.string.s_yardim_merkezi, getString(R.string.uygulama_adi)));
@@ -115,7 +114,7 @@ public class Secenekler extends AppCompatActivity implements OnClickListener {
                 AkorDefterimSys.EkranGetir(new Intent(activity, Ayarlar_Ekran_Isigi.class), "Slide");
                 break;
             case R.id.btnRepertuvarIslemleri:
-
+                AkorDefterimSys.EkranGetir(new Intent(activity, Repertuvar_Islemleri.class), "Slide");
                 break;
             case R.id.btnEgitim:
                 AkorDefterimSys.EkranGetir(new Intent(activity, Egitim.class), "Slide");
@@ -126,7 +125,7 @@ public class Secenekler extends AppCompatActivity implements OnClickListener {
             case R.id.btnSorunBildir:
                 if(AkorDefterimSys.GirisYapildiMi()) {
                     if(AkorDefterimSys.InternetErisimKontrolu()) {
-                        activity.openContextMenu(btnSorunBildir);
+                        openContextMenu(btnSorunBildir);
                     } else AkorDefterimSys.StandartSnackBarMsj(coordinatorLayout, getString(R.string.internet_baglantisi_saglanamadi));
                 } else AkorDefterimSys.StandartSnackBarMsj(coordinatorLayout, getString(R.string.devam_etmek_icin_giris_yapmalisin));
 

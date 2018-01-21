@@ -1,0 +1,260 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+	xmlns:app="http://schemas.android.com/apk/res-auto"
+	xmlns:tools="http://schemas.android.com/tools"
+	android:id="@+id/coordinatorLayout"
+	android:layout_width="match_parent"
+	android:layout_height="match_parent"
+	android:background="@color/Beyaz">
+
+	<android.support.constraint.ConstraintLayout
+		android:id="@+id/ConstraintLayout1"
+		android:layout_width="match_parent"
+		android:layout_height="match_parent"
+		android:descendantFocusability="beforeDescendants"
+		android:focusableInTouchMode="true"
+		android:keepScreenOn="true">
+
+		<android.support.constraint.Guideline
+			android:id="@+id/h_guideline1"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:orientation="horizontal"
+			app:layout_constraintGuide_percent="0.085" />
+
+		<ImageButton
+			android:id="@+id/btnGeri"
+			android:layout_width="60dp"
+			android:layout_height="0dp"
+			android:background="@drawable/custom_button2"
+			app:layout_constraintBottom_toTopOf="@+id/view1"
+			app:layout_constraintStart_toStartOf="parent"
+			app:layout_constraintTop_toTopOf="parent"
+			app:srcCompat="@drawable/ic_arrow_back_siyah"
+			android:contentDescription="@string/imageDesc" />
+
+		<TextView
+			android:id="@+id/lblBaslik"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:layout_marginLeft="12dp"
+			android:layout_marginStart="12dp"
+			android:text="@string/repertuvar_islemleri"
+			android:textColor="@color/KoyuYazi"
+			style="@style/TextAppearance.AppCompat.Medium.Inverse"
+			app:layout_constraintBottom_toTopOf="@+id/view1"
+			app:layout_constraintStart_toEndOf="@+id/btnGeri"
+			app:layout_constraintTop_toTopOf="parent" />
+
+		<View
+			android:id="@+id/view1"
+			android:layout_width="0dp"
+			android:layout_height="1dp"
+			android:background="@drawable/cizgi_ortagri"
+			app:layout_constraintTop_toTopOf="@+id/h_guideline1" />
+
+		<ScrollView
+			android:id="@+id/scroll_view"
+			android:layout_width="0dp"
+			android:layout_height="0dp"
+			android:fillViewport="true"
+			app:layout_constraintBottom_toBottomOf="parent"
+			app:layout_constraintEnd_toEndOf="parent"
+			app:layout_constraintStart_toStartOf="parent"
+			app:layout_constraintTop_toTopOf="@+id/view1">
+
+			<android.support.constraint.ConstraintLayout
+				android:id="@+id/ConstraintLayout2"
+				android:layout_width="match_parent"
+				android:layout_height="wrap_content">
+
+				<android.support.constraint.Guideline
+					android:id="@+id/v_guideline1"
+					android:layout_width="wrap_content"
+					android:layout_height="wrap_content"
+					android:orientation="vertical"
+					app:layout_constraintGuide_percent="0.05" />
+
+				<android.support.constraint.Guideline
+					android:id="@+id/v_guideline2"
+					android:layout_width="wrap_content"
+					android:layout_height="wrap_content"
+					android:orientation="vertical"
+					app:layout_constraintGuide_percent="0.95" />
+
+				<TextView
+					android:id="@+id/lblRepertuvarIslemleriAciklama"
+					android:layout_width="0dp"
+					android:layout_height="wrap_content"
+					android:layout_marginTop="16dp"
+					android:text="@string/repertuvar_islemleri_aciklama"
+					android:textColor="@color/KoyuGri"
+					style="@style/TextAppearance.AppCompat.Small.Inverse"
+					app:layout_constraintEnd_toStartOf="@+id/v_guideline2"
+					app:layout_constraintStart_toStartOf="@+id/v_guideline1"
+					app:layout_constraintTop_toTopOf="parent" />
+
+				<View
+					android:id="@+id/view2"
+					android:layout_width="0dp"
+					android:layout_height="1dp"
+					android:background="@drawable/cizgi_ortagri"
+					android:layout_marginTop="16dp"
+					app:layout_constraintEnd_toStartOf="@+id/v_guideline2"
+					app:layout_constraintStart_toStartOf="@+id/v_guideline1"
+					app:layout_constraintTop_toBottomOf="@+id/lblRepertuvarIslemleriAciklama" />
+
+				<Button
+					android:id="@+id/btnListeYonetimi"
+					android:layout_width="0dp"
+					android:layout_height="wrap_content"
+					android:paddingStart="30dp"
+					android:paddingLeft="30dp"
+					android:background="@drawable/custom_button2"
+					android:drawableLeft="@drawable/ic_list4"
+					android:drawableStart="@drawable/ic_list4"
+					android:drawablePadding="10dp"
+					android:gravity="left|center_vertical"
+					android:text="@string/liste_yonetimi"
+					android:textAppearance="@style/TextAppearance.AppCompat"
+					android:textColor="@color/KoyuYazi"
+					android:stateListAnimator="@null"
+					style="@style/TextAppearance.AppCompat.Small.Inverse"
+					app:layout_constraintEnd_toEndOf="parent"
+					app:layout_constraintStart_toStartOf="parent"
+					app:layout_constraintTop_toBottomOf="@+id/view2"
+					tools:targetApi="lollipop" />
+
+				<View
+					android:id="@+id/view3"
+					android:layout_width="0dp"
+					android:layout_height="1dp"
+					android:background="@drawable/cizgi_ortagri"
+					app:layout_constraintEnd_toStartOf="@+id/v_guideline2"
+					app:layout_constraintStart_toStartOf="@+id/v_guideline1"
+					app:layout_constraintTop_toBottomOf="@+id/btnListeYonetimi" />
+
+				<Button
+					android:id="@+id/btnKategoriYonetimi"
+					android:layout_width="0dp"
+					android:layout_height="wrap_content"
+					android:paddingStart="30dp"
+					android:paddingLeft="30dp"
+					android:background="@drawable/custom_button2"
+					android:drawableLeft="@drawable/ic_list3"
+					android:drawableStart="@drawable/ic_list3"
+					android:drawablePadding="10dp"
+					android:gravity="left|center_vertical"
+					android:text="@string/kategori_yonetimi"
+					android:textAppearance="@style/TextAppearance.AppCompat"
+					android:textColor="@color/KoyuYazi"
+					android:stateListAnimator="@null"
+					style="@style/TextAppearance.AppCompat.Small.Inverse"
+					app:layout_constraintEnd_toEndOf="parent"
+					app:layout_constraintStart_toStartOf="parent"
+					app:layout_constraintTop_toBottomOf="@+id/view3"
+					tools:targetApi="lollipop" />
+
+				<View
+					android:id="@+id/view4"
+					android:layout_width="0dp"
+					android:layout_height="1dp"
+					android:background="@drawable/cizgi_ortagri"
+					app:layout_constraintEnd_toStartOf="@+id/v_guideline2"
+					app:layout_constraintStart_toStartOf="@+id/v_guideline1"
+					app:layout_constraintTop_toBottomOf="@+id/btnKategoriYonetimi" />
+
+				<Button
+					android:id="@+id/btnTarzYonetimi"
+					android:layout_width="0dp"
+					android:layout_height="wrap_content"
+					android:paddingStart="30dp"
+					android:paddingLeft="30dp"
+					android:background="@drawable/custom_button2"
+					android:drawableLeft="@drawable/ic_list2"
+					android:drawableStart="@drawable/ic_list2"
+					android:drawablePadding="10dp"
+					android:gravity="left|center_vertical"
+					android:text="@string/tarz_yonetimi"
+					android:textAppearance="@style/TextAppearance.AppCompat"
+					android:textColor="@color/KoyuYazi"
+					android:stateListAnimator="@null"
+					style="@style/TextAppearance.AppCompat.Small.Inverse"
+					app:layout_constraintEnd_toEndOf="parent"
+					app:layout_constraintStart_toStartOf="parent"
+					app:layout_constraintTop_toBottomOf="@+id/view4"
+					tools:targetApi="lollipop" />
+
+				<View
+					android:id="@+id/view5"
+					android:layout_width="0dp"
+					android:layout_height="1dp"
+					android:background="@drawable/cizgi_ortagri"
+					app:layout_constraintEnd_toStartOf="@+id/v_guideline2"
+					app:layout_constraintStart_toStartOf="@+id/v_guideline1"
+					app:layout_constraintTop_toBottomOf="@+id/btnTarzYonetimi" />
+
+				<Button
+					android:id="@+id/btnSarkiYonetimi"
+					android:layout_width="0dp"
+					android:layout_height="wrap_content"
+					android:paddingStart="30dp"
+					android:paddingLeft="30dp"
+					android:background="@drawable/custom_button2"
+					android:drawableLeft="@drawable/ic_file_document"
+					android:drawableStart="@drawable/ic_file_document"
+					android:drawablePadding="10dp"
+					android:gravity="left|center_vertical"
+					android:text="@string/sarki_yonetimi"
+					android:textAppearance="@style/TextAppearance.AppCompat"
+					android:textColor="@color/KoyuYazi"
+					android:stateListAnimator="@null"
+					style="@style/TextAppearance.AppCompat.Small.Inverse"
+					app:layout_constraintEnd_toEndOf="parent"
+					app:layout_constraintStart_toStartOf="parent"
+					app:layout_constraintTop_toBottomOf="@+id/view5"
+					tools:targetApi="lollipop" />
+
+				<View
+					android:id="@+id/view6"
+					android:layout_width="0dp"
+					android:layout_height="1dp"
+					android:background="@drawable/cizgi_ortagri"
+					app:layout_constraintEnd_toStartOf="@+id/v_guideline2"
+					app:layout_constraintStart_toStartOf="@+id/v_guideline1"
+					app:layout_constraintTop_toBottomOf="@+id/btnSarkiYonetimi" />
+
+				<Button
+					android:id="@+id/btnYedeklemeIslemleri"
+					android:layout_width="0dp"
+					android:layout_height="wrap_content"
+					android:paddingStart="30dp"
+					android:paddingLeft="30dp"
+					android:background="@drawable/custom_button2"
+					android:drawableLeft="@drawable/ic_cloud_sync"
+					android:drawableStart="@drawable/ic_cloud_sync"
+					android:drawablePadding="10dp"
+					android:gravity="left|center_vertical"
+					android:text="@string/yedekleme_islemleri"
+					android:textAppearance="@style/TextAppearance.AppCompat"
+					android:textColor="@color/KoyuYazi"
+					android:stateListAnimator="@null"
+					style="@style/TextAppearance.AppCompat.Small.Inverse"
+					app:layout_constraintEnd_toEndOf="parent"
+					app:layout_constraintStart_toStartOf="parent"
+					app:layout_constraintTop_toBottomOf="@+id/view6"
+					tools:targetApi="lollipop" />
+
+				<View
+					android:id="@+id/view7"
+					android:layout_width="0dp"
+					android:layout_height="1dp"
+					android:background="@drawable/cizgi_ortagri"
+					app:layout_constraintEnd_toStartOf="@+id/v_guideline2"
+					app:layout_constraintStart_toStartOf="@+id/v_guideline1"
+					app:layout_constraintTop_toBottomOf="@+id/btnYedeklemeIslemleri" />
+			</android.support.constraint.ConstraintLayout>
+		</ScrollView>
+
+	</android.support.constraint.ConstraintLayout>
+</android.support.design.widget.CoordinatorLayout>

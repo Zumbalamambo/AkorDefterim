@@ -19,13 +19,13 @@ import android.widget.Filter;
 import android.widget.Filterable;
 import android.widget.TextView;
 
-public class AdpListeler extends BaseAdapter {
+public class AdpListelerSPN extends BaseAdapter {
 	private AkorDefterimSys AkorDefterimSys;
 	private LayoutInflater inflater;
 	private List<SnfListeler> SnfListeler;
 	Typeface YaziFontu;
 
-	public AdpListeler(Activity activity, List<SnfListeler> Listeler) {
+	public AdpListelerSPN(Activity activity, List<SnfListeler> Listeler) {
 		inflater = (LayoutInflater) activity.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 		SnfListeler = Listeler;
 		AkorDefterimSys = new AkorDefterimSys(activity);

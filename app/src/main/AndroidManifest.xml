@@ -253,6 +253,34 @@
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>
+        <activity android:name=".Repertuvar_Islemleri" >
+            <intent-filter>
+                <action android:name="android.intent.action.REPERTUVAR_ISLEMLERI" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
+        <activity android:name=".Liste_Yonetimi" >
+            <intent-filter>
+                <action android:name="android.intent.action.LISTE_YONETIMI" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
+        <activity android:name=".Kategori_Yonetimi" >
+            <intent-filter>
+                <action android:name="android.intent.action.KATEGORI_YONETIMI" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
+        <activity android:name=".Tarz_Yonetimi" >
+            <intent-filter>
+                <action android:name="android.intent.action.TARZ_YONETIMI" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
         <activity android:name=".Sarki_Ekle" >
             <intent-filter>
                 <action android:name="android.intent.action.SARKI_EKLE" />

@@ -16,20 +16,6 @@
 		android:keepScreenOn="true">
 
 		<android.support.constraint.Guideline
-			android:id="@+id/v_guideline1"
-			android:layout_width="wrap_content"
-			android:layout_height="wrap_content"
-			android:orientation="vertical"
-			app:layout_constraintGuide_percent="0.05" />
-
-		<android.support.constraint.Guideline
-			android:id="@+id/v_guideline2"
-			android:layout_width="wrap_content"
-			android:layout_height="wrap_content"
-			android:orientation="vertical"
-			app:layout_constraintGuide_percent="0.95" />
-
-		<android.support.constraint.Guideline
 			android:id="@+id/h_guideline1"
 			android:layout_width="wrap_content"
 			android:layout_height="wrap_content"
@@ -83,14 +69,14 @@
 				android:layout_height="wrap_content">
 
 				<android.support.constraint.Guideline
-					android:id="@+id/v_guideline3"
+					android:id="@+id/v_guideline1"
 					android:layout_width="wrap_content"
 					android:layout_height="wrap_content"
 					android:orientation="vertical"
 					app:layout_constraintGuide_percent="0.05" />
 
 				<android.support.constraint.Guideline
-					android:id="@+id/v_guideline4"
+					android:id="@+id/v_guideline2"
 					android:layout_width="wrap_content"
 					android:layout_height="wrap_content"
 					android:orientation="vertical"
@@ -106,7 +92,7 @@
 					android:layout_marginTop="24dp"
 					android:text="@string/ayarlar"
 					android:textColor="@color/KoyuYazi"
-					app:layout_constraintStart_toStartOf="@+id/v_guideline3"
+					app:layout_constraintStart_toStartOf="@+id/v_guideline1"
 					app:layout_constraintTop_toTopOf="parent" />
 
 				<View
@@ -115,8 +101,8 @@
 					android:layout_height="1dp"
 					android:background="@drawable/cizgi_ortagri"
 					android:layout_marginTop="8dp"
-					app:layout_constraintEnd_toStartOf="@+id/v_guideline4"
-					app:layout_constraintStart_toStartOf="@+id/v_guideline3"
+					app:layout_constraintEnd_toStartOf="@+id/v_guideline2"
+					app:layout_constraintStart_toStartOf="@+id/v_guideline1"
 					app:layout_constraintTop_toBottomOf="@+id/lblAyarlar" />
 
 				<Button
@@ -145,8 +131,8 @@
 					android:layout_width="0dp"
 					android:layout_height="1dp"
 					android:background="@drawable/cizgi_ortagri"
-					app:layout_constraintEnd_toStartOf="@+id/v_guideline4"
-					app:layout_constraintStart_toStartOf="@+id/v_guideline3"
+					app:layout_constraintEnd_toStartOf="@+id/v_guideline2"
+					app:layout_constraintStart_toStartOf="@+id/v_guideline1"
 					app:layout_constraintTop_toBottomOf="@+id/btnEkranIsigi" />
 
 				<Button
@@ -175,8 +161,8 @@
 					android:layout_width="0dp"
 					android:layout_height="1dp"
 					android:background="@drawable/cizgi_ortagri"
-					app:layout_constraintEnd_toStartOf="@+id/v_guideline4"
-					app:layout_constraintStart_toStartOf="@+id/v_guideline3"
+					app:layout_constraintEnd_toStartOf="@+id/v_guideline2"
+					app:layout_constraintStart_toStartOf="@+id/v_guideline1"
 					app:layout_constraintTop_toBottomOf="@+id/btnRepertuvarIslemleri" />
 
 				<TextView
@@ -189,8 +175,8 @@
 					android:layout_marginTop="24dp"
 					android:text="@string/destek"
 					android:textColor="@color/KoyuYazi"
-					app:layout_constraintStart_toStartOf="@+id/v_guideline3"
-					app:layout_constraintTop_toBottomOf="@+id/btnRepertuvarIslemleri" />
+					app:layout_constraintStart_toStartOf="@+id/v_guideline1"
+					app:layout_constraintTop_toBottomOf="@+id/view4" />
 
 				<View
 					android:id="@+id/view5"
@@ -198,8 +184,8 @@
 					android:layout_height="1dp"
 					android:background="@drawable/cizgi_ortagri"
 					android:layout_marginTop="8dp"
-					app:layout_constraintEnd_toStartOf="@+id/v_guideline4"
-					app:layout_constraintStart_toStartOf="@+id/v_guideline3"
+					app:layout_constraintEnd_toStartOf="@+id/v_guideline2"
+					app:layout_constraintStart_toStartOf="@+id/v_guideline1"
 					app:layout_constraintTop_toBottomOf="@+id/lblDestek" />
 
 				<Button
@@ -228,8 +214,8 @@
 					android:layout_width="0dp"
 					android:layout_height="1dp"
 					android:background="@drawable/cizgi_ortagri"
-					app:layout_constraintEnd_toStartOf="@+id/v_guideline4"
-					app:layout_constraintStart_toStartOf="@+id/v_guideline3"
+					app:layout_constraintEnd_toStartOf="@+id/v_guideline2"
+					app:layout_constraintStart_toStartOf="@+id/v_guideline1"
 					app:layout_constraintTop_toBottomOf="@+id/btnEgitim" />
 
 				<Button
@@ -258,8 +244,8 @@
 					android:layout_width="0dp"
 					android:layout_height="1dp"
 					android:background="@drawable/cizgi_ortagri"
-					app:layout_constraintEnd_toStartOf="@+id/v_guideline4"
-					app:layout_constraintStart_toStartOf="@+id/v_guideline3"
+					app:layout_constraintEnd_toStartOf="@+id/v_guideline2"
+					app:layout_constraintStart_toStartOf="@+id/v_guideline1"
 					app:layout_constraintTop_toBottomOf="@+id/btnYardimMerkezi" />
 
 				<Button
@@ -288,8 +274,8 @@
 					android:layout_width="0dp"
 					android:layout_height="1dp"
 					android:background="@drawable/cizgi_ortagri"
-					app:layout_constraintEnd_toStartOf="@+id/v_guideline4"
-					app:layout_constraintStart_toStartOf="@+id/v_guideline3"
+					app:layout_constraintEnd_toStartOf="@+id/v_guideline2"
+					app:layout_constraintStart_toStartOf="@+id/v_guideline1"
 					app:layout_constraintTop_toBottomOf="@+id/btnSorunBildir" />
 
 				<TextView
@@ -302,7 +288,7 @@
 					android:layout_marginTop="24dp"
 					android:text="@string/hakkinda"
 					android:textColor="@color/KoyuYazi"
-					app:layout_constraintStart_toStartOf="@+id/v_guideline3"
+					app:layout_constraintStart_toStartOf="@+id/v_guideline1"
 					app:layout_constraintTop_toBottomOf="@+id/view8" />
 
 				<View
@@ -311,8 +297,8 @@
 					android:layout_height="1dp"
 					android:background="@drawable/cizgi_ortagri"
 					android:layout_marginTop="8dp"
-					app:layout_constraintEnd_toStartOf="@+id/v_guideline4"
-					app:layout_constraintStart_toStartOf="@+id/v_guideline3"
+					app:layout_constraintEnd_toStartOf="@+id/v_guideline2"
+					app:layout_constraintStart_toStartOf="@+id/v_guideline1"
 					app:layout_constraintTop_toBottomOf="@+id/lblHakkinda" />
 
 				<Button
@@ -341,8 +327,8 @@
 					android:layout_width="0dp"
 					android:layout_height="1dp"
 					android:background="@drawable/cizgi_ortagri"
-					app:layout_constraintEnd_toStartOf="@+id/v_guideline4"
-					app:layout_constraintStart_toStartOf="@+id/v_guideline3"
+					app:layout_constraintEnd_toStartOf="@+id/v_guideline2"
+					app:layout_constraintStart_toStartOf="@+id/v_guideline1"
 					app:layout_constraintTop_toBottomOf="@+id/btnOyVer" />
 
 				<Button
@@ -371,8 +357,8 @@
 					android:layout_width="0dp"
 					android:layout_height="1dp"
 					android:background="@drawable/cizgi_ortagri"
-					app:layout_constraintEnd_toStartOf="@+id/v_guideline4"
-					app:layout_constraintStart_toStartOf="@+id/v_guideline3"
+					app:layout_constraintEnd_toStartOf="@+id/v_guideline2"
+					app:layout_constraintStart_toStartOf="@+id/v_guideline1"
 					app:layout_constraintTop_toBottomOf="@+id/btnGizlilikIlkesi" />
 
 				<Button
@@ -401,8 +387,8 @@
 					android:layout_width="0dp"
 					android:layout_height="1dp"
 					android:background="@drawable/cizgi_ortagri"
-					app:layout_constraintEnd_toStartOf="@+id/v_guideline4"
-					app:layout_constraintStart_toStartOf="@+id/v_guideline3"
+					app:layout_constraintEnd_toStartOf="@+id/v_guideline2"
+					app:layout_constraintStart_toStartOf="@+id/v_guideline1"
 					app:layout_constraintTop_toBottomOf="@+id/btnHizmetKosullari" />
 
 				<Button
@@ -431,8 +417,8 @@
 					android:layout_width="0dp"
 					android:layout_height="1dp"
 					android:background="@drawable/cizgi_ortagri"
-					app:layout_constraintEnd_toStartOf="@+id/v_guideline4"
-					app:layout_constraintStart_toStartOf="@+id/v_guideline3"
+					app:layout_constraintEnd_toStartOf="@+id/v_guideline2"
+					app:layout_constraintStart_toStartOf="@+id/v_guideline1"
 					app:layout_constraintTop_toBottomOf="@+id/btnAcikKaynakKutuphaneleri" />
 
 				<View
@@ -440,8 +426,8 @@
 					android:layout_width="0dp"
 					android:layout_height="1dp"
 					android:layout_marginTop="20dp"
-					app:layout_constraintEnd_toStartOf="@+id/v_guideline4"
-					app:layout_constraintStart_toStartOf="@+id/v_guideline3"
+					app:layout_constraintEnd_toStartOf="@+id/v_guideline2"
+					app:layout_constraintStart_toStartOf="@+id/v_guideline1"
 					app:layout_constraintTop_toBottomOf="@+id/view13" />
 			</android.support.constraint.ConstraintLayout>
 		</ScrollView>

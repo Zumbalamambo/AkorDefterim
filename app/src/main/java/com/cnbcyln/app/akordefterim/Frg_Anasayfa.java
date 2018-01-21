@@ -97,6 +97,11 @@ public class Frg_Anasayfa extends Fragment implements SwipeRefreshLayout.OnRefre
 	}
 
 	@Override
+	public void onSaveInstanceState(Bundle savedInstanceState) {
+		super.onSaveInstanceState(savedInstanceState);
+	}
+
+	@Override
 	public void onRefresh() {
         SRLAnasayfa_ListeGuncelle();
 	}

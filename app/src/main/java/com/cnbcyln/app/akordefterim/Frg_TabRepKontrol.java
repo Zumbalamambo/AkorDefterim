@@ -19,7 +19,7 @@ import android.widget.TextView;
 
 import com.cnbcyln.app.akordefterim.Adaptorler.AdpKategori;
 import com.cnbcyln.app.akordefterim.Adaptorler.AdpListelemeTipi;
-import com.cnbcyln.app.akordefterim.Adaptorler.AdpListeler;
+import com.cnbcyln.app.akordefterim.Adaptorler.AdpListelerSPN;
 import com.cnbcyln.app.akordefterim.Adaptorler.AdpTarz;
 import com.cnbcyln.app.akordefterim.Interface.Interface_FragmentDataConn;
 import com.cnbcyln.app.akordefterim.Siniflar.SnfKategoriler;
@@ -87,11 +87,11 @@ public class Frg_TabRepKontrol extends Fragment implements OnClickListener {
 				int SecilenListeID = snfListeler.get(position).getId();
 
 				if(sharedPref.getString("prefOturumTipi", "Cevrimdisi").equals("Cevrimdisi")) {
-					snfKategoriler = veritabani.lst_KategoriGetir(true);
+					snfKategoriler = veritabani.SnfKategoriGetir(true);
 					AdpKategori AdpKategoriler = new AdpKategori(activity, snfKategoriler);
 					spnKategoriler.setAdapter(AdpKategoriler);
 
-					snfTarzlar = veritabani.lst_TarzGetir(true);
+					snfTarzlar = veritabani.SnfTarzGetir(true);
 					AdpTarz AdpTarzlar = new AdpTarz(activity, snfTarzlar);
 					spnTarzlar.setAdapter(AdpTarzlar);
 				} else {
@@ -99,11 +99,11 @@ public class Frg_TabRepKontrol extends Fragment implements OnClickListener {
 						AkorDefterimSys.KategoriListesiGetir(getString(R.string.tumu));
 						AkorDefterimSys.TarzListesiGetir(getString(R.string.tumu));
 					} else {
-						snfKategoriler = veritabani.lst_KategoriGetir(true);
+						snfKategoriler = veritabani.SnfKategoriGetir(true);
 						AdpKategori AdpKategoriler = new AdpKategori(activity, snfKategoriler);
 						spnKategoriler.setAdapter(AdpKategoriler);
 
-						snfTarzlar = veritabani.lst_TarzGetir(true);
+						snfTarzlar = veritabani.SnfTarzGetir(true);
 						AdpTarz AdpTarzlar = new AdpTarz(activity, snfTarzlar);
 						spnTarzlar.setAdapter(AdpTarzlar);
 					}
@@ -138,9 +138,9 @@ public class Frg_TabRepKontrol extends Fragment implements OnClickListener {
 	}
 
 	public void spnListeGetir() {
-		snfListeler = veritabani.lst_ListeGetir(sharedPref.getString("prefOturumTipi", "Cevrimdisi"));
-		AdpListeler AdpListeler = new AdpListeler(activity, snfListeler);
-		spnListeler.setAdapter(AdpListeler);
+		snfListeler = veritabani.SnfListeGetir(sharedPref.getString("prefOturumTipi", "Cevrimdisi"));
+		AdpListelerSPN AdpListelerSPN = new AdpListelerSPN(activity, snfListeler);
+		spnListeler.setAdapter(AdpListelerSPN);
 	}
 
 	public void KategoriListesiGetir(String JSONKategoriListesi) {

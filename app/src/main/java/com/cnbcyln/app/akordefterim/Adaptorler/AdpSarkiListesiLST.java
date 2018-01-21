@@ -18,7 +18,7 @@ import android.widget.TextView;
 
 import java.util.List;
 
-public class AdpSarkiListesi extends BaseAdapter implements SectionIndexer {
+public class AdpSarkiListesiLST extends BaseAdapter implements SectionIndexer {
 	private LayoutInflater inflater;
 	private StringBuilder mSections = new StringBuilder();
 	private List<SnfSarkilar> SnfSarkilar;
@@ -26,7 +26,7 @@ public class AdpSarkiListesi extends BaseAdapter implements SectionIndexer {
 	private Interface_FragmentDataConn FragmentDataConn;
 	private boolean Selectable = false;
 
-	public AdpSarkiListesi(Activity activity, List<SnfSarkilar> SnfSarkilar, Boolean SiraliHarf, int ListelemeTipi) {
+	public AdpSarkiListesiLST(Activity activity, List<SnfSarkilar> SnfSarkilar, Boolean SiraliHarf, int ListelemeTipi) {
 		FragmentDataConn = (Interface_FragmentDataConn) activity;
 		inflater = (LayoutInflater) activity.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 		this.SnfSarkilar = SnfSarkilar;

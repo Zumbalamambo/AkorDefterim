@@ -29,7 +29,7 @@ import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import com.cnbcyln.app.akordefterim.Adaptorler.AdpKategori;
-import com.cnbcyln.app.akordefterim.Adaptorler.AdpListeler;
+import com.cnbcyln.app.akordefterim.Adaptorler.AdpListelerSPN;
 import com.cnbcyln.app.akordefterim.Adaptorler.AdpTarz;
 import com.cnbcyln.app.akordefterim.Interface.Interface_FragmentDataConn;
 import com.cnbcyln.app.akordefterim.Siniflar.SnfKategoriler;
@@ -59,7 +59,7 @@ public class Frg_Sarki extends Fragment implements OnClickListener {
 	List<SnfKategoriler> SnfKategoriler;
 	List<SnfTarzlar> SnfTarzlar;
 
-	AdpListeler AdpListeler;
+	AdpListelerSPN AdpListelerSPN;
 	AdpKategori AdpKategoriler;
 	AdpTarz AdpTarzlar;
 
@@ -234,6 +234,11 @@ public class Frg_Sarki extends Fragment implements OnClickListener {
 	}
 
 	@Override
+	public void onSaveInstanceState(Bundle savedInstanceState) {
+		super.onSaveInstanceState(savedInstanceState);
+	}
+
+	@Override
 	public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
 		super.onCreateContextMenu(menu, v, menuInfo);
 
@@ -360,7 +365,7 @@ public class Frg_Sarki extends Fragment implements OnClickListener {
 
 			FABTranspozeArti.setButtonSize(FloatingActionButton.SIZE_MINI);
 			FABTranspozeArti.setLabelText(getString(R.string.tizlestir));
-			FABTranspozeArti.setImageResource(R.drawable.transpoze_arti2);
+			FABTranspozeArti.setImageResource(R.drawable.ic_transpoze_arti_beyaz);
 			FABTranspozeArti.setColorNormal(ContextCompat.getColor(getActivity(), R.color.KoyuMavi2));
 			FABTranspozeArti.setColorPressed(ContextCompat.getColor(getActivity(), R.color.colorPrimary));
 
@@ -368,7 +373,7 @@ public class Frg_Sarki extends Fragment implements OnClickListener {
 
 			FABTranspozeEksi.setButtonSize(FloatingActionButton.SIZE_MINI);
 			FABTranspozeEksi.setLabelText(getString(R.string.pestlestir));
-			FABTranspozeEksi.setImageResource(R.drawable.transpoze_eksi2);
+			FABTranspozeEksi.setImageResource(R.drawable.ic_transpoze_eksi_beyaz);
 			FABTranspozeEksi.setColorNormal(ContextCompat.getColor(getActivity(), R.color.KoyuMavi2));
 			FABTranspozeEksi.setColorPressed(ContextCompat.getColor(getActivity(), R.color.colorPrimary));
 
@@ -393,7 +398,7 @@ public class Frg_Sarki extends Fragment implements OnClickListener {
 
 				FABPaylas.setButtonSize(FloatingActionButton.SIZE_MINI);
 				FABPaylas.setLabelText(getString(R.string.paylas));
-				FABPaylas.setImageResource(R.drawable.paylas);
+				FABPaylas.setImageResource(R.drawable.ic_share);
 				FABPaylas.setColorNormal(ContextCompat.getColor(getActivity(), R.color.KoyuMavi2));
 				FABPaylas.setColorPressed(ContextCompat.getColor(getActivity(), R.color.colorPrimary));
 
@@ -401,7 +406,7 @@ public class Frg_Sarki extends Fragment implements OnClickListener {
 
 				FABTranspozeArti.setButtonSize(FloatingActionButton.SIZE_MINI);
 				FABTranspozeArti.setLabelText(getString(R.string.tizlestir));
-				FABTranspozeArti.setImageResource(R.drawable.transpoze_arti2);
+				FABTranspozeArti.setImageResource(R.drawable.ic_transpoze_arti_beyaz);
 				FABTranspozeArti.setColorNormal(ContextCompat.getColor(getActivity(), R.color.KoyuMavi2));
 				FABTranspozeArti.setColorPressed(ContextCompat.getColor(getActivity(), R.color.colorPrimary));
 
@@ -409,7 +414,7 @@ public class Frg_Sarki extends Fragment implements OnClickListener {
 
 				FABTranspozeEksi.setButtonSize(FloatingActionButton.SIZE_MINI);
 				FABTranspozeEksi.setLabelText(getString(R.string.pestlestir));
-				FABTranspozeEksi.setImageResource(R.drawable.transpoze_eksi2);
+				FABTranspozeEksi.setImageResource(R.drawable.ic_transpoze_eksi_beyaz);
 				FABTranspozeEksi.setColorNormal(ContextCompat.getColor(getActivity(), R.color.KoyuMavi2));
 				FABTranspozeEksi.setColorPressed(ContextCompat.getColor(getActivity(), R.color.colorPrimary));
 
@@ -433,7 +438,7 @@ public class Frg_Sarki extends Fragment implements OnClickListener {
 
 				FABPaylas.setButtonSize(FloatingActionButton.SIZE_MINI);
 				FABPaylas.setLabelText(getString(R.string.paylas));
-				FABPaylas.setImageResource(R.drawable.paylas);
+				FABPaylas.setImageResource(R.drawable.ic_share);
 				FABPaylas.setColorNormal(ContextCompat.getColor(getActivity(), R.color.KoyuMavi2));
 				FABPaylas.setColorPressed(ContextCompat.getColor(getActivity(), R.color.colorPrimary));
 
@@ -441,7 +446,7 @@ public class Frg_Sarki extends Fragment implements OnClickListener {
 
 				FABTranspozeArti.setButtonSize(FloatingActionButton.SIZE_MINI);
 				FABTranspozeArti.setLabelText(getString(R.string.tizlestir));
-				FABTranspozeArti.setImageResource(R.drawable.transpoze_arti2);
+				FABTranspozeArti.setImageResource(R.drawable.ic_transpoze_arti_beyaz);
 				FABTranspozeArti.setColorNormal(ContextCompat.getColor(getActivity(), R.color.KoyuMavi2));
 				FABTranspozeArti.setColorPressed(ContextCompat.getColor(getActivity(), R.color.colorPrimary));
 
@@ -449,7 +454,7 @@ public class Frg_Sarki extends Fragment implements OnClickListener {
 
 				FABTranspozeEksi.setButtonSize(FloatingActionButton.SIZE_MINI);
 				FABTranspozeEksi.setLabelText(getString(R.string.pestlestir));
-				FABTranspozeEksi.setImageResource(R.drawable.transpoze_eksi2);
+				FABTranspozeEksi.setImageResource(R.drawable.ic_transpoze_eksi_beyaz);
 				FABTranspozeEksi.setColorNormal(ContextCompat.getColor(getActivity(), R.color.KoyuMavi2));
 				FABTranspozeEksi.setColorPressed(ContextCompat.getColor(getActivity(), R.color.colorPrimary));
 

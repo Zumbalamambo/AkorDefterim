@@ -283,9 +283,6 @@
     <string name="wifi_baglantisi_bulunamadi">Wifi bağlantısı bulunamadı</string>
     <string name="guc_tasarrufu_aktif">Güç tasarrufu aktif</string>
     <string name="web_yonetim_servis_kapali">Servis Kapalı</string>
-    <string name="listeler">Liste(ler)</string>
-    <string name="kategoriler">Kategori(ler)</string>
-    <string name="tarzlar">Tarz(lar)</string>
     <string name="listelemetipi">Listeleme Tipi</string>
     <string name="parolami_unuttum">Parolamı Unuttum</string>
     <string name="giris_yardimi">Giriş Yardımı</string>
@@ -387,6 +384,9 @@
     <string name="kategori_adi">Kategori Adı</string>
     <string name="tarz_adi">Tarz Adı</string>
     <string name="duzenle">Düzenle</string>
+    <string name="islemler">İşlemler</string>
+    <string name="yedekleme_islemleri">Yedekleme İşlemleri</string>
+    <string name="repertuvar_islemleri_aciklama">Cihaz veritabanındaki kayıtlı olan repertuvara ekleme, çıkarma ve düzenleme işlemlerini kolayca yapabilirsin. Böylelikle internetin olmadığında çevrimdışı modundayken bile repertuvarına ulaşırsın. Ayrıca dilersen repertuvarını &lt;b&gt;%s&lt;/b&gt; bulut depolama alanına yedekleyerek her yerden güncel repertuvarına ulaşırsın. Böylelikle asla veri kaybı yaşamazsın. Ne büyük kolaylık değil mi? :)</string>
 
     <!-- EditText Hint'ler -->
     <string name="sanatci_adina_gore_ara">Ara (Sanatçı adına göre)</string>
@@ -461,7 +461,7 @@
     <string name="txtyenisifre_hata4">Yeni şifre en az bir sayı ve bir küçük harf içermelidir.</string>
     <string name="yenisifre_yenisifretekrar_uyusmuyor">Yeni şifre ile yeni şifrenin tekrarı birbirleriyle aynı değil. Kontrol edin.</string>
     <string name="giris_yapilamadi_bilgilerinizi_kontrol_edin">Giriş yapılamadı. Lütfen hesap bilgilerini kontrol et.</string>
-    <string name="hesap_banlandi" tools:ignore="Typos">Bu hesap &lt;b&gt;%1$s&lt;/b&gt; nedeniyle kullanıma kapatılmıştır.&lt;br&gt;&lt;br&gt;Bilgi için: &lt;b&gt;%2$s&lt;/b&gt;</string>
+    <string name="hesap_banlandi">Bu hesap &lt;b&gt;%1$s&lt;/b&gt; nedeniyle kullanıma kapatılmıştır.&lt;br&gt;&lt;br&gt;Bilgi için: &lt;b&gt;%2$s&lt;/b&gt;</string>
     <string name="hesap_bilgileri_bulunamadi">Hesap bilgileri bulunamadı.</string>
     <string name="hesap_bilgileri_guncellendi">Hesap bilgileri güncellendi.</string>
     <string name="hesap_bilgileri_guncellenemedi">Hesap bilgileri güncellenemedi.</string>
@@ -482,6 +482,7 @@
     <string name="yerel_repertuvar_guncellendi">Yerel repertuvar güncellendi.</string>
     <string name="hesap_kullanima_kisitlidir">Hesabınız kullanıma kısıtlıdır. Lütfen Hesabım sayfasından Email aktivasyonunu tamamlayınız.</string>
     <string name="islem_yapilirken_bir_hata_olustu">İşlem yapılırken bir hata oluştu. Yeniden deneyiniz.</string>
+    <string name="sunucu_baglantisi_kurulamiyor">Sunucu bağlantısı kurulamıyor. Daha sonra yeniden deneyiniz.</string>
     <string name="liste_bulunamadi">Cihazında kayıtlı Liste bulunamadı.</string>
     <string name="kategori_bulunamadi">Cihazında kayıtlı Kategori bulunamadı. </string>
     <string name="tarz_bulunamadi">Cihazında kayıtlı Tarz bulunamadı.</string>
@@ -506,6 +507,41 @@
     <string name="uygulama_cikis_mesaji">Çıkmak için geri tuşuna yeniden dokunun.</string>
     <string name="hesabini_bul_ceptelefon_onay_hata">Hesaba ait cep telefonu onaylı görünmüyor. Diğer yardım seçeneklerini dene.</string>
     <string name="geri_bildirim_gonderilemedi">Geri bildirim gönderilemedi.</string>
+
+    <!-- Kategori Yönetimi -->
+    <string name="kategoriler">Kategori(ler)</string>
+    <string name="kategori_yonetimi">Kategori Yönetimi</string>
+    <string name="kategori_eklendi" tools:ignore="Typos">\"%s\" isimli kategori eklendi.</string>
+    <string name="kategori_eklenemedi_hata1" tools:ignore="Typos">\"%s\" isimli kategori bulunmaktadır. Farklı bir isim dene.</string>
+    <string name="kategori_duzenlendi" tools:ignore="Typos">\"%1$s\" isimli kategori, \"%2$s\" olarak düzenlendi.</string>
+    <string name="kategori_sil_soru">&lt;b&gt;%s&lt;/b&gt; isimli kategoriyi silmek istiyor musunuz?</string>
+    <string name="kategori_silindi" tools:ignore="Typos">\"%s\" isimli kategori silindi.</string>
+    <string name="kategori_silinemedi_hata1" tools:ignore="Typos">\"%s\" isimli kategoriye ait şarkı bulunmaktadır.</string>
+
+    <!-- Tarz Yönetimi -->
+    <string name="tarzlar">Tarz(lar)</string>
+    <string name="tarz_yonetimi">Tarz Yönetimi</string>
+    <string name="tarz_eklendi" tools:ignore="Typos">\"%s\" isimli tarz eklendi.</string>
+    <string name="tarz_eklenemedi_hata1" tools:ignore="Typos">\"%s\" isimli tarz bulunmaktadır. Farklı bir isim dene.</string>
+    <string name="tarz_duzenlendi" tools:ignore="Typos">\"%1$s\" isimli tarz, \"%2$s\" olarak düzenlendi.</string>
+    <string name="tarz_sil_soru">&lt;b&gt;%s&lt;/b&gt; isimli tarzı silmek istiyor musunuz?</string>
+    <string name="tarz_silindi" tools:ignore="Typos">\"%s\" isimli tarz silindi.</string>
+    <string name="tarz_silinemedi_hata1" tools:ignore="Typos">\"%s\" isimli tarza ait şarkı bulunmaktadır.</string>
+
+    <!-- Liste Yönetimi -->
+    <string name="listeler">Liste(ler)</string>
+    <string name="liste_yonetimi">Liste Yönetimi</string>
+    <string name="liste_eklendi" tools:ignore="Typos">\"%s\" isimli liste eklendi.</string>
+    <string name="liste_eklenemedi_hata1" tools:ignore="Typos">\"%s\" isimli liste bulunmaktadır. Farklı bir isim dene.</string>
+    <string name="liste_duzenlendi" tools:ignore="Typos">\"%1$s\" isimli liste, \"%2$s\" olarak düzenlendi.</string>
+    <string name="liste_sil_soru">&lt;b&gt;%s&lt;/b&gt; isimli listeyi silmek istiyor musunuz?</string>
+    <string name="liste_silindi" tools:ignore="Typos">\"%s\" isimli liste silindi.</string>
+    <string name="liste_silinemedi_hata1" tools:ignore="Typos">\"%s\" isimli listeye ait şarkı bulunmaktadır.</string>
+
+    <!-- Şarkı Yönetimi -->
+    <string name="sarki">Şarkı</string>
+    <string name="sarkilar">Şarkı(lar)</string>
+    <string name="sarki_yonetimi">Şarkı Yönetimi</string>
 
     <!-- Notify Mesajlar -->
     <string name="farkli_bir_cihazdan_oturum_acildi">Farklı bir cihazdan oturum açıldı. Bir hesap yalnızca tek bir cihazdan oturum açabilir.</string>
@@ -705,39 +741,6 @@
     <string name="web_toplam_tarz">Toplam Tarz</string>
     <string name="web_toplam_sarki">Toplam Şarkı</string>
     <string name="web_daha_fazla_bilgi">Daha fazla bilgi</string>
-
-    <!-- Kategori Yönetimi -->
-    <string name="kategori_ekle">Kategori Ekle</string>
-    <string name="kategori_eklendi">%s isimli kategori eklendi.</string>
-    <string name="kategori_eklenemedi_hata1">%s isimli kategori bulunmaktadır. Farklı bir isim dene.</string>
-    <string name="kategori_duzenle">Kategori Düzenle</string>
-    <string name="kategori_duzenlendi">%1$s isimli kategori, %2$s olarak düzenlendi.</string>
-    <string name="kategori_sil">Kategori Sil</string>
-    <string name="kategori_sil_soru">%s isimli kategoriyi silmek istiyor musunuz?</string>
-    <string name="kategori_silindi">%s isimli kategori silindi.</string>
-    <string name="kategori_silinemedi_hata1">Kategoriye ait şarkı bulunmaktadır. Gerekli düzenlemeleri yapın..</string>
-
-    <!-- Tarz Yönetimi -->
-    <string name="tarz_ekle">Tarz Ekle</string>
-    <string name="tarz_eklendi">%s isimli tarz eklendi.</string>
-    <string name="tarz_eklenemedi_hata1">%s isimli tarz bulunmaktadır. Farklı bir isim dene.</string>
-    <string name="tarz_duzenle">Tarz Düzenle</string>
-    <string name="tarz_duzenlendi">%1$s isimli tarz, %2$s olarak düzenlendi.</string>
-    <string name="tarz_sil">Tarz Sil</string>
-    <string name="tarz_sil_soru">%s isimli tarzı silmek istiyor musunuz?</string>
-    <string name="tarz_silindi">%s isimli tarz silindi.</string>
-    <string name="tarz_silinemedi_hata1">Tarza ait şarkı bulunmaktadır. Gerekli düzenlemeleri yapın..</string>
-
-    <!-- Liste Yönetimi -->
-    <string name="liste_ekle">Liste Ekle</string>
-    <string name="liste_eklendi">%s isimli liste eklendi.</string>
-    <string name="liste_eklenemedi_hata1">%s isimli liste bulunmaktadır. Farklı bir isim dene.</string>
-    <string name="liste_duzenle">Liste Düzenle</string>
-    <string name="liste_duzenlendi">%1$s isimli liste, %2$s olarak düzenlendi.</string>
-    <string name="liste_sil">Liste Sil</string>
-    <string name="liste_sil_soru">%s isimli listeyi silmek istiyor musunuz?</string>
-    <string name="liste_silindi">%s isimli liste silindi.</string>
-    <string name="liste_silinemedi_hata1">Listeye ait şarkı bulunmaktadır. Gerekli düzenlemeleri yapın..</string>
 
     <!-- Şarkılar Yönetimi -->
     <string name="web_sarki_yonetimi_sayfa_yazisi">Aşağıdan şarkı ekleyebilir, düzenleyebilir ya da silebilirsiniz..</string>
