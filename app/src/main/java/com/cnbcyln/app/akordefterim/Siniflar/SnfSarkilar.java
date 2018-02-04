@@ -20,7 +20,7 @@ public class SnfSarkilar implements Serializable {
 		super();
 	}
 	
-	public SnfSarkilar(int id, int ListeID, int KategoriID, int TarzID, String SanatciAdi, String SarkiAdi, String Icerik, String EklenmeTarihi, String DuzenlenmeTarihi, Boolean Secim) {
+	public SnfSarkilar(int id, String DepolamaAlani, int ListeID, int KategoriID, int TarzID, String SanatciAdi, String SarkiAdi, String Icerik, String EklenmeTarihi, String DuzenlenmeTarihi, Boolean Secim) {
 		super();
 		this.id = id;
 		this.ListeID = ListeID;

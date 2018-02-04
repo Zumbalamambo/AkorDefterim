@@ -59,7 +59,8 @@ public class Giris_Yap extends AppCompatActivity implements Interface_AsyncRespo
 		setContentView(R.layout.activity_girisyap);
 
 		activity = this;
-		AkorDefterimSys = new AkorDefterimSys(activity);
+		AkorDefterimSys = AkorDefterimSys.getInstance();
+		AkorDefterimSys.activity = activity;
 		YaziFontu = AkorDefterimSys.FontGetir(activity, "anivers_regular"); // Genel yazı fontunu belirttik
 
         sharedPref = activity.getSharedPreferences(AkorDefterimSys.PrefAdi, Context.MODE_PRIVATE);
@@ -139,6 +140,12 @@ public class Giris_Yap extends AppCompatActivity implements Interface_AsyncRespo
 		btnGirisYap = findViewById(R.id.btnGirisYap);
 		btnGirisYap.setTypeface(YaziFontu, Typeface.NORMAL);
 		btnGirisYap.setOnClickListener(this);
+	}
+
+	@Override
+	protected void onStart() {
+		super.onStart();
+		AkorDefterimSys.activity = activity;
 	}
 
 	@Override

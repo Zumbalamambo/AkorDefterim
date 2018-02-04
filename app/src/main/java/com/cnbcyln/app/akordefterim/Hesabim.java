@@ -50,7 +50,8 @@ public class Hesabim extends AppCompatActivity implements Interface_AsyncRespons
 		setContentView(R.layout.activity_hesabim);
 
 		activity = this;
-		AkorDefterimSys = new AkorDefterimSys(activity);
+		AkorDefterimSys = AkorDefterimSys.getInstance();
+		AkorDefterimSys.activity = activity;
 		YaziFontu = AkorDefterimSys.FontGetir(activity, "anivers_regular"); // Genel yazı fontunu belirttik
 
 		sharedPref = activity.getSharedPreferences(AkorDefterimSys.PrefAdi, Context.MODE_PRIVATE);
@@ -104,6 +105,8 @@ public class Hesabim extends AppCompatActivity implements Interface_AsyncRespons
 	@Override
 	protected void onStart() {
 		super.onStart();
+
+		AkorDefterimSys.activity = activity;
 
 		if(AkorDefterimSys.GirisYapildiMi()) {
 			if(!AkorDefterimSys.ProgressDialogisShowing(PDBilgilerAliniyor)) {

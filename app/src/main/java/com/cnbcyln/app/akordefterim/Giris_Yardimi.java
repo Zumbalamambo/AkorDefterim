@@ -37,7 +37,8 @@ public class Giris_Yardimi extends AppCompatActivity implements Interface_AsyncR
 		setContentView(R.layout.activity_girisyardimi);
 
 		activity = this;
-		AkorDefterimSys = new AkorDefterimSys(activity);
+		AkorDefterimSys = AkorDefterimSys.getInstance();
+		AkorDefterimSys.activity = activity;
 		YaziFontu = AkorDefterimSys.FontGetir(activity, "anivers_regular"); // Genel yazı fontunu belirttik
 
 		AkorDefterimSys.GenelAyarlar(); // Uygulama için genel ayarları uyguladık.
@@ -75,6 +76,12 @@ public class Giris_Yardimi extends AppCompatActivity implements Interface_AsyncR
 		btnAkorDefterimYardimMerkezi.setTypeface(YaziFontu, Typeface.BOLD);
 		btnAkorDefterimYardimMerkezi.setText(getString(R.string.s_yardim_merkezi, getString(R.string.uygulama_adi)));
 		btnAkorDefterimYardimMerkezi.setOnClickListener(this);
+	}
+
+	@Override
+	protected void onStart() {
+		super.onStart();
+		AkorDefterimSys.activity = activity;
 	}
 
 	@Override

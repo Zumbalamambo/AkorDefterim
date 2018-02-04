@@ -23,10 +23,9 @@ import android.util.AttributeSet;
 import android.util.DisplayMetrics;
 import android.view.MotionEvent;
 import android.view.WindowManager;
-import android.widget.ImageView;
 
 @SuppressLint({ "DrawAllocation", "ClickableViewAccessibility" })
-public class CropImageView extends ImageView {
+public class CropImageView extends android.support.v7.widget.AppCompatImageView {
 	@SuppressWarnings("unused")
 	private static final String TAG = CropImageView.class.getSimpleName();
 
@@ -228,7 +227,7 @@ public class CropImageView extends ImageView {
                     break;
                 }
             }
-            mBackgroundColor = ta.getColor(R.styleable.CropImageView_backgroundColor, TRANSPARENT);
+            mBackgroundColor = ta.getColor(R.styleable.CropImageView_backgroundColor2, TRANSPARENT);
             super.setBackgroundColor(mBackgroundColor);
             mOverlayColor = ta.getColor(R.styleable.CropImageView_overlayColor, TRANSLUCENT_BLACK);
             mFrameColor = ta.getColor(R.styleable.CropImageView_frameColor, WHITE);

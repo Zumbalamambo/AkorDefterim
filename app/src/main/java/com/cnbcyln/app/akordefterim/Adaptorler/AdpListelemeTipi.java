@@ -25,8 +25,8 @@ public class AdpListelemeTipi extends BaseAdapter {
 	public AdpListelemeTipi(Activity activity, List<SnfListelemeTipi> ListelemeTip) {
 		inflater = (LayoutInflater) activity.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 		this.ListelemeTipi = ListelemeTip;
-		AkorDefterimSys = new AkorDefterimSys(activity);
-
+		AkorDefterimSys = AkorDefterimSys.getInstance();
+		AkorDefterimSys.activity = activity;
 		YaziFontu = AkorDefterimSys.FontGetir(activity, "anivers_regular");
 	}
 	

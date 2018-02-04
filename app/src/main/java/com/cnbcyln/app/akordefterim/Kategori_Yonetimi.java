@@ -71,7 +71,8 @@ public class Kategori_Yonetimi extends AppCompatActivity implements Interface_As
 		setContentView(R.layout.activity_kategori_yonetimi);
 
         activity = this;
-		AkorDefterimSys = new AkorDefterimSys(activity);
+		AkorDefterimSys = AkorDefterimSys.getInstance();
+        AkorDefterimSys.activity = activity;
 		veritabani = new Veritabani(activity);
 		YaziFontu = AkorDefterimSys.FontGetir(activity, "anivers_regular"); // Genel yazı fontunu belirttik
         inflater = activity.getLayoutInflater();
@@ -171,7 +172,7 @@ public class Kategori_Yonetimi extends AppCompatActivity implements Interface_As
                 }
 
                 AkorDefterimSys.KlavyeKapat();
-
+                AramaPanelKapat();
                 openContextMenu(lstKategoriYonetimi);
             }
         });
@@ -188,6 +189,8 @@ public class Kategori_Yonetimi extends AppCompatActivity implements Interface_As
     @Override
     protected void onStart() {
         super.onStart();
+
+        AkorDefterimSys.activity = activity;
 
         KategoriGetir();
     }

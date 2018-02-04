@@ -25,8 +25,8 @@ public class AdpKategori extends BaseAdapter {
 	public AdpKategori(Activity activity, List<SnfKategoriler> Kategoriler) {
 		inflater = (LayoutInflater) activity.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 		this.Kategoriler = Kategoriler;
-		AkorDefterimSys = new AkorDefterimSys(activity);
-		
+		AkorDefterimSys = AkorDefterimSys.getInstance();
+		AkorDefterimSys.activity = activity;
 		YaziFontu = AkorDefterimSys.FontGetir(activity, "anivers_regular");
 	}
 	

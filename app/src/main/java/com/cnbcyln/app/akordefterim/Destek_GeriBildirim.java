@@ -85,7 +85,8 @@ public class Destek_GeriBildirim extends AppCompatActivity implements Interface_
 		setContentView(R.layout.activity_destek_geribildirim);
 
         activity = this;
-		AkorDefterimSys = new AkorDefterimSys(activity);
+		AkorDefterimSys = AkorDefterimSys.getInstance();
+        AkorDefterimSys.activity = activity;
 		YaziFontu = AkorDefterimSys.FontGetir(activity, "anivers_regular"); // Genel yazı fontunu belirttik
 
 		sharedPref = getSharedPreferences(AkorDefterimSys.PrefAdi, Context.MODE_PRIVATE);
@@ -186,6 +187,12 @@ public class Destek_GeriBildirim extends AppCompatActivity implements Interface_
                 break;
         }
 	}
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        AkorDefterimSys.activity = activity;
+    }
 
     @Override
     public void onBackPressed() {

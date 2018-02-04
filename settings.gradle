@@ -1,3 +1,2 @@
-include ':app', ':app:libraries:rippleeffect'
-include ':app', ':app:libraries:slidingrootnav'
-include ':app', ':app:libraries:richeditor'
+include ':app', ':app:libraries:Wysiwyg'
+include ':app', ':app:libraries:UndoRedo'

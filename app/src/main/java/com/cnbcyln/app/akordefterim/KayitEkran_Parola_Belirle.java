@@ -54,7 +54,8 @@ public class KayitEkran_Parola_Belirle extends AppCompatActivity implements OnCl
 		setContentView(R.layout.activity_kayit_ekran_parolabelirle);
 
 		activity = this;
-		AkorDefterimSys = new AkorDefterimSys(activity);
+		AkorDefterimSys = AkorDefterimSys.getInstance();
+		AkorDefterimSys.activity = activity;
 		YaziFontu = AkorDefterimSys.FontGetir(activity, "anivers_regular"); // Genel yazı fontunu belirttik
 
 		sharedPref = activity.getSharedPreferences(AkorDefterimSys.PrefAdi, Context.MODE_PRIVATE);
@@ -166,7 +167,9 @@ public class KayitEkran_Parola_Belirle extends AppCompatActivity implements OnCl
 	protected void onStart() {
 		super.onStart();
 
-		if(sharedPref.getString("prefAction", "").equals("Vazgec")) onBackPressed();
+		AkorDefterimSys.activity = activity;
+
+		if(AkorDefterimSys.prefAction.equals("Vazgec")) onBackPressed();
 	}
 
 	@Override
@@ -190,10 +193,7 @@ public class KayitEkran_Parola_Belirle extends AppCompatActivity implements OnCl
 				onBackPressed();
 				break;
 			case R.id.lblVazgec:
-				sharedPrefEditor = sharedPref.edit();
-				sharedPrefEditor.putString("prefAction", "Vazgec");
-				sharedPrefEditor.apply();
-
+				AkorDefterimSys.prefAction = "Vazgec";
 				onBackPressed();
 				break;
 			case R.id.btnIleri:

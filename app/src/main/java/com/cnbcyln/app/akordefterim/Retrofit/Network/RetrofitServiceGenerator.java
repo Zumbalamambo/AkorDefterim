@@ -21,7 +21,8 @@ public class RetrofitServiceGenerator {
 
     private static OkHttpClient.Builder HttpClient = new OkHttpClient.Builder();
     public static <S> S createService(Activity activity, Class<S> serviceClass) {
-        AkorDefterimSys = new AkorDefterimSys(activity);
+        AkorDefterimSys = AkorDefterimSys.getInstance();
+        AkorDefterimSys.activity = activity;
         Gson gson = new GsonBuilder().setLenient().create();
         RB = new Retrofit.Builder().baseUrl(AkorDefterimSys.CBCAPP_HttpsAdres + File.separator + AkorDefterimSys.AkorDefterimKlasorAdi + File.separator).addConverterFactory(GsonConverterFactory.create(gson));
         RB.client(HttpClient.build());

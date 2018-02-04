@@ -18,7 +18,7 @@ import android.widget.ListView;
 
 import com.cnbcyln.app.akordefterim.Adaptorler.AdpGenelMenu;
 import com.cnbcyln.app.akordefterim.Interface.Interface_AsyncResponse;
-import com.cnbcyln.app.akordefterim.Interface.Interface_FragmentDataConn;
+import com.cnbcyln.app.akordefterim.Interface.Int_DataConn_AnaEkran;
 import com.cnbcyln.app.akordefterim.Siniflar.SnfGenelMenu;
 import com.cnbcyln.app.akordefterim.util.AkorDefterimSys;
 
@@ -41,7 +41,7 @@ public class Frg_TabGenelMenu extends Fragment implements Interface_AsyncRespons
 	private List<com.cnbcyln.app.akordefterim.Siniflar.SnfGenelMenu> SnfGenelMenu;
 	AlertDialog Dialog_Hakkinda, Dialog_ProgramKapat, ADDialog_InternetBaglantisi;
 	String Fragment_SayfaTag = "Frg_Anasayfa";
-	Interface_FragmentDataConn FragmentDataConn;
+	Int_DataConn_AnaEkran FragmentDataConn;
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -53,8 +53,9 @@ public class Frg_TabGenelMenu extends Fragment implements Interface_AsyncRespons
 		super.onActivityCreated(savedInstanceState);
 
 		activity = getActivity();
-		AkorDefterimSys = new AkorDefterimSys(activity);
-		FragmentDataConn = (Interface_FragmentDataConn) activity;
+		AkorDefterimSys = AkorDefterimSys.getInstance();
+		AkorDefterimSys.activity = activity;
+		FragmentDataConn = (Int_DataConn_AnaEkran) activity;
 
 		sharedPref = activity.getSharedPreferences(AkorDefterimSys.PrefAdi, Context.MODE_PRIVATE);
 		//YaziFontu = AkorDefterimSys.FontGetir(activity, "anivers_regular");
@@ -108,6 +109,13 @@ public class Frg_TabGenelMenu extends Fragment implements Interface_AsyncRespons
 				}
 			}
 		});
+	}
+
+	@Override
+	public void onStart() {
+		super.onStart();
+
+		AkorDefterimSys.activity = activity;
 	}
 
 	@Override

@@ -30,13 +30,11 @@ import com.mhk.android.passcodeview.PasscodeView;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.util.Random;
 import java.util.Timer;
 import java.util.TimerTask;
 
 @SuppressWarnings({"deprecation", "ResultOfMethodCallIgnored", "ConstantConditions"})
 public class Dogrulama_Kodu extends AppCompatActivity implements Interface_AsyncResponse, OnClickListener {
-
 	private Activity activity;
 	private AkorDefterimSys AkorDefterimSys;
 	SharedPreferences sharedPref;
@@ -63,7 +61,8 @@ public class Dogrulama_Kodu extends AppCompatActivity implements Interface_Async
 		setContentView(R.layout.activity_dogrulama_kodu);
 
 		activity = this;
-		AkorDefterimSys = new AkorDefterimSys(activity);
+		AkorDefterimSys = AkorDefterimSys.getInstance();
+		AkorDefterimSys.activity = activity;
 		YaziFontu = AkorDefterimSys.FontGetir(activity, "anivers_regular"); // Genel yazı fontunu belirttik
 
 		sharedPref = activity.getSharedPreferences(AkorDefterimSys.PrefAdi, Context.MODE_PRIVATE);
@@ -117,7 +116,9 @@ public class Dogrulama_Kodu extends AppCompatActivity implements Interface_Async
 	protected void onStart() {
 		super.onStart();
 
-		if(sharedPref.getString("prefAction", "").equals("Vazgec")) finish();
+		AkorDefterimSys.activity = activity;
+
+		if(AkorDefterimSys.prefAction.equals("Vazgec")) finish();
 		else {
 			switch (Islem) {
 				case "Kayit":
@@ -250,7 +251,7 @@ public class Dogrulama_Kodu extends AppCompatActivity implements Interface_Async
 								DogrulamaKodu = AkorDefterimSys.KodUret(6, true, false, false, false);
 
 								// Onay kodu belirtilen eposta adresine gönderiliyor
-								AkorDefterimSys.EPostaGonder(EPosta, "", getString(R.string.dogrulama_kodu), getString(R.string.eposta_dosrulama_kodu_icerik, DogrulamaKodu, getString(R.string.uygulama_adi)));
+								AkorDefterimSys.EPostaGonder(EPosta, "", getString(R.string.dogrulama_kodu), getString(R.string.eposta_dogrulama_kodu_icerik, DogrulamaKodu, getString(R.string.uygulama_adi)));
 							}
 							break;
 						case "EPostaDegisikligi":
@@ -272,7 +273,7 @@ public class Dogrulama_Kodu extends AppCompatActivity implements Interface_Async
 								DogrulamaKodu = AkorDefterimSys.KodUret(6, true, false, false, false);
 
 								// Onay kodu belirtilen eposta adresine gönderiliyor
-								AkorDefterimSys.EPostaGonder(EPosta, "", getString(R.string.dogrulama_kodu), getString(R.string.eposta_dosrulama_kodu_icerik, DogrulamaKodu, getString(R.string.uygulama_adi)));
+								AkorDefterimSys.EPostaGonder(EPosta, "", getString(R.string.dogrulama_kodu), getString(R.string.eposta_dogrulama_kodu_icerik, DogrulamaKodu, getString(R.string.uygulama_adi)));
 							}
 							break;
 						case "CepTelefonuDegisikligi":
@@ -530,11 +531,10 @@ public class Dogrulama_Kodu extends AppCompatActivity implements Interface_Async
 
 					if(JSONSonuc.getBoolean("Sonuc")) {
 						sharedPrefEditor = sharedPref.edit();
-
 						if(Islem.equals("EPostaDegisikligi")) sharedPrefEditor.putString("prefEPosta", EPosta);
-
-						sharedPrefEditor.putString("prefAction", "IslemTamamlandi");
 						sharedPrefEditor.apply();
+
+						AkorDefterimSys.prefAction = "IslemTamamlandi";
 
 						finish();
 					} else {

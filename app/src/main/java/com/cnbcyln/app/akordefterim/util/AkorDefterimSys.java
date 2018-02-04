@@ -38,12 +38,14 @@ import java.util.Enumeration;
 import java.util.List;
 import java.util.Locale;
 import java.util.concurrent.TimeUnit;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import com.cnbcyln.app.akordefterim.Adaptorler.AdpAkorlar;
 import com.cnbcyln.app.akordefterim.Adaptorler.AdpTonlar;
 import com.cnbcyln.app.akordefterim.Giris;
 import com.cnbcyln.app.akordefterim.Interface.Interface_AsyncResponse;
-import com.cnbcyln.app.akordefterim.Interface.Interface_FragmentDataConn;
+import com.cnbcyln.app.akordefterim.Interface.Int_DataConn_AnaEkran;
 import com.cnbcyln.app.akordefterim.R;
 import com.cnbcyln.app.akordefterim.Retrofit.Interface.RetrofitInterface;
 import com.cnbcyln.app.akordefterim.Retrofit.Network.RetrofitServiceGenerator;
@@ -68,11 +70,8 @@ import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GooglePlayServicesUtil;
 import com.google.android.gms.plus.PlusShare;
 import com.mhk.android.passcodeview.PasscodeView;
+import com.rengwuxian.materialedittext.MaterialEditText;
 import com.theartofdev.edmodo.cropper.CropImage;
-import com.yarolegovich.slidingrootnav.SlideGravity;
-import com.yarolegovich.slidingrootnav.SlidingRootNav;
-import com.yarolegovich.slidingrootnav.SlidingRootNavBuilder;
-import com.yarolegovich.slidingrootnav.callback.DragListener;
 
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
@@ -110,7 +109,6 @@ import android.net.wifi.WifiInfo;
 import android.net.wifi.WifiManager;
 import android.os.AsyncTask;
 import android.os.Build;
-import android.os.Bundle;
 import android.os.Environment;
 import android.os.Handler;
 import android.os.Message;
@@ -124,7 +122,6 @@ import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.Snackbar;
 import android.support.design.widget.TextInputLayout;
 import android.support.v4.app.ActivityOptionsCompat;
-import android.support.v4.content.FileProvider;
 import android.support.v7.widget.PopupMenu;
 import android.text.Html;
 import android.text.Spannable;
@@ -149,7 +146,6 @@ import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewAnimationUtils;
-import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
 import android.view.animation.AnimationUtils;
@@ -170,6 +166,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import org.apache.commons.lang3.RandomStringUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
 import org.apache.http.NameValuePair;
@@ -201,9 +198,10 @@ import static android.content.Context.MODE_PRIVATE;
 
 @SuppressWarnings("deprecation")
 public class AkorDefterimSys {
-	private Activity activity;
-	Context context;
-	private Interface_FragmentDataConn FragmentDataConn;
+	public Activity activity;
+	public Context context;
+	private static AkorDefterimSys INSTANCE = null;
+	private Int_DataConn_AnaEkran FragmentDataConn;
 	private SharedPreferences sharedPref;
 	private SharedPreferences.Editor sharedPrefEditor;
 	private SharedPreferences.OnSharedPreferenceChangeListener sharedPrefChanged;
@@ -227,6 +225,11 @@ public class AkorDefterimSys {
 	public String PrefAdi = "AkorDefterim";
 	public String IstekWebSitesi = "IstekBudur.Com";
 	public String TarihGunAyYilAyiracREGEX = "/";
+	public String NormalTag1 = "[";
+	public String NormalTag2 = "]";
+	public String HtmlTag1_1 = "<span style=\"color: #ea494d;\" onclick=\"AkorGosterici.performClick('";
+	public String HtmlTag1_2 = "');\"><b>";
+	public String HtmlTag2 = "</b></span>";
 
 	/** Google API Lokasyon İşlem Değişkenleri **/
 	public int UPDATE_INTERVAL = 4000; // 4 saniye
@@ -262,6 +265,10 @@ public class AkorDefterimSys {
 	// **** Firebase İşlemleri
 	private String PHPFirebaseNotify = "/araclar/firebase/mesajgonder.php";
 
+	// **** GEÇİCİ UYGULAMA VERİLERİ
+	public String prefAction = "";
+	public String prefEklenenSanatciAdiSarkiAdi = "";
+
 	public AkorDefterimSys() {}
 
 	public AkorDefterimSys(Activity activity) {
@@ -270,6 +277,13 @@ public class AkorDefterimSys {
 
 	public AkorDefterimSys(Context context) {
 		this.context = context;
+	}
+
+	public static AkorDefterimSys getInstance() {
+		if (INSTANCE == null) {
+			INSTANCE = new AkorDefterimSys();
+		}
+		return(INSTANCE);
 	}
 
 	public void GenelAyarlar() {
@@ -389,7 +403,7 @@ public class AkorDefterimSys {
 		return new float[]{dpWidth, dpHeight};
 	}
 
-	public SlidingRootNav SetupSlidingMenu(Bundle savedInstanceState, View ViewSlidingContainer, final boolean Alpha, final boolean Scale) {
+	/**public SlidingRootNav SetupSlidingMenu(Bundle savedInstanceState, View ViewSlidingContainer, final boolean Alpha, final boolean Scale) {
         final CoordinatorLayout CLContainer = ViewSlidingContainer.findViewById(R.id.coordinatorLayout);
         if(Alpha) CLContainer.setAlpha(0.0f);
         if(Scale) {
@@ -416,7 +430,7 @@ public class AkorDefterimSys {
                     }
                 })
                 .inject();
-	}
+	}*/
 
 	public void KlavyeKapat() {
 		InputMethodManager imm = (InputMethodManager) activity.getSystemService(Context.INPUT_METHOD_SERVICE); // İstenildiği zaman klavyeyi gizlemeye yarayan kod tanımlayıcısı
@@ -953,7 +967,7 @@ public class AkorDefterimSys {
 	}
 
 	public void CustomPopupWindow(final Activity activity, View view, int MenuRes) {
-		FragmentDataConn = (Interface_FragmentDataConn) activity;
+		FragmentDataConn = (Int_DataConn_AnaEkran) activity;
 		PopupMenu popup = new PopupMenu(activity, view);
 
 		try {
@@ -1207,7 +1221,7 @@ public class AkorDefterimSys {
 		View ViewDialogCustom;
 		Typeface YaziFontu = FontGetir(activity, "anivers_regular");
 
-		ViewDialogCustom = inflater.inflate(R.layout.dialog_custom_altalta_2tus, null);
+		ViewDialogCustom = inflater.inflate(R.layout.dialog_custom_altalta_3tus, null);
 
 		TextView lblDialogBaslik = ViewDialogCustom.findViewById(R.id.lblDialogBaslik);
 		lblDialogBaslik.setTypeface(YaziFontu, Typeface.BOLD);
@@ -2363,7 +2377,7 @@ public class AkorDefterimSys {
 				}
 			});
 		} else {
-			List<SnfSarkilar> snfSarkilar = veritabani.lst_SarkiGetir(Integer.parseInt(mListeID), Integer.parseInt(mKategoriID), Integer.parseInt(mTarzID), Integer.parseInt(mListelemeTipi));
+			List<SnfSarkilar> snfSarkilar = veritabani.SnfSarkiGetir(Integer.parseInt(mListeID), Integer.parseInt(mKategoriID), Integer.parseInt(mTarzID), Integer.parseInt(mListelemeTipi));
 
 			if(snfSarkilar.size() > 0) {
 				JSONObject JSONSarki = new JSONObject();
@@ -2414,7 +2428,7 @@ public class AkorDefterimSys {
 				}
 			});
 		} else {
-			if (veritabani.CihazdaSecilenSarkiVarMi(Integer.parseInt(mSarkiID))) {
+			if (veritabani.SarkiVarMiKontrol(Integer.parseInt(mSarkiID))) {
 				AsyncResponse.AsyncTaskReturnValue("{\"Islem\":\"SarkiGetir\", \"Sonuc\":true, \"SarkiID\":" + Integer.parseInt(mSarkiID) + ", \"ListeID\":" + Integer.parseInt(mListeID) + ", \"SanatciAdi\":\"" + mSanatciAdi + "\", \"SarkiAdi\":\"" + mSarkiAdi + "\", \"Icerik\":\"" + veritabani.SarkiIcerikGetir(Integer.parseInt(mSarkiID)).replace("\"","\\\"") + "\"}");
 			} else AsyncResponse.AsyncTaskReturnValue("{\"Islem\":\"SarkiGetir\", \"Sonuc\":false}");
 		}
@@ -3050,43 +3064,75 @@ public class AkorDefterimSys {
 			case "Mutlaka_EnAzBir_Sayi_BuyukHarf_Icermeli":
 				return txt.matches("^(?=.*[0-9])(?=.*[A-ZĞÜŞIÖÇ]).{1,}$");
 
-			case "SadeceSayi":
-				return txt.matches("^[0-9]*$");
 			case "SadeceKucukHarf":
 				return txt.matches("^[a-zığüşöç]*$");
 			case "SadeceBuyukHarf":
 				return txt.matches("^[A-ZĞÜŞIÖÇ]*$");
+			case "SadeceKucukHarfBuyukHarf":
+				return txt.matches("^[a-zığüşöçA-ZĞÜŞIÖÇ]*$");
+			case "SadeceKucukHarfBuyukHarfOzelKarakter":
+				return txt.matches("^[a-zığüşöçA-ZĞÜŞIÖÇ_().,+!*]*$");
+			case "SadeceSayi":
+				return txt.matches("^[0-9]*$");
 			case "SadeceSayiKucukHarf":
 				return txt.matches("^[0-9a-zığüşöç]*$");
 			case "SadeceSayiBuyukHarf":
 				return txt.matches("^[0-9A-ZĞÜŞIÖÇ]*$");
 			case "SadeceSayiKucukHarfBuyukHarf":
 				return txt.matches("^[0-9a-zığüşöçA-ZĞÜŞIÖÇ]*$");
-			case "SadeceKucukHarfBuyukHarf":
-				return txt.matches("^[a-zığüşöçA-ZĞÜŞIÖÇ]*$");
 
-
-			case "SadeceSayiBosluklu":
-				return txt.matches("^[0-9 ]*$");
 			case "SadeceKucukHarfBosluklu":
 				return txt.matches("^[a-zığüşöç ]*$");
 			case "SadeceBuyukHarfBosluklu":
 				return txt.matches("^[A-ZĞÜŞIÖÇ ]*$");
+			case "SadeceKucukHarfBuyukHarfBosluklu":
+				return txt.matches("^[a-zığüşöçA-ZĞÜŞIÖÇ ]*$");
+			case "SadeceKucukHarfBuyukHarfOzelKarakterBosluklu":
+				return txt.matches("^[a-zığüşöçA-ZĞÜŞIÖÇ_().,+!* ]*$");
+			case "SadeceSayiBosluklu":
+				return txt.matches("^[0-9 ]*$");
 			case "SadeceSayiKucukHarfBosluklu":
 				return txt.matches("^[0-9a-zığüşöç ]*$");
 			case "SadeceSayiBuyukHarfBosluklu":
 				return txt.matches("^[0-9A-ZĞÜŞIÖÇ ]*$");
 			case "SadeceSayiKucukHarfBuyukHarfBosluklu":
 				return txt.matches("^[0-9a-zığüşöçA-ZĞÜŞIÖÇ ]*$");
-			case "SadeceKucukHarfBuyukHarfBosluklu":
-				return txt.matches("^[a-zığüşöçA-ZĞÜŞIÖÇ ]*$");
+			case "SadeceSayiKucukHarfBuyukHarfOzelKarakterBosluklu":
+				return txt.matches("^[0-9a-zığüşöçA-ZĞÜŞIÖÇ_().,+!* ]*$");
 
+			case "SadeceKucukHarfTurkceKaraktersiz":
+				return txt.matches("^[a-z]*$");
+			case "SadeceBuyukHarfTurkceKaraktersiz":
+				return txt.matches("^[A-Z]*$");
+			case "SadeceKucukHarfBuyukHarfTurkceKaraktersiz":
+				return txt.matches("^[a-zA-Z]*$");
+			case "SadeceKucukHarfBuyukHarfOzelKarakterTurkceKaraktersiz":
+				return txt.matches("^[a-zA-Z_().,+!*]*$");
 			case "SadeceSayiKucukHarfTurkceKaraktersiz":
 				return txt.matches("^[0-9a-z]*$");
 			case "SadeceSayiBuyukHarfTurkceKaraktersiz":
 				return txt.matches("^[0-9A-Z]*$");
 			case "SadeceSayiKucukHarfBuyukHarfTurkceKaraktersiz":
 				return txt.matches("^[0-9a-zA-Z]*$");
+			case "SadeceSayiKucukHarfBuyukHarfOzelKarakterTurkceKaraktersiz":
+				return txt.matches("^[0-9a-zA-Z_().,+!*]*$");
+
+			case "SadeceKucukHarfTurkceKaraktersizBosluklu":
+				return txt.matches("^[a-z ]*$");
+			case "SadeceBuyukHarfTurkceKaraktersizBosluklu":
+				return txt.matches("^[A-Z ]*$");
+			case "SadeceKucukHarfBuyukHarfTurkceKaraktersizBosluklu":
+				return txt.matches("^[a-zA-Z ]*$");
+			case "SadeceKucukHarfBuyukHarfOzelKarakterTurkceKaraktersizBosluklu":
+				return txt.matches("^[a-zA-Z_().,+!* ]*$");
+			case "SadeceSayiKucukHarfTurkceKaraktersizBosluklu":
+				return txt.matches("^[0-9a-z ]*$");
+			case "SadeceSayiBuyukHarfTurkceKaraktersizBosluklu":
+				return txt.matches("^[0-9A-Z ]*$");
+			case "SadeceSayiKucukHarfBuyukHarfTurkceKaraktersizBosluklu":
+				return txt.matches("^[0-9a-zA-Z ]*$");
+			case "SadeceSayiKucukHarfBuyukHarfOzelKarakterTurkceKaraktersizBosluklu":
+				return txt.matches("^[0-9a-zA-Z_().,+!* ]*$");
 
 			case "Sifre":
 				return txt.matches("^(?=.*[0-9])(?=.*[a-zığüşöç])(?=.*[A-ZĞÜŞIÖÇ]).{1,}$");
@@ -3095,7 +3141,7 @@ public class AkorDefterimSys {
 			case "EPosta":
 				return android.util.Patterns.EMAIL_ADDRESS.matcher(txt).matches();
 			case "FakeEPosta":
-				return txt.trim().contains("@mvrht.com");
+				return (txt.trim().contains("@mvrht.com") || txt.trim().contains("@mvrht.net"));
 			case "KullaniciAdi":
 				return txt.matches("^[0-9a-z]*$"); // Kullanıcı adı kontrolü
 			case "EmailKullaniciAdiTelefon":
@@ -3106,7 +3152,7 @@ public class AkorDefterimSys {
 		return false;
 	}
 
-	public boolean isNumeric(String string) {
+	private boolean isNumeric(String string) {
 		return string.matches("^\\d+$");
 	}
 
@@ -3152,8 +3198,16 @@ public class AkorDefterimSys {
 		SpannableStringBuilder PartIcerik2;
 		
 		String TagBaslangic = "<span style=\"color: #ea494d;\" onclick=\"AkorGosterici.performClick('";
-		String TagOrta = "');\"><strong>";
-		String TagBitis = "</strong></span>";
+		String TagOrta = "";
+		String TagBitis = "";
+
+		if(Icerik.contains("<strong>")) {
+			TagOrta = "');\"><strong>";
+			TagBitis = "</strong></span>";
+		} else if(Icerik.contains("<b>")) {
+			TagOrta = "');\"><b>";
+			TagBitis = "</b></span>";
+		}
 		
 		int BaslangicNo = 0;
 		int Deger = 0;
@@ -3685,7 +3739,7 @@ public class AkorDefterimSys {
 	}
 
 	@Contract(pure = true)
-	public String JSONTonAkorGetir(int i) {
+	private String JSONTonAkorGetir(int i) {
 		String JSONTonAkorData = null;
 
 		switch (i){
@@ -5614,7 +5668,7 @@ public class AkorDefterimSys {
 		return JSONTonAkorData;
 	}
 
-	public Bitmap ImageScaleToFitWidth(Bitmap b, int width) {
+	private Bitmap ImageScaleToFitWidth(Bitmap b, int width) {
 		float factor = width / (float) b.getWidth();
 		return Bitmap.createScaledBitmap(b, width, (int) (b.getHeight() * factor), true);
 	}
@@ -5999,5 +6053,127 @@ public class AkorDefterimSys {
 
 		// start the animation
 		anim.start();
+	}
+
+	public void CircularReveal(Activity activity, int DisContentID, final int IcContentID, String YonX, String YonY, String Islem) {
+		View DisContent = activity.findViewById(DisContentID);
+		final View IcContent = activity.findViewById(IcContentID);
+		int x = 0, y = 0, startRadius, endRadius;
+		Animator anim;
+
+		if(YonX.equals("Sol")) x = DisContent.getRight();
+		else if(YonX.equals("Sag")) x = DisContent.getLeft();
+
+		if(YonY.equals("Alt")) y = 0;
+		else if(YonY.equals("Ust")) y = DisContent.getBottom();
+
+		switch (Islem) {
+			case "Ac":
+				if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.LOLLIPOP) {
+					startRadius = 0;
+					endRadius = (int) Math.hypot(DisContent.getWidth(), DisContent.getHeight());
+
+					anim = ViewAnimationUtils.createCircularReveal(IcContent, x, y, startRadius, endRadius);
+
+					IcContent.setVisibility(View.VISIBLE);
+					anim.start();
+				} else IcContent.setVisibility(View.VISIBLE);
+
+				break;
+			case "Kapat":
+				if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.LOLLIPOP) {
+					startRadius = Math.max(DisContent.getWidth(), DisContent.getHeight());
+					endRadius = 0;
+
+					anim = ViewAnimationUtils.createCircularReveal(IcContent, x, y, startRadius, endRadius);
+					anim.addListener(new Animator.AnimatorListener() {
+						@Override
+						public void onAnimationStart(Animator animator) {
+
+						}
+
+						@Override
+						public void onAnimationEnd(Animator animator) {
+							IcContent.setVisibility(View.GONE);
+						}
+
+						@Override
+						public void onAnimationCancel(Animator animator) {
+
+						}
+
+						@Override
+						public void onAnimationRepeat(Animator animator) {
+
+						}
+					});
+					anim.start();
+				} else IcContent.setVisibility(View.GONE);
+
+				break;
+		}
+	}
+
+	public String AkorHtmlToTag(String SarkiIcerik) {
+		String Icerik = SarkiIcerik;
+		String[] BulunanAkorlar = StringUtils.substringsBetween(Icerik,HtmlTag1_1,HtmlTag2);
+		String Akor, NormalTagliAkor, HtmlTagliAkor;
+
+		for (String BulunanAkorHtmlli : BulunanAkorlar) {
+			Akor = BulunanAkorHtmlli.substring(BulunanAkorHtmlli.indexOf("<b>") + 3, BulunanAkorHtmlli.length());
+			NormalTagliAkor = NormalTag1 + Akor + NormalTag2;
+			HtmlTagliAkor = HtmlTag1_1 + Akor + HtmlTag1_2 + Akor + HtmlTag2;
+
+			if (Icerik.contains(HtmlTagliAkor)) {
+				Icerik = Icerik.replace(HtmlTagliAkor, NormalTagliAkor);
+			}
+		}
+
+		return Icerik;
+	}
+
+	public String AkorTagToHtml(String SarkiIcerik) {
+		String Icerik = SarkiIcerik;
+		String[] BulunanAkorlar = StringUtils.substringsBetween(Icerik,NormalTag1,NormalTag2);
+		String NormalTagliAkor, HtmlTagliAkor;
+
+		for (String Akor : BulunanAkorlar) {
+			NormalTagliAkor = NormalTag1 + Akor + NormalTag2;
+			HtmlTagliAkor = HtmlTag1_1 + Akor + HtmlTag1_2 + Akor + HtmlTag2;
+			if (Icerik.contains(NormalTagliAkor)) {
+				Icerik = Icerik.replace(NormalTagliAkor, HtmlTagliAkor);
+			}
+		}
+
+		return Icerik;
+	}
+
+	public String KotuIcerikDuzenleme(MaterialEditText txtIcerik) {
+		String Icerik = Html.toHtml(txtIcerik.getText())
+				.replace("</p>\n<p dir=\"ltr\">", "<br><br>")
+				.replace("#160", "nbsp")
+				.replace("<p>", "")
+				.replace("<p dir=\"ltr\">", "")
+				.replace("</p>", "")
+				.replace("<u>", "")
+				.replace("</u>", "")
+				.replace("<i>", "")
+				.replace("</i>", "")
+				.replace("<s>", "")
+				.replace("</s>", "")
+				.replace("&#305;", "ı")
+				.replace("&#287;", "ğ")
+				.replace("&#252;", "ü")
+				.replace("&#351;", "ş")
+				.replace("&#246;", "ö")
+				.replace("&#231;", "ç")
+				.replace("&#304;", "İ")
+				.replace("&#286;", "Ğ")
+				.replace("&#220;", "Ü")
+				.replace("&#350;", "Ş")
+				.replace("&#213;", "Ö")
+				.replace("&#199;", "Ç");
+
+		return Icerik;
 	}
 }

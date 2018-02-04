@@ -1,7 +1,7 @@
 package com.cnbcyln.app.akordefterim;
 
 import com.cnbcyln.app.akordefterim.Adaptorler.AdpIstekler;
-import com.cnbcyln.app.akordefterim.Interface.Interface_FragmentDataConn;
+import com.cnbcyln.app.akordefterim.Interface.Int_DataConn_AnaEkran;
 import com.cnbcyln.app.akordefterim.Siniflar.SnfIstekler;
 import com.cnbcyln.app.akordefterim.util.AkorDefterimSys;
 import com.cnbcyln.app.akordefterim.util.Veritabani;
@@ -28,7 +28,7 @@ public class Frg_TabIstekler extends Fragment {
 	Activity activity;
 	Veritabani Veritabani;
 	AkorDefterimSys AkorDefterimSys;
-	Interface_FragmentDataConn FragmentDataConn;
+	Int_DataConn_AnaEkran FragmentDataConn;
 	SharedPreferences sharedPref;
 	Typeface YaziFontu;
 	AdpIstekler AdpIstekler;
@@ -48,9 +48,10 @@ public class Frg_TabIstekler extends Fragment {
 		super.onActivityCreated(savedInstanceState);
 
 		activity = getActivity();
-		AkorDefterimSys = new AkorDefterimSys(activity);
+		AkorDefterimSys = AkorDefterimSys.getInstance();
+		AkorDefterimSys.activity = activity;
 		Veritabani = new Veritabani(activity);
-		FragmentDataConn = (Interface_FragmentDataConn) activity;
+		FragmentDataConn = (Int_DataConn_AnaEkran) activity;
 
 		YaziFontu = AkorDefterimSys.FontGetir(activity, "anivers_regular");
 
@@ -100,6 +101,13 @@ public class Frg_TabIstekler extends Fragment {
 		});
 
 		IstekListesiGetir();
+	}
+
+	@Override
+	public void onStart() {
+		super.onStart();
+
+		AkorDefterimSys.activity = activity;
 	}
 
 	public void IstekListesiGetir() {

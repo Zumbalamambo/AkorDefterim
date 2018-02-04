@@ -52,13 +52,15 @@ public class AdpAnasayfa extends RecyclerView.Adapter<AdpAnasayfa.ViewHolder> {
 
 	public AdpAnasayfa(Activity activity, List<SnfAnasayfa> SanatciListesi) {
 		this.activity = activity;
-		this.AkorDefterimSys = new AkorDefterimSys(activity);
+		this.AkorDefterimSys = com.cnbcyln.app.akordefterim.util.AkorDefterimSys.getInstance();
+        this.AkorDefterimSys.activity = activity;
 		this.SanatciListesi = SanatciListesi;
 	}
 
 	public AdpAnasayfa(Activity activity, List<SnfAnasayfa> SanatciListesi, CustomItemClickListener listener) {
 		this.activity = activity;
-		this.AkorDefterimSys = new AkorDefterimSys(activity);
+		this.AkorDefterimSys = com.cnbcyln.app.akordefterim.util.AkorDefterimSys.getInstance();
+        this.AkorDefterimSys.activity = activity;
 		this.SanatciListesi = SanatciListesi;
 		this.listener = listener;
 	}

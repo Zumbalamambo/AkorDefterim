@@ -1,0 +1,202 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.design.widget.CoordinatorLayout
+	xmlns:android="http://schemas.android.com/apk/res/android"
+	xmlns:app="http://schemas.android.com/apk/res-auto"
+	xmlns:tools="http://schemas.android.com/tools"
+	android:id="@+id/coordinatorLayout"
+	android:layout_width="match_parent"
+	android:layout_height="match_parent"
+	android:background="@color/Beyaz">
+
+	<android.support.constraint.ConstraintLayout
+		android:id="@+id/ConstraintLayout1"
+		android:layout_width="match_parent"
+		android:layout_height="match_parent"
+		android:descendantFocusability="beforeDescendants"
+		android:focusableInTouchMode="true"
+		android:keepScreenOn="true">
+
+		<RelativeLayout
+			android:id="@+id/RLToolBar"
+			android:layout_width="match_parent"
+			android:layout_height="?android:attr/actionBarSize"
+			android:background="@color/Beyaz">
+
+			<ImageButton
+				android:id="@+id/btnGeri"
+				android:layout_width="60dp"
+				android:layout_height="match_parent"
+				android:layout_centerVertical="true"
+				android:background="@drawable/custom_button2"
+				app:srcCompat="@drawable/ic_close_siyah"
+				android:contentDescription="@string/imageDesc" />
+
+			<TextView
+				android:id="@+id/lblBaslik"
+				style="@style/TextAppearance.AppCompat.Medium.Inverse"
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				android:layout_marginLeft="8dp"
+				android:layout_centerVertical="true"
+				android:layout_toEndOf="@+id/btnGeri"
+				android:layout_toRightOf="@+id/btnGeri"
+				android:text="@string/sarki_ekle"
+				android:textColor="@color/KoyuYazi"
+				tools:ignore="RelativeOverlap" />
+
+			<ImageButton
+				android:id="@+id/btnKaydet"
+				android:layout_width="60dp"
+				android:layout_height="match_parent"
+				android:layout_centerVertical="true"
+				android:layout_alignParentEnd="true"
+				android:layout_alignParentRight="true"
+				android:background="@drawable/custom_button2"
+				android:contentDescription="@string/imageDesc"
+				app:srcCompat="@drawable/ic_check_mavi" />
+		</RelativeLayout>
+
+		<View
+			android:id="@+id/view1"
+			android:layout_width="0dp"
+			android:layout_height="1dp"
+			android:background="@drawable/cizgi_ortagri"
+			app:layout_constraintTop_toBottomOf="@+id/RLToolBar" />
+
+		<com.rengwuxian.materialedittext.MaterialEditText
+			android:id="@+id/txtSarkiIcerik"
+			style="@style/TextAppearance.AppCompat.Small.Inverse"
+			android:layout_width="0dp"
+			android:layout_height="0dp"
+			android:layout_margin="5dp"
+			android:background="@color/Gri"
+			android:textColorHint="@color/KoyuYazi"
+			android:gravity="top|left"
+			android:inputType="textMultiLine"
+			android:scrollbars="vertical"
+			app:layout_constraintBottom_toTopOf="@+id/RLEditorToolbar"
+			app:layout_constraintEnd_toEndOf="parent"
+			app:layout_constraintStart_toStartOf="parent"
+			app:layout_constraintTop_toTopOf="@+id/view1" />
+
+		<!--<RelativeLayout
+			android:id="@+id/RLEditor"
+			android:layout_width="0dp"
+			android:layout_height="0dp"
+			android:background="@color/Beyaz"
+			android:orientation="vertical"
+			app:layout_constraintBottom_toTopOf="@+id/RLEditorToolbar"
+			app:layout_constraintEnd_toEndOf="parent"
+			app:layout_constraintStart_toStartOf="parent"
+			app:layout_constraintTop_toTopOf="@+id/view1">
+
+			<ScrollView
+				android:layout_width="match_parent"
+				android:layout_height="match_parent"
+				android:layout_alignParentTop="true"
+				android:layout_margin="5dp"
+				android:fillViewport="true"
+				android:scrollbarStyle="insideOverlay">
+
+
+				<include layout="@layout/rte_content"/>
+			</ScrollView>
+		</RelativeLayout>-->
+
+		<RelativeLayout
+			android:id="@+id/RLEditorToolbar"
+			android:layout_width="match_parent"
+			android:layout_height="40dp"
+			android:background="@color/Gri"
+			app:layout_constraintBottom_toBottomOf="parent"
+			app:layout_constraintEnd_toEndOf="parent"
+			app:layout_constraintStart_toStartOf="parent">
+
+			<HorizontalScrollView
+				android:id="@+id/HSVEditorToolbar"
+				android:layout_width="match_parent"
+				android:layout_height="match_parent"
+				android:scrollbars="horizontal"
+				tools:ignore="UselessParent">
+
+				<LinearLayout
+					android:layout_width="wrap_content"
+					android:layout_height="match_parent"
+					android:orientation="horizontal">
+
+					<!--<ImageButton
+						android:id="@+id/btnEditor_BOLD"
+						android:layout_width="40dp"
+						android:layout_height="match_parent"
+						android:background="@drawable/custom_button3"
+						app:srcCompat="@drawable/ic_bold_siyah"
+						android:contentDescription="@string/imageDesc" />
+
+					<ImageButton
+						android:id="@+id/btnEditor_ITALIC"
+						android:layout_width="40dp"
+						android:layout_height="match_parent"
+						android:background="@drawable/custom_button3"
+						app:srcCompat="@drawable/ic_italic_siyah"
+						android:contentDescription="@string/imageDesc" />
+
+					<ImageButton
+						android:id="@+id/btnEditor_UNDERLINE"
+						android:layout_width="40dp"
+						android:layout_height="match_parent"
+						android:background="@drawable/custom_button3"
+						app:srcCompat="@drawable/ic_underline_siyah"
+						android:contentDescription="@string/imageDesc" />-->
+
+					<ImageButton
+						android:id="@+id/btnEditor_AKOR"
+						android:layout_width="40dp"
+						android:layout_height="match_parent"
+						android:background="@drawable/custom_button3"
+						app:srcCompat="@drawable/ic_music_note_siyah"
+						android:contentDescription="@string/imageDesc" />
+
+					<ImageButton
+						android:id="@+id/btnEditor_TranspozeArti"
+						android:layout_width="40dp"
+						android:layout_height="match_parent"
+						android:background="@drawable/custom_button3"
+						app:srcCompat="@drawable/ic_transpoze_arti_siyah"
+						android:contentDescription="@string/imageDesc" />
+
+					<ImageButton
+						android:id="@+id/btnEditor_TranspozeEksi"
+						android:layout_width="40dp"
+						android:layout_height="match_parent"
+						android:background="@drawable/custom_button3"
+						app:srcCompat="@drawable/ic_transpoze_eksi_siyah"
+						android:contentDescription="@string/imageDesc" />
+
+					<ImageButton
+						android:id="@+id/btnEditor_Geri"
+						android:layout_width="40dp"
+						android:layout_height="match_parent"
+						android:background="@drawable/custom_button3"
+						app:srcCompat="@drawable/ic_undo_beyaz"
+						android:contentDescription="@string/imageDesc" />
+
+					<ImageButton
+						android:id="@+id/btnEditor_Ileri"
+						android:layout_width="40dp"
+						android:layout_height="match_parent"
+						android:background="@drawable/custom_button3"
+						app:srcCompat="@drawable/ic_redo_beyaz"
+						android:contentDescription="@string/imageDesc" />
+
+					<ImageButton
+						android:id="@+id/btnEditor_Yardim"
+						android:layout_width="40dp"
+						android:layout_height="match_parent"
+						android:background="@drawable/custom_button3"
+						app:srcCompat="@drawable/ic_help_siyah"
+						android:contentDescription="@string/imageDesc" />
+				</LinearLayout>
+			</HorizontalScrollView>
+		</RelativeLayout>
+	</android.support.constraint.ConstraintLayout>
+</android.support.design.widget.CoordinatorLayout>

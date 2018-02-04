@@ -19,13 +19,15 @@ import android.widget.TextView;
 
 public class AdpGenelMenu extends BaseAdapter {
 	private Activity activity;
+	private AkorDefterimSys AkorDefterimSys;
 	private LayoutInflater inflater;
 	private List<SnfGenelMenu> GenelMenu;
 	private Typeface YaziFontu;
 
 	public AdpGenelMenu(Activity activity, List<SnfGenelMenu> GenelMenu) {
 		inflater = (LayoutInflater) activity.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-		AkorDefterimSys AkorDefterimSys = new AkorDefterimSys(activity);
+		this.AkorDefterimSys = AkorDefterimSys.getInstance();
+		this.AkorDefterimSys.activity = activity;
 		this.activity = activity;
 		this.GenelMenu = GenelMenu;
 		YaziFontu = AkorDefterimSys.FontGetir(activity, "anivers_regular");

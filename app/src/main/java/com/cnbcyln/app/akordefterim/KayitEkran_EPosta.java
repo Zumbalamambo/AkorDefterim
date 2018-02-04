@@ -49,7 +49,7 @@ public class KayitEkran_EPosta extends AppCompatActivity implements Interface_As
 	TextInputLayout txtILEPosta;
 	EditText txtEPosta;
 
-	String OnayKodu = "";
+	String DogrulamaKodu = "";
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -57,7 +57,8 @@ public class KayitEkran_EPosta extends AppCompatActivity implements Interface_As
 		setContentView(R.layout.activity_kayit_ekran_eposta);
 
 		activity = this;
-		AkorDefterimSys = new AkorDefterimSys(activity);
+		AkorDefterimSys = AkorDefterimSys.getInstance();
+		AkorDefterimSys.activity = activity;
 		YaziFontu = AkorDefterimSys.FontGetir(activity, "anivers_regular"); // Genel yazı fontunu belirttik
 
 		sharedPref = activity.getSharedPreferences(AkorDefterimSys.PrefAdi, Context.MODE_PRIVATE);
@@ -127,11 +128,10 @@ public class KayitEkran_EPosta extends AppCompatActivity implements Interface_As
     protected void onStart() {
         super.onStart();
 
-        if(sharedPref.getString("prefAction", "").equals("Vazgec")) {
-            sharedPrefEditor = sharedPref.edit();
-			sharedPrefEditor.remove("prefAction");
-            sharedPrefEditor.apply();
+		AkorDefterimSys.activity = activity;
 
+        if(AkorDefterimSys.prefAction.equals("Vazgec")) {
+			AkorDefterimSys.prefAction = "";
             onBackPressed();
         }
     }
@@ -172,10 +172,10 @@ public class KayitEkran_EPosta extends AppCompatActivity implements Interface_As
 					// Eğer hesap kontrol'de hesap bulunamadıysa sonuç false döner. Böylelikle kayıt işlemlerine devam edebiliriz.
 					if(!JSONSonuc.getBoolean("Sonuc")) {
 						// 6 haneli onay kodu oluşturuldu
-						OnayKodu = AkorDefterimSys.KodUret(6, true, false, false, false);
+						DogrulamaKodu = AkorDefterimSys.KodUret(6, true, false, false, false);
 
 						// Onay kodu belirtilen eposta adresine gönderiliyor
-						AkorDefterimSys.EPostaGonder(txtEPosta.getText().toString().trim(), "", getString(R.string.dogrulama_kodu), getString(R.string.eposta_dosrulama_kodu_icerik, OnayKodu, getString(R.string.uygulama_adi)));
+						AkorDefterimSys.EPostaGonder(txtEPosta.getText().toString().trim(), "", getString(R.string.dogrulama_kodu), getString(R.string.eposta_dogrulama_kodu_icerik, DogrulamaKodu, getString(R.string.uygulama_adi)));
 					} else {
 						btnIleri.setEnabled(true);
 						// PDEPosta Progress Dialog'u kapattık
@@ -207,7 +207,7 @@ public class KayitEkran_EPosta extends AppCompatActivity implements Interface_As
 						Intent mIntent = new Intent(activity, Dogrulama_Kodu.class);
 						mIntent.putExtra("Islem", "Kayit");
 						mIntent.putExtra("EPosta", txtEPosta.getText().toString().trim());
-						mIntent.putExtra("OnayKodu", String.valueOf(OnayKodu));
+						mIntent.putExtra("DogrulamaKodu", String.valueOf(DogrulamaKodu));
 
 						AkorDefterimSys.EkranGetir(mIntent, "Slide");
 					} else AkorDefterimSys.StandartSnackBarMsj(coordinatorLayout, getString(R.string.islem_yapilirken_bir_hata_olustu));

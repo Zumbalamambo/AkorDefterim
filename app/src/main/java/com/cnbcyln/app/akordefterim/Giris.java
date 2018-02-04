@@ -77,7 +77,8 @@ public class Giris extends AppCompatActivity implements Interface_AsyncResponse 
 		setContentView(R.layout.activity_giris_bgekran);
 
 		activity = this;
-		AkorDefterimSys = new AkorDefterimSys(activity);
+		AkorDefterimSys = AkorDefterimSys.getInstance();
+		AkorDefterimSys.activity = activity;
 		YaziFontu = AkorDefterimSys.FontGetir(activity, "anivers_regular");
 
 		sharedPref = activity.getSharedPreferences(AkorDefterimSys.PrefAdi, Context.MODE_PRIVATE);
@@ -99,15 +100,13 @@ public class Giris extends AppCompatActivity implements Interface_AsyncResponse 
 		VPGirisEkranPager = (ViewPager) findViewById(R.id.VPGirisEkranPager);
 		ViewPagerAdapter ViewPagerAdapter = new ViewPagerAdapter();
 		VPGirisEkranPager.setAdapter(ViewPagerAdapter);
-
-		sharedPrefEditor = sharedPref.edit();
-		sharedPrefEditor.remove("prefAction");
-		sharedPrefEditor.apply();
 	}
 
 	@Override
 	protected void onStart() {
 		super.onStart();
+
+		AkorDefterimSys.activity = activity;
 
 		FirebaseToken = FirebaseInstanceId.getInstance().getToken();
 		OSID = Settings.Secure.getString(getContentResolver(), Settings.Secure.ANDROID_ID);
@@ -136,13 +135,10 @@ public class Giris extends AppCompatActivity implements Interface_AsyncResponse 
 	protected void onResume() {
 		super.onResume();
 
-		if(sharedPref.getString("prefAction", "").equals("Giris_Yap")) {
-			sharedPrefEditor = sharedPref.edit();
-			sharedPrefEditor.remove("prefAction");
-			sharedPrefEditor.apply();
-
+		/*if(AkorDefterimSys.prefAction.equals("Giris_Yap")) {
 			VPGirisEkranPager.setCurrentItem(1);
-		}
+			AkorDefterimSys.prefAction = "";
+		}*/
 
 		VideoArkaplan.setVideoURI(Uri.parse("android.resource://" + getPackageName() + "/" + R.raw.bg_video));
 		VideoArkaplan.start();
@@ -247,6 +243,17 @@ public class Giris extends AppCompatActivity implements Interface_AsyncResponse 
 					TextView lblVersiyon = (TextView) view.findViewById(R.id.lblVersiyon);
 					lblVersiyon.setTypeface(YaziFontu, Typeface.NORMAL);
 					lblVersiyon.setText(AkorDefterimSys.UygulamaVersiyonuGetir());
+
+					/*SwipeSelector swipeSelector = (SwipeSelector) view.findViewById(R.id.swipeSelector);
+					swipeSelector.setItems(
+							// The first argument is the value for that item, and should in most cases be unique for the
+							// current SwipeSelector, just as you would assign values to radio buttons.
+							// You can use the value later on to check what the selected item was.
+							// The value can be any Object, here we're using ints.
+							new SwipeItem(0, "Slide one", "Description for slide one."),
+							new SwipeItem(1, "Slide two", "Description for slide two."),
+							new SwipeItem(2, "Slide three", "Description for slide three.")
+					);*/
 
 					Button btnGirisYap = (Button) view.findViewById(R.id.btnGirisYap);
 					btnGirisYap.setTypeface(YaziFontu, Typeface.BOLD);

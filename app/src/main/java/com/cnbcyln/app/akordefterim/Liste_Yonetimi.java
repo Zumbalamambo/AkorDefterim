@@ -71,7 +71,8 @@ public class Liste_Yonetimi extends AppCompatActivity implements Interface_Async
 		setContentView(R.layout.activity_liste_yonetimi);
 
         activity = this;
-		AkorDefterimSys = new AkorDefterimSys(activity);
+		AkorDefterimSys = AkorDefterimSys.getInstance();
+        AkorDefterimSys.activity = activity;
 		veritabani = new Veritabani(activity);
 		YaziFontu = AkorDefterimSys.FontGetir(activity, "anivers_regular"); // Genel yazı fontunu belirttik
         inflater = activity.getLayoutInflater();
@@ -171,7 +172,7 @@ public class Liste_Yonetimi extends AppCompatActivity implements Interface_Async
                 }
 
                 AkorDefterimSys.KlavyeKapat();
-
+                AramaPanelKapat();
                 openContextMenu(lstListeYonetimi);
             }
         });
@@ -198,6 +199,8 @@ public class Liste_Yonetimi extends AppCompatActivity implements Interface_Async
     @Override
     protected void onStart() {
         super.onStart();
+
+        AkorDefterimSys.activity = activity;
 
         ListeGetir();
     }
@@ -380,7 +383,7 @@ public class Liste_Yonetimi extends AppCompatActivity implements Interface_Async
         if(snfListeler != null) snfListeler.clear();
         else snfListeler = new ArrayList<>();
 
-        snfListeler = veritabani.SnfListeGetir("Cevrimdisi");
+        snfListeler = veritabani.SnfListeGetir("Cevrimdisi", false);
 
         if(snfListeler.get(0).getListeAdi().equals("")) snfListeler.clear();
 

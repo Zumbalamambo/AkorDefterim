@@ -57,7 +57,8 @@ public class Hesabina_Eris_Hesabini_Bul extends AppCompatActivity implements Int
 		setContentView(R.layout.activity_hesabini_bul);
 
 		activity = this;
-		AkorDefterimSys = new AkorDefterimSys(activity);
+		AkorDefterimSys = AkorDefterimSys.getInstance();
+		AkorDefterimSys.activity = activity;
 		YaziFontu = AkorDefterimSys.FontGetir(activity, "anivers_regular"); // Genel yazı fontunu belirttik
 
 		imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE); // İstenildiği zaman klavyeyi gizlemeye yarayan kod tanımlayıcısı
@@ -130,6 +131,13 @@ public class Hesabina_Eris_Hesabini_Bul extends AppCompatActivity implements Int
 		lblHesabiniBulAciklama = findViewById(R.id.lblHesabiniBulAciklama);
 		lblHesabiniBulAciklama.setTypeface(YaziFontu, Typeface.NORMAL);
 		lblHesabiniBulAciklama.setText(getString(R.string.hesabini_bul_aciklama, getString(R.string.uygulama_adi)));
+	}
+
+	@Override
+	protected void onStart() {
+		super.onStart();
+
+		AkorDefterimSys.activity = activity;
 	}
 
 	@Override

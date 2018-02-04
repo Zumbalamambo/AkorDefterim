@@ -28,8 +28,8 @@ public class AdpListelerSPN extends BaseAdapter {
 	public AdpListelerSPN(Activity activity, List<SnfListeler> Listeler) {
 		inflater = (LayoutInflater) activity.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 		SnfListeler = Listeler;
-		AkorDefterimSys = new AkorDefterimSys(activity);
-
+		AkorDefterimSys = AkorDefterimSys.getInstance();
+		AkorDefterimSys.activity = activity;
 		YaziFontu = AkorDefterimSys.FontGetir(activity, "anivers_regular");
 	}
 	

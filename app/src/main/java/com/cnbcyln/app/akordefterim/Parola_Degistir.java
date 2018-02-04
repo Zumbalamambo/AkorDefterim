@@ -63,7 +63,8 @@ public class Parola_Degistir extends AppCompatActivity implements Interface_Asyn
 		setContentView(R.layout.activity_parola_degistir);
 
 		activity = this;
-		AkorDefterimSys = new AkorDefterimSys(activity);
+		AkorDefterimSys = AkorDefterimSys.getInstance();
+        AkorDefterimSys.activity = activity;
 		YaziFontu = AkorDefterimSys.FontGetir(activity, "anivers_regular"); // Genel yazı fontunu belirttik
 
 		sharedPref = activity.getSharedPreferences(AkorDefterimSys.PrefAdi, Context.MODE_PRIVATE);
@@ -166,6 +167,8 @@ public class Parola_Degistir extends AppCompatActivity implements Interface_Asyn
     @Override
     protected void onStart() {
         super.onStart();
+
+        AkorDefterimSys.activity = activity;
 
         if(!AkorDefterimSys.GirisYapildiMi()) AkorDefterimSys.CikisYap();
     }

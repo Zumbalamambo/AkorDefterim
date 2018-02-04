@@ -36,7 +36,8 @@ public class Egitim extends AppCompatActivity implements View.OnClickListener {
         setContentView(R.layout.activity_egitim);
 
         activity = this;
-        AkorDefterimSys = new AkorDefterimSys(activity);
+        AkorDefterimSys = AkorDefterimSys.getInstance();
+        AkorDefterimSys.activity = activity;
         YaziFontu = AkorDefterimSys.FontGetir(activity, "anivers_regular"); // Genel yazı fontunu belirttik
 
         sharedPref = getSharedPreferences(AkorDefterimSys.PrefAdi, Context.MODE_PRIVATE);
@@ -76,6 +77,12 @@ public class Egitim extends AppCompatActivity implements View.OnClickListener {
         MyViewPagerAdapter myViewPagerAdapter = new MyViewPagerAdapter();
         viewPager.setAdapter(myViewPagerAdapter);
         viewPager.addOnPageChangeListener(viewPagerPageChangeListener);
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        AkorDefterimSys.activity = activity;
     }
 
     private void addBottomDots(int currentPage) {

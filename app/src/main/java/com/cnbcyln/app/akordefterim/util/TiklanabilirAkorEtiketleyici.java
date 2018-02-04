@@ -20,7 +20,8 @@ class TiklanabilirAkorEtiketleyici extends ClickableSpan {
         this.startIndex = startIndex;
         this.endIndex = endIndex;
 
-        AkorDefterimSys = new AkorDefterimSys(activity);
+        AkorDefterimSys = AkorDefterimSys.getInstance();
+        AkorDefterimSys.activity = activity;
     }
 
     @Override

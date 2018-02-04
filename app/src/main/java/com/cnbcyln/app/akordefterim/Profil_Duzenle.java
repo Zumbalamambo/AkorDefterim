@@ -123,7 +123,8 @@ public class Profil_Duzenle extends AppCompatActivity implements Interface_Async
 		setContentView(R.layout.activity_profil_duzenle);
 
 		activity = this;
-		AkorDefterimSys = new AkorDefterimSys(activity);
+		AkorDefterimSys = AkorDefterimSys.getInstance();
+		AkorDefterimSys.activity = activity;
 		YaziFontu = AkorDefterimSys.FontGetir(activity, "anivers_regular"); // Genel yazı fontunu belirttik
 
 		sharedPref = activity.getSharedPreferences(AkorDefterimSys.PrefAdi, Context.MODE_PRIVATE);
@@ -296,11 +297,10 @@ public class Profil_Duzenle extends AppCompatActivity implements Interface_Async
 	protected void onStart() {
 		super.onStart();
 
-		if(sharedPref.getString("prefAction", "").equals("IslemTamamlandi")) {
-			sharedPrefEditor = sharedPref.edit();
-			sharedPrefEditor.remove("prefAction");
-			sharedPrefEditor.apply();
+		AkorDefterimSys.activity = activity;
 
+		if(AkorDefterimSys.prefAction.equals("IslemTamamlandi")) {
+			AkorDefterimSys.prefAction = "";
 			IlkYuklemeYapildiMi = false;
 		}
 

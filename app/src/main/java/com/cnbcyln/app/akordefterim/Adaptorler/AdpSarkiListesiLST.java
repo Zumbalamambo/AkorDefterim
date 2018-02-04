@@ -1,13 +1,11 @@
 package com.cnbcyln.app.akordefterim.Adaptorler;
 
-import com.cnbcyln.app.akordefterim.Interface.Interface_FragmentDataConn;
-import com.cnbcyln.app.akordefterim.R;
-import com.cnbcyln.app.akordefterim.Siniflar.SnfSarkilar;
-import com.cnbcyln.app.akordefterim.util.StringMatcher;
-
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
+import android.graphics.Typeface;
+import android.os.Build;
+import android.support.annotation.RequiresApi;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,18 +14,31 @@ import android.widget.CheckBox;
 import android.widget.SectionIndexer;
 import android.widget.TextView;
 
+import com.cnbcyln.app.akordefterim.Interface.Int_DataConn_AnaEkran;
+import com.cnbcyln.app.akordefterim.R;
+import com.cnbcyln.app.akordefterim.Siniflar.SnfSarkilar;
+import com.cnbcyln.app.akordefterim.util.AkorDefterimSys;
+import com.cnbcyln.app.akordefterim.util.StringMatcher;
+import com.cnbcyln.app.akordefterim.util.Veritabani;
+
 import java.util.List;
 
 public class AdpSarkiListesiLST extends BaseAdapter implements SectionIndexer {
+	private com.cnbcyln.app.akordefterim.util.AkorDefterimSys AkorDefterimSys;
+	Typeface YaziFontu;
 	private LayoutInflater inflater;
 	private StringBuilder mSections = new StringBuilder();
 	private List<SnfSarkilar> SnfSarkilar;
 	private int ListelemeTipi;
-	private Interface_FragmentDataConn FragmentDataConn;
+	private Int_DataConn_AnaEkran int_DataConn_AnaEkran;
 	private boolean Selectable = false;
 
 	public AdpSarkiListesiLST(Activity activity, List<SnfSarkilar> SnfSarkilar, Boolean SiraliHarf, int ListelemeTipi) {
-		FragmentDataConn = (Interface_FragmentDataConn) activity;
+		AkorDefterimSys = AkorDefterimSys.getInstance();
+		AkorDefterimSys.activity = activity;
+		YaziFontu = AkorDefterimSys.FontGetir(activity, "anivers_regular"); // Genel yazı fontunu belirttik
+		int_DataConn_AnaEkran = (Int_DataConn_AnaEkran) activity;
+
 		inflater = (LayoutInflater) activity.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 		this.SnfSarkilar = SnfSarkilar;
 		this.ListelemeTipi = ListelemeTipi;
@@ -37,12 +48,34 @@ public class AdpSarkiListesiLST extends BaseAdapter implements SectionIndexer {
 		} else {
 			mSections.append("#");
 
-			for (int i = 0; i < SnfSarkilar.size(); i++) {
-				String item = SnfSarkilar.get(i).getSanatciAdi();
-				String index = item.substring(0, 1);
+			switch (ListelemeTipi) {
+				case 0:
+					for (int i = 0; i < SnfSarkilar.size(); i++) {
+						String item = SnfSarkilar.get(i).getSanatciAdi();
+						String index = item.substring(0, 1);
 
-				if (mSections.indexOf(index) == -1)
-					mSections.append(index);
+						if (mSections.indexOf(index) == -1)
+							mSections.append(index);
+					}
+					break;
+				case 1:
+					for (int i = 0; i < SnfSarkilar.size(); i++) {
+						String item = SnfSarkilar.get(i).getSarkiAdi();
+						String index = item.substring(0, 1);
+
+						if (mSections.indexOf(index) == -1)
+							mSections.append(index);
+					}
+					break;
+				default:
+					for (int i = 0; i < SnfSarkilar.size(); i++) {
+						String item = SnfSarkilar.get(i).getSanatciAdi();
+						String index = item.substring(0, 1);
+
+						if (mSections.indexOf(index) == -1)
+							mSections.append(index);
+					}
+					break;
 			}
 		}
 	}
@@ -74,7 +107,7 @@ public class AdpSarkiListesiLST extends BaseAdapter implements SectionIndexer {
 	}
 
 	private class ViewHolder {
-		TextView lblsanatcisarkiadi;
+		TextView lblSanatciSarkiadi;
 		CheckBox ChkSarkiSec;
 	}
 
@@ -87,14 +120,14 @@ public class AdpSarkiListesiLST extends BaseAdapter implements SectionIndexer {
 			satirView = inflater.inflate(R.layout.lstreperttuvar_listesi_item, null);
 
 			holder = new ViewHolder();
-			holder.lblsanatcisarkiadi = satirView.findViewById(R.id.lblsanatcisarkiadi);
+			holder.lblSanatciSarkiadi = satirView.findViewById(R.id.lblSanatciSarkiadi);
 			holder.ChkSarkiSec = satirView.findViewById(R.id.ChkSarkiSec);
-			holder.ChkSarkiSec.setOnClickListener(new View.OnClickListener() {
+			/*holder.ChkSarkiSec.setOnClickListener(new View.OnClickListener() {
 				@Override
 				public void onClick(View v) {
 					setSelectable(position);
 				}
-			});
+			});*/
 
 			satirView.setTag(holder);
 			holder.ChkSarkiSec.setTag(SnfSarkilar.get(position));
@@ -110,16 +143,18 @@ public class AdpSarkiListesiLST extends BaseAdapter implements SectionIndexer {
 			holder.ChkSarkiSec.setChecked(SnfSarkilar.get(position).getSecim());
 
 		switch (ListelemeTipi) {
-		case 0:
-			holder.lblsanatcisarkiadi.setText(SnfSarkilar.get(position).getSanatciAdi() + " - " + SnfSarkilar.get(position).getSarkiAdi());
-			break;
-		case 1:
-			holder.lblsanatcisarkiadi.setText(SnfSarkilar.get(position).getSarkiAdi() + " - " + SnfSarkilar.get(position).getSanatciAdi());
-			break;
-		default:
-			holder.lblsanatcisarkiadi.setText(SnfSarkilar.get(position).getSanatciAdi() + " - " + SnfSarkilar.get(position).getSarkiAdi());
-			break;
+			case 0:
+				holder.lblSanatciSarkiadi.setText(String.format("%s%s%s", SnfSarkilar.get(position).getSanatciAdi(), " - ", SnfSarkilar.get(position).getSarkiAdi()));
+				break;
+			case 1:
+				holder.lblSanatciSarkiadi.setText(String.format("%s%s%s", SnfSarkilar.get(position).getSarkiAdi(), " - ", SnfSarkilar.get(position).getSanatciAdi()));
+				break;
+			default:
+				holder.lblSanatciSarkiadi.setText(String.format("%s%s%s", SnfSarkilar.get(position).getSanatciAdi(), " - ", SnfSarkilar.get(position).getSarkiAdi()));
+				break;
 		}
+
+		holder.lblSanatciSarkiadi.setTypeface(YaziFontu, Typeface.NORMAL);
 
 		return satirView;
 	}
@@ -160,7 +195,7 @@ public class AdpSarkiListesiLST extends BaseAdapter implements SectionIndexer {
 		return sections;
 	}
 
-	public void setSelectable(int pos) {
+	private void setSelectable(int pos) {
 		SnfSarkilar.get(pos).SecimDegistir(); //Long Click yapıldığında şarkının secim özelliği mutlaka değişecek..
 		//FragmentDataConn.SarkiSecimDegistir(pos);
 
@@ -168,13 +203,13 @@ public class AdpSarkiListesiLST extends BaseAdapter implements SectionIndexer {
 
 		if(ToplamSecilenSarkiSayisi == 0) {
 			if(this.Selectable) this.Selectable = false;
-			FragmentDataConn.SarkiListesi_SecimPanelGuncelle(false);
+			int_DataConn_AnaEkran.SarkiListesi_SecimPanelGuncelle(false);
 		} else if(ToplamSecilenSarkiSayisi == 1) {
 			if(!this.Selectable) this.Selectable = true;
-			FragmentDataConn.SarkiListesi_SecimPanelGuncelle(true);
+			int_DataConn_AnaEkran.SarkiListesi_SecimPanelGuncelle(true);
 		}
 
-		FragmentDataConn.SarkiListesi_SecimPanelBilgiGuncelle();
+		int_DataConn_AnaEkran.SarkiListesi_SecimPanelBilgiGuncelle();
 
 		notifyDataSetChanged();
 	}
@@ -196,10 +231,10 @@ public class AdpSarkiListesiLST extends BaseAdapter implements SectionIndexer {
 
 		if(ToplamSecilenSarkiSayisi == 0) {
 			if(this.Selectable) this.Selectable = false;
-			FragmentDataConn.SarkiListesi_SecimPanelGuncelle(false);
+			int_DataConn_AnaEkran.SarkiListesi_SecimPanelGuncelle(false);
 		}
 
-		FragmentDataConn.SarkiListesi_SecimPanelBilgiGuncelle();
+		int_DataConn_AnaEkran.SarkiListesi_SecimPanelBilgiGuncelle();
 
 		notifyDataSetChanged();
 	}
@@ -213,10 +248,10 @@ public class AdpSarkiListesiLST extends BaseAdapter implements SectionIndexer {
 
 		if(ToplamSecilenSarkiSayisi == 0) {
 			if(this.Selectable) this.Selectable = false;
-			FragmentDataConn.SarkiListesi_SecimPanelGuncelle(false);
+			int_DataConn_AnaEkran.SarkiListesi_SecimPanelGuncelle(false);
 		}
 
-		FragmentDataConn.SarkiListesi_SecimPanelBilgiGuncelle();
+		int_DataConn_AnaEkran.SarkiListesi_SecimPanelBilgiGuncelle();
 
 		notifyDataSetChanged();
 	}
@@ -225,7 +260,7 @@ public class AdpSarkiListesiLST extends BaseAdapter implements SectionIndexer {
 		return Selectable;
 	}
 
-	public int ToplamSecilenSarkiSayisiGetir() {
+	private int ToplamSecilenSarkiSayisiGetir() {
 		int ToplamSecilenSarki = 0;
 
 		for(int i = 0; i <= SnfSarkilar.size() - 1; i++) {

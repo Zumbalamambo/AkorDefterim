@@ -76,7 +76,8 @@ public class Bagli_Hesaplar extends AppCompatActivity implements Interface_Async
 		setContentView(R.layout.activity_bagli_hesaplar);
 
         activity = this;
-		AkorDefterimSys = new AkorDefterimSys(activity);
+		AkorDefterimSys = AkorDefterimSys.getInstance();
+        AkorDefterimSys.activity = activity;
 		YaziFontu = AkorDefterimSys.FontGetir(activity, "anivers_regular"); // Genel yazı fontunu belirttik
 
 		sharedPref = getSharedPreferences(AkorDefterimSys.PrefAdi, Context.MODE_PRIVATE);
@@ -169,6 +170,8 @@ public class Bagli_Hesaplar extends AppCompatActivity implements Interface_Async
     @Override
     protected void onStart() {
         super.onStart();
+
+        AkorDefterimSys.activity = activity;
 
         FirebaseToken = FirebaseInstanceId.getInstance().getToken();
         OSID = Settings.Secure.getString(getContentResolver(), Settings.Secure.ANDROID_ID);

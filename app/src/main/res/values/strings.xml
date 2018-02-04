@@ -65,7 +65,7 @@
     <string name="eposta_yeni_hesap_icerik">Merhaba %1$s %2$s. %3$s uygulamasına hoşgeldiniz. Doğrulama kodunu android uygulamasındaki onay kodu alanına yazarak üyeliğinizi tamamlayınız. Doğrulama Kodu: %4$s</string>
     <string name="eposta_degistir">E-posta Değiştir</string>
     <string name="eposta_onayi">Email Doğrulama</string>
-    <string name="eposta_dosrulama_kodu_icerik">Merhaba. Doğrulama kodunuz: %1$s &lt;br&gt;&lt;br&gt;&lt;b&gt;%2$s Ekibi&lt;/b&gt;</string>
+    <string name="eposta_dogrulama_kodu_icerik">Merhaba. Doğrulama kodunuz: %1$s &lt;br&gt;&lt;br&gt;&lt;b&gt;%2$s Ekibi&lt;/b&gt;</string>
     <string name="eposta_sifremiunuttum">Sifremi Unuttum</string>
     <string name="eposta_sifremiunuttum_icerik">Merhaba %1$s. Sifrenizi sıfırlamak için kullanacağınız doğrulama kodunuz: %2$s</string>
     <string name="eposta_gonderildi">E-posta Gönderildi</string>
@@ -379,7 +379,7 @@
     <string name="egitim">Eğitim</string>
     <string name="egitime_katilmak_istermisin">Eğitimini tamamlamamışsın. Katılmak ister misin?</string>
     <string name="sarki_ekle">Şarkı Ekle</string>
-    <string name="sarkiyi_public_paylas">Katkıda bulunmak ister misin? Bu içeriği bizlere gönder. Gönderdiğin içerik onay verildiğinde genel repertuvar listesinde görüntülenecek.&lt;br&gt;&lt;br&gt;&lt;b&gt;Önemli: İçerikte akor ya da tab varsa şarkının tonu orjinal olmalıdır. İnternet bağlantısı gerektirir..&lt;/b&gt;</string>
+    <string name="sarkiyi_public_paylas">Katkıda bulunmak ister misin? Bu içeriği bizlere gönder. Gönderdiğin içerik onay verildiğinde genel repertuvar listesinde görüntülenecek.&lt;br&gt;&lt;br&gt;&lt;b&gt;Önemli: İçerikte akor ya da tab varsa şarkının tonu orjinal olmalıdır. Bu işlem internet bağlantısı gerektirir..&lt;/b&gt;</string>
     <string name="liste_adi">Liste Adı</string>
     <string name="kategori_adi">Kategori Adı</string>
     <string name="tarz_adi">Tarz Adı</string>
@@ -387,6 +387,9 @@
     <string name="islemler">İşlemler</string>
     <string name="yedekleme_islemleri">Yedekleme İşlemleri</string>
     <string name="repertuvar_islemleri_aciklama">Cihaz veritabanındaki kayıtlı olan repertuvara ekleme, çıkarma ve düzenleme işlemlerini kolayca yapabilirsin. Böylelikle internetin olmadığında çevrimdışı modundayken bile repertuvarına ulaşırsın. Ayrıca dilersen repertuvarını &lt;b&gt;%s&lt;/b&gt; bulut depolama alanına yedekleyerek her yerden güncel repertuvarına ulaşırsın. Böylelikle asla veri kaybı yaşamazsın. Ne büyük kolaylık değil mi? :)</string>
+    <string name="filtre">Filtre</string>
+    <string name="secilen_metin_akor_degil">Seçilen metin akor değil. Akor seçmelisin.</string>
+    <string name="secilen_metin_akor_tag_icinde">Seçilen metin akor tagları arasına alınmış.</string>
 
     <!-- EditText Hint'ler -->
     <string name="sanatci_adina_gore_ara">Ara (Sanatçı adına göre)</string>
@@ -410,6 +413,7 @@
     <string name="hata_format_sadece_sayi">Yalnızca sayı kullanabilirsin.</string>
     <string name="hata_format_sadece_sayi_kucukharf">Yalnızca sayı ve küçük harf (Türkçe hariç) kullanabilirsin.</string>
     <string name="hata_format_sadece_sayi_kucukharf_buyukharf_bosluklu">Yalnızca sayı, küçük ve büyük harf kullanabilirsin.</string>
+    <string name="hata_format_sadece_sayi_kucukharf_buyukharf_ozel_karakter_bosluklu">Yalnızca sayı, küçük, büyük harf ve (_().,+!*) özel karakterlerini kullanabilirsin.</string>
     <string name="hata_format_bastaki_karakterler_harf_olmak_zorunda">Baştaki %s karakter harf olmak zorunda.</string>
     <string name="hata_format_eposta">Lütfen geçerli bir E-Posta adresi gir.</string>
     <string name="hata_hesap_durum">&lt;b&gt;%1$s&lt;/b&gt;&lt;br&gt;E-Posta adresine kayıtlı hesap&lt;b&gt;%2$s&lt;/b&gt; mevcut.&lt;br&gt;&lt;br&gt;Giriş yap ya da farklı bir E-Posta adresi dene.</string>
@@ -468,6 +472,7 @@
     <string name="parolan_guncellendi">Parolan güncellendi.</string>
     <string name="parolan_guncellenemedi">Parolan güncellenemedi.</string>
     <string name="internet_baglantisi_saglanamadi">İnternet bağlantısı sağlanamadı.</string>
+    <string name="internet_baglantisi_saglanamadi_sarki_ekle_katki">Katkıda bulunmak için internetininin aktif olması gerekir.</string>
     <string name="girilen_onay_kodu_hata1">Doğrulama Kodu alanını boş bırakamazsınız.</string>
     <string name="girilen_onay_kodu_hata2">Yazdığın doğrulama kodu hatalı. Yeniden dene.</string>
     <string name="sure_bitti_yeniden_basvuru_yapilabilir">Süre bitti. Başvurunu yeniden gerçekleştirebilirsin.</string>
@@ -500,41 +505,44 @@
     <string name="veritabani_basariyla_sifirlandi">Yerel repertuvar başarıyla sıfırlandı.</string>
     <string name="buyuk_profil_resim_hatasi">Seçtiğin profil resmi en fazla %sMB büyüklüğünde olmalıdır.</string>
     <string name="dosya_bulunamadi">Dosya bulunamadı.</string>
-    <string name="icerik_gonderildi">İçerik gönderildi. Onaylandığında bilgilendirileceksiniz.</string>
+    <string name="icerik_gonderildi">İçerik gönderildi. Onaylandığında bilgilendirileceksin.</string>
     <string name="icerik_bulunamadi">İçerik bulunamadı.</string>
     <string name="akor_bulunamadi">Akor bulunamadı..</string>
-    <string name="hatali_kullanici_adi_sifre">Kullanıcı adı ya da şifrenizi hatalı girdiniz. Kontrol edip yeniden deneyiniz.</string>
-    <string name="uygulama_cikis_mesaji">Çıkmak için geri tuşuna yeniden dokunun.</string>
+    <string name="hatali_kullanici_adi_sifre">Kullanıcı adı ya da şifrenizi hatalı girdin. Kontrol edip yeniden dene.</string>
+    <string name="uygulama_cikis_mesaji">Çıkmak için geri tuşuna yeniden dokun.</string>
     <string name="hesabini_bul_ceptelefon_onay_hata">Hesaba ait cep telefonu onaylı görünmüyor. Diğer yardım seçeneklerini dene.</string>
     <string name="geri_bildirim_gonderilemedi">Geri bildirim gönderilemedi.</string>
 
     <!-- Kategori Yönetimi -->
+    <string name="kategori">Kategori</string>
     <string name="kategoriler">Kategori(ler)</string>
     <string name="kategori_yonetimi">Kategori Yönetimi</string>
     <string name="kategori_eklendi" tools:ignore="Typos">\"%s\" isimli kategori eklendi.</string>
     <string name="kategori_eklenemedi_hata1" tools:ignore="Typos">\"%s\" isimli kategori bulunmaktadır. Farklı bir isim dene.</string>
     <string name="kategori_duzenlendi" tools:ignore="Typos">\"%1$s\" isimli kategori, \"%2$s\" olarak düzenlendi.</string>
-    <string name="kategori_sil_soru">&lt;b&gt;%s&lt;/b&gt; isimli kategoriyi silmek istiyor musunuz?</string>
+    <string name="kategori_sil_soru">&lt;b&gt;%s&lt;/b&gt; isimli kategoriyi silmek istiyor musun?</string>
     <string name="kategori_silindi" tools:ignore="Typos">\"%s\" isimli kategori silindi.</string>
     <string name="kategori_silinemedi_hata1" tools:ignore="Typos">\"%s\" isimli kategoriye ait şarkı bulunmaktadır.</string>
 
     <!-- Tarz Yönetimi -->
+    <string name="tarz">Tarz</string>
     <string name="tarzlar">Tarz(lar)</string>
     <string name="tarz_yonetimi">Tarz Yönetimi</string>
     <string name="tarz_eklendi" tools:ignore="Typos">\"%s\" isimli tarz eklendi.</string>
     <string name="tarz_eklenemedi_hata1" tools:ignore="Typos">\"%s\" isimli tarz bulunmaktadır. Farklı bir isim dene.</string>
     <string name="tarz_duzenlendi" tools:ignore="Typos">\"%1$s\" isimli tarz, \"%2$s\" olarak düzenlendi.</string>
-    <string name="tarz_sil_soru">&lt;b&gt;%s&lt;/b&gt; isimli tarzı silmek istiyor musunuz?</string>
+    <string name="tarz_sil_soru">&lt;b&gt;%s&lt;/b&gt; isimli tarzı silmek istiyor musun?</string>
     <string name="tarz_silindi" tools:ignore="Typos">\"%s\" isimli tarz silindi.</string>
     <string name="tarz_silinemedi_hata1" tools:ignore="Typos">\"%s\" isimli tarza ait şarkı bulunmaktadır.</string>
 
     <!-- Liste Yönetimi -->
+    <string name="liste">Liste</string>
     <string name="listeler">Liste(ler)</string>
     <string name="liste_yonetimi">Liste Yönetimi</string>
     <string name="liste_eklendi" tools:ignore="Typos">\"%s\" isimli liste eklendi.</string>
     <string name="liste_eklenemedi_hata1" tools:ignore="Typos">\"%s\" isimli liste bulunmaktadır. Farklı bir isim dene.</string>
     <string name="liste_duzenlendi" tools:ignore="Typos">\"%1$s\" isimli liste, \"%2$s\" olarak düzenlendi.</string>
-    <string name="liste_sil_soru">&lt;b&gt;%s&lt;/b&gt; isimli listeyi silmek istiyor musunuz?</string>
+    <string name="liste_sil_soru">&lt;b&gt;%s&lt;/b&gt; isimli listeyi silmek istiyor musun?</string>
     <string name="liste_silindi" tools:ignore="Typos">\"%s\" isimli liste silindi.</string>
     <string name="liste_silinemedi_hata1" tools:ignore="Typos">\"%s\" isimli listeye ait şarkı bulunmaktadır.</string>
 
@@ -542,6 +550,12 @@
     <string name="sarki">Şarkı</string>
     <string name="sarkilar">Şarkı(lar)</string>
     <string name="sarki_yonetimi">Şarkı Yönetimi</string>
+    <string name="sarki_eklendi" tools:ignore="Typos">\"%s\" isimli şarkı eklendi.</string>
+    <string name="sarki_duzenlendi" tools:ignore="Typos">Şarkı düzenlendi.</string>
+    <string name="sarki_sil_soru">&lt;b&gt;%1$s - %2$s&lt;/b&gt; isimli şarkıyı silmek istiyor musun?</string>
+    <string name="sarki_silindi">\"%1$s - %2$s\" isimli şarkı silindi.</string>
+    <string name="sarki_bulunamadi">\"%1$s - %2$s\" isimli şarkı bulunamadı.</string>
+    <string name="sarki_ekleduzenle_geri_soru">İçerikte değişiklik yaptın. Yine de bu ekrandan çıkmak istiyor musun?</string>
 
     <!-- Notify Mesajlar -->
     <string name="farkli_bir_cihazdan_oturum_acildi">Farklı bir cihazdan oturum açıldı. Bir hesap yalnızca tek bir cihazdan oturum açabilir.</string>
@@ -758,21 +772,7 @@
     <string name="web_sarkilar_sarki_adi_hata_enaz3">Şarkı adı alanına en az 3 karakter girmelisiniz..</string>
     <string name="web_sarkilar_sarki_icerik_hata_bos">Şarkı içerik alanını boş bırakamazsınız..</string>
     <string name="web_sarkilar_sarki_icerik_hata_enaz10">Şarkı içerik alanına en az 10 karakter girmelisiniz..</string>
-    <string name="web_sarkilar_ekle">Şarkı Ekle</string>
-    <string name="web_sarkilar_eklendi1">Şarkı Eklendi</string>
-    <string name="sarki_eklendi">%s isimli şarkı eklendi.</string>
-    <string name="web_sarkilar_eklenemedi1">Şarkı Eklenemedi</string>
-    <string name="web_sarkilar_eklenemedi2">Şarkı eklenemedi!</string>
-    <string name="web_sarkilar_duzenle">Şarkı Düzenle</string>
-    <string name="web_sarkilar_duzenlendi1">Şarkı Düzenlendi</string>
     <string name="web_sarkilar_duzenlendi2">Şarkı düzenlendi..</string>
-    <string name="web_sarkilar_duzenlenemedi1">Şarkı Düzenlenemedi</string>
-    <string name="web_sarkilar_duzenlenemedi2">Şarkı düzenlenemedi!</string>
-    <string name="web_sarkilar_sil_soru">%1$s - %2$s isimli şarkıyı silmek istiyor musunuz?</string> <!-- %s = Sanatçı Adı - Şarkı Adı -->
-    <string name="web_sarkilar_silindi1">Şarkı Silindi</string>
-    <string name="web_sarkilar_silindi2">%1$s - %2$s isimli şarkı başarıyla silindi..</string> <!-- %s = Sanatçı Adı - Şarkı Adı -->
-    <string name="web_sarkilar_silinemedi1">Şarkı Silinemedi</string>
-    <string name="web_sarkilar_silinemedi2">Şarkı silinemedi!</string>
     <string name="web_sarkilar_liste_yok1">Liste Bulunamadı</string>
     <string name="web_sarkilar_liste_yok2">Öncelikle liste ekleyin..</string>
     <string name="web_sarkilar_kategori_yok1">Kategori Bulunamadı</string>

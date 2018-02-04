@@ -71,7 +71,8 @@ public class CepTelefonu_Degistir extends AppCompatActivity implements Interface
 		setContentView(R.layout.activity_ceptelefon_degistir);
 
 		activity = this;
-		AkorDefterimSys = new AkorDefterimSys(activity);
+		AkorDefterimSys = AkorDefterimSys.getInstance();
+		AkorDefterimSys.activity = activity;
 		YaziFontu = AkorDefterimSys.FontGetir(activity, "anivers_regular"); // Genel yazı fontunu belirttik
 
 		sharedPref = activity.getSharedPreferences(AkorDefterimSys.PrefAdi, Context.MODE_PRIVATE);
@@ -158,9 +159,11 @@ public class CepTelefonu_Degistir extends AppCompatActivity implements Interface
 	protected void onStart() {
 		super.onStart();
 
+		AkorDefterimSys.activity = activity;
+
 		if(!AkorDefterimSys.GirisYapildiMi()) AkorDefterimSys.CikisYap();
 		else {
-			if(sharedPref.getString("prefAction", "").equals("IslemTamamlandi")) onBackPressed();
+			if(AkorDefterimSys.prefAction.equals("IslemTamamlandi")) onBackPressed();
 			else {
 				// prefSMSGonderiTarihi isimli prefkey var mı?
 				if(sharedPref.contains("prefSMSGonderiTarihi")) { // Varsa
@@ -209,9 +212,7 @@ public class CepTelefonu_Degistir extends AppCompatActivity implements Interface
 				AkorDefterimSys.UnFocusEditText(txtCepTelefon);
 				break;
 			case R.id.btnIptal:
-				sharedPrefEditor = sharedPref.edit();
-				sharedPrefEditor.remove("prefAction");
-				sharedPrefEditor.apply();
+				AkorDefterimSys.prefAction = "";
 
 				onBackPressed();
 

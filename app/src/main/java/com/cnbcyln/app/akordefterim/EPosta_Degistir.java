@@ -65,7 +65,8 @@ public class EPosta_Degistir extends AppCompatActivity implements Interface_Asyn
 		setContentView(R.layout.activity_eposta_degistir);
 
 		activity = this;
-		AkorDefterimSys = new AkorDefterimSys(activity);
+		AkorDefterimSys = AkorDefterimSys.getInstance();
+		AkorDefterimSys.activity = activity;
 		YaziFontu = AkorDefterimSys.FontGetir(activity, "anivers_regular"); // Genel yazı fontunu belirttik
 
 		sharedPref = activity.getSharedPreferences(AkorDefterimSys.PrefAdi, Context.MODE_PRIVATE);
@@ -130,9 +131,11 @@ public class EPosta_Degistir extends AppCompatActivity implements Interface_Asyn
 	protected void onStart() {
 		super.onStart();
 
+		AkorDefterimSys.activity = activity;
+
 		if(!AkorDefterimSys.GirisYapildiMi()) AkorDefterimSys.CikisYap();
 		else {
-			if(sharedPref.getString("prefAction", "").equals("IslemTamamlandi")) onBackPressed();
+			if(AkorDefterimSys.prefAction.equals("IslemTamamlandi")) onBackPressed();
 			else {
 				// prefEPostaGonderiTarihi isimli prefkey var mı?
 				if(sharedPref.contains("prefEPostaGonderiTarihi")) { // Varsa
@@ -166,12 +169,8 @@ public class EPosta_Degistir extends AppCompatActivity implements Interface_Asyn
 				AkorDefterimSys.UnFocusEditText(txtEPosta);
 				break;
 			case R.id.btnIptal:
-				sharedPrefEditor = sharedPref.edit();
-				sharedPrefEditor.remove("prefAction");
-				sharedPrefEditor.apply();
-
+				AkorDefterimSys.prefAction = "";
 				onBackPressed();
-
 				break;
 			case R.id.btnKaydet:
 				Kaydet();
@@ -277,7 +276,7 @@ public class EPosta_Degistir extends AppCompatActivity implements Interface_Asyn
 							DogrulamaKodu = AkorDefterimSys.KodUret(6, true, false, false, false);
 
 							// Onay kodu belirtilen eposta adresine gönderiliyor
-							AkorDefterimSys.EPostaGonder(txtEPosta.getText().toString().trim(), "", getString(R.string.dogrulama_kodu), getString(R.string.eposta_dosrulama_kodu_icerik, DogrulamaKodu, getString(R.string.uygulama_adi)));
+							AkorDefterimSys.EPostaGonder(txtEPosta.getText().toString().trim(), "", getString(R.string.dogrulama_kodu), getString(R.string.eposta_dogrulama_kodu_icerik, DogrulamaKodu, getString(R.string.uygulama_adi)));
 						}
 					}
 

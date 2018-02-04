@@ -21,7 +21,7 @@ import com.cnbcyln.app.akordefterim.Adaptorler.AdpKategori;
 import com.cnbcyln.app.akordefterim.Adaptorler.AdpListelemeTipi;
 import com.cnbcyln.app.akordefterim.Adaptorler.AdpListelerSPN;
 import com.cnbcyln.app.akordefterim.Adaptorler.AdpTarz;
-import com.cnbcyln.app.akordefterim.Interface.Interface_FragmentDataConn;
+import com.cnbcyln.app.akordefterim.Interface.Int_DataConn_AnaEkran;
 import com.cnbcyln.app.akordefterim.Siniflar.SnfKategoriler;
 import com.cnbcyln.app.akordefterim.Siniflar.SnfListelemeTipi;
 import com.cnbcyln.app.akordefterim.Siniflar.SnfListeler;
@@ -42,7 +42,7 @@ public class Frg_TabRepKontrol extends Fragment implements OnClickListener {
 	private Activity activity;
 	private AkorDefterimSys AkorDefterimSys;
 	private Veritabani veritabani;
-	Interface_FragmentDataConn FragmentDataConn;
+	Int_DataConn_AnaEkran FragmentDataConn;
 	Typeface YaziFontu;
 	SharedPreferences sharedPref;
 	private List<SnfListeler> snfListeler;
@@ -63,13 +63,21 @@ public class Frg_TabRepKontrol extends Fragment implements OnClickListener {
 	}
 
 	@Override
+	public void onStart() {
+		super.onStart();
+
+		AkorDefterimSys.activity = activity;
+	}
+
+	@Override
 	public void onActivityCreated(Bundle savedInstanceState) {
 		super.onActivityCreated(savedInstanceState);
 
 		activity = getActivity();
-		AkorDefterimSys = new AkorDefterimSys(activity);
+		AkorDefterimSys = AkorDefterimSys.getInstance();
+		AkorDefterimSys.activity = activity;
 		veritabani = new Veritabani(activity);
-		FragmentDataConn = (Interface_FragmentDataConn) activity;
+		FragmentDataConn = (Int_DataConn_AnaEkran) activity;
 
 		YaziFontu = AkorDefterimSys.FontGetir(activity, "anivers_regular");
 
@@ -138,7 +146,7 @@ public class Frg_TabRepKontrol extends Fragment implements OnClickListener {
 	}
 
 	public void spnListeGetir() {
-		snfListeler = veritabani.SnfListeGetir(sharedPref.getString("prefOturumTipi", "Cevrimdisi"));
+		snfListeler = veritabani.SnfListeGetir(sharedPref.getString("prefOturumTipi", "Cevrimdisi"), false);
 		AdpListelerSPN AdpListelerSPN = new AdpListelerSPN(activity, snfListeler);
 		spnListeler.setAdapter(AdpListelerSPN);
 	}

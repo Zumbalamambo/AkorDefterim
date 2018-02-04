@@ -13,7 +13,7 @@
             <enum name="ratio_custom" value="7"/>
             <enum name="circle" value="8"/>
         </attr>
-        <attr name="backgroundColor" format="color"/>
+        <attr name="backgroundColor2" format="color"/>
         <attr name="overlayColor" format="color"/>
         <attr name="frameColor" format="color"/>
         <attr name="handleColor" format="color"/>

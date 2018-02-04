@@ -25,7 +25,8 @@ public class AdpTarz extends BaseAdapter {
 	public AdpTarz(Activity activity, List<SnfTarzlar> Tarzlar) {
 		inflater = (LayoutInflater) activity.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 		this.SnfTarzlar = Tarzlar;
-		AkorDefterimSys = new AkorDefterimSys(activity);
+		AkorDefterimSys = AkorDefterimSys.getInstance();
+		AkorDefterimSys.activity = activity;
 
 		YaziFontu = AkorDefterimSys.FontGetir(activity, "anivers_regular");
 	}

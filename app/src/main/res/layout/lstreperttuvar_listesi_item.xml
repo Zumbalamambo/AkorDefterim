@@ -17,10 +17,9 @@
         android:theme="@style/MyCheckBoxKoyuMavi" />
 
     <TextView
-        android:id="@+id/lblsanatcisarkiadi"
+        android:id="@+id/lblSanatciSarkiadi"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/labeltire"
-        android:textColor="@color/KoyuYazi"
-         />
+        android:textColor="@color/KoyuYazi" />
 </LinearLayout>

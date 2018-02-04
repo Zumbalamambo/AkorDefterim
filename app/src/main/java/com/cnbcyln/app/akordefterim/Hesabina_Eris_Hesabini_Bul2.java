@@ -63,7 +63,8 @@ public class Hesabina_Eris_Hesabini_Bul2 extends AppCompatActivity implements In
 		setContentView(R.layout.activity_hesabini_bul2);
 
 		activity = this;
-		AkorDefterimSys = new AkorDefterimSys(activity);
+		AkorDefterimSys = AkorDefterimSys.getInstance();
+		AkorDefterimSys.activity = activity;
 		YaziFontu = AkorDefterimSys.FontGetir(activity, "anivers_regular"); // Genel yazı fontunu belirttik
 
 		sharedPref = activity.getSharedPreferences(AkorDefterimSys.PrefAdi, Context.MODE_PRIVATE);
@@ -139,6 +140,8 @@ public class Hesabina_Eris_Hesabini_Bul2 extends AppCompatActivity implements In
 	@Override
 	protected void onStart() {
 		super.onStart();
+
+		AkorDefterimSys.activity = activity;
 
 		if(AkorDefterimSys.InternetErisimKontrolu()) {
 			// prefEPostaGonderiTarihi veya prefSMSGonderiTarihi isimli prefkey var mı?

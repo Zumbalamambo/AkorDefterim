@@ -21,9 +21,9 @@ import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.util.TypedValue;
 import android.view.LayoutInflater;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewAnimationUtils;
 import android.view.inputmethod.InputMethodManager;
@@ -39,13 +39,11 @@ import com.astuetz.PagerSlidingTabStrip;
 import com.cnbcyln.app.akordefterim.Adaptorler.AdpSarkiListesiLST;
 import com.cnbcyln.app.akordefterim.FastScrollListview.FastScroller_Listview;
 import com.cnbcyln.app.akordefterim.Interface.Interface_AsyncResponse;
-import com.cnbcyln.app.akordefterim.Interface.Interface_FragmentDataConn;
+import com.cnbcyln.app.akordefterim.Interface.Int_DataConn_AnaEkran;
+import com.cnbcyln.app.akordefterim.ResideMenu.ResideMenu;
 import com.cnbcyln.app.akordefterim.Siniflar.SnfSarkilar;
 import com.cnbcyln.app.akordefterim.util.AkorDefterimSys;
 import com.cnbcyln.app.akordefterim.util.Veritabani;
-import com.special.ResideMenu.ResideMenu;
-import com.yarolegovich.slidingrootnav.SlidingRootNav;
-import com.yarolegovich.slidingrootnav.SlidingRootNavLayout;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -58,7 +56,7 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.Locale;
 
-public class AnaEkran extends AppCompatActivity implements Interface_FragmentDataConn, Interface_AsyncResponse, View.OnClickListener {
+public class AnaEkran extends AppCompatActivity implements Int_DataConn_AnaEkran, Interface_AsyncResponse, View.OnClickListener {
 
 	private Activity activity;
 	private AkorDefterimSys AkorDefterimSys;
@@ -67,7 +65,6 @@ public class AnaEkran extends AppCompatActivity implements Interface_FragmentDat
     Fragment Fragment_Sayfa;
 	SharedPreferences sharedPref;
 	SharedPreferences.Editor sharedPrefEditor;
-    SlidingRootNav mSlidingRootNavSol, mSlidingRootNavSag;
     Typeface YaziFontu;
     ProgressDialog PDIslem;
     AlertDialog ADDialog_InternetBaglantisi, ADDialog_CikisYap, ADDialog_Egitim;
@@ -81,6 +78,7 @@ public class AnaEkran extends AppCompatActivity implements Interface_FragmentDat
     LinearLayout LLSayfa;
     TextView lblSayfaBaslik, lblOrtaMesaj;
     CoordinatorLayout coordinatorLayout;
+    ResideMenu resideMenu;
 
     // Sliding Menü Sağ Değişkenler Tanımlamaları
     CoordinatorLayout coordinatorLayoutSag;
@@ -113,7 +111,8 @@ public class AnaEkran extends AppCompatActivity implements Interface_FragmentDat
            **************************************/
 
 		activity = this;
-		AkorDefterimSys = new AkorDefterimSys(activity);
+		AkorDefterimSys = AkorDefterimSys.getInstance();
+        AkorDefterimSys.activity = activity;
         veritabani = new Veritabani(activity);
 		YaziFontu = AkorDefterimSys.FontGetir(activity, "anivers_regular");
 		sharedPref = activity.getSharedPreferences(AkorDefterimSys.PrefAdi, Context.MODE_PRIVATE);
@@ -134,13 +133,14 @@ public class AnaEkran extends AppCompatActivity implements Interface_FragmentDat
 
         layoutInflater = (LayoutInflater) activity.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 
-        ResideMenu resideMenu = new ResideMenu(activity, R.layout.menu_sol, R.layout.menu_sag);
+        resideMenu = new ResideMenu(activity, R.layout.menu_sol, R.layout.menu_sag);
         resideMenu.setBackground(R.drawable.bg);
         resideMenu.attachToActivity(activity);
-        resideMenu.setScaleValue(0.5f);
+        resideMenu.setScaleValue(0.6f);
+        resideMenu.setUse3D(true);
 
-        resideMenu.setSwipeDirectionDisable(ResideMenu.DIRECTION_RIGHT);
-        resideMenu.setSwipeDirectionDisable(ResideMenu.DIRECTION_LEFT);
+        //resideMenu.setSwipeDirectionDisable(ResideMenu.DIRECTION_RIGHT);
+        //resideMenu.setSwipeDirectionDisable(ResideMenu.DIRECTION_LEFT);
 
         /* **************************************
            ***                                ***
@@ -148,8 +148,7 @@ public class AnaEkran extends AppCompatActivity implements Interface_FragmentDat
            ***                                ***
            **************************************/
 
-        View ViewSlidingSagMenuContainer = layoutInflater.inflate(R.layout.menu_sag, null, false);
-        ViewSlidingSagMenuContainer.setTag("R.layout.menu_sag");
+        View ViewSlidingSagMenuContainer = resideMenu.getRightMenuView();
 
         coordinatorLayoutSag = ViewSlidingSagMenuContainer.findViewById(R.id.coordinatorLayout);
 
@@ -275,15 +274,7 @@ public class AnaEkran extends AppCompatActivity implements Interface_FragmentDat
                 return true;
             }
         });
-
-        //mSlidingRootNavSag = AkorDefterimSys.SetupSlidingMenu(savedInstanceState, ViewSlidingSagMenuContainer, true, true);
-        /*((SlidingRootNavLayout) mSlidingRootNavSag).setOnTouchListener(new View.OnTouchListener() {
-            @Override
-            public boolean onTouch(View v, MotionEvent event) {
-                if(!mSlidingRootNavSol.isMenuClosed()) mSlidingRootNavSag.closeMenu();
-                return false;
-            }
-        });*/
+        lstSarkiListesi.setVisibility(View.GONE);
 
         /* **************************************
            ***                                ***
@@ -291,10 +282,9 @@ public class AnaEkran extends AppCompatActivity implements Interface_FragmentDat
            ***                                ***
            **************************************/
 
-        View ViewSlidingSolMenuContainer = layoutInflater.inflate(R.layout.menu_sol, null, false);
-        ViewSlidingSolMenuContainer.setTag("R.layout.menu_sol");
+        View ViewSlidingSolMenuContainer = resideMenu.getLeftMenuView();
 
-        coordinatorLayoutSol = activity.findViewById(R.id.coordinatorLayout);
+        coordinatorLayoutSol = ViewSlidingSolMenuContainer.findViewById(R.id.coordinatorLayout);
 
         TextView lblVersiyonNo = ViewSlidingSolMenuContainer.findViewById(R.id.lblVersiyonNo);
         lblVersiyonNo.setTypeface(YaziFontu, Typeface.BOLD);
@@ -313,15 +303,6 @@ public class AnaEkran extends AppCompatActivity implements Interface_FragmentDat
         PSTTabs.setViewPager(VPSolMenuPager);
         PSTTabs.setTextColor(R.color.KoyuYazi);
         PSTTabs.setTypeface(YaziFontu, Typeface.BOLD);
-
-        /*mSlidingRootNavSol = AkorDefterimSys.SetupSlidingMenu(savedInstanceState, ViewSlidingSolMenuContainer, true, true);
-        ((SlidingRootNavLayout) mSlidingRootNavSol).setOnTouchListener(new View.OnTouchListener() {
-            @Override
-            public boolean onTouch(View v, MotionEvent event) {
-                if(!mSlidingRootNavSag.isMenuClosed()) mSlidingRootNavSol.closeMenu();
-                return false;
-            }
-        });*/
 
         /* **************************************
            ***                                ***
@@ -392,20 +373,25 @@ public class AnaEkran extends AppCompatActivity implements Interface_FragmentDat
     protected void onStart() {
         super.onStart();
 
-        Frg_TabRepKontrol Frg_TabRepKontrol_1 = (Frg_TabRepKontrol) SlidingTabFragmentClassGetir(getString(R.string.tabsayfa_repertuvar_kontrol));
-        if(Frg_TabRepKontrol_1 != null) Frg_TabRepKontrol_1.spnDoldur();
+        AkorDefterimSys.activity = activity;
 
-        if(sharedPref.getString("prefAction", "").equals("Yeni şarkı eklendi")) {
+        if(AkorDefterimSys.prefAction.equals("Şarkı eklendi")) {
             if(Fragment_SayfaAdi.equals("Frg_Sarki")) {
                 Frg_Sarki Frg_Sarki = (Frg_Sarki) activity.getFragmentManager().findFragmentByTag(Fragment_SayfaAdi);
-                Frg_Sarki.StandartSnackBarMsj(getString(R.string.sarki_eklendi, sharedPref.getString("prefEklenenSanatciAdiSarkiAdi", "")));
+                Frg_Sarki.StandartSnackBarMsj(getString(R.string.sarki_eklendi, AkorDefterimSys.prefEklenenSanatciAdiSarkiAdi));
             }
 
-            sharedPrefEditor = sharedPref.edit();
-            sharedPrefEditor.remove("prefAction");
-            sharedPrefEditor.remove("prefEklenenSanatciAdiSarkiAdi");
-            sharedPrefEditor.apply();
+            AkorDefterimSys.prefAction = "";
+            AkorDefterimSys.prefEklenenSanatciAdiSarkiAdi = "";
+        } else if(AkorDefterimSys.prefAction.equals("Şarkı düzenlendi")) {
+            if(Fragment_SayfaAdi.equals("Frg_Sarki")) {
+                Frg_Sarki Frg_Sarki = (Frg_Sarki) activity.getFragmentManager().findFragmentByTag(Fragment_SayfaAdi);
+                Frg_Sarki.StandartSnackBarMsj(getString(R.string.sarki_duzenlendi));
+            }
         }
+
+        Frg_TabRepKontrol Frg_TabRepKontrol_1 = (Frg_TabRepKontrol) SlidingTabFragmentClassGetir(getString(R.string.tabsayfa_repertuvar_kontrol));
+        if(Frg_TabRepKontrol_1 != null) Frg_TabRepKontrol_1.spnDoldur();
 
         if(sharedPref.getBoolean("prefEgitimTamamlandiMi", false)) AkorDefterimSys.YeniSurumYeniliklerDialog();
         else {
@@ -437,10 +423,7 @@ public class AnaEkran extends AppCompatActivity implements Interface_FragmentDat
                 RLSarkiListesi_AnaPanel.setVisibility(View.VISIBLE);
                 RLSarkiListesi_AramaPanel.setVisibility(View.GONE);
             }
-        } else if(!mSlidingRootNavSol.isMenuClosed())
-            mSlidingRootNavSol.closeMenu();
-        else if(!mSlidingRootNavSag.isMenuClosed())
-            mSlidingRootNavSag.closeMenu();
+        } else if(resideMenu.isOpened()) SlidingIslem(0);
         else {
             // Çift tıklandığında uygulamadan çıkılması için gerekli fonksiyonu yazdık.
             if (CikisIcinCiftTiklandiMi) {
@@ -538,18 +521,15 @@ public class AnaEkran extends AppCompatActivity implements Interface_FragmentDat
     public void SlidingIslem(int islem) {
         switch (islem) {
             case 0: //Sliding kapatır
-                if(!mSlidingRootNavSol.isMenuClosed()) mSlidingRootNavSol.closeMenu(true);
-                else if(!mSlidingRootNavSag.isMenuClosed()) mSlidingRootNavSag.closeMenu(true);
+                resideMenu.closeMenu();
 
                 break;
             case 1: //Sol sliding açar
-                if (!mSlidingRootNavSag.isMenuClosed()) mSlidingRootNavSag.closeMenu(true);
-                mSlidingRootNavSol.openMenu(true);
+                resideMenu.openMenu(ResideMenu.DIRECTION_LEFT);
 
                 break;
             case 2: //Sağ sliding açar
-                if(!mSlidingRootNavSol.isMenuClosed()) mSlidingRootNavSol.closeMenu(true);
-                mSlidingRootNavSag.openMenu(true);
+                resideMenu.openMenu(ResideMenu.DIRECTION_RIGHT);
 
                 break;
         }
@@ -757,7 +737,7 @@ public class AnaEkran extends AppCompatActivity implements Interface_FragmentDat
                             // Eğer kayıt sayısı 25'ten fazla ise FastScroll'u aktif et
                             AdpSarkiListesiLST adpSarkiListesiLST = new AdpSarkiListesiLST(activity, snfSarkilar, snfSarkilar.size() > 25, SecilenListelemeTipi);
 
-                            lstSarkiListesi.setFastScrollEnabled(snfSarkilar.size() > 25);
+                            //lstSarkiListesi.setFastScrollEnabled(snfSarkilar.size() > 25);
                             lstSarkiListesi.setAdapter(adpSarkiListesiLST);
                         }
 
@@ -771,17 +751,18 @@ public class AnaEkran extends AppCompatActivity implements Interface_FragmentDat
                         */
 
                         // Listview'a şarkı listesi set edildikten sonra SlidingIslem fonksiyonu ile sol menüyü kapatıp, sağ menüyü açmasını istedik.
+                        SlidingIslem(0); // Sliding kapat
                         SlidingIslem(2); // Sağ sliding aç
 
                         // Sağ sliding menü açıldıktan sonra while döngüsü içinde menü açılana dek R.layout.menu_sag içindeki CLMenu View'ı setLeft(0) yaptık.
                         // Menü açıldıktan sonra while döngüsüneden çıkıyor. Bunu da Thread içinde yaptık. Çünkü sistemde takılma oluyordu. Artık sorun kalmadı :)
-                        new Thread(new Runnable() {
+                        /*new Thread(new Runnable() {
                             public void run() {
                                 while(!mSlidingRootNavSag.isMenuOpened()) {
                                     coordinatorLayoutSag.setLeft(0);
                                 }
                             }
-                        }).start();
+                        }).start();*/
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }
@@ -845,23 +826,13 @@ public class AnaEkran extends AppCompatActivity implements Interface_FragmentDat
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.btnSolMenu:
-                if(!mSlidingRootNavSol.isMenuClosed()) mSlidingRootNavSol.closeMenu(true);
-                else mSlidingRootNavSol.openMenu(true);
+                SlidingIslem(1);
                 break;
             case R.id.btnSagMenu:
-                if(!mSlidingRootNavSag.isMenuClosed()) mSlidingRootNavSag.closeMenu(true);
-                else mSlidingRootNavSag.openMenu(true);
+                SlidingIslem(2);
                 break;
             case R.id.btnSarkiEkle_AnaPanel:
-                /*Intent mIntent = new Intent(activity, Sarki_Ekle.class);
-                mIntent.putExtra("Islem", "YeniSarkiEkle");
-                mIntent.putExtra("SecilenSanatciAdi", "");
-                mIntent.putExtra("SecilenSarkiAdi", "");
-                mIntent.putExtra("SecilenSarkiIcerik", "");
-
-                AkorDefterimSys.EkranGetir(mIntent, "Slide");*/
-
-                veritabani.VeritabaniSifirla();
+                //veritabani.VeritabaniSifirla();
                 break;
             case R.id.btnAra_AnaPanel:
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {

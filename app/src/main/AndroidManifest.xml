@@ -281,14 +281,21 @@
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>
-        <activity android:name=".Sarki_Ekle" >
+        <activity android:name=".Sarki_Yonetimi" >
+            <intent-filter>
+                <action android:name="android.intent.action.SARKI_YONETIMI" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
+        <activity android:name=".Sarki_EkleDuzenle" >
             <intent-filter>
                 <action android:name="android.intent.action.SARKI_EKLE" />
 
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>
-        <activity android:name=".Sarki_Ekle_Icerik" >
+        <activity android:name=".Sarki_EkleDuzenle_Icerik" >
             <intent-filter>
                 <action android:name="android.intent.action.SARKI_EKLE_ICERIK" />
 
@@ -314,6 +321,10 @@
             android:name="com.startapp.android.publish.adsCommon.activities.FullScreenActivity"
             android:configChanges="orientation|keyboardHidden|screenSize"
             android:theme="@android:style/Theme" />
+        <activity
+            android:name="com.onegravity.rteditor.media.choose.MediaChooserActivity"/>
+        <activity
+            android:name="com.onegravity.rteditor.media.crop.CropImageActivity"/>
 
         <service android:name=".util.AppService" android:exported="false" />
         <service android:name=".util.MqttService" android:exported="false" />

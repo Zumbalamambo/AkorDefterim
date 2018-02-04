@@ -16,7 +16,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import com.cnbcyln.app.akordefterim.Interface.Interface_FragmentDataConn;
+import com.cnbcyln.app.akordefterim.Interface.Int_DataConn_AnaEkran;
 import com.cnbcyln.app.akordefterim.util.AkorDefterimSys;
 import com.cnbcyln.app.akordefterim.util.Veritabani;
 import com.github.mikephil.charting.animation.Easing;
@@ -41,7 +41,7 @@ public class Frg_Istatistik extends Fragment implements OnChartValueSelectedList
 	AkorDefterimSys AkorDefterimSys;
 	Veritabani Veritabani;
 	SharedPreferences sharedPref;
-	Interface_FragmentDataConn FragmentDataConn;
+	Int_DataConn_AnaEkran FragmentDataConn;
 	Typeface YaziFontu;
 
 	TextView lblGenelOnlineIstatistik_Yazi, lblIstatistiklerBaslik, lblToplamKategori, lblToplamTarz, lblToplamListe, lblToplamSarki;
@@ -60,9 +60,10 @@ public class Frg_Istatistik extends Fragment implements OnChartValueSelectedList
 		super.onActivityCreated(savedInstanceState);
 		
 		activity = getActivity();
-		AkorDefterimSys = new AkorDefterimSys(activity);
+		AkorDefterimSys = com.cnbcyln.app.akordefterim.util.AkorDefterimSys.getInstance();
+		AkorDefterimSys.activity = activity;
 		Veritabani = new Veritabani(activity);
-		FragmentDataConn = (Interface_FragmentDataConn) activity;
+		FragmentDataConn = (Int_DataConn_AnaEkran) activity;
 
 		sharedPref = activity.getSharedPreferences(AkorDefterimSys.PrefAdi, Context.MODE_PRIVATE);
 		
@@ -70,29 +71,29 @@ public class Frg_Istatistik extends Fragment implements OnChartValueSelectedList
 		mTfRegular = Typeface.createFromAsset(activity.getAssets(), "fonts/anivers_regular.otf");
 		mTfLight = Typeface.createFromAsset(activity.getAssets(), "fonts/anivers_regular.otf");
 
-		lblGenelOnlineIstatistik_Yazi = (TextView) activity.findViewById(R.id.lblGenelOnlineIstatistik_Yazi);
+		lblGenelOnlineIstatistik_Yazi = activity.findViewById(R.id.lblGenelOnlineIstatistik_Yazi);
 		lblGenelOnlineIstatistik_Yazi.setTypeface(YaziFontu);
 
-		lblIstatistiklerBaslik = (TextView) activity.findViewById(R.id.lblIstatistiklerBaslik);
+		lblIstatistiklerBaslik = activity.findViewById(R.id.lblIstatistiklerBaslik);
 		lblIstatistiklerBaslik.setTypeface(YaziFontu);
 
-		lblToplamListe = (TextView) activity.findViewById(R.id.lblToplamListe);
+		lblToplamListe = activity.findViewById(R.id.lblToplamListe);
 		lblToplamListe.setTypeface(YaziFontu);
 		lblToplamListe.setText(getString(R.string.toplam_liste) + ": " + Integer.toString(Veritabani.ListeSayisiGetir()));
 
-		lblToplamKategori = (TextView) activity.findViewById(R.id.lblToplamKategori);
+		lblToplamKategori = activity.findViewById(R.id.lblToplamKategori);
 		lblToplamKategori.setTypeface(YaziFontu);
 		lblToplamKategori.setText(getString(R.string.toplam_kategori) + ": " + Integer.toString(Veritabani.KategoriSayisiGetir()));
 		
-		lblToplamTarz = (TextView) activity.findViewById(R.id.lblToplamTarz);
+		lblToplamTarz = activity.findViewById(R.id.lblToplamTarz);
 		lblToplamTarz.setTypeface(YaziFontu);
 		lblToplamTarz.setText(getString(R.string.toplam_tarz) + ": " + Integer.toString(Veritabani.TarzSayisiGetir()));
 
-		lblToplamSarki = (TextView) activity.findViewById(R.id.lblToplamSarki);
+		lblToplamSarki = activity.findViewById(R.id.lblToplamSarki);
 		lblToplamSarki.setTypeface(YaziFontu);
 		lblToplamSarki.setText(getString(R.string.toplam_sarki) + ": " + Integer.toString(Veritabani.SarkiSayisiGetir()));
 
-		mChartEnSonGoruntulenenSarkilar = (PieChart) activity.findViewById(R.id.ChartEnSonGoruntulenenSarkilar);
+		mChartEnSonGoruntulenenSarkilar = activity.findViewById(R.id.ChartEnSonGoruntulenenSarkilar);
 		mChartEnSonGoruntulenenSarkilar.setUsePercentValues(true);
 		mChartEnSonGoruntulenenSarkilar.getDescription().setEnabled(false);
 		mChartEnSonGoruntulenenSarkilar.setExtraOffsets(5, 10, 5, 5);
@@ -142,6 +143,12 @@ public class Frg_Istatistik extends Fragment implements OnChartValueSelectedList
 		mChartEnSonGoruntulenenSarkilar.setEntryLabelColor(Color.WHITE);
 		mChartEnSonGoruntulenenSarkilar.setEntryLabelTypeface(mTfRegular);
 		mChartEnSonGoruntulenenSarkilar.setEntryLabelTextSize(12f);
+	}
+
+	@Override
+	public void onStart() {
+		super.onStart();
+		AkorDefterimSys.activity = activity;
 	}
 
 	public void IstatistikGuncelle() {

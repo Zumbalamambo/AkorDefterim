@@ -34,7 +34,8 @@ public class Hakkinda_Open_Source_Lib extends AppCompatActivity implements OnCli
 		setContentView(R.layout.activity_hakkinda_open_source_lib);
 
         activity = this;
-		AkorDefterimSys = new AkorDefterimSys(activity);
+		AkorDefterimSys = AkorDefterimSys.getInstance();
+		AkorDefterimSys.activity = activity;
 		YaziFontu = AkorDefterimSys.FontGetir(activity, "anivers_regular"); // Genel yazı fontunu belirttik
 
 		sharedPref = getSharedPreferences(AkorDefterimSys.PrefAdi, Context.MODE_PRIVATE);
@@ -69,6 +70,12 @@ public class Hakkinda_Open_Source_Lib extends AppCompatActivity implements OnCli
 		lblUcuncuPartiYazilimLisansi.setTypeface(YaziFontu, Typeface.NORMAL);
 		lblUcuncuPartiYazilimLisansi.setText(getString(R.string.acik_kaynak_lib_lisansi));
 		AkorDefterimSys.setTextViewHTML(lblUcuncuPartiYazilimLisansi);
+	}
+
+	@Override
+	protected void onStart() {
+		super.onStart();
+		AkorDefterimSys.activity = activity;
 	}
 
 	@Override

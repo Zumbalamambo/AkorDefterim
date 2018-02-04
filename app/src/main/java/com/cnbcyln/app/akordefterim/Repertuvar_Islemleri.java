@@ -37,7 +37,8 @@ public class Repertuvar_Islemleri extends AppCompatActivity implements OnClickLi
 		setContentView(R.layout.activity_repertuvar_islemleri);
 
         activity = this;
-		AkorDefterimSys = new AkorDefterimSys(activity);
+		AkorDefterimSys = AkorDefterimSys.getInstance();
+        AkorDefterimSys.activity = activity;
 		YaziFontu = AkorDefterimSys.FontGetir(activity, "anivers_regular"); // Genel yazı fontunu belirttik
 
 		sharedPref = getSharedPreferences(AkorDefterimSys.PrefAdi, Context.MODE_PRIVATE);
@@ -81,7 +82,13 @@ public class Repertuvar_Islemleri extends AppCompatActivity implements OnClickLi
         btnYedeklemeIslemleri.setOnClickListener(this);
 	}
 
-	@Override
+    @Override
+    protected void onStart() {
+        super.onStart();
+        AkorDefterimSys.activity = activity;
+    }
+
+    @Override
 	public void onClick(View v) {
 		switch (v.getId()) {
 			case R.id.btnGeri:
@@ -97,7 +104,7 @@ public class Repertuvar_Islemleri extends AppCompatActivity implements OnClickLi
                 AkorDefterimSys.EkranGetir(new Intent(activity, Tarz_Yonetimi.class), "Slide");
                 break;
             case R.id.btnSarkiYonetimi:
-
+                AkorDefterimSys.EkranGetir(new Intent(activity, Sarki_Yonetimi.class), "Slide");
                 break;
             case R.id.btnYedeklemeIslemleri:
 

@@ -1,49 +1,32 @@
 package com.cnbcyln.app.akordefterim;
 
-import com.cnbcyln.app.akordefterim.Adaptorler.AdpAnasayfa;
-import com.cnbcyln.app.akordefterim.Interface.Interface_FragmentDataConn;
-import com.cnbcyln.app.akordefterim.Siniflar.SnfAnasayfa;
-import com.cnbcyln.app.akordefterim.util.AkorDefterimSys;
-import com.cnbcyln.app.akordefterim.util.GridSpacingItemDecoration;
-import com.cnbcyln.app.akordefterim.util.Veritabani;
-
 import android.annotation.SuppressLint;
 import android.app.Activity;
-
 import android.app.Fragment;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.graphics.Typeface;
-import android.os.AsyncTask;
 import android.os.Bundle;
-
-import android.os.SystemClock;
 import android.support.design.widget.CoordinatorLayout;
-import android.support.design.widget.Snackbar;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.LinearLayout;
-import android.widget.Toast;
 
-import org.apache.http.HttpEntity;
-import org.apache.http.HttpResponse;
-import org.apache.http.client.HttpClient;
-import org.apache.http.client.methods.HttpPost;
-import org.apache.http.impl.client.DefaultHttpClient;
+import com.cnbcyln.app.akordefterim.Adaptorler.AdpAnasayfa;
+import com.cnbcyln.app.akordefterim.Interface.Int_DataConn_AnaEkran;
+import com.cnbcyln.app.akordefterim.Siniflar.SnfAnasayfa;
+import com.cnbcyln.app.akordefterim.util.AkorDefterimSys;
+import com.cnbcyln.app.akordefterim.util.GridSpacingItemDecoration;
+import com.cnbcyln.app.akordefterim.util.Veritabani;
+
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -54,7 +37,7 @@ public class Frg_Anasayfa extends Fragment implements SwipeRefreshLayout.OnRefre
 	AkorDefterimSys AkorDefterimSys;
 	Veritabani Veritabani;
 	SharedPreferences sharedPref;
-	Interface_FragmentDataConn FragmentDataConn;
+	Int_DataConn_AnaEkran FragmentDataConn;
 	Typeface YaziFontu;
 	CoordinatorLayout coordinatorLayout_Anasayfa;
 	SwipeRefreshLayout SRLAnasayfa;
@@ -70,9 +53,10 @@ public class Frg_Anasayfa extends Fragment implements SwipeRefreshLayout.OnRefre
 		super.onActivityCreated(savedInstanceState);
 		
 		activity = getActivity();
-		AkorDefterimSys = new AkorDefterimSys(activity);
+		AkorDefterimSys = AkorDefterimSys.getInstance();
+		AkorDefterimSys.activity = activity;
 		Veritabani = new Veritabani(activity);
-		FragmentDataConn = (Interface_FragmentDataConn) activity;
+		FragmentDataConn = (Int_DataConn_AnaEkran) activity;
 
 		sharedPref = activity.getSharedPreferences(AkorDefterimSys.PrefAdi, Context.MODE_PRIVATE);
 		
@@ -94,6 +78,12 @@ public class Frg_Anasayfa extends Fragment implements SwipeRefreshLayout.OnRefre
 		RVAnasayfa = activity.findViewById(R.id.RVAnasayfa);
 		RVAnasayfa.setLayoutManager(mGridLayoutManager);
 		RVAnasayfa.addItemDecoration(new GridSpacingItemDecoration(2, AkorDefterimSys.dpToPx(10), true));
+	}
+
+	@Override
+	public void onStart() {
+		super.onStart();
+		AkorDefterimSys.activity = activity;
 	}
 
 	@Override

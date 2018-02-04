@@ -71,7 +71,8 @@ public class Tarz_Yonetimi extends AppCompatActivity implements Interface_AsyncR
 		setContentView(R.layout.activity_tarz_yonetimi);
 
         activity = this;
-		AkorDefterimSys = new AkorDefterimSys(activity);
+		AkorDefterimSys = AkorDefterimSys.getInstance();
+        AkorDefterimSys.activity = activity;
 		veritabani = new Veritabani(activity);
 		YaziFontu = AkorDefterimSys.FontGetir(activity, "anivers_regular"); // Genel yazı fontunu belirttik
         inflater = activity.getLayoutInflater();
@@ -171,7 +172,7 @@ public class Tarz_Yonetimi extends AppCompatActivity implements Interface_AsyncR
                 }
 
                 AkorDefterimSys.KlavyeKapat();
-
+                AramaPanelKapat();
                 openContextMenu(lstTarzYonetimi);
             }
         });
@@ -188,6 +189,8 @@ public class Tarz_Yonetimi extends AppCompatActivity implements Interface_AsyncR
     @Override
     protected void onStart() {
         super.onStart();
+
+        AkorDefterimSys.activity = activity;
 
         TarzGetir();
     }

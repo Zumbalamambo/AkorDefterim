@@ -31,7 +31,7 @@ import android.widget.Toast;
 import com.cnbcyln.app.akordefterim.Adaptorler.AdpKategori;
 import com.cnbcyln.app.akordefterim.Adaptorler.AdpListelerSPN;
 import com.cnbcyln.app.akordefterim.Adaptorler.AdpTarz;
-import com.cnbcyln.app.akordefterim.Interface.Interface_FragmentDataConn;
+import com.cnbcyln.app.akordefterim.Interface.Int_DataConn_AnaEkran;
 import com.cnbcyln.app.akordefterim.Siniflar.SnfKategoriler;
 import com.cnbcyln.app.akordefterim.Siniflar.SnfListeler;
 import com.cnbcyln.app.akordefterim.Siniflar.SnfTarzlar;
@@ -48,7 +48,7 @@ public class Frg_Sarki extends Fragment implements OnClickListener {
 	private Activity activity;
 	private AkorDefterimSys AkorDefterimSys;
 	private Veritabani veritabani;
-	Interface_FragmentDataConn FragmentDataConn;
+	Int_DataConn_AnaEkran FragmentDataConn;
 	Typeface YaziFontu;
 	InputMethodManager imm;
 	ProgressDialog PDIslem;
@@ -90,9 +90,10 @@ public class Frg_Sarki extends Fragment implements OnClickListener {
 		super.onActivityCreated(savedInstanceState);
 
 		activity = getActivity();
-		AkorDefterimSys = new AkorDefterimSys(activity);
+		AkorDefterimSys = AkorDefterimSys.getInstance();
+		AkorDefterimSys.activity = activity;
 		veritabani = new Veritabani(activity);
-		FragmentDataConn = (Interface_FragmentDataConn) activity;
+		FragmentDataConn = (Int_DataConn_AnaEkran) activity;
 		YaziFontu = AkorDefterimSys.FontGetir(activity, "anivers_regular");
 
 		sharedPref = activity.getSharedPreferences(AkorDefterimSys.PrefAdi, activity.MODE_PRIVATE);
@@ -234,6 +235,13 @@ public class Frg_Sarki extends Fragment implements OnClickListener {
 	}
 
 	@Override
+	public void onStart() {
+		super.onStart();
+
+		AkorDefterimSys.activity = activity;
+	}
+
+	@Override
 	public void onSaveInstanceState(Bundle savedInstanceState) {
 		super.onSaveInstanceState(savedInstanceState);
 	}
@@ -272,7 +280,7 @@ public class Frg_Sarki extends Fragment implements OnClickListener {
 		switch (v.getId()) {
 			case R.id.FABListemeEkleCikar:
 				if(FABListemeEkleCikar.getLabelText().equals(getString(R.string.listeme_ekle))) {
-					Intent mIntent = new Intent(activity, Sarki_Ekle.class);
+					Intent mIntent = new Intent(activity, Sarki_EkleDuzenle.class);
 					mIntent.putExtra("Islem", "SarkiEkle");
 					mIntent.putExtra("SecilenSanatciAdi", SecilenSanatciAdi);
 					mIntent.putExtra("SecilenSarkiAdi", SecilenSarkiAdi);

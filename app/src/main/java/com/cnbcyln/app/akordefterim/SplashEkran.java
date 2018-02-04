@@ -52,7 +52,8 @@ public class SplashEkran extends Activity implements Interface_AsyncResponse {
 		setContentView(R.layout.activity_splash_ekran);
 
 		activity = this;
-		AkorDefterimSys = new AkorDefterimSys(activity);
+		AkorDefterimSys = AkorDefterimSys.getInstance();
+		AkorDefterimSys.activity = activity;
 		YaziFontu = AkorDefterimSys.FontGetir(activity, "anivers_regular");
 
 		sharedPref = activity.getSharedPreferences(AkorDefterimSys.PrefAdi, Context.MODE_PRIVATE);
@@ -91,6 +92,8 @@ public class SplashEkran extends Activity implements Interface_AsyncResponse {
 	@Override
 	protected void onStart() {
 		super.onStart();
+
+		AkorDefterimSys.activity = activity;
 
 		if (AkorDefterimSys.checkPlayServices(activity)) {
 			if (AkorDefterimSys.InternetErisimKontrolu()) { // İnternet bağlantısı var ise
