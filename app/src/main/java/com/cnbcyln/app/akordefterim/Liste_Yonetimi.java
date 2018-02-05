@@ -16,6 +16,7 @@ import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.EditText;
@@ -179,9 +180,18 @@ public class Liste_Yonetimi extends AppCompatActivity implements Interface_Async
         lstListeYonetimi.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
             @Override
             public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
-                /*if (RLSarkiListesi_SarkiAramaPanel.getVisibility() != View.VISIBLE && !AdpSarkiListesiLST.isSelectable()) { //Şarkı listesinde şarkılar seçilebilir durumda mı? Yani checkbox görünüyor mu? => Görünmüyorsa..
-                    AdpSarkiListesiLST.setSelectable(position);
-                }*/
+                // Eğer liste arama alanına yazı GİRİLMEMİŞSE "snfListeler" sıfından kayıt baz alarak içerik getirtiyoruz..
+                if (txtAra_AramaPanel.getText().length() == 0) {
+                    SecilenListeID = snfListeler.get(position).getId();
+                    SecilenListeAdi = snfListeler.get(position).getListeAdi();
+                } else { // Eğer liste arama alanına yazı GİRİLMİŞSE "snfListelerTemp" sıfından kayıt baz alarak içerik getirtiyoruz..
+                    SecilenListeID = snfListelerTemp.get(position).getId();
+                    SecilenListeAdi = snfListelerTemp.get(position).getListeAdi();
+                }
+
+                AkorDefterimSys.KlavyeKapat();
+                AramaPanelKapat();
+                openContextMenu(lstListeYonetimi);
 
                 return true;
             }
@@ -189,7 +199,7 @@ public class Liste_Yonetimi extends AppCompatActivity implements Interface_Async
         registerForContextMenu(lstListeYonetimi);
 
         lblOrtaMesaj = findViewById(R.id.lblOrtaMesaj);
-        lblOrtaMesaj.setTypeface(YaziFontu, Typeface.BOLD);
+        lblOrtaMesaj.setTypeface(YaziFontu, Typeface.NORMAL);
 
         FABListeEkle = (FloatingActionButton) activity.findViewById(R.id.FABListeEkle);
         FABListeEkle.setImageResource(R.drawable.ic_plus_beyaz);
@@ -247,13 +257,9 @@ public class Liste_Yonetimi extends AppCompatActivity implements Interface_Async
                             getString(R.string.ekle), "ADDialog_ListeEkle",
                             getString(R.string.iptal), "ADDialog_Kapat");
                     ADDialog.getWindow().getAttributes().windowAnimations = R.style.DialogAnimation;
-
-                    EditText txtDialogInput = ViewDialogContent.findViewById(R.id.txtDialogInput);
-                    txtDialogInput.setSelection(txtDialogInput.length());
-                    imm.showSoftInput(txtDialogInput, 0);
-
-                    //ADDialog.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_VISIBLE);
                     ADDialog.show();
+
+                    ADDialog.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_VISIBLE);
                 }
                 break;
 		}
@@ -388,10 +394,14 @@ public class Liste_Yonetimi extends AppCompatActivity implements Interface_Async
         if(snfListeler.get(0).getListeAdi().equals("")) snfListeler.clear();
 
         if(snfListeler.size() <= 0) {
+            btnAra_AnaPanel.setImageResource(R.drawable.ic_ara);
+            btnAra_AnaPanel.setEnabled(false);
             lblOrtaMesaj.setVisibility(View.VISIBLE);
             lblOrtaMesaj.setText(getString(R.string.liste_bos));
             lstListeYonetimi.setVisibility(View.GONE);
         } else {
+            btnAra_AnaPanel.setImageResource(R.drawable.ic_ara_siyah);
+            btnAra_AnaPanel.setEnabled(true);
             lblOrtaMesaj.setVisibility(View.GONE);
             lstListeYonetimi.setVisibility(View.VISIBLE);
 

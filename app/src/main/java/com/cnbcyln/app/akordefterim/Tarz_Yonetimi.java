@@ -16,6 +16,7 @@ import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.EditText;
@@ -176,10 +177,29 @@ public class Tarz_Yonetimi extends AppCompatActivity implements Interface_AsyncR
                 openContextMenu(lstTarzYonetimi);
             }
         });
+        lstTarzYonetimi.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+            @Override
+            public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
+                // Eğer tarz arama alanına yazı GİRİLMEMİŞSE "snfTarzlar" sıfından kayıt baz alarak içerik getirtiyoruz..
+                if (txtAra_AramaPanel.getText().length() == 0) {
+                    SecilenTarzID = snfTarzlar.get(position).getId();
+                    SecilenTarzAdi = snfTarzlar.get(position).getTarzAdi();
+                } else { // Eğer tarz arama alanına yazı GİRİLMİŞSE "snfTarzlarTemp" sıfından kayıt baz alarak içerik getirtiyoruz..
+                    SecilenTarzID = snfTarzlarTemp.get(position).getId();
+                    SecilenTarzAdi = snfTarzlarTemp.get(position).getTarzAdi();
+                }
+
+                AkorDefterimSys.KlavyeKapat();
+                AramaPanelKapat();
+                openContextMenu(lstTarzYonetimi);
+
+                return true;
+            }
+        });
         registerForContextMenu(lstTarzYonetimi);
 
         lblOrtaMesaj = findViewById(R.id.lblOrtaMesaj);
-        lblOrtaMesaj.setTypeface(YaziFontu, Typeface.BOLD);
+        lblOrtaMesaj.setTypeface(YaziFontu, Typeface.NORMAL);
 
         FABTarzEkle = (FloatingActionButton) activity.findViewById(R.id.FABTarzEkle);
         FABTarzEkle.setImageResource(R.drawable.ic_plus_beyaz);
@@ -237,13 +257,9 @@ public class Tarz_Yonetimi extends AppCompatActivity implements Interface_AsyncR
                             getString(R.string.ekle), "ADDialog_TarzEkle",
                             getString(R.string.iptal), "ADDialog_Kapat");
                     ADDialog.getWindow().getAttributes().windowAnimations = R.style.DialogAnimation;
-
-                    EditText txtDialogInput = ViewDialogContent.findViewById(R.id.txtDialogInput);
-                    txtDialogInput.setSelection(txtDialogInput.length());
-                    imm.showSoftInput(txtDialogInput, 0);
-
-                    //ADDialog.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_VISIBLE);
                     ADDialog.show();
+
+                    ADDialog.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_VISIBLE);
                 }
                 break;
 		}
@@ -290,6 +306,8 @@ public class Tarz_Yonetimi extends AppCompatActivity implements Interface_AsyncR
                                     getString(R.string.iptal), "ADDialog_Kapat");
                             ADDialog.getWindow().getAttributes().windowAnimations = R.style.DialogAnimation;
                             ADDialog.show();
+
+                            ADDialog.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_VISIBLE);
                         }
                         break;
                     default:
@@ -378,10 +396,14 @@ public class Tarz_Yonetimi extends AppCompatActivity implements Interface_AsyncR
         if(snfTarzlar.get(0).getTarzAdi().equals("")) snfTarzlar.clear();
 
         if(snfTarzlar.size() <= 0) {
+            btnAra_AnaPanel.setImageResource(R.drawable.ic_ara);
+            btnAra_AnaPanel.setEnabled(false);
             lblOrtaMesaj.setVisibility(View.VISIBLE);
             lblOrtaMesaj.setText(getString(R.string.liste_bos));
             lstTarzYonetimi.setVisibility(View.GONE);
         } else {
+            btnAra_AnaPanel.setImageResource(R.drawable.ic_ara_siyah);
+            btnAra_AnaPanel.setEnabled(true);
             lblOrtaMesaj.setVisibility(View.GONE);
             lstTarzYonetimi.setVisibility(View.VISIBLE);
 

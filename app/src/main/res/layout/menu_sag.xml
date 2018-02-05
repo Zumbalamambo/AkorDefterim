@@ -68,7 +68,7 @@
                     android:layout_alignParentRight="true"
                     android:background="@drawable/custom_button2"
                     android:contentDescription="@string/imageDesc"
-                    app:srcCompat="@drawable/ic_ara_siyah" />
+                    app:srcCompat="@drawable/ic_ara" />
             </RelativeLayout>
 
             <RelativeLayout
@@ -121,7 +121,7 @@
                     android:choiceMode="multipleChoice" />
 
                 <TextView
-                    android:id="@+id/lblOrtaMesaj"
+                    android:id="@+id/lblMenuSag_OrtaMesaj"
                     style="@style/TextAppearance.AppCompat.Medium.Inverse"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"

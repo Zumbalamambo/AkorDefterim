@@ -217,10 +217,32 @@ public class Sarki_Yonetimi extends AppCompatActivity implements Interface_Async
                 openContextMenu(lstSarkiYonetimi);
             }
         });
+        lstSarkiYonetimi.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+            @Override
+            public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
+                // Eğer sarki arama alanına yazı GİRİLMEMİŞSE "snfSarkilar" sıfından kayıt baz alarak içerik getirtiyoruz..
+                if (txtAra_AramaPanel.getText().length() == 0) {
+                    SecilenSarkiID = snfSarkilar.get(position).getId();
+                    SecilenSanatciAdi = snfSarkilar.get(position).getSanatciAdi();
+                    SecilenSarkiAdi = snfSarkilar.get(position).getSarkiAdi();
+                } else { // Eğer sarki arama alanına yazı GİRİLMİŞSE "snfSarkilarTemp" sıfından kayıt baz alarak içerik getirtiyoruz..
+                    SecilenSarkiID = snfSarkilarTemp.get(position).getId();
+                    SecilenSanatciAdi = snfSarkilarTemp.get(position).getSanatciAdi();
+                    SecilenSarkiAdi = snfSarkilarTemp.get(position).getSarkiAdi();
+                }
+
+                AkorDefterimSys.KlavyeKapat();
+                AramaPanelKapat();
+                FiltreMenuKapat();
+                openContextMenu(lstSarkiYonetimi);
+
+                return true;
+            }
+        });
         registerForContextMenu(lstSarkiYonetimi);
 
         lblOrtaMesaj = findViewById(R.id.lblOrtaMesaj);
-        lblOrtaMesaj.setTypeface(YaziFontu, Typeface.BOLD);
+        lblOrtaMesaj.setTypeface(YaziFontu, Typeface.NORMAL);
 
         FABSarkiEkle = (FloatingActionButton) activity.findViewById(R.id.FABSarkiEkle);
         FABSarkiEkle.setImageResource(R.drawable.ic_plus_beyaz);
@@ -289,12 +311,13 @@ public class Sarki_Yonetimi extends AppCompatActivity implements Interface_Async
         AkorDefterimSys.activity = activity;
 
         if(AkorDefterimSys.prefAction.equals("Şarkı eklendi")) {
-            AkorDefterimSys.StandartSnackBarMsj(coordinatorLayout, getString(R.string.sarki_eklendi, AkorDefterimSys.prefEklenenSanatciAdiSarkiAdi));
+            AkorDefterimSys.StandartSnackBarMsj(coordinatorLayout, getString(R.string.sarki_eklendi, AkorDefterimSys.prefEklenenDuzenlenenSanatciAdiSarkiAdi));
             AkorDefterimSys.prefAction = "";
-            AkorDefterimSys.prefEklenenSanatciAdiSarkiAdi = "";
+            AkorDefterimSys.prefEklenenDuzenlenenSanatciAdiSarkiAdi = "";
         } else if(AkorDefterimSys.prefAction.equals("Şarkı düzenlendi")) {
-            AkorDefterimSys.StandartSnackBarMsj(coordinatorLayout, getString(R.string.sarki_duzenlendi));
+            AkorDefterimSys.StandartSnackBarMsj(coordinatorLayout, getString(R.string.sarki_duzenlendi, AkorDefterimSys.prefEklenenDuzenlenenSanatciAdiSarkiAdi));
             AkorDefterimSys.prefAction = "";
+            AkorDefterimSys.prefEklenenDuzenlenenSanatciAdiSarkiAdi = "";
         }
 
         spnListeGetir();
@@ -328,10 +351,10 @@ public class Sarki_Yonetimi extends AppCompatActivity implements Interface_Async
 				onBackPressed();
 				break;
             case R.id.btnFiltre_AnaPanel:
-                if (!FiltreMenuAcikMi) {
+                if (!FiltreMenuAcikMi) { // Filtre menu kapalıysa
                     AkorDefterimSys.CircularReveal(activity, R.id.RLContent, R.id.LLFiltreMenu, "Sol", "Alt", "Ac");
                     FiltreMenuAcikMi = true;
-                } else {
+                } else { // Filtre menu açıksa
                     AkorDefterimSys.CircularReveal(activity, R.id.RLContent, R.id.LLFiltreMenu, "Sol", "Alt", "Kapat");
                     FiltreMenuAcikMi = false;
                 }
@@ -481,12 +504,16 @@ public class Sarki_Yonetimi extends AppCompatActivity implements Interface_Async
         snfSarkilar = veritabani.SnfSarkiGetir(SecilenListeID, SecilenKategoriID, SecilenTarzID, SecilenListelemeTipi);
 
         if(snfSarkilar.size() <= 0) {
+            btnFiltre_AnaPanel.setImageResource(R.drawable.ic_filter);
+            btnFiltre_AnaPanel.setEnabled(false);
             btnAra_AnaPanel.setImageResource(R.drawable.ic_ara);
             btnAra_AnaPanel.setEnabled(false);
             lblOrtaMesaj.setVisibility(View.VISIBLE);
             lblOrtaMesaj.setText(getString(R.string.liste_bos));
             lstSarkiYonetimi.setVisibility(View.GONE);
         } else {
+            btnFiltre_AnaPanel.setImageResource(R.drawable.ic_filter_siyah);
+            btnFiltre_AnaPanel.setEnabled(true);
             btnAra_AnaPanel.setImageResource(R.drawable.ic_ara_siyah);
             btnAra_AnaPanel.setEnabled(true);
             lblOrtaMesaj.setVisibility(View.GONE);

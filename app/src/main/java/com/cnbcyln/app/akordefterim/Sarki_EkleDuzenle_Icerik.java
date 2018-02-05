@@ -194,13 +194,14 @@ public class Sarki_EkleDuzenle_Icerik extends AppCompatActivity implements Inter
 				if(Islem.equals("SarkiEkle") || Islem.equals("YeniSarkiEkle")) {
 					if (veritabani.SarkiEkle(SecilenListeID, SecilenKategoriID, SecilenTarzID, SecilenSarkiAdi, SecilenSanatciAdi, AkorDefterimSys.AkorTagToHtml(AkorDefterimSys.KotuIcerikDuzenleme(txtSarkiIcerik)))) {
 						AkorDefterimSys.prefAction = "Şarkı eklendi";
-						AkorDefterimSys.prefEklenenSanatciAdiSarkiAdi = SecilenSanatciAdi + " - " + SecilenSarkiAdi;
+						AkorDefterimSys.prefEklenenDuzenlenenSanatciAdiSarkiAdi = SecilenSanatciAdi + " - " + SecilenSarkiAdi;
 						AkorDefterimSys.KlavyeKapat();
 						finish();
 					} else AkorDefterimSys.ToastMsj(activity, getString(R.string.islem_yapilirken_bir_hata_olustu), Toast.LENGTH_SHORT);
 				} else if(Islem.equals("SarkiDuzenle")) {
 					if (veritabani.SarkiDuzenle(SecilenSarkiID, SecilenListeID, SecilenKategoriID, SecilenTarzID, SecilenSanatciAdi, SecilenSarkiAdi, AkorDefterimSys.AkorTagToHtml(AkorDefterimSys.KotuIcerikDuzenleme(txtSarkiIcerik)))) {
 						AkorDefterimSys.prefAction = "Şarkı düzenlendi";
+						AkorDefterimSys.prefEklenenDuzenlenenSanatciAdiSarkiAdi = SecilenSanatciAdi + " - " + SecilenSarkiAdi;
 						AkorDefterimSys.KlavyeKapat();
 						finish();
 					} else AkorDefterimSys.ToastMsj(activity, getString(R.string.islem_yapilirken_bir_hata_olustu), Toast.LENGTH_SHORT);

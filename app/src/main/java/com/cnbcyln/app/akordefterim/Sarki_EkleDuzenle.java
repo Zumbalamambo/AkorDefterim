@@ -16,6 +16,7 @@ import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.Button;
@@ -68,6 +69,7 @@ public class Sarki_EkleDuzenle extends AppCompatActivity implements Interface_As
 	int SecilenSarkiID = 0, SecilenListeID = 0, SecilenKategoriID = 0, SecilenTarzID = 0, AdSoyadKarakterSayisi_MIN = 0, AdSoyadKarakterSayisi_MAX = 0, SarkiAdiKarakterSayisi_MIN = 0, SarkiAdiKarakterSayisi_MAX = 0;
 	String Islem = "", SecilenSanatciAdi = "", SecilenSarkiAdi = "", SecilenListeAdi = "", SecilenKategoriAdi = "", SecilenTarzAdi = "", SecilenSarkiIcerik = "";
 
+	private SnfSarkilar snfSarkilar;
 	private List<SnfListeler> snfListeler;
 	private List<SnfKategoriler> snfKategoriler;
 	private List<SnfTarzlar> snfTarzlar;
@@ -225,34 +227,12 @@ public class Sarki_EkleDuzenle extends AppCompatActivity implements Interface_As
 		txtSanatciAdi.setText(SecilenSanatciAdi);
 		txtSarkiAdi.setText(SecilenSarkiAdi);
 
+		snfSarkilar = veritabani.SnfSarkiGetir(SecilenSarkiID);
+
 		spnListeGetir();
 		spnKategoriGetir();
 		spnTarzGetir();
-
-		if(Islem.equals("SarkiDuzenle")) {
-			SnfSarkilar snfSarkilar = veritabani.SnfSarkiGetir(SecilenSarkiID);
-
-			for(int i = 0; 0 < snfListeler.size(); i++) {
-				if(snfListeler.get(i).getId() == snfSarkilar.getListeID()) {
-					spnListeler.setSelection(i);
-					break;
-				}
-			}
-
-			for(int i = 0; 0 < snfKategoriler.size(); i++) {
-				if(snfKategoriler.get(i).getId() == snfSarkilar.getKategoriID()) {
-					spnKategoriler.setSelection(i);
-					break;
-				}
-			}
-
-			for(int i = 0; 0 < snfTarzlar.size(); i++) {
-				if(snfTarzlar.get(i).getId() == snfSarkilar.getTarzID()) {
-					spnTarzlar.setSelection(i);
-					break;
-				}
-			}
-		}
+		SarkiyaAitBilgilerleSpinnerDoldur();
 	}
 
 	@Override
@@ -300,13 +280,9 @@ public class Sarki_EkleDuzenle extends AppCompatActivity implements Interface_As
 							getString(R.string.ekle), "ADDialog_ListeEkle",
 							getString(R.string.iptal), "ADDialog_Kapat");
 					ADDialog.getWindow().getAttributes().windowAnimations = R.style.DialogAnimation;
-
-					EditText txtDialogInput = ViewDialogContent.findViewById(R.id.txtDialogInput);
-					txtDialogInput.setSelection(txtDialogInput.length());
-					imm.showSoftInput(txtDialogInput, 0);
-
-					//ADDialog.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_VISIBLE);
 					ADDialog.show();
+
+					ADDialog.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_VISIBLE);
 				}
 				break;
 			case R.id.btnListeSil:
@@ -342,6 +318,8 @@ public class Sarki_EkleDuzenle extends AppCompatActivity implements Interface_As
 							getString(R.string.iptal), "ADDialog_Kapat");
 					ADDialog.getWindow().getAttributes().windowAnimations = R.style.DialogAnimation;
 					ADDialog.show();
+
+					ADDialog.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_VISIBLE);
 				}
 				break;
 			case R.id.btnKategoriEkle:
@@ -358,6 +336,8 @@ public class Sarki_EkleDuzenle extends AppCompatActivity implements Interface_As
 							getString(R.string.iptal), "ADDialog_Kapat");
 					ADDialog.getWindow().getAttributes().windowAnimations = R.style.DialogAnimation;
 					ADDialog.show();
+
+					ADDialog.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_VISIBLE);
 				}
 				break;
 			case R.id.btnKategoriSil:
@@ -393,6 +373,8 @@ public class Sarki_EkleDuzenle extends AppCompatActivity implements Interface_As
 							getString(R.string.iptal),"ADDialog_Kapat");
 					ADDialog.getWindow().getAttributes().windowAnimations = R.style.DialogAnimation;
 					ADDialog.show();
+
+					ADDialog.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_VISIBLE);
 				}
 				break;
 			case R.id.btnTarzEkle:
@@ -409,6 +391,8 @@ public class Sarki_EkleDuzenle extends AppCompatActivity implements Interface_As
 							getString(R.string.iptal), "ADDialog_Kapat");
 					ADDialog.getWindow().getAttributes().windowAnimations = R.style.DialogAnimation;
 					ADDialog.show();
+
+					ADDialog.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_VISIBLE);
 				}
 				break;
 			case R.id.btnTarzSil:
@@ -444,6 +428,8 @@ public class Sarki_EkleDuzenle extends AppCompatActivity implements Interface_As
 							getString(R.string.iptal),"ADDialog_Kapat");
 					ADDialog.getWindow().getAttributes().windowAnimations = R.style.DialogAnimation;
 					ADDialog.show();
+
+					ADDialog.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_VISIBLE);
 				}
 				break;
 		}
@@ -460,81 +446,93 @@ public class Sarki_EkleDuzenle extends AppCompatActivity implements Interface_As
 						if(veritabani.ListeEkle(JSONSonuc.getString("InputIcerik"))) {
 							spnListeGetir();
 							AkorDefterimSys.StandartSnackBarMsj(coordinatorLayout, getString(R.string.liste_eklendi, JSONSonuc.getString("InputIcerik")));
-							ADDialog.dismiss();
 						} else AkorDefterimSys.StandartSnackBarMsj(coordinatorLayout, getString(R.string.islem_yapilirken_bir_hata_olustu));
 					} else AkorDefterimSys.StandartSnackBarMsj(coordinatorLayout, getString(R.string.liste_eklenemedi_hata1, JSONSonuc.getString("InputIcerik")));
+
+					ADDialog.dismiss();
 					break;
 				case "ADDialog_ListeDuzenle":
 					if(!veritabani.ListeVarmiKontrol(JSONSonuc.getString("InputIcerik"))) {
 						if(veritabani.ListeDuzenle(SecilenListeID, JSONSonuc.getString("InputIcerik"))) {
 							spnListeGetir();
+							SarkiyaAitBilgilerleSpinnerDoldur();
 							AkorDefterimSys.StandartSnackBarMsj(coordinatorLayout, getString(R.string.liste_duzenlendi, JSONSonuc.getString("InputEskiIcerik"), JSONSonuc.getString("InputIcerik")));
-							ADDialog.dismiss();
 						} else AkorDefterimSys.StandartSnackBarMsj(coordinatorLayout, getString(R.string.islem_yapilirken_bir_hata_olustu));
-					} else ADDialog.dismiss();
+					}
+
+					ADDialog.dismiss();
 					break;
 				case "ADDialog_ListeSil":
 					if(!veritabani.ListeyeAitSarkiVarmiKontrol(SecilenListeID)) {
 						if(veritabani.ListeSil(SecilenListeID)) {
 							spnListeGetir();
 							AkorDefterimSys.StandartSnackBarMsj(coordinatorLayout, getString(R.string.liste_silindi, SecilenListeAdi));
-							ADDialog.dismiss();
 						} else AkorDefterimSys.StandartSnackBarMsj(coordinatorLayout, getString(R.string.islem_yapilirken_bir_hata_olustu));
-					} else AkorDefterimSys.StandartSnackBarMsj(coordinatorLayout, getString(R.string.liste_silinemedi_hata1));
+					} else AkorDefterimSys.StandartSnackBarMsj(coordinatorLayout, getString(R.string.liste_silinemedi_hata1, SecilenListeAdi));
+
+					ADDialog.dismiss();
 					break;
 				case "ADDialog_KategoriEkle":
 					if(!veritabani.KategoriVarmiKontrol(JSONSonuc.getString("InputIcerik"))) {
 						if(veritabani.KategoriEkle(JSONSonuc.getString("InputIcerik"))) {
-							spnListeGetir();
+							spnKategoriGetir();
 							AkorDefterimSys.StandartSnackBarMsj(coordinatorLayout, getString(R.string.kategori_eklendi, JSONSonuc.getString("InputIcerik")));
-							ADDialog.dismiss();
 						} else AkorDefterimSys.StandartSnackBarMsj(coordinatorLayout, getString(R.string.islem_yapilirken_bir_hata_olustu));
 					} else AkorDefterimSys.StandartSnackBarMsj(coordinatorLayout, getString(R.string.kategori_eklenemedi_hata1, JSONSonuc.getString("InputIcerik")));
+
+					ADDialog.dismiss();
 					break;
 				case "ADDialog_KategoriDuzenle":
 					if(!veritabani.KategoriVarmiKontrol(JSONSonuc.getString("InputIcerik"))) {
 						if(veritabani.KategoriDuzenle(SecilenKategoriID, JSONSonuc.getString("InputIcerik"))) {
-							spnListeGetir();
+							spnKategoriGetir();
+							SarkiyaAitBilgilerleSpinnerDoldur();
 							AkorDefterimSys.StandartSnackBarMsj(coordinatorLayout, getString(R.string.kategori_duzenlendi, JSONSonuc.getString("InputEskiIcerik"), JSONSonuc.getString("InputIcerik")));
-							ADDialog.dismiss();
 						} else AkorDefterimSys.StandartSnackBarMsj(coordinatorLayout, getString(R.string.islem_yapilirken_bir_hata_olustu));
-					} else ADDialog.dismiss();
+					}
+
+					ADDialog.dismiss();
 					break;
 				case "ADDialog_KategoriSil":
 					if(!veritabani.KategoriyeAitSarkiVarmiKontrol(SecilenKategoriID)) {
 						if(veritabani.KategoriSil(SecilenKategoriID)) {
-							spnListeGetir();
+							spnKategoriGetir();
 							AkorDefterimSys.StandartSnackBarMsj(coordinatorLayout, getString(R.string.kategori_silindi, SecilenKategoriAdi));
-							ADDialog.dismiss();
 						} else AkorDefterimSys.StandartSnackBarMsj(coordinatorLayout, getString(R.string.islem_yapilirken_bir_hata_olustu));
-					} else AkorDefterimSys.StandartSnackBarMsj(coordinatorLayout, getString(R.string.kategori_silinemedi_hata1));
+					} else AkorDefterimSys.StandartSnackBarMsj(coordinatorLayout, getString(R.string.kategori_silinemedi_hata1, SecilenKategoriAdi));
+
+					ADDialog.dismiss();
 					break;
 				case "ADDialog_TarzEkle":
 					if(!veritabani.TarzVarmiKontrol(JSONSonuc.getString("InputIcerik"))) {
 						if(veritabani.TarzEkle(JSONSonuc.getString("InputIcerik"))) {
-							spnListeGetir();
+							spnTarzGetir();
 							AkorDefterimSys.StandartSnackBarMsj(coordinatorLayout, getString(R.string.tarz_eklendi, JSONSonuc.getString("InputIcerik")));
-							ADDialog.dismiss();
 						} else AkorDefterimSys.StandartSnackBarMsj(coordinatorLayout, getString(R.string.islem_yapilirken_bir_hata_olustu));
 					} else AkorDefterimSys.StandartSnackBarMsj(coordinatorLayout, getString(R.string.tarz_eklenemedi_hata1, JSONSonuc.getString("InputIcerik")));
+
+					ADDialog.dismiss();
 					break;
 				case "ADDialog_TarzDuzenle":
 					if(!veritabani.TarzVarmiKontrol(JSONSonuc.getString("InputIcerik"))) {
 						if(veritabani.TarzDuzenle(SecilenTarzID, JSONSonuc.getString("InputIcerik"))) {
-							spnListeGetir();
+							spnTarzGetir();
+							SarkiyaAitBilgilerleSpinnerDoldur();
 							AkorDefterimSys.StandartSnackBarMsj(coordinatorLayout, getString(R.string.tarz_duzenlendi, JSONSonuc.getString("InputEskiIcerik"), JSONSonuc.getString("InputIcerik")));
-							ADDialog.dismiss();
 						} else AkorDefterimSys.StandartSnackBarMsj(coordinatorLayout, getString(R.string.islem_yapilirken_bir_hata_olustu));
-					} else ADDialog.dismiss();
+					}
+
+					ADDialog.dismiss();
 					break;
 				case "ADDialog_TarzSil":
 					if(!veritabani.TarzaAitSarkiVarmiKontrol(SecilenTarzID)) {
 						if(veritabani.TarzSil(SecilenTarzID)) {
-							spnListeGetir();
+							spnTarzGetir();
 							AkorDefterimSys.StandartSnackBarMsj(coordinatorLayout, getString(R.string.tarz_silindi, SecilenTarzAdi));
-							ADDialog.dismiss();
 						} else AkorDefterimSys.StandartSnackBarMsj(coordinatorLayout, getString(R.string.islem_yapilirken_bir_hata_olustu));
-					} else AkorDefterimSys.StandartSnackBarMsj(coordinatorLayout, getString(R.string.tarz_silinemedi_hata1));
+					} else AkorDefterimSys.StandartSnackBarMsj(coordinatorLayout, getString(R.string.tarz_silinemedi_hata1, SecilenTarzAdi));
+
+					ADDialog.dismiss();
 					break;
 				case "ADDialog_Kapat":
 					AkorDefterimSys.DismissAlertDialog(ADDialog);
@@ -605,6 +603,31 @@ public class Sarki_EkleDuzenle extends AppCompatActivity implements Interface_As
 			btnTarzSil.setImageResource(R.drawable.ic_negative_siyah);
 			btnTarzDuzenle.setEnabled(true);
 			btnTarzDuzenle.setImageResource(R.drawable.ic_pencil_siyah);
+		}
+	}
+
+	private void SarkiyaAitBilgilerleSpinnerDoldur() {
+		if(Islem.equals("SarkiDuzenle")) {
+			for(int i = 0; 0 < snfListeler.size(); i++) {
+				if(snfListeler.get(i).getId() == snfSarkilar.getListeID()) {
+					spnListeler.setSelection(i);
+					break;
+				}
+			}
+
+			for(int i = 0; 0 < snfKategoriler.size(); i++) {
+				if(snfKategoriler.get(i).getId() == snfSarkilar.getKategoriID()) {
+					spnKategoriler.setSelection(i);
+					break;
+				}
+			}
+
+			for(int i = 0; 0 < snfTarzlar.size(); i++) {
+				if(snfTarzlar.get(i).getId() == snfSarkilar.getTarzID()) {
+					spnTarzlar.setSelection(i);
+					break;
+				}
+			}
 		}
 	}
 

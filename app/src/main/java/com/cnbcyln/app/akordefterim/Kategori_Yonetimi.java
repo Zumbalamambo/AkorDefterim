@@ -16,6 +16,7 @@ import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.EditText;
@@ -176,10 +177,29 @@ public class Kategori_Yonetimi extends AppCompatActivity implements Interface_As
                 openContextMenu(lstKategoriYonetimi);
             }
         });
+        lstKategoriYonetimi.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+            @Override
+            public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
+                // Eğer kategori arama alanına yazı GİRİLMEMİŞSE "snfKategoriler" sıfından kayıt baz alarak içerik getirtiyoruz..
+                if (txtAra_AramaPanel.getText().length() == 0) {
+                    SecilenKategoriID = snfKategoriler.get(position).getId();
+                    SecilenKategoriAdi = snfKategoriler.get(position).getKategoriAdi();
+                } else { // Eğer kategori arama alanına yazı GİRİLMİŞSE "snfKategorilerTemp" sıfından kayıt baz alarak içerik getirtiyoruz..
+                    SecilenKategoriID = snfKategorilerTemp.get(position).getId();
+                    SecilenKategoriAdi = snfKategorilerTemp.get(position).getKategoriAdi();
+                }
+
+                AkorDefterimSys.KlavyeKapat();
+                AramaPanelKapat();
+                openContextMenu(lstKategoriYonetimi);
+
+                return true;
+            }
+        });
         registerForContextMenu(lstKategoriYonetimi);
 
         lblOrtaMesaj = findViewById(R.id.lblOrtaMesaj);
-        lblOrtaMesaj.setTypeface(YaziFontu, Typeface.BOLD);
+        lblOrtaMesaj.setTypeface(YaziFontu, Typeface.NORMAL);
 
         FABKategoriEkle = (FloatingActionButton) activity.findViewById(R.id.FABKategoriEkle);
         FABKategoriEkle.setImageResource(R.drawable.ic_plus_beyaz);
@@ -237,13 +257,9 @@ public class Kategori_Yonetimi extends AppCompatActivity implements Interface_As
                             getString(R.string.ekle), "ADDialog_KategoriEkle",
                             getString(R.string.iptal), "ADDialog_Kapat");
                     ADDialog.getWindow().getAttributes().windowAnimations = R.style.DialogAnimation;
-
-                    EditText txtDialogInput = ViewDialogContent.findViewById(R.id.txtDialogInput);
-                    txtDialogInput.setSelection(txtDialogInput.length());
-                    imm.showSoftInput(txtDialogInput, 0);
-
-                    //ADDialog.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_VISIBLE);
                     ADDialog.show();
+
+                    ADDialog.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_VISIBLE);
                 }
                 break;
 		}
@@ -290,6 +306,8 @@ public class Kategori_Yonetimi extends AppCompatActivity implements Interface_As
                                     getString(R.string.iptal), "ADDialog_Kapat");
                             ADDialog.getWindow().getAttributes().windowAnimations = R.style.DialogAnimation;
                             ADDialog.show();
+
+                            ADDialog.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_VISIBLE);
                         }
                         break;
                     default:
@@ -378,10 +396,14 @@ public class Kategori_Yonetimi extends AppCompatActivity implements Interface_As
         if(snfKategoriler.get(0).getKategoriAdi().equals("")) snfKategoriler.clear();
 
         if(snfKategoriler.size() <= 0) {
+            btnAra_AnaPanel.setImageResource(R.drawable.ic_ara);
+            btnAra_AnaPanel.setEnabled(false);
             lblOrtaMesaj.setVisibility(View.VISIBLE);
             lblOrtaMesaj.setText(getString(R.string.liste_bos));
             lstKategoriYonetimi.setVisibility(View.GONE);
         } else {
+            btnAra_AnaPanel.setImageResource(R.drawable.ic_ara_siyah);
+            btnAra_AnaPanel.setEnabled(true);
             lblOrtaMesaj.setVisibility(View.GONE);
             lstKategoriYonetimi.setVisibility(View.VISIBLE);
 

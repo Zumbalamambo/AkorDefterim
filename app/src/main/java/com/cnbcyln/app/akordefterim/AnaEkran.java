@@ -21,7 +21,6 @@ import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.util.Log;
 import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -76,7 +75,7 @@ public class AnaEkran extends AppCompatActivity implements Int_DataConn_AnaEkran
     // AnaEkran Değişken Tanımlamaları
     ImageButton btnSolMenu, btnSagMenu;
     LinearLayout LLSayfa;
-    TextView lblSayfaBaslik, lblOrtaMesaj;
+    TextView lblSayfaBaslik, lblMenuSag_OrtaMesaj;
     CoordinatorLayout coordinatorLayout;
     ResideMenu resideMenu;
 
@@ -159,6 +158,7 @@ public class AnaEkran extends AppCompatActivity implements Int_DataConn_AnaEkran
         btnSarkiEkle_AnaPanel.setOnClickListener(this);
 
         btnAra_AnaPanel = ViewSlidingSagMenuContainer.findViewById(R.id.btnAra_AnaPanel);
+        btnAra_AnaPanel.setEnabled(false);
         btnAra_AnaPanel.setOnClickListener(this);
 
         RLSarkiListesi_AramaPanel = ViewSlidingSagMenuContainer.findViewById(R.id.RLSarkiListesi_AramaPanel);
@@ -202,11 +202,15 @@ public class AnaEkran extends AppCompatActivity implements Int_DataConn_AnaEkran
                     }
 
                     if(snfSarkilarTemp.size() <= 0) {
-                        lblOrtaMesaj.setVisibility(View.VISIBLE);
-                        lblOrtaMesaj.setText(getString(R.string.liste_bos));
+                        btnAra_AnaPanel.setImageResource(R.drawable.ic_ara);
+                        btnAra_AnaPanel.setEnabled(false);
+                        lblMenuSag_OrtaMesaj.setVisibility(View.VISIBLE);
+                        lblMenuSag_OrtaMesaj.setText(getString(R.string.liste_bos));
                         lstSarkiListesi.setVisibility(View.GONE);
                     } else {
-                        lblOrtaMesaj.setVisibility(View.GONE);
+                        btnAra_AnaPanel.setImageResource(R.drawable.ic_ara_siyah);
+                        btnAra_AnaPanel.setEnabled(true);
+                        lblMenuSag_OrtaMesaj.setVisibility(View.GONE);
                         lstSarkiListesi.setVisibility(View.VISIBLE);
 
                         // Elde ettiğimiz snfSarkilar sıfındaki tüm kayıtları AdpSarkiListesiLST ile lstSarkiListesi isimli Listview'a set ediyoruz..
@@ -230,8 +234,8 @@ public class AnaEkran extends AppCompatActivity implements Int_DataConn_AnaEkran
             }
         });
 
-        lblOrtaMesaj = ViewSlidingSagMenuContainer.findViewById(R.id.lblOrtaMesaj);
-        lblOrtaMesaj.setTypeface(YaziFontu, Typeface.BOLD);
+        lblMenuSag_OrtaMesaj = ViewSlidingSagMenuContainer.findViewById(R.id.lblMenuSag_OrtaMesaj);
+        lblMenuSag_OrtaMesaj.setTypeface(YaziFontu, Typeface.NORMAL);
 
         lstSarkiListesi = ViewSlidingSagMenuContainer.findViewById(R.id.lstSarkiListesi);
         lstSarkiListesi.setFastScrollEnabled(true);
@@ -378,11 +382,11 @@ public class AnaEkran extends AppCompatActivity implements Int_DataConn_AnaEkran
         if(AkorDefterimSys.prefAction.equals("Şarkı eklendi")) {
             if(Fragment_SayfaAdi.equals("Frg_Sarki")) {
                 Frg_Sarki Frg_Sarki = (Frg_Sarki) activity.getFragmentManager().findFragmentByTag(Fragment_SayfaAdi);
-                Frg_Sarki.StandartSnackBarMsj(getString(R.string.sarki_eklendi, AkorDefterimSys.prefEklenenSanatciAdiSarkiAdi));
+                Frg_Sarki.StandartSnackBarMsj(getString(R.string.sarki_eklendi, AkorDefterimSys.prefEklenenDuzenlenenSanatciAdiSarkiAdi));
             }
 
             AkorDefterimSys.prefAction = "";
-            AkorDefterimSys.prefEklenenSanatciAdiSarkiAdi = "";
+            AkorDefterimSys.prefEklenenDuzenlenenSanatciAdiSarkiAdi = "";
         } else if(AkorDefterimSys.prefAction.equals("Şarkı düzenlendi")) {
             if(Fragment_SayfaAdi.equals("Frg_Sarki")) {
                 Frg_Sarki Frg_Sarki = (Frg_Sarki) activity.getFragmentManager().findFragmentByTag(Fragment_SayfaAdi);
@@ -726,11 +730,15 @@ public class AnaEkran extends AppCompatActivity implements Int_DataConn_AnaEkran
                         if (SecilenListelemeTipi == 0 || SecilenListelemeTipi == 1) Collections.sort(snfSarkilar, new SnfRepertuvarComparatorRepertuvar());
 
                         if(snfSarkilar.size() <= 0) {
-                            lblOrtaMesaj.setVisibility(View.VISIBLE);
-                            lblOrtaMesaj.setText(getString(R.string.liste_bos));
+                            btnAra_AnaPanel.setImageResource(R.drawable.ic_ara);
+                            btnAra_AnaPanel.setEnabled(false);
+                            lblMenuSag_OrtaMesaj.setVisibility(View.VISIBLE);
+                            lblMenuSag_OrtaMesaj.setText(getString(R.string.liste_bos));
                             lstSarkiListesi.setVisibility(View.GONE);
                         } else {
-                            lblOrtaMesaj.setVisibility(View.GONE);
+                            btnAra_AnaPanel.setImageResource(R.drawable.ic_ara_siyah);
+                            btnAra_AnaPanel.setEnabled(true);
+                            lblMenuSag_OrtaMesaj.setVisibility(View.GONE);
                             lstSarkiListesi.setVisibility(View.VISIBLE);
 
                             // Elde ettiğimiz snfSarkilar sıfındaki tüm kayıtları AdpSarkiListesiLST ile lstSarkiListesi isimli Listview'a set ediyoruz..
@@ -768,6 +776,18 @@ public class AnaEkran extends AppCompatActivity implements Int_DataConn_AnaEkran
                     }
                     break;
                 case "SarkiGetir":
+                    if (RLSarkiListesi_AramaPanel.getVisibility() == View.VISIBLE) { // Eğer Şarkı Arama Panel açıksa kapatıyoruz..
+                        txtAra_AramaPanel.setText("");
+                        AkorDefterimSys.KlavyeKapat();
+
+                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                            AkorDefterimSys.circleReveal(R.id.RLSarkiListesi_AramaPanel,1, true, false);
+                        } else {
+                            RLSarkiListesi_AnaPanel.setVisibility(View.VISIBLE);
+                            RLSarkiListesi_AramaPanel.setVisibility(View.GONE);
+                        }
+                    }
+
                     SlidingIslem(0); // Sliding kapat
                     AnaEkranProgressIslemDialogKapat();
 

@@ -142,6 +142,7 @@ import android.util.Log;
 import android.util.TypedValue;
 import android.view.Display;
 import android.view.Gravity;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
@@ -149,6 +150,7 @@ import android.view.ViewAnimationUtils;
 import android.view.Window;
 import android.view.WindowManager;
 import android.view.animation.AnimationUtils;
+import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.Button;
@@ -267,7 +269,7 @@ public class AkorDefterimSys {
 
 	// **** GEÇİCİ UYGULAMA VERİLERİ
 	public String prefAction = "";
-	public String prefEklenenSanatciAdiSarkiAdi = "";
+	public String prefEklenenDuzenlenenSanatciAdiSarkiAdi = "";
 
 	public AkorDefterimSys() {}
 
@@ -1107,7 +1109,7 @@ public class AkorDefterimSys {
 	}
 
 	@SuppressLint("InflateParams")
-	public AlertDialog H2Button_TextInput_CustomAlertDialog(final Activity activity, String Baslik, final String txtDialogInputText, String txtDialogInputHint, final View DialogLayoutContent, String Button1MsjText, final String Button1Islem, String Button2MsjText, final String Button2Islem) {
+	public AlertDialog H2Button_TextInput_CustomAlertDialog(final Activity activity, String Baslik, final String txtDialogInputText, final String txtDialogInputHint, final View DialogLayoutContent, String Button1MsjText, final String Button1Islem, String Button2MsjText, final String Button2Islem) {
 		final Interface_AsyncResponse AsyncResponse = (Interface_AsyncResponse) activity;
 		Typeface YaziFontu = FontGetir(activity, "anivers_regular");
 
@@ -1119,9 +1121,39 @@ public class AkorDefterimSys {
 		txtILDialogInput.setTypeface(YaziFontu);
 
 		final EditText txtDialogInput = DialogLayoutContent.findViewById(R.id.txtDialogInput);
-		txtDialogInput.setTypeface(YaziFontu);
+		txtDialogInput.setTypeface(YaziFontu, Typeface.NORMAL);
 		txtDialogInput.setText(txtDialogInputText);
 		txtDialogInput.setHint(txtDialogInputHint);
+		txtDialogInput.setSelection(txtDialogInput.length());
+		txtDialogInput.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+			@Override
+			public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+				if ((event != null && (event.getKeyCode() == KeyEvent.KEYCODE_ENTER)) || (actionId == EditorInfo.IME_ACTION_DONE)) {
+					DialogKlavyeKapat(DialogLayoutContent);
+
+					txtDialogInput.setText(txtDialogInput.getText().toString().trim());
+					String Input = txtDialogInput.getText().toString();
+
+					if(TextUtils.isEmpty(Input)) {
+						txtILDialogInput.setError(activity.getString(R.string.hata_bos_alan));
+						txtDialogInput.requestFocus();
+						txtDialogInput.setSelection(txtDialogInput.length());
+					} else if(!isValid(Input, "SadeceSayiKucukHarfBuyukHarfOzelKarakterBosluklu")) {
+						txtILDialogInput.setError(activity.getString(R.string.hata_format_sadece_sayi_kucukharf_buyukharf_ozel_karakter_bosluklu));
+						txtDialogInput.requestFocus();
+						txtDialogInput.setSelection(txtDialogInput.length());
+					} else txtILDialogInput.setError(null);
+
+					if(txtILDialogInput.getError() == null) {
+						UnFocusEditText(txtDialogInput);
+
+						AsyncResponse.AsyncTaskReturnValue("{\"Islem\":\"" + Button1Islem + "\", \"InputIcerik\":\"" + txtDialogInput.getText().toString() + "\", \"InputEskiIcerik\":\"" + txtDialogInputText + "\"}");
+					}
+				}
+
+				return false;
+			}
+		});
 
 		Button btnDialogButton1 = DialogLayoutContent.findViewById(R.id.btnDialogButton1);
 		btnDialogButton1.setTypeface(YaziFontu, Typeface.BOLD);
@@ -1138,8 +1170,8 @@ public class AkorDefterimSys {
 					txtILDialogInput.setError(activity.getString(R.string.hata_bos_alan));
 					txtDialogInput.requestFocus();
 					txtDialogInput.setSelection(txtDialogInput.length());
-				} else if(!isValid(Input, "SadeceSayiKucukHarfBuyukHarfBosluklu")) {
-					txtILDialogInput.setError(activity.getString(R.string.hata_format_sadece_sayi_kucukharf_buyukharf_bosluklu));
+				} else if(!isValid(Input, "SadeceSayiKucukHarfBuyukHarfOzelKarakterBosluklu")) {
+					txtILDialogInput.setError(activity.getString(R.string.hata_format_sadece_sayi_kucukharf_buyukharf_ozel_karakter_bosluklu));
 					txtDialogInput.requestFocus();
 					txtDialogInput.setSelection(txtDialogInput.length());
 				} else txtILDialogInput.setError(null);
@@ -3071,7 +3103,7 @@ public class AkorDefterimSys {
 			case "SadeceKucukHarfBuyukHarf":
 				return txt.matches("^[a-zığüşöçA-ZĞÜŞIÖÇ]*$");
 			case "SadeceKucukHarfBuyukHarfOzelKarakter":
-				return txt.matches("^[a-zığüşöçA-ZĞÜŞIÖÇ_().,+!*]*$");
+				return txt.matches("^[a-zığüşöçA-ZĞÜŞIÖÇ_().,+!*/\\-]*$");
 			case "SadeceSayi":
 				return txt.matches("^[0-9]*$");
 			case "SadeceSayiKucukHarf":
@@ -3088,7 +3120,7 @@ public class AkorDefterimSys {
 			case "SadeceKucukHarfBuyukHarfBosluklu":
 				return txt.matches("^[a-zığüşöçA-ZĞÜŞIÖÇ ]*$");
 			case "SadeceKucukHarfBuyukHarfOzelKarakterBosluklu":
-				return txt.matches("^[a-zığüşöçA-ZĞÜŞIÖÇ_().,+!* ]*$");
+				return txt.matches("^[a-zığüşöçA-ZĞÜŞIÖÇ_().,+!*/\\- ]*$");
 			case "SadeceSayiBosluklu":
 				return txt.matches("^[0-9 ]*$");
 			case "SadeceSayiKucukHarfBosluklu":
@@ -3098,7 +3130,7 @@ public class AkorDefterimSys {
 			case "SadeceSayiKucukHarfBuyukHarfBosluklu":
 				return txt.matches("^[0-9a-zığüşöçA-ZĞÜŞIÖÇ ]*$");
 			case "SadeceSayiKucukHarfBuyukHarfOzelKarakterBosluklu":
-				return txt.matches("^[0-9a-zığüşöçA-ZĞÜŞIÖÇ_().,+!* ]*$");
+				return txt.matches("^[0-9a-zığüşöçA-ZĞÜŞIÖÇ_().,+!*/\\- ]*$");
 
 			case "SadeceKucukHarfTurkceKaraktersiz":
 				return txt.matches("^[a-z]*$");
@@ -3107,7 +3139,7 @@ public class AkorDefterimSys {
 			case "SadeceKucukHarfBuyukHarfTurkceKaraktersiz":
 				return txt.matches("^[a-zA-Z]*$");
 			case "SadeceKucukHarfBuyukHarfOzelKarakterTurkceKaraktersiz":
-				return txt.matches("^[a-zA-Z_().,+!*]*$");
+				return txt.matches("^[a-zA-Z_().,+!*/\\-]*$");
 			case "SadeceSayiKucukHarfTurkceKaraktersiz":
 				return txt.matches("^[0-9a-z]*$");
 			case "SadeceSayiBuyukHarfTurkceKaraktersiz":
@@ -3115,7 +3147,7 @@ public class AkorDefterimSys {
 			case "SadeceSayiKucukHarfBuyukHarfTurkceKaraktersiz":
 				return txt.matches("^[0-9a-zA-Z]*$");
 			case "SadeceSayiKucukHarfBuyukHarfOzelKarakterTurkceKaraktersiz":
-				return txt.matches("^[0-9a-zA-Z_().,+!*]*$");
+				return txt.matches("^[0-9a-zA-Z_().,+!*/\\-]*$");
 
 			case "SadeceKucukHarfTurkceKaraktersizBosluklu":
 				return txt.matches("^[a-z ]*$");
@@ -3124,7 +3156,7 @@ public class AkorDefterimSys {
 			case "SadeceKucukHarfBuyukHarfTurkceKaraktersizBosluklu":
 				return txt.matches("^[a-zA-Z ]*$");
 			case "SadeceKucukHarfBuyukHarfOzelKarakterTurkceKaraktersizBosluklu":
-				return txt.matches("^[a-zA-Z_().,+!* ]*$");
+				return txt.matches("^[a-zA-Z_().,+!*/\\- ]*$");
 			case "SadeceSayiKucukHarfTurkceKaraktersizBosluklu":
 				return txt.matches("^[0-9a-z ]*$");
 			case "SadeceSayiBuyukHarfTurkceKaraktersizBosluklu":
@@ -3132,7 +3164,7 @@ public class AkorDefterimSys {
 			case "SadeceSayiKucukHarfBuyukHarfTurkceKaraktersizBosluklu":
 				return txt.matches("^[0-9a-zA-Z ]*$");
 			case "SadeceSayiKucukHarfBuyukHarfOzelKarakterTurkceKaraktersizBosluklu":
-				return txt.matches("^[0-9a-zA-Z_().,+!* ]*$");
+				return txt.matches("^[0-9a-zA-Z_().,+!*/\\- ]*$");
 
 			case "Sifre":
 				return txt.matches("^(?=.*[0-9])(?=.*[a-zığüşöç])(?=.*[A-ZĞÜŞIÖÇ]).{1,}$");

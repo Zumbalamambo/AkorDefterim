@@ -413,7 +413,7 @@
     <string name="hata_format_sadece_sayi">Yalnızca sayı kullanabilirsin.</string>
     <string name="hata_format_sadece_sayi_kucukharf">Yalnızca sayı ve küçük harf (Türkçe hariç) kullanabilirsin.</string>
     <string name="hata_format_sadece_sayi_kucukharf_buyukharf_bosluklu">Yalnızca sayı, küçük ve büyük harf kullanabilirsin.</string>
-    <string name="hata_format_sadece_sayi_kucukharf_buyukharf_ozel_karakter_bosluklu">Yalnızca sayı, küçük, büyük harf ve (_().,+!*) özel karakterlerini kullanabilirsin.</string>
+    <string name="hata_format_sadece_sayi_kucukharf_buyukharf_ozel_karakter_bosluklu">Yalnızca sayı, küçük, büyük harf ve (_().,+!*/-) özel karakterlerini kullanabilirsin.</string>
     <string name="hata_format_bastaki_karakterler_harf_olmak_zorunda">Baştaki %s karakter harf olmak zorunda.</string>
     <string name="hata_format_eposta">Lütfen geçerli bir E-Posta adresi gir.</string>
     <string name="hata_hesap_durum">&lt;b&gt;%1$s&lt;/b&gt;&lt;br&gt;E-Posta adresine kayıtlı hesap&lt;b&gt;%2$s&lt;/b&gt; mevcut.&lt;br&gt;&lt;br&gt;Giriş yap ya da farklı bir E-Posta adresi dene.</string>
@@ -513,6 +513,17 @@
     <string name="hesabini_bul_ceptelefon_onay_hata">Hesaba ait cep telefonu onaylı görünmüyor. Diğer yardım seçeneklerini dene.</string>
     <string name="geri_bildirim_gonderilemedi">Geri bildirim gönderilemedi.</string>
 
+    <!-- Liste Yönetimi -->
+    <string name="liste">Liste</string>
+    <string name="listeler">Liste(ler)</string>
+    <string name="liste_yonetimi">Liste Yönetimi</string>
+    <string name="liste_eklendi" tools:ignore="Typos">\"%s\" isimli liste eklendi.</string>
+    <string name="liste_eklenemedi_hata1" tools:ignore="Typos">\"%s\" isimli liste bulunmaktadır. Farklı bir isim dene.</string>
+    <string name="liste_duzenlendi" tools:ignore="Typos">\"%1$s\" isimli liste, \"%2$s\" olarak düzenlendi.</string>
+    <string name="liste_sil_soru">&lt;b&gt;%s&lt;/b&gt; isimli listeyi silmek istiyor musun?</string>
+    <string name="liste_silindi" tools:ignore="Typos">\"%s\" isimli liste silindi.</string>
+    <string name="liste_silinemedi_hata1" tools:ignore="Typos">\"%s\" isimli listeye ait şarkı bulunmaktadır.</string>
+
     <!-- Kategori Yönetimi -->
     <string name="kategori">Kategori</string>
     <string name="kategoriler">Kategori(ler)</string>
@@ -535,23 +546,12 @@
     <string name="tarz_silindi" tools:ignore="Typos">\"%s\" isimli tarz silindi.</string>
     <string name="tarz_silinemedi_hata1" tools:ignore="Typos">\"%s\" isimli tarza ait şarkı bulunmaktadır.</string>
 
-    <!-- Liste Yönetimi -->
-    <string name="liste">Liste</string>
-    <string name="listeler">Liste(ler)</string>
-    <string name="liste_yonetimi">Liste Yönetimi</string>
-    <string name="liste_eklendi" tools:ignore="Typos">\"%s\" isimli liste eklendi.</string>
-    <string name="liste_eklenemedi_hata1" tools:ignore="Typos">\"%s\" isimli liste bulunmaktadır. Farklı bir isim dene.</string>
-    <string name="liste_duzenlendi" tools:ignore="Typos">\"%1$s\" isimli liste, \"%2$s\" olarak düzenlendi.</string>
-    <string name="liste_sil_soru">&lt;b&gt;%s&lt;/b&gt; isimli listeyi silmek istiyor musun?</string>
-    <string name="liste_silindi" tools:ignore="Typos">\"%s\" isimli liste silindi.</string>
-    <string name="liste_silinemedi_hata1" tools:ignore="Typos">\"%s\" isimli listeye ait şarkı bulunmaktadır.</string>
-
     <!-- Şarkı Yönetimi -->
     <string name="sarki">Şarkı</string>
     <string name="sarkilar">Şarkı(lar)</string>
     <string name="sarki_yonetimi">Şarkı Yönetimi</string>
     <string name="sarki_eklendi" tools:ignore="Typos">\"%s\" isimli şarkı eklendi.</string>
-    <string name="sarki_duzenlendi" tools:ignore="Typos">Şarkı düzenlendi.</string>
+    <string name="sarki_duzenlendi" tools:ignore="Typos">\"%s\" isimli şarkı düzenlendi.</string>
     <string name="sarki_sil_soru">&lt;b&gt;%1$s - %2$s&lt;/b&gt; isimli şarkıyı silmek istiyor musun?</string>
     <string name="sarki_silindi">\"%1$s - %2$s\" isimli şarkı silindi.</string>
     <string name="sarki_bulunamadi">\"%1$s - %2$s\" isimli şarkı bulunamadı.</string>
