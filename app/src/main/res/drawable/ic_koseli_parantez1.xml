@@ -1,0 +1,15 @@
+<!-- drawable/lightbulb_on.xml -->
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:height="24dp"
+    android:width="24dp"
+    android:viewportWidth="24"
+    android:viewportHeight="24">
+    <group
+        android:translateX="7"
+        android:translateY="17">
+
+        <path
+            android:fillColor="@color/OrtaGri"
+            android:pathData="M1.4008314 4.1017149l0 -18.8759509 4.0009356 0 0 1.501611 -2.1869094 0 0 15.8727293 2.1869094 0 0 1.5016106 -4.0009356 0z" />
+    </group>
+</vector>

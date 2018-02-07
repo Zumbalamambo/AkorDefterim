@@ -2318,7 +2318,7 @@ public class AkorDefterimSys {
 		});
 	}
 
-	public void GeriBildirimEkle(String mHesapID, String mBildirimTipi, String mIcerik, String mIPAdres, String mYenidenGeriBildirimGondermeSuresi, final String mIslem) {
+	public void GeriBildirimEkle(String mYenidenGeriBildirimGondermeSuresi, String mHesapID, String mBildirimTipi, String mIcerik, String mIPAdres, final String mIslem) {
 		RetrofitInterface retrofitInterface = RetrofitServiceGenerator.createService(activity, RetrofitInterface.class);
 		final Interface_AsyncResponse AsyncResponse = (Interface_AsyncResponse) activity;
 
@@ -2399,30 +2399,29 @@ public class AkorDefterimSys {
 					if(response.isSuccessful()) {
 						SnfSarkiListesiGetir snfSarkiListesiGetir = response.body();
 
-						AsyncResponse.AsyncTaskReturnValue("{\"Islem\":\"SarkiListesiGetir\", \"Sonuc\":true, \"ListeID\":\"" + mListeID + "\",  \"ListelemeTipi\":\"" + mListelemeTipi + "\", \"SarkiListesi\":" + snfSarkiListesiGetir.getSarkiListesi() + "}");
-					} else AsyncResponse.AsyncTaskReturnValue("{\"Islem\":\"SarkiListesiGetir\", \"Sonuc\":false}");
+						AsyncResponse.AsyncTaskReturnValue("{\"Islem\":\"SarkiListesiGetir\", \"Sonuc\":true, \"ListeID\":" + mListeID + ", \"ListelemeTipi\":" + mListelemeTipi + ", \"SarkiListesi\":" + snfSarkiListesiGetir.getSarkiListesi() + "}");
+					} else AsyncResponse.AsyncTaskReturnValue("{\"Islem\":\"SarkiListesiGetir\", \"Sonuc\":false, \"ListeID\":" + mListeID + ", \"ListelemeTipi\":" + mListelemeTipi + ", \"SarkiListesi\":\"[]\"}");
 				}
 
 				@Override
 				public void onFailure(Call<SnfSarkiListesiGetir> call, Throwable t) {
-					AsyncResponse.AsyncTaskReturnValue("{\"Islem\":\"SarkiListesiGetir\", \"Sonuc\":false}");
+					AsyncResponse.AsyncTaskReturnValue("{\"Islem\":\"SarkiListesiGetir\", \"Sonuc\":false, \"ListeID\":" + mListeID + ", \"ListelemeTipi\":" + mListelemeTipi + ", \"SarkiListesi\":\"[]\"}");
 				}
 			});
 		} else {
 			List<SnfSarkilar> snfSarkilar = veritabani.SnfSarkiGetir(Integer.parseInt(mListeID), Integer.parseInt(mKategoriID), Integer.parseInt(mTarzID), Integer.parseInt(mListelemeTipi));
 
 			if(snfSarkilar.size() > 0) {
-				JSONObject JSONSarki = new JSONObject();
 				JSONArray JSONArrSarkilar = new JSONArray();
 
 				for(int i = 0; i < snfSarkilar.size(); i++) {
 					try {
+						JSONObject JSONSarki = new JSONObject();
 						JSONSarki.put("id", snfSarkilar.get(i).getId());
 						JSONSarki.put("TarzID", snfSarkilar.get(i).getTarzID());
 						JSONSarki.put("KategoriID", snfSarkilar.get(i).getKategoriID());
 						JSONSarki.put("SanatciAdi", snfSarkilar.get(i).getSanatciAdi());
 						JSONSarki.put("SarkiAdi", snfSarkilar.get(i).getSarkiAdi());
-
 						JSONArrSarkilar.put(JSONSarki);
 					} catch (JSONException e) {
 						// TODO Auto-generated catch block
@@ -2430,8 +2429,8 @@ public class AkorDefterimSys {
 					}
 				}
 
-				AsyncResponse.AsyncTaskReturnValue("{\"Islem\":\"SarkiListesiGetir\", \"Sonuc\":true, \"ListeID\":\"" + mListeID + "\",  \"ListelemeTipi\":\"" + mListelemeTipi + "\", \"SarkiListesi\":" + JSONArrSarkilar.toString() + "}");
-			} else AsyncResponse.AsyncTaskReturnValue("{\"Islem\":\"SarkiListesiGetir\", \"Sonuc\":false}");
+				AsyncResponse.AsyncTaskReturnValue("{\"Islem\":\"SarkiListesiGetir\", \"Sonuc\":true, \"ListeID\":" + mListeID + ", \"ListelemeTipi\":" + mListelemeTipi + ", \"SarkiListesi\":" + JSONArrSarkilar.toString() + "}");
+			} else AsyncResponse.AsyncTaskReturnValue("{\"Islem\":\"SarkiListesiGetir\", \"Sonuc\":false, \"ListeID\":" + mListeID + ", \"ListelemeTipi\":" + mListelemeTipi + ", \"SarkiListesi\":\"[]\"}");
 		}
 	}
 
@@ -2466,7 +2465,30 @@ public class AkorDefterimSys {
 		}
 	}
 
+	public void SarkiGonder(String mSanatciAdi, String mSarkiAdi, String mIcerik, String mEkleyenID) {
+		RetrofitInterface retrofitInterface = RetrofitServiceGenerator.createService(activity, RetrofitInterface.class);
+		final Interface_AsyncResponse AsyncResponse = (Interface_AsyncResponse) activity;
 
+		Call<SnfIslemSonuc> snfIslemSonucCall = retrofitInterface.SarkiGonder(mSanatciAdi, mSarkiAdi, mIcerik, mEkleyenID);
+		snfIslemSonucCall.enqueue(new Callback<SnfIslemSonuc>() {
+			@Override
+			public void onResponse(Call<SnfIslemSonuc> call, Response<SnfIslemSonuc> response) {
+				if(response.isSuccessful()) {
+					SnfIslemSonuc snfIslemSonuc = response.body();
+
+					// getHata'nin false olması durumu hata yok demektir..
+					if(!snfIslemSonuc.getHata())
+						AsyncResponse.AsyncTaskReturnValue("{\"Islem\":\"SarkiGonder\", \"Sonuc\":" + snfIslemSonuc.getSonuc() + "}");
+					else AsyncResponse.AsyncTaskReturnValue("{\"Islem\":\"SarkiGonder\", \"Sonuc\":false}");
+				} else AsyncResponse.AsyncTaskReturnValue("{\"Islem\":\"SarkiGonder\", \"Sonuc\":false}");
+			}
+
+			@Override
+			public void onFailure(Call<SnfIslemSonuc> call, Throwable t) {
+				AsyncResponse.AsyncTaskReturnValue("{\"Islem\":\"SarkiGonder\", \"Sonuc\":false}");
+			}
+		});
+	}
 
 
 
@@ -6075,7 +6097,7 @@ public class AkorDefterimSys {
 			public void onAnimationEnd(Animator animation) {
 				if(!isShow) {
 					super.onAnimationEnd(animation);
-					myView.setVisibility(View.INVISIBLE);
+					myView.setVisibility(View.GONE);
 				}
 			}
 		});
@@ -6207,5 +6229,40 @@ public class AkorDefterimSys {
 				.replace("&#199;", "Ç");
 
 		return Icerik;
+	}
+
+	public void AramaPanelAc(int AnaPanelView, int AramaPanelView, EditText txtAra_AramaPanel, InputMethodManager imm) {
+		View AnaPanel = activity.findViewById(AnaPanelView);
+		View AramaPanel = activity.findViewById(AramaPanelView);
+
+		if (AramaPanel.getVisibility() == View.GONE) { // Eğer Arama Panel kapalıysa açıyoruz..
+			txtAra_AramaPanel.setText("");
+			txtAra_AramaPanel.requestFocus();
+			imm.showSoftInput(txtAra_AramaPanel, 0);
+
+			if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+				circleReveal(AramaPanelView,1, true, true);
+			} else {
+				AnaPanel.setVisibility(View.GONE);
+				AramaPanel.setVisibility(View.VISIBLE);
+			}
+		}
+	}
+
+	public void AramaPanelKapat(int AnaPanelView, int AramaPanelView, EditText txtAra_AramaPanel, InputMethodManager imm) {
+		View AnaPanel = activity.findViewById(AnaPanelView);
+		View AramaPanel = activity.findViewById(AramaPanelView);
+
+		if (AramaPanel.getVisibility() == View.VISIBLE) { // Eğer Arama Panel açıksa kapatıyoruz..
+			txtAra_AramaPanel.setText("");
+			KlavyeKapat();
+
+			if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+				circleReveal(AramaPanelView,1, true, false);
+			} else {
+				AnaPanel.setVisibility(View.VISIBLE);
+				AramaPanel.setVisibility(View.GONE);
+			}
+		}
 	}
 }

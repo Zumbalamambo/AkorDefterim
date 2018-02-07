@@ -53,7 +53,7 @@ public class AdpSarkiListesiLST2 extends BaseAdapter implements SectionIndexer {
 				case 0:
 					for (int i = 0; i < snfSarkilar.size(); i++) {
 						String item = snfSarkilar.get(i).getSanatciAdi();
-						String index = item.substring(0, 1);
+						String index = item.substring(0, 1).toUpperCase();
 
 						if (mSections.indexOf(index) == -1)
 							mSections.append(index);
@@ -62,7 +62,7 @@ public class AdpSarkiListesiLST2 extends BaseAdapter implements SectionIndexer {
 				case 1:
 					for (int i = 0; i < snfSarkilar.size(); i++) {
 						String item = snfSarkilar.get(i).getSarkiAdi();
-						String index = item.substring(0, 1);
+						String index = item.substring(0, 1).toUpperCase();
 
 						if (mSections.indexOf(index) == -1)
 							mSections.append(index);
@@ -71,7 +71,7 @@ public class AdpSarkiListesiLST2 extends BaseAdapter implements SectionIndexer {
 				default:
 					for (int i = 0; i < snfSarkilar.size(); i++) {
 						String item = snfSarkilar.get(i).getSanatciAdi();
-						String index = item.substring(0, 1);
+						String index = item.substring(0, 1).toUpperCase();
 
 						if (mSections.indexOf(index) == -1)
 							mSections.append(index);

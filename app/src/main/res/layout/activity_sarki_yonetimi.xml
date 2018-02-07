@@ -215,6 +215,22 @@
 				android:layout_marginTop="8dp"
 				android:background="@drawable/custom_spinner" />
 
+			<TextView
+				android:id="@+id/lblListelemeTipi"
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				android:layout_marginTop="16dp"
+				android:text="@string/listelemetipi"
+				android:textColor="@color/Beyaz"
+				style="@style/TextAppearance.AppCompat.Small.Inverse" />
+
+			<Spinner
+				android:id="@+id/spnListelemeTipi"
+				android:layout_width="match_parent"
+				android:layout_height="wrap_content"
+				android:layout_marginTop="8dp"
+				android:background="@drawable/custom_spinner" />
+
 			<Button
 				android:id="@+id/btnListele"
 				android:layout_width="wrap_content"

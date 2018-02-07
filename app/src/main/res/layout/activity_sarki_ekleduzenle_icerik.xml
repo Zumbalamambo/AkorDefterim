@@ -173,6 +173,22 @@
 						android:contentDescription="@string/imageDesc" />
 
 					<ImageButton
+						android:id="@+id/btnEditor_KoseliParantez1"
+						android:layout_width="40dp"
+						android:layout_height="match_parent"
+						android:background="@drawable/custom_button3"
+						app:srcCompat="@drawable/ic_koseli_parantez1_siyah"
+						android:contentDescription="@string/imageDesc" />
+
+					<ImageButton
+						android:id="@+id/btnEditor_KoseliParantez2"
+						android:layout_width="40dp"
+						android:layout_height="match_parent"
+						android:background="@drawable/custom_button3"
+						app:srcCompat="@drawable/ic_koseli_parantez2_siyah"
+						android:contentDescription="@string/imageDesc" />
+
+					<ImageButton
 						android:id="@+id/btnEditor_Geri"
 						android:layout_width="40dp"
 						android:layout_height="match_parent"

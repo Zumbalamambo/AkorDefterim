@@ -5,7 +5,6 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.graphics.Typeface;
-import android.os.Build;
 import android.os.Bundle;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.v7.app.AppCompatActivity;
@@ -173,7 +172,6 @@ public class Liste_Yonetimi extends AppCompatActivity implements Interface_Async
                 }
 
                 AkorDefterimSys.KlavyeKapat();
-                AramaPanelKapat();
                 openContextMenu(lstListeYonetimi);
             }
         });
@@ -190,7 +188,6 @@ public class Liste_Yonetimi extends AppCompatActivity implements Interface_Async
                 }
 
                 AkorDefterimSys.KlavyeKapat();
-                AramaPanelKapat();
                 openContextMenu(lstListeYonetimi);
 
                 return true;
@@ -217,7 +214,7 @@ public class Liste_Yonetimi extends AppCompatActivity implements Interface_Async
 
     @Override
     public void onBackPressed() {
-        if (RLListeYonetimi_AramaPanel.getVisibility() == View.VISIBLE) AramaPanelKapat();
+        if (RLListeYonetimi_AramaPanel.getVisibility() == View.VISIBLE) AkorDefterimSys.AramaPanelKapat(RLListeYonetimi_AnaPanel.getId(),RLListeYonetimi_AramaPanel.getId(),txtAra_AramaPanel, imm);
         else {
             AkorDefterimSys.KlavyeKapat();
             AkorDefterimSys.DismissAlertDialog(ADDialog);
@@ -239,13 +236,13 @@ public class Liste_Yonetimi extends AppCompatActivity implements Interface_Async
 				onBackPressed();
 				break;
             case R.id.btnAra_AnaPanel:
-                AramaPanelAc();
+                AkorDefterimSys.AramaPanelAc(RLListeYonetimi_AnaPanel.getId(),RLListeYonetimi_AramaPanel.getId(),txtAra_AramaPanel, imm);
                 break;
             case R.id.btnGeri_AramaPanel:
-                AramaPanelKapat();
+                AkorDefterimSys.AramaPanelKapat(RLListeYonetimi_AnaPanel.getId(),RLListeYonetimi_AramaPanel.getId(),txtAra_AramaPanel, imm);
                 break;
             case R.id.FABListeEkle:
-                AramaPanelKapat();
+                AkorDefterimSys.AramaPanelKapat(RLListeYonetimi_AnaPanel.getId(),RLListeYonetimi_AramaPanel.getId(),txtAra_AramaPanel, imm);
 
                 if(!AkorDefterimSys.AlertDialogisShowing(ADDialog)) {
                     ViewDialogContent = inflater.inflate(R.layout.dialog_text_input, null);
@@ -329,7 +326,7 @@ public class Liste_Yonetimi extends AppCompatActivity implements Interface_Async
                 case "ADDialog_ListeEkle":
                     if(!veritabani.ListeVarmiKontrol(JSONSonuc.getString("InputIcerik"))) {
                         if(veritabani.ListeEkle(JSONSonuc.getString("InputIcerik"))) {
-                            AramaPanelKapat();
+                            AkorDefterimSys.AramaPanelKapat(RLListeYonetimi_AnaPanel.getId(),RLListeYonetimi_AramaPanel.getId(),txtAra_AramaPanel, imm);
                             ListeGetir();
                             AkorDefterimSys.StandartSnackBarMsj(coordinatorLayout, getString(R.string.liste_eklendi, JSONSonuc.getString("InputIcerik")));
                             ADDialog.dismiss();
@@ -345,7 +342,7 @@ public class Liste_Yonetimi extends AppCompatActivity implements Interface_Async
                 case "ADDialog_ListeDuzenle":
                     if(!veritabani.ListeVarmiKontrol(JSONSonuc.getString("InputIcerik"))) {
                         if(veritabani.ListeDuzenle(SecilenListeID, JSONSonuc.getString("InputIcerik"))) {
-                            AramaPanelKapat();
+                            AkorDefterimSys.AramaPanelKapat(RLListeYonetimi_AnaPanel.getId(),RLListeYonetimi_AramaPanel.getId(),txtAra_AramaPanel, imm);
                             ListeGetir();
                             AkorDefterimSys.StandartSnackBarMsj(coordinatorLayout, getString(R.string.liste_duzenlendi, JSONSonuc.getString("InputEskiIcerik"), JSONSonuc.getString("InputIcerik")));
                             ADDialog.dismiss();
@@ -358,7 +355,7 @@ public class Liste_Yonetimi extends AppCompatActivity implements Interface_Async
                 case "ADDialog_ListeSil":
                     if(!veritabani.ListeyeAitSarkiVarmiKontrol(SecilenListeID)) {
                         if(veritabani.ListeSil(SecilenListeID)) {
-                            AramaPanelKapat();
+                            AkorDefterimSys.AramaPanelKapat(RLListeYonetimi_AnaPanel.getId(),RLListeYonetimi_AramaPanel.getId(),txtAra_AramaPanel, imm);
                             ListeGetir();
                             AkorDefterimSys.StandartSnackBarMsj(coordinatorLayout, getString(R.string.liste_silindi, SecilenListeAdi));
                             ADDialog.dismiss();
@@ -410,28 +407,6 @@ public class Liste_Yonetimi extends AppCompatActivity implements Interface_Async
 
             lstListeYonetimi.setFastScrollEnabled(snfListeler.size() > 25);
             lstListeYonetimi.setAdapter(adpListelerLST);
-        }
-    }
-
-    private void AramaPanelAc() {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            AkorDefterimSys.circleReveal(R.id.RLListeYonetimi_AramaPanel,1, true, true);
-        }
-
-        txtAra_AramaPanel.setText("");
-        txtAra_AramaPanel.requestFocus();
-        imm.showSoftInput(txtAra_AramaPanel, 0);
-    }
-
-    private void AramaPanelKapat() {
-        txtAra_AramaPanel.setText("");
-        AkorDefterimSys.KlavyeKapat();
-
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            AkorDefterimSys.circleReveal(R.id.RLListeYonetimi_AramaPanel,1, true, false);
-        } else {
-            RLListeYonetimi_AnaPanel.setVisibility(View.VISIBLE);
-            RLListeYonetimi_AramaPanel.setVisibility(View.GONE);
         }
     }
 }

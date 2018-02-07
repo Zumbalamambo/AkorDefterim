@@ -6,7 +6,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Typeface;
-import android.os.Build;
 import android.os.Bundle;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.v7.app.AppCompatActivity;
@@ -28,6 +27,7 @@ import android.widget.Spinner;
 import android.widget.TextView;
 
 import com.cnbcyln.app.akordefterim.Adaptorler.AdpKategori;
+import com.cnbcyln.app.akordefterim.Adaptorler.AdpListelemeTipi;
 import com.cnbcyln.app.akordefterim.Adaptorler.AdpListelerSPN;
 import com.cnbcyln.app.akordefterim.Adaptorler.AdpSarkiListesiLST2;
 import com.cnbcyln.app.akordefterim.Adaptorler.AdpTarz;
@@ -35,6 +35,7 @@ import com.cnbcyln.app.akordefterim.FastScrollListview.FastScroller_Listview;
 import com.cnbcyln.app.akordefterim.Interface.Int_DataConn_SarkiYonetimi;
 import com.cnbcyln.app.akordefterim.Interface.Interface_AsyncResponse;
 import com.cnbcyln.app.akordefterim.Siniflar.SnfKategoriler;
+import com.cnbcyln.app.akordefterim.Siniflar.SnfListelemeTipi;
 import com.cnbcyln.app.akordefterim.Siniflar.SnfListeler;
 import com.cnbcyln.app.akordefterim.Siniflar.SnfSarkilar;
 import com.cnbcyln.app.akordefterim.Siniflar.SnfTarzlar;
@@ -45,8 +46,12 @@ import com.github.clans.fab.FloatingActionButton;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.text.Collator;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
+import java.util.Locale;
 
 @SuppressWarnings("ALL")
 public class Sarki_Yonetimi extends AppCompatActivity implements Interface_AsyncResponse, Int_DataConn_SarkiYonetimi, OnClickListener {
@@ -67,8 +72,8 @@ public class Sarki_Yonetimi extends AppCompatActivity implements Interface_Async
 	ImageButton btnGeri_AnaPanel, btnFiltre_AnaPanel, btnAra_AnaPanel, btnGeri_AramaPanel;
 	Button btnListele;
 	FastScroller_Listview lstSarkiYonetimi;
-	TextView lblBaslik_AnaPanel, lblOrtaMesaj, lblFiltre, lblListeler, lblKategoriler, lblTarzlar;
-	Spinner spnListeler, spnKategoriler, spnTarzlar;
+	TextView lblBaslik_AnaPanel, lblOrtaMesaj, lblFiltre, lblListeler, lblKategoriler, lblTarzlar, lblListelemeTipi;
+	Spinner spnListeler, spnKategoriler, spnTarzlar, spnListelemeTipi;
     EditText txtAra_AramaPanel;
     FloatingActionButton FABSarkiEkle;
 
@@ -77,6 +82,7 @@ public class Sarki_Yonetimi extends AppCompatActivity implements Interface_Async
     private List<SnfListeler> snfListeler;
     private List<SnfKategoriler> snfKategoriler;
     private List<SnfTarzlar> snfTarzlar;
+    private List<SnfListelemeTipi> snfListelemeTipi;
 
     int SecilenListeID = 0, SecilenKategoriID = 0, SecilenTarzID = 0, SecilenListelemeTipi = 0, SecilenSarkiID = 0;
     String SecilenSanatciAdi = "", SecilenSarkiAdi = "";
@@ -176,7 +182,7 @@ public class Sarki_Yonetimi extends AppCompatActivity implements Interface_Async
                         // Eğer kayıt sayısı 25'ten fazla ise FastScroll'u aktif et
                         AdpSarkiListesiLST2 adpSarkiListesiLST2 = new AdpSarkiListesiLST2(activity, snfSarkilarTemp, snfSarkilarTemp.size() > 25, SecilenListelemeTipi);
 
-                        lstSarkiYonetimi.setFastScrollEnabled(snfSarkilarTemp.size() > 25);
+                        lstSarkiYonetimi.setFastScrollEnabled(snfSarkilarTemp.size() > 10);
                         lstSarkiYonetimi.setAdapter(adpSarkiListesiLST2);
                     }
                 }
@@ -212,7 +218,6 @@ public class Sarki_Yonetimi extends AppCompatActivity implements Interface_Async
                 }
 
                 AkorDefterimSys.KlavyeKapat();
-                AramaPanelKapat();
                 FiltreMenuKapat();
                 openContextMenu(lstSarkiYonetimi);
             }
@@ -232,7 +237,6 @@ public class Sarki_Yonetimi extends AppCompatActivity implements Interface_Async
                 }
 
                 AkorDefterimSys.KlavyeKapat();
-                AramaPanelKapat();
                 FiltreMenuKapat();
                 openContextMenu(lstSarkiYonetimi);
 
@@ -299,6 +303,21 @@ public class Sarki_Yonetimi extends AppCompatActivity implements Interface_Async
             }
         });
 
+        lblListelemeTipi = findViewById(R.id.lblListelemeTipi);
+        lblListelemeTipi.setTypeface(YaziFontu, Typeface.BOLD);
+
+        spnListelemeTipi = findViewById(R.id.spnListelemeTipi);
+        spnListelemeTipi.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                SecilenListelemeTipi = position;
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+            }
+        });
+
         btnListele = findViewById(R.id.btnListele);
         btnListele.setTypeface(YaziFontu, Typeface.NORMAL);
         btnListele.setOnClickListener(this);
@@ -318,17 +337,44 @@ public class Sarki_Yonetimi extends AppCompatActivity implements Interface_Async
             AkorDefterimSys.StandartSnackBarMsj(coordinatorLayout, getString(R.string.sarki_duzenlendi, AkorDefterimSys.prefEklenenDuzenlenenSanatciAdiSarkiAdi));
             AkorDefterimSys.prefAction = "";
             AkorDefterimSys.prefEklenenDuzenlenenSanatciAdiSarkiAdi = "";
+        } else if(AkorDefterimSys.prefAction.equals("Şarkı eklendi ve gönderildi")) {
+            if(!AkorDefterimSys.AlertDialogisShowing(ADDialog)) {
+                ADDialog = AkorDefterimSys.CustomAlertDialog(activity,
+                        getString(R.string.sarki_yonetimi),
+                        getString(R.string.sarki_eklendi_gonderildi, AkorDefterimSys.prefEklenenDuzenlenenSanatciAdiSarkiAdi, getString(R.string.uygulama_adi)),
+                        getString(R.string.tamam),
+                        "ADDialog_Kapat");
+                ADDialog.getWindow().getAttributes().windowAnimations = R.style.DialogAnimation;
+                ADDialog.show();
+            }
+
+            AkorDefterimSys.prefAction = "";
+            AkorDefterimSys.prefEklenenDuzenlenenSanatciAdiSarkiAdi = "";
+        } else if(AkorDefterimSys.prefAction.equals("Şarkı eklendi ama gönderilemedi")) {
+            if(!AkorDefterimSys.AlertDialogisShowing(ADDialog)) {
+                ADDialog = AkorDefterimSys.CustomAlertDialog(activity,
+                        getString(R.string.sarki_yonetimi),
+                        getString(R.string.sarki_eklendi_gonderilemedi, AkorDefterimSys.prefEklenenDuzenlenenSanatciAdiSarkiAdi),
+                        getString(R.string.tamam),
+                        "ADDialog_Kapat");
+                ADDialog.getWindow().getAttributes().windowAnimations = R.style.DialogAnimation;
+                ADDialog.show();
+            }
+
+            AkorDefterimSys.prefAction = "";
+            AkorDefterimSys.prefEklenenDuzenlenenSanatciAdiSarkiAdi = "";
         }
 
         spnListeGetir();
         spnKategoriGetir();
         spnTarzGetir();
+        spnListelemeTipiGetir();
         SarkiListesiGetir();
     }
 
     @Override
     public void onBackPressed() {
-        if (RLSarkiYonetimi_AramaPanel.getVisibility() == View.VISIBLE) AramaPanelKapat();
+        if (RLSarkiYonetimi_AramaPanel.getVisibility() == View.VISIBLE) AkorDefterimSys.AramaPanelKapat(RLSarkiYonetimi_AnaPanel.getId(),RLSarkiYonetimi_AramaPanel.getId(),txtAra_AramaPanel, imm);
         else if(FiltreMenuAcikMi) FiltreMenuKapat();
         else {
             AkorDefterimSys.KlavyeKapat();
@@ -365,15 +411,15 @@ public class Sarki_Yonetimi extends AppCompatActivity implements Interface_Async
                 break;
             case R.id.btnAra_AnaPanel:
                 FiltreMenuKapat();
-                AramaPanelAc();
+                AkorDefterimSys.AramaPanelAc(RLSarkiYonetimi_AnaPanel.getId(),RLSarkiYonetimi_AramaPanel.getId(),txtAra_AramaPanel, imm);
                 break;
             case R.id.btnGeri_AramaPanel:
                 FiltreMenuKapat();
-                AramaPanelKapat();
+                AkorDefterimSys.AramaPanelKapat(RLSarkiYonetimi_AnaPanel.getId(),RLSarkiYonetimi_AramaPanel.getId(),txtAra_AramaPanel, imm);
                 break;
             case R.id.FABSarkiEkle:
                 FiltreMenuKapat();
-                AramaPanelKapat();
+                AkorDefterimSys.AramaPanelKapat(RLSarkiYonetimi_AnaPanel.getId(),RLSarkiYonetimi_AramaPanel.getId(),txtAra_AramaPanel, imm);
 
                 Intent mIntent = new Intent(activity, Sarki_EkleDuzenle.class);
                 mIntent.putExtra("Islem", "YeniSarkiEkle");
@@ -417,7 +463,7 @@ public class Sarki_Yonetimi extends AppCompatActivity implements Interface_Async
                         }
                         break;
                     case 1:
-                        AramaPanelKapat();
+                        AkorDefterimSys.AramaPanelKapat(RLSarkiYonetimi_AnaPanel.getId(),RLSarkiYonetimi_AramaPanel.getId(),txtAra_AramaPanel, imm);
 
                         Intent mIntent = new Intent(activity, Sarki_EkleDuzenle.class);
                         mIntent.putExtra("Islem", "SarkiDuzenle");
@@ -446,12 +492,8 @@ public class Sarki_Yonetimi extends AppCompatActivity implements Interface_Async
             JSONObject JSONSonuc = new JSONObject(sonuc);
 
             switch (JSONSonuc.getString("Islem")) {
-                case "ADDialog_SarkiDuzenle":
-
-                    ADDialog.dismiss();
-                    break;
                 case "ADDialog_SarkiSil":
-                    AramaPanelKapat();
+                    AkorDefterimSys.AramaPanelKapat(RLSarkiYonetimi_AnaPanel.getId(),RLSarkiYonetimi_AramaPanel.getId(),txtAra_AramaPanel, imm);
 
                     if(veritabani.SarkiVarMiKontrol(SecilenSarkiID)) {
                         if(veritabani.SarkiSil(SecilenSarkiID))
@@ -479,6 +521,22 @@ public class Sarki_Yonetimi extends AppCompatActivity implements Interface_Async
         }
     }
 
+    private class SnfRepertuvarComparatorRepertuvar implements Comparator<SnfSarkilar> {
+        @Override
+        public int compare(SnfSarkilar Sarkilar1, SnfSarkilar Sarkilar2) {
+            Collator collator = Collator.getInstance(Locale.getDefault()); // veya Collator trCollator = Collator.getInstance(new Locale("tr", "TR"));
+
+            switch (SecilenListelemeTipi) {
+                case 0:
+                    return collator.compare(Sarkilar1.getSanatciAdi(), Sarkilar2.getSanatciAdi());
+                case 1:
+                    return collator.compare(Sarkilar1.getSarkiAdi(), Sarkilar2.getSarkiAdi());
+            }
+
+            return 0;
+        }
+    }
+
     private void spnListeGetir() {
         snfListeler = veritabani.SnfListeGetir("Cevrimdisi", true);
         AdpListelerSPN AdpListelerSPN = new AdpListelerSPN(activity, snfListeler);
@@ -497,6 +555,19 @@ public class Sarki_Yonetimi extends AppCompatActivity implements Interface_Async
         spnTarzlar.setAdapter(AdpTarzlar);
     }
 
+    public void spnListelemeTipiGetir() {
+        snfListelemeTipi = new ArrayList<SnfListelemeTipi>();
+
+        for (String LT : getResources().getStringArray(R.array.ListelemeTipi)) {
+            SnfListelemeTipi ListelemeTipi = new SnfListelemeTipi();
+            ListelemeTipi.setListelemeTipi(LT);
+            snfListelemeTipi.add(ListelemeTipi);
+        }
+
+        AdpListelemeTipi AdpListelemeTipi = new AdpListelemeTipi(activity, snfListelemeTipi);
+        spnListelemeTipi.setAdapter(AdpListelemeTipi);
+    }
+
     private void SarkiListesiGetir() {
         if(snfSarkilar != null) snfSarkilar.clear();
         else snfSarkilar = new ArrayList<>();
@@ -504,25 +575,27 @@ public class Sarki_Yonetimi extends AppCompatActivity implements Interface_Async
         snfSarkilar = veritabani.SnfSarkiGetir(SecilenListeID, SecilenKategoriID, SecilenTarzID, SecilenListelemeTipi);
 
         if(snfSarkilar.size() <= 0) {
-            btnFiltre_AnaPanel.setImageResource(R.drawable.ic_filter);
-            btnFiltre_AnaPanel.setEnabled(false);
+            //btnFiltre_AnaPanel.setImageResource(R.drawable.ic_filter);
+            //btnFiltre_AnaPanel.setEnabled(false);
             btnAra_AnaPanel.setImageResource(R.drawable.ic_ara);
             btnAra_AnaPanel.setEnabled(false);
             lblOrtaMesaj.setVisibility(View.VISIBLE);
             lblOrtaMesaj.setText(getString(R.string.liste_bos));
             lstSarkiYonetimi.setVisibility(View.GONE);
         } else {
-            btnFiltre_AnaPanel.setImageResource(R.drawable.ic_filter_siyah);
-            btnFiltre_AnaPanel.setEnabled(true);
+            //btnFiltre_AnaPanel.setImageResource(R.drawable.ic_filter_siyah);
+            //btnFiltre_AnaPanel.setEnabled(true);
             btnAra_AnaPanel.setImageResource(R.drawable.ic_ara_siyah);
             btnAra_AnaPanel.setEnabled(true);
             lblOrtaMesaj.setVisibility(View.GONE);
             lstSarkiYonetimi.setVisibility(View.VISIBLE);
 
+            Collections.sort(snfSarkilar, new SnfRepertuvarComparatorRepertuvar());
+
             // Eğer kayıt sayısı 25'ten fazla ise FastScroll'u aktif et
             AdpSarkiListesiLST2 adpSarkiListesiLST2 = new AdpSarkiListesiLST2(activity, snfSarkilar, snfSarkilar.size() > 25, SecilenListelemeTipi);
 
-            lstSarkiYonetimi.setFastScrollEnabled(snfSarkilar.size() > 25);
+            lstSarkiYonetimi.setFastScrollEnabled(snfSarkilar.size() > 10);
             lstSarkiYonetimi.setAdapter(adpSarkiListesiLST2);
         }
     }
@@ -538,28 +611,6 @@ public class Sarki_Yonetimi extends AppCompatActivity implements Interface_Async
         if(FiltreMenuAcikMi) {
             AkorDefterimSys.CircularReveal(activity, R.id.RLContent, R.id.LLFiltreMenu, "Sol", "Alt", "Kapat");
             FiltreMenuAcikMi = false;
-        }
-    }
-
-    private void AramaPanelAc() {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            AkorDefterimSys.circleReveal(R.id.RLSarkiYonetimi_AramaPanel,1, true, true);
-        }
-
-        txtAra_AramaPanel.setText("");
-        txtAra_AramaPanel.requestFocus();
-        imm.showSoftInput(txtAra_AramaPanel, 0);
-    }
-
-    private void AramaPanelKapat() {
-        txtAra_AramaPanel.setText("");
-        AkorDefterimSys.KlavyeKapat();
-
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            AkorDefterimSys.circleReveal(R.id.RLSarkiYonetimi_AramaPanel,1, true, false);
-        } else {
-            RLSarkiYonetimi_AnaPanel.setVisibility(View.VISIBLE);
-            RLSarkiYonetimi_AramaPanel.setVisibility(View.GONE);
         }
     }
 }

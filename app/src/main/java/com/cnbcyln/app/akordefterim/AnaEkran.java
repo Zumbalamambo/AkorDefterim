@@ -1,6 +1,5 @@
 package com.cnbcyln.app.akordefterim;
 
-import android.animation.Animator;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -12,7 +11,6 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.graphics.Typeface;
-import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Process;
@@ -24,7 +22,6 @@ import android.text.TextWatcher;
 import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewAnimationUtils;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.EditText;
@@ -37,8 +34,8 @@ import android.widget.Toast;
 import com.astuetz.PagerSlidingTabStrip;
 import com.cnbcyln.app.akordefterim.Adaptorler.AdpSarkiListesiLST;
 import com.cnbcyln.app.akordefterim.FastScrollListview.FastScroller_Listview;
-import com.cnbcyln.app.akordefterim.Interface.Interface_AsyncResponse;
 import com.cnbcyln.app.akordefterim.Interface.Int_DataConn_AnaEkran;
+import com.cnbcyln.app.akordefterim.Interface.Interface_AsyncResponse;
 import com.cnbcyln.app.akordefterim.ResideMenu.ResideMenu;
 import com.cnbcyln.app.akordefterim.Siniflar.SnfSarkilar;
 import com.cnbcyln.app.akordefterim.util.AkorDefterimSys;
@@ -418,17 +415,10 @@ public class AnaEkran extends AppCompatActivity implements Int_DataConn_AnaEkran
         //super.onBackPressed();
 
         if (RLSarkiListesi_AramaPanel.getVisibility() == View.VISIBLE) {
-            txtAra_AramaPanel.setText("");
-            AkorDefterimSys.KlavyeKapat();
-
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                AkorDefterimSys.circleReveal(R.id.RLSarkiListesi_AramaPanel,1, true, false);
-            } else {
-                RLSarkiListesi_AnaPanel.setVisibility(View.VISIBLE);
-                RLSarkiListesi_AramaPanel.setVisibility(View.GONE);
-            }
-        } else if(resideMenu.isOpened()) SlidingIslem(0);
-        else {
+            AkorDefterimSys.AramaPanelKapat(RLSarkiListesi_AnaPanel.getId(),RLSarkiListesi_AramaPanel.getId(),txtAra_AramaPanel, imm);
+        } else if(resideMenu.isOpened()) {
+            SlidingIslem(0);
+        } else {
             // Çift tıklandığında uygulamadan çıkılması için gerekli fonksiyonu yazdık.
             if (CikisIcinCiftTiklandiMi) {
                 Process.killProcess(Process.myPid());
@@ -591,59 +581,6 @@ public class AnaEkran extends AppCompatActivity implements Int_DataConn_AnaEkran
         AkorDefterimSys.StandartSnackBarMsj(mCoordinatorLayout, Mesaj);
     }
 
-    void enterReveal(LinearLayout LLMenu) {
-		// get the center for the clipping circle
-		int cx = LLMenu.getMeasuredWidth() / 2;
-		int cy = LLMenu.getMeasuredHeight() / 2;
-
-		// get the final radius for the clipping circle
-		int finalRadius = Math.max(LLMenu.getWidth(), LLMenu.getHeight()) / 2;
-
-		if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.LOLLIPOP) {
-			// create the animator for this view (the start radius is zero)
-			Animator anim = ViewAnimationUtils.createCircularReveal(LLMenu, cx, cy, 0, finalRadius);
-			anim.addListener(new Animator.AnimatorListener() {
-				@Override
-				public void onAnimationStart(Animator animation) {
-
-				}
-
-				@Override
-				public void onAnimationEnd(Animator animation) {
-
-				}
-
-				@Override
-				public void onAnimationCancel(Animator animation) {
-
-				}
-
-				@Override
-				public void onAnimationRepeat(Animator animation) {
-
-				}
-			});
-
-			anim.addPauseListener(new Animator.AnimatorPauseListener() {
-				@Override
-				public void onAnimationPause(Animator animation) {
-
-				}
-
-				@Override
-				public void onAnimationResume(Animator animation) {
-
-				}
-			});
-
-			anim.setDuration(1000);
-
-			// make the view visible and start the animation
-			LLMenu.setVisibility(View.VISIBLE);
-			anim.start();
-		}
-	}
-
     @Override
     public void AsyncTaskReturnValue(String sonuc) {
         try {
@@ -700,9 +637,9 @@ public class AnaEkran extends AppCompatActivity implements Int_DataConn_AnaEkran
                 case "SarkiListesiGetir":
                     AnaEkranProgressIslemDialogKapat();
 
-                    // Secilen Listeleme Tipini integer olarak düzenliyoruz. Çünkü Harf sırelaması fonksiyonu bizden integer istiyor..
-                    SecilenListelemeTipi = Integer.parseInt(JSONSonuc.getString("ListelemeTipi"));
-                    SecilenListeID = Integer.parseInt(JSONSonuc.getString("ListeID"));
+                    // Secilen Listeleme Tipini integer olarak düzenliyoruz. Çünkü Harf sıralaması fonksiyonu bizden integer istiyor..
+                    SecilenListelemeTipi = JSONSonuc.getInt("ListelemeTipi");
+                    SecilenListeID = JSONSonuc.getInt("ListeID");
 
                     try {
                         if(snfSarkilar != null) snfSarkilar.clear(); // snfSarkilar sınıfı null değilse (Yani tanımlı sınıf varsa) içindeki tüm kayıtları temizliyoruz.
@@ -717,10 +654,10 @@ public class AnaEkran extends AppCompatActivity implements Int_DataConn_AnaEkran
                             JSONGelenVeri = new JSONObject(JSONGelenVeriArr.getString(i));
 
                             SnfSarkilar Sarki = new SnfSarkilar();
-                            Sarki.setId(Integer.valueOf(JSONGelenVeri.getString("id")));
+                            Sarki.setId(JSONGelenVeri.getInt("id"));
                             Sarki.setListeID(SecilenListeID);
-                            Sarki.setKategoriID(Integer.valueOf(JSONGelenVeri.getString("KategoriID")));
-                            Sarki.setTarzID(Integer.valueOf(JSONGelenVeri.getString("TarzID")));
+                            Sarki.setKategoriID(JSONGelenVeri.getInt("KategoriID"));
+                            Sarki.setTarzID(JSONGelenVeri.getInt("TarzID"));
                             Sarki.setSanatciAdi(JSONGelenVeri.getString("SanatciAdi"));
                             Sarki.setSarkiAdi(JSONGelenVeri.getString("SarkiAdi"));
                             snfSarkilar.add(Sarki);
@@ -749,44 +686,14 @@ public class AnaEkran extends AppCompatActivity implements Int_DataConn_AnaEkran
                             lstSarkiListesi.setAdapter(adpSarkiListesiLST);
                         }
 
-                        /* Ve şimdi geldim en önemli yere. Normalde kullanmış olduğum Sliding Menu kütüphanesi yalnızca tek menü kullanmaya izin veriyordu.
-                           Bu nedenle ekstra fonksiyon yazarak bunu hem sağ, hemsa sol menü olarak kullanabildim. Ancak bu durumda bir sorun oluştu ve bu sorunu bir türlü gideremiyordum.
-                           Sorun ise şu şekilde; Açılan sol menüden "Listele" tuşu ile repertuvar listesini çağırdıktan sonra önce sol menüyü kapatıp arkadasından
-                           listenin set edilmiş lstSarkiListesi isimli Listview'ın bulunduğu sağ menüyü göstermem gerekiyordu. Bu işlem kolaydı. Ancak işlem sonunda gördüm ki
-                           gelen sağ menü grafiksel olarak yarım geliyordu.
-
-                           Bunun çözümü şöyle yaptık;
-                        */
-
-                        // Listview'a şarkı listesi set edildikten sonra SlidingIslem fonksiyonu ile sol menüyü kapatıp, sağ menüyü açmasını istedik.
                         SlidingIslem(0); // Sliding kapat
                         SlidingIslem(2); // Sağ sliding aç
-
-                        // Sağ sliding menü açıldıktan sonra while döngüsü içinde menü açılana dek R.layout.menu_sag içindeki CLMenu View'ı setLeft(0) yaptık.
-                        // Menü açıldıktan sonra while döngüsüneden çıkıyor. Bunu da Thread içinde yaptık. Çünkü sistemde takılma oluyordu. Artık sorun kalmadı :)
-                        /*new Thread(new Runnable() {
-                            public void run() {
-                                while(!mSlidingRootNavSag.isMenuOpened()) {
-                                    coordinatorLayoutSag.setLeft(0);
-                                }
-                            }
-                        }).start();*/
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }
                     break;
                 case "SarkiGetir":
-                    if (RLSarkiListesi_AramaPanel.getVisibility() == View.VISIBLE) { // Eğer Şarkı Arama Panel açıksa kapatıyoruz..
-                        txtAra_AramaPanel.setText("");
-                        AkorDefterimSys.KlavyeKapat();
-
-                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                            AkorDefterimSys.circleReveal(R.id.RLSarkiListesi_AramaPanel,1, true, false);
-                        } else {
-                            RLSarkiListesi_AnaPanel.setVisibility(View.VISIBLE);
-                            RLSarkiListesi_AramaPanel.setVisibility(View.GONE);
-                        }
-                    }
+                    AkorDefterimSys.AramaPanelKapat(RLSarkiListesi_AnaPanel.getId(),RLSarkiListesi_AramaPanel.getId(),txtAra_AramaPanel, imm);
 
                     SlidingIslem(0); // Sliding kapat
                     AnaEkranProgressIslemDialogKapat();
@@ -855,28 +762,11 @@ public class AnaEkran extends AppCompatActivity implements Int_DataConn_AnaEkran
                 //veritabani.VeritabaniSifirla();
                 break;
             case R.id.btnAra_AnaPanel:
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                    AkorDefterimSys.circleReveal(R.id.RLSarkiListesi_AramaPanel,1, true, true);
-                } else {
-                    RLSarkiListesi_AnaPanel.setVisibility(View.GONE);
-                    RLSarkiListesi_AramaPanel.setVisibility(View.VISIBLE);
-                }
-
-                txtAra_AramaPanel.setText("");
-                txtAra_AramaPanel.requestFocus();
-                imm.showSoftInput(txtAra_AramaPanel, 0);
+                AkorDefterimSys.AramaPanelAc(RLSarkiListesi_AnaPanel.getId(),RLSarkiListesi_AramaPanel.getId(),txtAra_AramaPanel, imm);
 
                 break;
             case R.id.btnGeri_AramaPanel:
-                txtAra_AramaPanel.setText("");
-                AkorDefterimSys.KlavyeKapat();
-
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                    AkorDefterimSys.circleReveal(R.id.RLSarkiListesi_AramaPanel,1, true, false);
-                } else {
-                    RLSarkiListesi_AnaPanel.setVisibility(View.VISIBLE);
-                    RLSarkiListesi_AramaPanel.setVisibility(View.GONE);
-                }
+                AkorDefterimSys.AramaPanelKapat(RLSarkiListesi_AnaPanel.getId(),RLSarkiListesi_AramaPanel.getId(),txtAra_AramaPanel, imm);
 
                 break;
         }

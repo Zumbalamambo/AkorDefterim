@@ -472,7 +472,7 @@
     <string name="parolan_guncellendi">Parolan güncellendi.</string>
     <string name="parolan_guncellenemedi">Parolan güncellenemedi.</string>
     <string name="internet_baglantisi_saglanamadi">İnternet bağlantısı sağlanamadı.</string>
-    <string name="internet_baglantisi_saglanamadi_sarki_ekle_katki">Katkıda bulunmak için internetininin aktif olması gerekir.</string>
+    <string name="internet_baglantisi_saglanamadi_sarki_ekle_katki">Katkıda bulunmak için internet bağlantısının aktif olması gerekir.</string>
     <string name="girilen_onay_kodu_hata1">Doğrulama Kodu alanını boş bırakamazsınız.</string>
     <string name="girilen_onay_kodu_hata2">Yazdığın doğrulama kodu hatalı. Yeniden dene.</string>
     <string name="sure_bitti_yeniden_basvuru_yapilabilir">Süre bitti. Başvurunu yeniden gerçekleştirebilirsin.</string>
@@ -551,11 +551,15 @@
     <string name="sarkilar">Şarkı(lar)</string>
     <string name="sarki_yonetimi">Şarkı Yönetimi</string>
     <string name="sarki_eklendi" tools:ignore="Typos">\"%s\" isimli şarkı eklendi.</string>
+    <string name="sarki_eklendi_gonderildi" tools:ignore="Typos">&lt;b&gt;%1$s&lt;/b&gt; isimli şarkı eklendi ve tarafımıza gönderildi. İçerik incelenip onay verildiğinde &lt;b&gt;%2$s&lt;/b&gt; repertuvarına eklenecektir. Katkıda bulunduğun için teşekkür ederiz. :)</string>
+    <string name="sarki_eklendi_gonderilemedi" tools:ignore="Typos">&lt;b&gt;%s&lt;/b&gt; isimli şarkı eklendi fakat tarafımıza gönderilirken bir sorunla karşılaştı. Yeniden dene..</string>
     <string name="sarki_duzenlendi" tools:ignore="Typos">\"%s\" isimli şarkı düzenlendi.</string>
     <string name="sarki_sil_soru">&lt;b&gt;%1$s - %2$s&lt;/b&gt; isimli şarkıyı silmek istiyor musun?</string>
     <string name="sarki_silindi">\"%1$s - %2$s\" isimli şarkı silindi.</string>
     <string name="sarki_bulunamadi">\"%1$s - %2$s\" isimli şarkı bulunamadı.</string>
     <string name="sarki_ekleduzenle_geri_soru">İçerikte değişiklik yaptın. Yine de bu ekrandan çıkmak istiyor musun?</string>
+    <string name="sarki_gonder_internet_hata" tools:ignore="Typos">Eklediğin şarkıyı tarafımıza göndermen için &lt;b&gt;İNTERNET BAĞLANTISI&lt;/b&gt;\'na ihtiyacın var. Aşağıdan yapmak istediğin işlemi seç.</string>
+    <string name="sarki_gondermeden_devam_et">Şarkı göndermeden devam et</string>
 
     <!-- Notify Mesajlar -->
     <string name="farkli_bir_cihazdan_oturum_acildi">Farklı bir cihazdan oturum açıldı. Bir hesap yalnızca tek bir cihazdan oturum açabilir.</string>

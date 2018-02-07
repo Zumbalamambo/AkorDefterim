@@ -343,7 +343,7 @@ public class Destek_GeriBildirim extends AppCompatActivity implements Interface_
                         AkorDefterimSys.DismissProgressDialog(PDIslem);
 
                         switch (JSONSonuc.getString("Aciklama")) {
-                            case "5 dk aralıklarla bildirim gönderebilirsiniz!":
+                            case "Bildirim eklenemedi! Sure dolmamış.":
                                 AkorDefterimSys.StandartSnackBarMsj(coordinatorLayout, getString(R.string.geri_bildirim_s_dk_aralikla_gonderebilirsiniz, YenidenGeriBildirimGondermeSuresi));
                                 break;
                             default:

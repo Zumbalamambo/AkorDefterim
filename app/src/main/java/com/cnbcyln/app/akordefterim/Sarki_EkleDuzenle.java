@@ -241,7 +241,10 @@ public class Sarki_EkleDuzenle extends AppCompatActivity implements Interface_As
 
 		AkorDefterimSys.activity = activity;
 
-		if(AkorDefterimSys.prefAction.equals("Şarkı eklendi") || AkorDefterimSys.prefAction.equals("Şarkı düzenlendi")) onBackPressed();
+		if(AkorDefterimSys.prefAction.equals("Şarkı eklendi") ||
+				AkorDefterimSys.prefAction.equals("Şarkı düzenlendi") ||
+				AkorDefterimSys.prefAction.equals("Şarkı eklendi ve gönderildi") ||
+				AkorDefterimSys.prefAction.equals("Şarkı eklendi ama gönderilemedi")) onBackPressed();
 	}
 
 	@Override

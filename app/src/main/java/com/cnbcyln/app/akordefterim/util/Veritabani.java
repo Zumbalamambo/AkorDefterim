@@ -897,7 +897,7 @@ public class Veritabani extends SQLiteOpenHelper {
 				Sorgu = "SELECT * FROM tblSarkilar WHERE" +
 						(ListeID != 0 ? " ListeID = " + ListeID:"") +
 						(KategoriID != 0 ? " AND KategoriID = " + KategoriID:"") +
-						(TarzID != 0 ? " AND TarzID = " + TarzID:"") + " Order By id ASC";
+						(TarzID != 0 ? " AND TarzID = " + TarzID:"") + " Order By id DESC";
 				break;
 		}
 
