@@ -50,6 +50,7 @@
     <string name="yuksek">Yüksek</string>
     <string name="fotografi_degistir">Fotoğrafı Değiştir</string>
     <string name="bir_profil_fotografi_belirle">Bir Profil Fotoğrafı Belirle</string>
+    <string name="toplam">Toplam</string>
 
     <!-- SMS Gönderme İşlemi -->
     <string name="sms_dosrulama_kodu_icerik">Merhaba. Doğrulama kodunuz: %1$s / %2$s</string>

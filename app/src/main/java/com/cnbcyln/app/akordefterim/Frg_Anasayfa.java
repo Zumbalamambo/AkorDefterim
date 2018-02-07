@@ -125,16 +125,11 @@ public class Frg_Anasayfa extends Fragment implements SwipeRefreshLayout.OnRefre
 					mSnfAnasayfa.setSanatciID(JSONGelenVeri.getInt("SanatciID"));
 					mSnfAnasayfa.setSanatciResimVarMi(JSONGelenVeri.getBoolean("SanatciResimVarMi"));
 					mSnfAnasayfa.setSanatciAdi(JSONGelenVeri.getString("SanatciAdi"));
+					mSnfAnasayfa.setSonEklenenSarkiID(JSONGelenVeri.getInt("SonEklenenSarkiID"));
+					mSnfAnasayfa.setSonEklenenSarkiAdi(JSONGelenVeri.getString("SonEklenenSarkiAdi"));
 					mSnfAnasayfa.setToplamSarki(JSONGelenVeri.getInt("ToplamSarki"));
 					snfAnasayfa.add(mSnfAnasayfa);
 				}
-
-                /*AdpAnasayfa adpAnasayfa = new AdpAnasayfa(activity, snfAnasayfa, new CustomItemClickListener() {
-                    @Override
-                    public void onItemClick(View v, int position) {
-                        AkorDefterimSys.ToastMsj(activity, "Pozisyon: " + position + " / Sanatçı adı: " + snfAnasayfa.get(position).getSanatciAdi() + " / Toplam Şarkı: " + snfAnasayfa.get(position).getToplamSarki(), Toast.LENGTH_SHORT);
-                    }
-                });*/
 
 				AdpAnasayfa adpAnasayfa = new AdpAnasayfa(activity, snfAnasayfa);
 
@@ -146,48 +141,4 @@ public class Frg_Anasayfa extends Fragment implements SwipeRefreshLayout.OnRefre
 			e.printStackTrace();
 		}
 	}
-
-	/*public void SonEklenenSarkilar_ListeGuncelle() {
-		SRLSonEklenenSarkilar.setRefreshing(true);
-
-		Retrofit retrofit = new Retrofit.Builder()
-				.baseUrl(AkorDefterimSys.SonEklenenSarkilarURL)
-				.addConverterFactory(GsonConverterFactory.create())
-				.build();
-
-		RestAdapter restAdapter = new RestAdapter.Builder().setEndpoint(AkorDefterimSys.SonEklenenSarkilarURL).build();
-		RetrofitInterface RIC_SonEklenenSarkilar = restAdapter.create(RetrofitInterface.class);
-
-		RIC_SonEklenenSarkilar.getJsonValues(new Callback<MdlSonEklenenSarkilar[]>() { // json array döneceği için modelimizi array tipinde belirledik
-			@Override
-			public void success(MdlSonEklenenSarkilar[] model, Response response) {
-				snfAnasayfa = new ArrayList<>();
-
-				for (MdlSonEklenenSarkilar modelValues : model) {
-					SnfAnasayfa SonEklenenSarkilar = new SnfAnasayfa();
-					SonEklenenSarkilar.setId(modelValues.Id);
-					SonEklenenSarkilar.setSanatciAdi(modelValues.SanatciAdi);
-					SonEklenenSarkilar.setSarkiAdi(modelValues.SarkiAdi);
-					SonEklenenSarkilar.setKategoriAdi(modelValues.KategoriAdi);
-					SonEklenenSarkilar.setTarzAdi(modelValues.TarzAdi);
-					SonEklenenSarkilar.setEklenmeTarihi(modelValues.EklenmeTarihi);
-					SonEklenenSarkilar.setEkleyenAdSoyad(modelValues.EkleyenAdSoyad);
-					SonEklenenSarkilar.setGunFarki(modelValues.GunFarki);
-					snfAnasayfa.add(SonEklenenSarkilar);
-				}
-
-				AdpAnasayfa = new AdpAnasayfa(activity, snfAnasayfa);
-				lstSonEklenenSarkilar.setAdapter(AdpAnasayfa);
-
-				SRLSonEklenenSarkilar.setRefreshing(false);
-			}
-
-			@Override
-			public void failure(RetrofitError error) {
-				SRLSonEklenenSarkilar.setRefreshing(false);
-
-				AkorDefterimSys.StandartSnackBarMsj(coordinatorLayout, error.getMessage());
-			}
-		});
-	}*/
 }

@@ -14,7 +14,8 @@
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        card_view:cardCornerRadius="@dimen/card_album_radius">
+        card_view:cardCornerRadius="@dimen/card_album_radius"
+        card_view:targetApi="lollipop">
 
         <android.support.constraint.ConstraintLayout
             android:layout_width="match_parent"
@@ -24,62 +25,69 @@
                 android:id="@+id/ImgSanatciResim"
                 android:layout_width="0dp"
                 android:layout_height="160dp"
-                android:layout_marginBottom="5dp"
-                android:background="?attr/selectableItemBackgroundBorderless"
-                android:focusable="true"
-                android:clickable="true"
-                android:scaleType="fitXY"
                 android:contentDescription="@string/imageDesc"
-                app:layout_constraintBottom_toTopOf="@+id/lblSanatciAdi"
-                app:layout_constraintHorizontal_bias="0.0"
-                app:layout_constraintLeft_toLeftOf="parent"
-                app:layout_constraintRight_toRightOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintVertical_bias="0.0" />
+                android:scaleType="fitXY"
+                android:src="@drawable/bg"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent" />
 
             <TextView
                 android:id="@+id/lblSanatciAdi"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_alignParentLeft="true"
-                android:layout_alignParentStart="true"
-                android:layout_below="@+id/ImgSanatciResim"
-                android:layout_marginBottom="5dp"
-                android:layout_marginLeft="5dp"
-                android:layout_marginRight="8dp"
-                android:textColor="@color/album_title"
+                android:layout_marginLeft="4dp"
+                android:layout_marginStart="4dp"
+                android:layout_marginTop="4dp"
+                android:textColor="@color/KoyuGri2"
+                android:text="Sanatçı Adı"
                 android:textSize="15sp"
-                app:layout_constraintBottom_toTopOf="@+id/lblToplamSarki"
-                app:layout_constraintLeft_toLeftOf="@+id/ImgSanatciResim"
-                app:layout_constraintRight_toLeftOf="@+id/ImgMenu" />
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/ImgSanatciResim" />
+
+
+            <TextView
+                android:id="@+id/lblSonEklenenSarkiAdi"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/lblSanatciAdi"
+                android:layout_marginLeft="4dp"
+                android:layout_marginStart="4dp"
+                android:textColor="@color/KoyuYazi2"
+                android:text="Son Eklenen Şarkı Adı"
+                android:textSize="12sp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/lblSanatciAdi" />
 
             <TextView
                 android:id="@+id/lblToplamSarki"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_below="@id/lblSanatciAdi"
-                android:layout_marginBottom="5dp"
-                android:layout_marginLeft="5dp"
-                android:layout_marginRight="8dp"
+                android:layout_marginBottom="4dp"
+                android:layout_marginLeft="4dp"
+                android:layout_marginStart="4dp"
+                android:layout_marginTop="6dp"
+                android:textColor="@color/KoyuYazi2"
+                android:text="Toplam Şarkı Sayısı"
                 android:textSize="12sp"
                 app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintHorizontal_bias="1.0"
-                app:layout_constraintLeft_toLeftOf="@+id/ImgSanatciResim"
-                app:layout_constraintRight_toLeftOf="@+id/ImgMenu" />
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/lblSonEklenenSarkiAdi" />
 
             <ImageView
                 android:id="@+id/ImgMenu"
                 android:layout_width="20dp"
                 android:layout_height="30dp"
-                android:layout_marginRight="10dp"
-                android:focusable="true"
+                android:layout_marginRight="8dp"
+                android:layout_marginEnd="8dp"
                 android:clickable="true"
-                android:scaleType="centerCrop"
                 android:contentDescription="@string/imageDesc"
-                app:srcCompat="@drawable/dots_vertical_koyu"
+                android:focusable="true"
+                android:scaleType="centerCrop"
                 app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintRight_toRightOf="@+id/ImgSanatciResim"
-                app:layout_constraintTop_toBottomOf="@+id/ImgSanatciResim" />
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/ImgSanatciResim"
+                app:srcCompat="@drawable/dots_vertical_koyu" />
         </android.support.constraint.ConstraintLayout>
     </android.support.v7.widget.CardView>
 </android.support.constraint.ConstraintLayout>

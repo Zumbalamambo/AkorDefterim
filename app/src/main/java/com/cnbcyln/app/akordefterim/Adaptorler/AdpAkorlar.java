@@ -29,11 +29,6 @@ public class AdpAkorlar extends BaseAdapter {
 
 		inflater = (LayoutInflater) activity.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 		YaziFontu = new AkorDefterimSys(activity).FontGetir(activity, "anivers_regular");
-
-
-		inflater = (LayoutInflater) activity.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-
-		YaziFontu = new AkorDefterimSys(activity).FontGetir(activity, "anivers_regular");
 	}
 	
 	@Override
@@ -66,9 +61,9 @@ public class AdpAkorlar extends BaseAdapter {
 			satirView = inflater.inflate(R.layout.lsttonlarakorlar_satir, null);
 			
 			holder = new ViewHolder();
-			holder.LLTonAdiAkorAdi = (LinearLayout) satirView.findViewById(R.id.LLTonAdiAkorAdi);
+			holder.LLTonAdiAkorAdi = satirView.findViewById(R.id.LLTonAdiAkorAdi);
 
-            holder.txtTonAdiAkorAdi = (TextView) satirView.findViewById(R.id.txtTonAdiAkorAdi);
+            holder.txtTonAdiAkorAdi = satirView.findViewById(R.id.txtTonAdiAkorAdi);
             holder.txtTonAdiAkorAdi.setTypeface(YaziFontu, Typeface.NORMAL);
             satirView.setTag(holder);
 	    } else holder = (ViewHolder) satirView.getTag();

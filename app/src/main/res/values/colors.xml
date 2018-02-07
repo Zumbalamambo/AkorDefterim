@@ -22,6 +22,7 @@
     <color name="counter_text_color">#ffffff</color>
     <color name="MasaDeaktif">#dcdcdc</color>
     <color name="KoyuYazi">#222222</color>
+    <color name="KoyuYazi2">#3d3d3d</color>
     <color name="Gri">#e9e9e9</color>
     <color name="OrtaGri">#bfbfbf</color>
     <color name="KoyuGri">#636363</color>
@@ -48,7 +49,6 @@
     <color name="sosyal_hesabim_logo_icon_border_color">#eaebeb</color>
     <color name="SnackBarBG">#081015</color>
     <color name="TransparanVideoLayer">#64000000</color>
-    <color name="album_title">#4c4c4c</color>
     <color name="charcoal">#FF394249</color>
 
     <!-- Gri Button -->

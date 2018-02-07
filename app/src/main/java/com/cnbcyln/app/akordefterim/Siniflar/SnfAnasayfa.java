@@ -6,19 +6,23 @@ public class SnfAnasayfa implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	private int SanatciID;
-	private String SanatciAdi;
 	private Boolean SanatciResimVarMi;
+	private String SanatciAdi;
+	private int SonEklenenSarkiID;
+	private String SonEklenenSarkiAdi;
 	private int ToplamSarki;
 
 	public SnfAnasayfa() {
 		super();
 	}
 
-	public SnfAnasayfa(int SanatciID, String SanatciAdi, Boolean SanatciResimVarMi, int ToplamSarki) {
+	public SnfAnasayfa(int SanatciID, Boolean SanatciResimVarMi, String SanatciAdi, int SonEklenenSarkiID, String SonEklenenSarkiAdi, int ToplamSarki) {
 		super();
 		this.SanatciID = SanatciID;
-		this.SanatciAdi = SanatciAdi;
 		this.SanatciResimVarMi = SanatciResimVarMi;
+		this.SanatciAdi = SanatciAdi;
+		this.SonEklenenSarkiID = SonEklenenSarkiID;
+		this.SonEklenenSarkiAdi = SonEklenenSarkiAdi;
 		this.ToplamSarki = ToplamSarki;
 	}
 
@@ -30,6 +34,14 @@ public class SnfAnasayfa implements Serializable {
 		this.SanatciID = SanatciID;
 	}
 
+	public Boolean getSanatciResimVarMi() {
+		return SanatciResimVarMi;
+	}
+
+	public void setSanatciResimVarMi(Boolean SanatciResimVarMi) {
+		this.SanatciResimVarMi = SanatciResimVarMi;
+	}
+
 	public String getSanatciAdi() {
 		return SanatciAdi;
 	}
@@ -38,12 +50,20 @@ public class SnfAnasayfa implements Serializable {
 		this.SanatciAdi = SanatciAdi;
 	}
 
-	public Boolean getSanatciResimVarMi() {
-		return SanatciResimVarMi;
+	public int getSonEklenenSarkiID() {
+		return SonEklenenSarkiID;
 	}
 
-	public void setSanatciResimVarMi(Boolean SanatciResimVarMi) {
-		this.SanatciResimVarMi = SanatciResimVarMi;
+	public void setSonEklenenSarkiID(int SonEklenenSarkiID) {
+		this.SonEklenenSarkiID = SonEklenenSarkiID;
+	}
+
+	public String getSonEklenenSarkiAdi() {
+		return SonEklenenSarkiAdi;
+	}
+
+	public void setSonEklenenSarkiAdi(String SonEklenenSarkiAdi) {
+		this.SonEklenenSarkiAdi = SonEklenenSarkiAdi;
 	}
 
 	public int getToplamSarki() {

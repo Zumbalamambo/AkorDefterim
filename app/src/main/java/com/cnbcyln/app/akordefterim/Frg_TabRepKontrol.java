@@ -228,21 +228,21 @@ public class Frg_TabRepKontrol extends Fragment implements OnClickListener {
 				else if(snfTarzlar.get(spnTarzlar.getSelectedItemPosition()).getTarzAdi().equals(getString(R.string.labeltire)))
 					FragmentDataConn.StandartSnackBarMsj(getString(R.string.tarz_bulunamadi));
 				else {
-					String ListeID = String.valueOf(snfListeler.get(spnListeler.getSelectedItemPosition()).getId());
-					String KategoriID = String.valueOf(snfKategoriler.get(spnKategoriler.getSelectedItemPosition()).getId());
-					String TarzID = String.valueOf(snfTarzlar.get(spnTarzlar.getSelectedItemPosition()).getId());
-					String ListelemeTipi = String.valueOf(spnListelemeTipi.getSelectedItemPosition());
+					int ListeID = snfListeler.get(spnListeler.getSelectedItemPosition()).getId();
+					int KategoriID = snfKategoriler.get(spnKategoriler.getSelectedItemPosition()).getId();
+					int TarzID = snfTarzlar.get(spnTarzlar.getSelectedItemPosition()).getId();
+					int ListelemeTipi = spnListelemeTipi.getSelectedItemPosition();
 
-					if(ListeID.equals("0")) {
+					if(ListeID == 0) {
 						if(AkorDefterimSys.InternetErisimKontrolu()) {
 							// AnaEkran üzerinden Progress Dialog'u açıyoruz ve "Liste indiriliyor. Lütfen bekleyiniz.." mesajını gösteriyoruz..
 							FragmentDataConn.AnaEkranProgressIslemDialogAc(getString(R.string.liste_indiriliyor_lutfen_bekleyiniz));
-							AkorDefterimSys.SarkiListesiGetir(veritabani, ListeID, KategoriID, TarzID, ListelemeTipi);
+							AkorDefterimSys.SarkiListesiGetir(veritabani, ListeID, KategoriID, TarzID, ListelemeTipi, "");
 						} else FragmentDataConn.StandartSnackBarMsj(getString(R.string.internet_baglantisi_saglanamadi));
 					} else {
 						// AnaEkran üzerinden Progress Dialog'u açıyoruz ve "Liste indiriliyor. Lütfen bekleyiniz.." mesajını gösteriyoruz..
 						FragmentDataConn.AnaEkranProgressIslemDialogAc(getString(R.string.liste_indiriliyor_lutfen_bekleyiniz));
-						AkorDefterimSys.SarkiListesiGetir(veritabani, ListeID, KategoriID, TarzID, ListelemeTipi);
+						AkorDefterimSys.SarkiListesiGetir(veritabani, ListeID, KategoriID, TarzID, ListelemeTipi, "");
 					}
 				}
 

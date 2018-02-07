@@ -244,21 +244,21 @@ public class AnaEkran extends AppCompatActivity implements Int_DataConn_AnaEkran
                     if(SecilenListeID == 0) {
                         if(AkorDefterimSys.InternetErisimKontrolu()) {
                             AnaEkranProgressIslemDialogAc(getString(R.string.icerik_indiriliyor_lutfen_bekleyiniz));
-                            AkorDefterimSys.SarkiGetir(veritabani, String.valueOf(SecilenListeID), String.valueOf(snfSarkilar.get(position).getId()), snfSarkilar.get(position).getSanatciAdi(), snfSarkilar.get(position).getSarkiAdi());
+                            AkorDefterimSys.SarkiGetir(veritabani, SecilenListeID, snfSarkilar.get(position).getId(), snfSarkilar.get(position).getSanatciAdi(), snfSarkilar.get(position).getSarkiAdi());
                         } else AkorDefterimSys.StandartSnackBarMsj(coordinatorLayoutSag, getString(R.string.internet_baglantisi_saglanamadi));
                     } else {
                         AnaEkranProgressIslemDialogAc(getString(R.string.icerik_indiriliyor_lutfen_bekleyiniz));
-                        AkorDefterimSys.SarkiGetir(veritabani, String.valueOf(SecilenListeID), String.valueOf(snfSarkilar.get(position).getId()), snfSarkilar.get(position).getSanatciAdi(), snfSarkilar.get(position).getSarkiAdi());
+                        AkorDefterimSys.SarkiGetir(veritabani, SecilenListeID, snfSarkilar.get(position).getId(), snfSarkilar.get(position).getSanatciAdi(), snfSarkilar.get(position).getSarkiAdi());
                     }
                 } else { // Eğer listeden şarkı arama alanına yazı GİRİLMİŞSE "snfSarkilarTemp" sıfından kayıt baz alarak içerik getirtiyoruz..
                     if(SecilenListeID == 0) {
                         if(AkorDefterimSys.InternetErisimKontrolu()) {
                             AnaEkranProgressIslemDialogAc(getString(R.string.icerik_indiriliyor_lutfen_bekleyiniz));
-                            AkorDefterimSys.SarkiGetir(veritabani, String.valueOf(SecilenListeID), String.valueOf(snfSarkilarTemp.get(position).getId()), snfSarkilarTemp.get(position).getSanatciAdi(), snfSarkilarTemp.get(position).getSarkiAdi());
+                            AkorDefterimSys.SarkiGetir(veritabani, SecilenListeID, snfSarkilarTemp.get(position).getId(), snfSarkilarTemp.get(position).getSanatciAdi(), snfSarkilarTemp.get(position).getSarkiAdi());
                         } else AkorDefterimSys.StandartSnackBarMsj(coordinatorLayoutSag, getString(R.string.internet_baglantisi_saglanamadi));
                     } else {
                         AnaEkranProgressIslemDialogAc(getString(R.string.icerik_indiriliyor_lutfen_bekleyiniz));
-                        AkorDefterimSys.SarkiGetir(veritabani, String.valueOf(SecilenListeID), String.valueOf(snfSarkilarTemp.get(position).getId()), snfSarkilarTemp.get(position).getSanatciAdi(), snfSarkilarTemp.get(position).getSarkiAdi());
+                        AkorDefterimSys.SarkiGetir(veritabani, SecilenListeID, snfSarkilarTemp.get(position).getId(), snfSarkilarTemp.get(position).getSanatciAdi(), snfSarkilarTemp.get(position).getSarkiAdi());
                     }
                 }
 
@@ -339,7 +339,7 @@ public class AnaEkran extends AppCompatActivity implements Int_DataConn_AnaEkran
 
         switch (extras.getString("Islem")) {
             case "SarkiGetir":
-                AkorDefterimSys.SarkiGetir(veritabani, "0", String.valueOf(extras.getInt("SarkiID")), extras.getString("SanatciAdi"), extras.getString("SarkiAdi"));
+                AkorDefterimSys.SarkiGetir(veritabani, 0, extras.getInt("SarkiID"), extras.getString("SanatciAdi"), extras.getString("SarkiAdi"));
                 break;
             default:
                 FragmentSayfaGetir("anasayfa");
@@ -414,10 +414,12 @@ public class AnaEkran extends AppCompatActivity implements Int_DataConn_AnaEkran
     public void onBackPressed() {
         //super.onBackPressed();
 
-        if (RLSarkiListesi_AramaPanel.getVisibility() == View.VISIBLE) {
+        if (RLSarkiListesi_AramaPanel.getVisibility() == View.VISIBLE) { // Arama panel açıksa kapatıyoruz.
             AkorDefterimSys.AramaPanelKapat(RLSarkiListesi_AnaPanel.getId(),RLSarkiListesi_AramaPanel.getId(),txtAra_AramaPanel, imm);
-        } else if(resideMenu.isOpened()) {
+        } else if(resideMenu.isOpened()) { // Menü açıksa kapatıyoruz.
             SlidingIslem(0);
+        } else if(!Fragment_SayfaAdi.equals("Frg_Anasayfa")) { // Fragment anasayfa değilse anasayfayı çağırıyoruz.
+            FragmentSayfaGetir("anasayfa");
         } else {
             // Çift tıklandığında uygulamadan çıkılması için gerekli fonksiyonu yazdık.
             if (CikisIcinCiftTiklandiMi) {
@@ -515,7 +517,7 @@ public class AnaEkran extends AppCompatActivity implements Int_DataConn_AnaEkran
     public void SlidingIslem(int islem) {
         switch (islem) {
             case 0: //Sliding kapatır
-                resideMenu.closeMenu();
+                if(resideMenu.isOpened()) resideMenu.closeMenu();
 
                 break;
             case 1: //Sol sliding açar
@@ -688,6 +690,15 @@ public class AnaEkran extends AppCompatActivity implements Int_DataConn_AnaEkran
 
                         SlidingIslem(0); // Sliding kapat
                         SlidingIslem(2); // Sağ sliding aç
+
+                        if(!JSONSonuc.getString("SecilenSanatciAdi").equals("")) { // Eğer anasayfadaki sanatçıya ait listeyi getir dediysek Liste çağrıldığı zaman sanatçı adı olarak arama yapılıyor ve sadece onun şarkı listesi geliyor..
+                            if(RLSarkiListesi_AramaPanel.getVisibility() == View.GONE) // Arama panel kapalıysa açıyoruz.
+                                AkorDefterimSys.AramaPanelAc(RLSarkiListesi_AnaPanel.getId(),RLSarkiListesi_AramaPanel.getId(),txtAra_AramaPanel, imm);
+
+                            txtAra_AramaPanel.setText(JSONSonuc.getString("SecilenSanatciAdi"));
+                            txtAra_AramaPanel.requestFocus();
+                            txtAra_AramaPanel.setSelection(txtAra_AramaPanel.length());
+                        }
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }

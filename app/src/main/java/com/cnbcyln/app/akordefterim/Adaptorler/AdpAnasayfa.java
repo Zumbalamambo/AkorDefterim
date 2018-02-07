@@ -3,6 +3,7 @@ package com.cnbcyln.app.akordefterim.Adaptorler;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.graphics.Bitmap;
+import android.graphics.Typeface;
 import android.support.v7.widget.PopupMenu;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -12,9 +13,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
-import com.cnbcyln.app.akordefterim.Interface.CustomItemClickListener;
+import com.cnbcyln.app.akordefterim.Interface.Int_DataConn_AnaEkran;
 import com.cnbcyln.app.akordefterim.R;
 import com.cnbcyln.app.akordefterim.Siniflar.SnfAnasayfa;
 import com.cnbcyln.app.akordefterim.util.AkorDefterimSys;
@@ -28,15 +28,35 @@ import java.util.LinkedList;
 import java.util.List;
 
 public class AdpAnasayfa extends RecyclerView.Adapter<AdpAnasayfa.ViewHolder> {
-	Activity activity;
+	private Activity activity;
 	private AkorDefterimSys AkorDefterimSys;
-	private List<SnfAnasayfa> SanatciListesi;
-	private CustomItemClickListener listener;
+	private List<SnfAnasayfa> snfAnasayfa;
+	private Int_DataConn_AnaEkran FragmentDataConn;
+	private Typeface YaziFontu;
+	//private CustomItemClickListener listener;
 	private ImageLoadingListener animateFirstListener = new AnimateFirstDisplayListener();
+
+	public AdpAnasayfa(Activity activity, List<SnfAnasayfa> snfAnasayfa) {
+		this.activity = activity;
+		this.AkorDefterimSys = com.cnbcyln.app.akordefterim.util.AkorDefterimSys.getInstance();
+		this.AkorDefterimSys.activity = activity;
+		this.snfAnasayfa = snfAnasayfa;
+		this.FragmentDataConn = (Int_DataConn_AnaEkran) activity;
+		YaziFontu = new AkorDefterimSys(activity).FontGetir(activity, "anivers_regular");
+	}
+
+	/*public AdpAnasayfa(Activity activity, List<SnfAnasayfa> snfAnasayfa, CustomItemClickListener listener) {
+		this.activity = activity;
+		this.AkorDefterimSys = com.cnbcyln.app.akordefterim.util.AkorDefterimSys.getInstance();
+        this.AkorDefterimSys.activity = activity;
+		this.snfAnasayfa = snfAnasayfa;
+		this.listener = listener;
+	}*/
 
 	public static class ViewHolder extends RecyclerView.ViewHolder {
 		ImageView ImgSanatciResim;
 		TextView lblSanatciAdi;
+		TextView lblSonEklenenSarkiAdi;
 		TextView lblToplamSarki;
 		ImageView ImgMenu;
 
@@ -45,37 +65,16 @@ public class AdpAnasayfa extends RecyclerView.Adapter<AdpAnasayfa.ViewHolder> {
 
 			ImgSanatciResim = view.findViewById(R.id.ImgSanatciResim);
 			lblSanatciAdi = view.findViewById(R.id.lblSanatciAdi);
+			lblSonEklenenSarkiAdi = view.findViewById(R.id.lblSonEklenenSarkiAdi);
 			lblToplamSarki = view.findViewById(R.id.lblToplamSarki);
 			ImgMenu = view.findViewById(R.id.ImgMenu);
 		}
-	}
-
-	public AdpAnasayfa(Activity activity, List<SnfAnasayfa> SanatciListesi) {
-		this.activity = activity;
-		this.AkorDefterimSys = com.cnbcyln.app.akordefterim.util.AkorDefterimSys.getInstance();
-        this.AkorDefterimSys.activity = activity;
-		this.SanatciListesi = SanatciListesi;
-	}
-
-	public AdpAnasayfa(Activity activity, List<SnfAnasayfa> SanatciListesi, CustomItemClickListener listener) {
-		this.activity = activity;
-		this.AkorDefterimSys = com.cnbcyln.app.akordefterim.util.AkorDefterimSys.getInstance();
-        this.AkorDefterimSys.activity = activity;
-		this.SanatciListesi = SanatciListesi;
-		this.listener = listener;
 	}
 
 	@Override
 	public AdpAnasayfa.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
 		View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.rvanasayfa_satir, parent, false);
 		final ViewHolder view_holder = new ViewHolder(v);
-
-		/*v.setOnClickListener(new View.OnClickListener() {
-			@Override
-			public void onClick(View v) {
-				listener.onItemClick(v, view_holder.getPosition());
-			}
-		});*/
 
 		view_holder.ImgMenu.setOnClickListener(new View.OnClickListener() {
 			@Override
@@ -89,28 +88,34 @@ public class AdpAnasayfa extends RecyclerView.Adapter<AdpAnasayfa.ViewHolder> {
 
 	@Override
 	public void onBindViewHolder(AdpAnasayfa.ViewHolder holder, @SuppressLint("RecyclerView") final int position) {
-		if(SanatciListesi.get(position).getSanatciResimVarMi()) {
+		if(snfAnasayfa.get(position).getSanatciResimVarMi()) {
 			//AkorDefterimSys.NettenResimYukle mNettenResimYukle = new AkorDefterimSys.NettenResimYukle(holder.ImgSanatciResim);
 			//mNettenResimYukle.execute(AkorDefterimSys.SanatciResimleriKlasoruURL + SanatciListesi.get(position).getSanatciID() + ".jpg");
 
-			ImageLoader.getInstance().displayImage(AkorDefterimSys.CBCAPP_HttpsAdres + AkorDefterimSys.SanatciResimleriKlasoruDizini + SanatciListesi.get(position).getSanatciID() + ".jpg", holder.ImgSanatciResim, animateFirstListener);
+			ImageLoader.getInstance().displayImage(AkorDefterimSys.CBCAPP_HttpsAdres + AkorDefterimSys.SanatciResimleriKlasoruDizini + snfAnasayfa.get(position).getSanatciID() + ".jpg", holder.ImgSanatciResim, animateFirstListener);
 		} else
 			holder.ImgSanatciResim.setImageResource(activity.getResources().getIdentifier(activity.getPackageName() + ":drawable/bos_profil", null, null));
 
-		holder.lblSanatciAdi.setText(SanatciListesi.get(position).getSanatciAdi());
-		holder.lblToplamSarki.setText(String.valueOf(SanatciListesi.get(position).getToplamSarki()).concat(" şarkı"));
+		holder.lblSanatciAdi.setText(snfAnasayfa.get(position).getSanatciAdi());
+		holder.lblSanatciAdi.setTypeface(YaziFontu, Typeface.BOLD);
+
+		holder.lblSonEklenenSarkiAdi.setText(snfAnasayfa.get(position).getSonEklenenSarkiAdi());
+		holder.lblSonEklenenSarkiAdi.setTypeface(YaziFontu, Typeface.NORMAL);
+
+		holder.lblToplamSarki.setText(String.format("%s %s %s", activity.getString(R.string.toplam), String.valueOf(snfAnasayfa.get(position).getToplamSarki()), activity.getString(R.string.sarki)));
+		holder.lblToplamSarki.setTypeface(YaziFontu, Typeface.NORMAL);
 
 		holder.ImgMenu.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				showPopupMenu(v, SanatciListesi.get(position).getSanatciID());
+				showPopupMenu(v, snfAnasayfa.get(position).getSanatciID(), snfAnasayfa.get(position).getSanatciAdi(), snfAnasayfa.get(position).getSonEklenenSarkiID(), snfAnasayfa.get(position).getSonEklenenSarkiAdi());
 			}
 		});
 	}
 
 	@Override
 	public int getItemCount() {
-		return SanatciListesi.size();
+		return snfAnasayfa.size();
 	}
 
 	@Override
@@ -133,31 +138,42 @@ public class AdpAnasayfa extends RecyclerView.Adapter<AdpAnasayfa.ViewHolder> {
 		}
 	}
 
-	private void showPopupMenu(View view, int SanatciID) {
+	private void showPopupMenu(View view, int SanatciID, String SanatciAdi, int SonEklenenSarkiID, String SonEklenenSarkiAdi) {
 		// inflate menu
 		PopupMenu popup = new PopupMenu(activity, view);
 		MenuInflater inflater = popup.getMenuInflater();
 		inflater.inflate(R.menu.anasayfa_sanatci, popup.getMenu());
-		popup.setOnMenuItemClickListener(new MyMenuItemClickListener(SanatciID));
+		popup.setOnMenuItemClickListener(new MyMenuItemClickListener(SanatciID, SanatciAdi, SonEklenenSarkiID, SonEklenenSarkiAdi));
 		popup.show();
 	}
 
 	class MyMenuItemClickListener implements PopupMenu.OnMenuItemClickListener {
 		int SanatciID;
+		String SanatciAdi;
+		int SonEklenenSarkiID;
+		String SonEklenenSarkiAdi;
 
-		MyMenuItemClickListener(int SanatciID) {
+		MyMenuItemClickListener(int SanatciID, String SanatciAdi, int SonEklenenSarkiID, String SonEklenenSarkiAdi) {
 			this.SanatciID = SanatciID;
+			this.SanatciAdi = SanatciAdi;
+			this.SonEklenenSarkiID = SonEklenenSarkiID;
+			this.SonEklenenSarkiAdi = SonEklenenSarkiAdi;
 		}
 
 		@Override
 		public boolean onMenuItemClick(MenuItem menuItem) {
 			switch (menuItem.getItemId()) {
 				case R.id.action_son_eklenen_sarkiyi_ac:
-					AkorDefterimSys.ToastMsj(activity, "Şarkı açıldı. Sanatçı ID:" + SanatciID, Toast.LENGTH_SHORT);
+					if(AkorDefterimSys.InternetErisimKontrolu()) {
+						FragmentDataConn.AnaEkranProgressIslemDialogAc(activity.getString(R.string.icerik_indiriliyor_lutfen_bekleyiniz));
+						AkorDefterimSys.SarkiGetir(null, 0, SonEklenenSarkiID, SanatciAdi, SonEklenenSarkiAdi);
+					} else FragmentDataConn.StandartSnackBarMsj(activity.getString(R.string.internet_baglantisi_saglanamadi));
 					return true;
 				case R.id.action_sanatciya_ait_sarki_listesini_getir:
-
-					AkorDefterimSys.ToastMsj(activity, "Liste getirildi. Sanatçı ID:" + SanatciID, Toast.LENGTH_SHORT);
+					if(AkorDefterimSys.InternetErisimKontrolu()) {
+						FragmentDataConn.AnaEkranProgressIslemDialogAc(activity.getString(R.string.liste_indiriliyor_lutfen_bekleyiniz));
+						AkorDefterimSys.SarkiListesiGetir(null, 0, 0, 0, 0, SanatciAdi);
+					} else FragmentDataConn.StandartSnackBarMsj(activity.getString(R.string.internet_baglantisi_saglanamadi));
 					return true;
 				default:
 			}
