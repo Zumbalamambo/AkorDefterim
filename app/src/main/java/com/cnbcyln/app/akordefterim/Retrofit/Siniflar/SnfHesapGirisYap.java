@@ -9,6 +9,8 @@ public class SnfHesapGirisYap extends SnfHata {
     private String Aciklama;
     @SerializedName("HesapID")
     private String HesapID;
+    @SerializedName("HesapFirebaseToken")
+    private String HesapFirebaseToken;
     @SerializedName("HesapEPosta")
     private String HesapEPosta;
     @SerializedName("HesapParolaSHA1")
@@ -28,6 +30,10 @@ public class SnfHesapGirisYap extends SnfHata {
 
     public String getHesapID() {
         return HesapID;
+    }
+
+    public String getHesapFirebaseToken() {
+        return HesapFirebaseToken;
     }
 
     public String getHesapEPosta() {

@@ -11,7 +11,6 @@ import android.support.design.widget.CoordinatorLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.text.Editable;
 import android.text.Html;
-import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -217,7 +216,9 @@ public class Sarki_EkleDuzenle_Icerik extends AppCompatActivity implements Inter
 							}
 						} else {
 							AkorDefterimSys.prefAction = "Şarkı eklendi";
-							AkorDefterimSys.prefEklenenDuzenlenenSanatciAdiSarkiAdi = SecilenSanatciAdi + " - " + SecilenSarkiAdi;
+							AkorDefterimSys.prefEklenenDuzenlenenSanatciAdi = SecilenSanatciAdi;
+							AkorDefterimSys.prefEklenenDuzenlenenSarkiAdi = SecilenSarkiAdi;
+							AkorDefterimSys.prefEklenenDuzenlenenSarkiID = SecilenSarkiID;
 							AkorDefterimSys.KlavyeKapat();
 							finish();
 						}
@@ -225,7 +226,9 @@ public class Sarki_EkleDuzenle_Icerik extends AppCompatActivity implements Inter
 				} else if(Islem.equals("SarkiDuzenle")) {
 					if (veritabani.SarkiDuzenle(SecilenSarkiID, SecilenListeID, SecilenKategoriID, SecilenTarzID, SecilenSanatciAdi, SecilenSarkiAdi, AkorDefterimSys.AkorTagToHtml(AkorDefterimSys.KotuIcerikDuzenleme(txtSarkiIcerik)))) {
 						AkorDefterimSys.prefAction = "Şarkı düzenlendi";
-						AkorDefterimSys.prefEklenenDuzenlenenSanatciAdiSarkiAdi = SecilenSanatciAdi + " - " + SecilenSarkiAdi;
+						AkorDefterimSys.prefEklenenDuzenlenenSanatciAdi = SecilenSanatciAdi;
+						AkorDefterimSys.prefEklenenDuzenlenenSarkiAdi = SecilenSarkiAdi;
+						AkorDefterimSys.prefEklenenDuzenlenenSarkiID = SecilenSarkiID;
 						AkorDefterimSys.KlavyeKapat();
 						finish();
 					} else AkorDefterimSys.ToastMsj(activity, getString(R.string.islem_yapilirken_bir_hata_olustu), Toast.LENGTH_SHORT);
@@ -307,7 +310,9 @@ public class Sarki_EkleDuzenle_Icerik extends AppCompatActivity implements Inter
                     if(JSONSonuc.getBoolean("Sonuc")) AkorDefterimSys.prefAction = "Şarkı eklendi ve gönderildi";
                     else AkorDefterimSys.prefAction = "Şarkı eklendi ama gönderilemedi";
 
-					AkorDefterimSys.prefEklenenDuzenlenenSanatciAdiSarkiAdi = SecilenSanatciAdi + " - " + SecilenSarkiAdi;
+					AkorDefterimSys.prefEklenenDuzenlenenSanatciAdi = SecilenSanatciAdi;
+					AkorDefterimSys.prefEklenenDuzenlenenSarkiAdi = SecilenSarkiAdi;
+					AkorDefterimSys.prefEklenenDuzenlenenSarkiID = SecilenSarkiID;
 					AkorDefterimSys.KlavyeKapat();
 					finish();
 
@@ -334,7 +339,9 @@ public class Sarki_EkleDuzenle_Icerik extends AppCompatActivity implements Inter
 				case "ADDialog_Gondermeden_Devam_Et":
 					AkorDefterimSys.DismissAlertDialog(ADDialog);
 					AkorDefterimSys.prefAction = "Şarkı eklendi";
-					AkorDefterimSys.prefEklenenDuzenlenenSanatciAdiSarkiAdi = SecilenSanatciAdi + " - " + SecilenSarkiAdi;
+					AkorDefterimSys.prefEklenenDuzenlenenSanatciAdi = SecilenSanatciAdi;
+					AkorDefterimSys.prefEklenenDuzenlenenSarkiAdi = SecilenSarkiAdi;
+					AkorDefterimSys.prefEklenenDuzenlenenSarkiID = SecilenSarkiID;
 					AkorDefterimSys.KlavyeKapat();
 					finish();
 					break;

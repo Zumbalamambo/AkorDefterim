@@ -26,7 +26,6 @@ import android.view.inputmethod.InputMethodManager;
 import android.webkit.JavascriptInterface;
 import android.webkit.WebView;
 import android.widget.LinearLayout;
-import android.widget.Toast;
 
 import com.cnbcyln.app.akordefterim.Adaptorler.AdpKategori;
 import com.cnbcyln.app.akordefterim.Adaptorler.AdpListelerSPN;
@@ -52,7 +51,7 @@ public class Frg_Sarki extends Fragment implements OnClickListener {
 	Typeface YaziFontu;
 	InputMethodManager imm;
 	ProgressDialog PDIslem;
-	AlertDialog ADDialog;
+	public AlertDialog ADDialog;
 	SharedPreferences sharedPref;
 
 	List<SnfListeler> SnfListeler;
@@ -66,7 +65,7 @@ public class Frg_Sarki extends Fragment implements OnClickListener {
 	CoordinatorLayout coordinatorLayout_FrgSarki;
 	LinearLayout LLSayfa;
 	FloatingActionMenu FABMenu;
-	FloatingActionButton FABListemeEkleCikar, FABTranspozeArti, FABTranspozeEksi, FABPaylas, FABAkorCetveli;
+	FloatingActionButton FABSarkiEkleCikar, FABSarkiDuzenle, FABTranspozeArti, FABTranspozeEksi, FABPaylas, FABAkorCetveli;
 	WebView webview;
 
 	int firstVisibleItem, mPreviousVisibleItem, SecilenSarkiID, SecilenListeID, TranspozeNo;
@@ -101,21 +100,21 @@ public class Frg_Sarki extends Fragment implements OnClickListener {
 		imm = (InputMethodManager) activity.getSystemService(Context.INPUT_METHOD_SERVICE); // İstenildiği zaman klavyeyi gizlemeye yarayan kod tanımlayıcısı
 
 		//CSVIcerikScroll = (CustomScrollView) activity.findViewById(R.id.CSVIcerikScroll);
-		/*CSVIcerikScroll.setOnScrollChangeListener(new View.OnScrollChangeListener() {
-			@Override
-			public void onScrollChange(View v, int scrollX, int scrollY, int oldScrollX, int oldScrollY) {
-				if (scrollY > firstVisibleItem) {
-					firstVisibleItem = scrollY / 150;
-				}
+			/*CSVIcerikScroll.setOnScrollChangeListener(new View.OnScrollChangeListener() {
+				@Override
+				public void onScrollChange(View v, int scrollX, int scrollY, int oldScrollX, int oldScrollY) {
+					if (scrollY > firstVisibleItem) {
+						firstVisibleItem = scrollY / 150;
+					}
 
-				if (firstVisibleItem > mPreviousVisibleItem) {
-					FABMenu.hideMenuButton(true);
-				} else if (firstVisibleItem < mPreviousVisibleItem) {
-					FABMenu.showMenuButton(true);
+					if (firstVisibleItem > mPreviousVisibleItem) {
+						FABMenu.hideMenuButton(true);
+					} else if (firstVisibleItem < mPreviousVisibleItem) {
+						FABMenu.showMenuButton(true);
+					}
+					mPreviousVisibleItem = firstVisibleItem;
 				}
-				mPreviousVisibleItem = firstVisibleItem;
-			}
-		});*/
+			});*/
 
 		coordinatorLayout_FrgSarki = (CoordinatorLayout) activity.findViewById(R.id.coordinatorLayout_FrgSarki);
 
@@ -143,35 +142,38 @@ public class Frg_Sarki extends Fragment implements OnClickListener {
 		FABTranspozeEksi = (FloatingActionButton) activity.findViewById(R.id.FABTranspozeEksi);
 		FABTranspozeEksi.setOnClickListener(this);
 
-		FABListemeEkleCikar = (FloatingActionButton) activity.findViewById(R.id.FABListemeEkleCikar);
-		FABListemeEkleCikar.setOnClickListener(this);
+		FABSarkiEkleCikar = (FloatingActionButton) activity.findViewById(R.id.FABSarkiEkleCikar);
+		FABSarkiEkleCikar.setOnClickListener(this);
+
+		FABSarkiDuzenle = (FloatingActionButton) activity.findViewById(R.id.FABSarkiDuzenle);
+		FABSarkiDuzenle.setOnClickListener(this);
 
 		//lblsarki_icerik = (TextView) activity.findViewById(R.id.lblsarki_icerik);
-		/*lblsarki_icerik.setOnTouchListener(new OnTouchListener() { //İKİ PARMAK ZOOM (CustomScroll ile birlikte çalışır..)
-			@SuppressLint("ClickableViewAccessibility")
-			@Override
-			public boolean onTouch(View v, MotionEvent event) {
-				if (event.getPointerCount() == 2) {
-					CSVIcerikScroll.setEnableScrolling(false);
-					int action = event.getAction();
-					int pureaction = action & MotionEvent.ACTION_MASK;
+			/*lblsarki_icerik.setOnTouchListener(new OnTouchListener() { //İKİ PARMAK ZOOM (CustomScroll ile birlikte çalışır..)
+				@SuppressLint("ClickableViewAccessibility")
+				@Override
+				public boolean onTouch(View v, MotionEvent event) {
+					if (event.getPointerCount() == 2) {
+						CSVIcerikScroll.setEnableScrolling(false);
+						int action = event.getAction();
+						int pureaction = action & MotionEvent.ACTION_MASK;
 
-					if (pureaction == MotionEvent.ACTION_POINTER_DOWN) {
-						mBaseDist = getDistance(event);
-						mBaseRatio = mRatio;
+						if (pureaction == MotionEvent.ACTION_POINTER_DOWN) {
+							mBaseDist = getDistance(event);
+							mBaseRatio = mRatio;
+						} else {
+							float delta = (getDistance(event) - mBaseDist) / STEP;
+							float multi = (float)Math.pow(2, delta);
+							mRatio = Math.min(1024.0f, Math.max(0.1f, mBaseRatio * multi));
+							lblsarki_icerik.setTextSize(mRatio+13);
+						}
 					} else {
-						float delta = (getDistance(event) - mBaseDist) / STEP;
-						float multi = (float)Math.pow(2, delta);
-						mRatio = Math.min(1024.0f, Math.max(0.1f, mBaseRatio * multi));
-						lblsarki_icerik.setTextSize(mRatio+13);
+						CSVIcerikScroll.setEnableScrolling(true);
 					}
-				} else {
-					CSVIcerikScroll.setEnableScrolling(true);
-				}
 
-				return true;
-			}
-		});*/
+					return true;
+				}
+			});*/
 
 		webview = (WebView) activity.findViewById(R.id.webview);
 		webview.getSettings().setJavaScriptEnabled(true);
@@ -204,21 +206,21 @@ public class Frg_Sarki extends Fragment implements OnClickListener {
 			}
 		});
 
-		/*webview.setOnScrollChangeListener(new View.OnScrollChangeListener() {
-			@Override
-			public void onScrollChange(View view, int scrollX, int scrollY, int oldScrollX, int oldScrollY) {
-				if (scrollY > firstVisibleItem) {
-					firstVisibleItem = scrollY / 150;
-				}
+			/*webview.setOnScrollChangeListener(new View.OnScrollChangeListener() {
+				@Override
+				public void onScrollChange(View view, int scrollX, int scrollY, int oldScrollX, int oldScrollY) {
+					if (scrollY > firstVisibleItem) {
+						firstVisibleItem = scrollY / 150;
+					}
 
-				if (firstVisibleItem > mPreviousVisibleItem) {
-					FABMenu.hideMenuButton(true);
-				} else if (firstVisibleItem < mPreviousVisibleItem) {
-					FABMenu.showMenuButton(true);
+					if (firstVisibleItem > mPreviousVisibleItem) {
+						FABMenu.hideMenuButton(true);
+					} else if (firstVisibleItem < mPreviousVisibleItem) {
+						FABMenu.showMenuButton(true);
+					}
+					mPreviousVisibleItem = firstVisibleItem;
 				}
-				mPreviousVisibleItem = firstVisibleItem;
-			}
-		});*/
+			});*/
 
 		Bundle bundle = this.getArguments();
 
@@ -242,29 +244,26 @@ public class Frg_Sarki extends Fragment implements OnClickListener {
 	}
 
 	@Override
-	public void onSaveInstanceState(Bundle savedInstanceState) {
-		super.onSaveInstanceState(savedInstanceState);
-	}
-
-	@Override
 	public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
 		super.onCreateContextMenu(menu, v, menuInfo);
 
 		String[] SarkiPaylasContextMenu = getResources().getStringArray(R.array.SarkiPaylasContextMenu);
+		int i = 0;
 
 		for (String aSarkiPaylasContextMenu : SarkiPaylasContextMenu) {
-			menu.add(0, v.getId(), 0, aSarkiPaylasContextMenu);
+			menu.add(0, i, 0, aSarkiPaylasContextMenu);
+			i++;
 		}
 	}
 
 	@Override
 	public boolean onContextItemSelected(MenuItem item) {
-		switch (item.getTitle().toString()) {
-			case "Google":
+		switch (item.getItemId()) {
+			case 0:
 				AkorDefterimSys.SosyalMedyaSarkiPaylas("Google", SecilenSanatciAdi + " - " + SecilenSarkiAdi, getString(R.string.sarki_paylas_google_icerik, SecilenSanatciAdi, SecilenSarkiAdi, "https://www.cbcapp.net"), "https://www.cbcapp.net");
 
 				break;
-			case "Facebook":
+			case 1:
 				AkorDefterimSys.SosyalMedyaSarkiPaylas("Facebook", SecilenSanatciAdi + " - " + SecilenSarkiAdi, getString(R.string.sarki_paylas_facebook_icerik, SecilenSanatciAdi, SecilenSarkiAdi), "https://www.cbcapp.net");
 
 				break;
@@ -278,8 +277,8 @@ public class Frg_Sarki extends Fragment implements OnClickListener {
 	@Override
 	public void onClick(View v) {
 		switch (v.getId()) {
-			case R.id.FABListemeEkleCikar:
-				if(FABListemeEkleCikar.getLabelText().equals(getString(R.string.listeme_ekle))) {
+			case R.id.FABSarkiEkleCikar:
+				if(FABSarkiEkleCikar.getLabelText().equals(getString(R.string.listeme_ekle))) {
 					Intent mIntent = new Intent(activity, Sarki_EkleDuzenle.class);
 					mIntent.putExtra("Islem", "SarkiEkle");
 					mIntent.putExtra("SecilenSanatciAdi", SecilenSanatciAdi);
@@ -287,55 +286,30 @@ public class Frg_Sarki extends Fragment implements OnClickListener {
 					mIntent.putExtra("SecilenSarkiIcerik", SecilenSarkiIcerik);
 
 					AkorDefterimSys.EkranGetir(mIntent, "Slide");
-
-					/*SarkiIcerikTemp = SarkiIcerik; // IcerikTemp'i orjinal içerik yapıyoruz..
-
-					final WebView Dialog_webview = (WebView) ViewDialogContent.findViewById(R.id.Dialog_webview);
-					Dialog_webview.loadDataWithBaseURL(null, "<html><body>" + SarkiIcerikTemp + "</body></html>", "text/html", "utf-8", null);
-
-					Button Dialog_btnTranspozeArti = (Button) ViewDialogContent.findViewById(R.id.Dialog_btnTranspozeArti);
-					Dialog_btnTranspozeArti.setTypeface(YaziFontu);
-					Dialog_btnTranspozeArti.setOnClickListener(new OnClickListener() {
-						public void onClick(View v) {
-							SarkiIcerikTemp = AkorDefterimSys.Transpoze("+1", SarkiIcerikTemp).toString();
-
-							Dialog_webview.loadDataWithBaseURL(null, "<html><body>" + SarkiIcerikTemp + "</body></html>", "text/html", "utf-8", null);
-							TranspozeNo++;
-
-							if(TranspozeNo < 0) Dialog_lblTranspozeSeviye.setText(String.valueOf(TranspozeNo));
-							else if(TranspozeNo == 0) Dialog_lblTranspozeSeviye.setText(getString(R.string.orjinal_ton));
-							else if(TranspozeNo > 0) Dialog_lblTranspozeSeviye.setText("+" + String.valueOf(TranspozeNo));
-						}
-					});
-
-					Button Dialog_btnTranspozeEksi = (Button) ViewDialogContent.findViewById(R.id.Dialog_btnTranspozeEksi);
-					Dialog_btnTranspozeEksi.setTypeface(YaziFontu);
-					Dialog_btnTranspozeEksi.setOnClickListener(new OnClickListener() {
-						public void onClick(View v) {
-							SarkiIcerikTemp = AkorDefterimSys.Transpoze("-1", SarkiIcerikTemp).toString();
-
-							Dialog_webview.loadDataWithBaseURL(null, "<html><body>" + SarkiIcerikTemp + "</body></html>", "text/html", "utf-8", null);
-							TranspozeNo--;
-
-							if(TranspozeNo < 0) Dialog_lblTranspozeSeviye.setText(String.valueOf(TranspozeNo));
-							else if(TranspozeNo == 0) Dialog_lblTranspozeSeviye.setText(getString(R.string.orjinal_ton));
-							else if(TranspozeNo > 0) Dialog_lblTranspozeSeviye.setText("+" + String.valueOf(TranspozeNo));
-						}
-					});*/
-				} else if(FABListemeEkleCikar.getLabelText().equals(getString(R.string.listemden_sil))) {
-					if (veritabani.SarkiSil(SecilenSarkiID)) {
-						FABMenuGuncelle();
-
-						if(SecilenListeID != 0) {
-							FragmentDataConn.FragmentSayfaGetir("anasayfa");
-							//FragmentDataConn.SarkiListesiDoldur();
-							FragmentDataConn.SlidingIslem(2); //Sağ sliding aç
-						}
-
-						AkorDefterimSys.ToastMsj(activity, getString(R.string.yerel_repertuvar_guncellendi), Toast.LENGTH_SHORT);
-					} else AkorDefterimSys.ToastMsj(activity, getString(R.string.islem_yapilirken_bir_hata_olustu), Toast.LENGTH_SHORT);
+				} else if(FABSarkiEkleCikar.getLabelText().equals(getString(R.string.listemden_sil))) {
+					if(!AkorDefterimSys.AlertDialogisShowing(ADDialog)) {
+						ADDialog = AkorDefterimSys.H2ButtonCustomAlertDialog(activity,
+								getString(R.string.sil),
+								getString(R.string.sarki_sil_soru, SecilenSanatciAdi, SecilenSarkiAdi),
+								getString(R.string.evet),
+								"Frg_Sarki_ADDialog_SarkiSil_Evet",
+								getString(R.string.hayir),
+								"Frg_Sarki_ADDialog_SarkiSil_Hayir");
+						ADDialog.getWindow().getAttributes().windowAnimations = R.style.DialogAnimation;
+						ADDialog.show();
+					}
 				}
 
+				break;
+			case R.id.FABSarkiDuzenle:
+				Intent mIntent = new Intent(activity, Sarki_EkleDuzenle.class);
+				mIntent.putExtra("Islem", "SarkiDuzenle");
+				mIntent.putExtra("SecilenSarkiID", SecilenSarkiID);
+				mIntent.putExtra("SecilenSanatciAdi", SecilenSanatciAdi);
+				mIntent.putExtra("SecilenSarkiAdi", SecilenSarkiAdi);
+				mIntent.putExtra("SecilenSarkiIcerik", veritabani.SarkiIcerikGetir(SecilenSarkiID));
+
+				AkorDefterimSys.EkranGetir(mIntent, "Slide");
 				break;
 			case R.id.FABTranspozeArti:
 				SecilenSarkiIcerikTemp = AkorDefterimSys.Transpoze("+1", SecilenSarkiIcerikTemp).toString();
@@ -351,6 +325,7 @@ public class Frg_Sarki extends Fragment implements OnClickListener {
 			case R.id.FABPaylas:
 				activity.openContextMenu(FABPaylas);
 				break;
+
 		}
 	}
 
@@ -359,51 +334,52 @@ public class Frg_Sarki extends Fragment implements OnClickListener {
 		FABMenu.removeMenuButton(FABPaylas);
 		FABMenu.removeMenuButton(FABTranspozeArti);
 		FABMenu.removeMenuButton(FABTranspozeEksi);
-		FABMenu.removeMenuButton(FABListemeEkleCikar);
+		FABMenu.removeMenuButton(FABSarkiEkleCikar);
+		FABMenu.removeMenuButton(FABSarkiDuzenle);
+
+		FABAkorCetveli.setButtonSize(FloatingActionButton.SIZE_MINI);
+		FABAkorCetveli.setLabelText(getString(R.string.akor_cetveli));
+		FABAkorCetveli.setImageResource(R.drawable.akor_cetveli);
+		FABAkorCetveli.setColorNormal(ContextCompat.getColor(getActivity(), R.color.KoyuMavi2));
+		FABAkorCetveli.setColorPressed(ContextCompat.getColor(getActivity(), R.color.colorPrimary));
+
+		FABMenu.addMenuButton(FABAkorCetveli);
+
+		FABTranspozeArti.setButtonSize(FloatingActionButton.SIZE_MINI);
+		FABTranspozeArti.setLabelText(getString(R.string.tizlestir));
+		FABTranspozeArti.setImageResource(R.drawable.ic_transpoze_arti_beyaz);
+		FABTranspozeArti.setColorNormal(ContextCompat.getColor(getActivity(), R.color.KoyuMavi2));
+		FABTranspozeArti.setColorPressed(ContextCompat.getColor(getActivity(), R.color.colorPrimary));
+
+		FABMenu.addMenuButton(FABTranspozeArti);
+
+		FABTranspozeEksi.setButtonSize(FloatingActionButton.SIZE_MINI);
+		FABTranspozeEksi.setLabelText(getString(R.string.pestlestir));
+		FABTranspozeEksi.setImageResource(R.drawable.ic_transpoze_eksi_beyaz);
+		FABTranspozeEksi.setColorNormal(ContextCompat.getColor(getActivity(), R.color.KoyuMavi2));
+		FABTranspozeEksi.setColorPressed(ContextCompat.getColor(getActivity(), R.color.colorPrimary));
+
+		FABMenu.addMenuButton(FABTranspozeEksi);
 
 		if(sharedPref.getString("prefOturumTipi", "Cevrimdisi").equals("Cevrimdisi")) { // Çevrimdışı giriş yapıldıysa
 			//FABMenu.hideMenuButton(true);
-			FABAkorCetveli.setButtonSize(FloatingActionButton.SIZE_MINI);
-			FABAkorCetveli.setLabelText(getString(R.string.akor_cetveli));
-			FABAkorCetveli.setImageResource(R.drawable.akor_cetveli);
-			FABAkorCetveli.setColorNormal(ContextCompat.getColor(getActivity(), R.color.KoyuMavi2));
-			FABAkorCetveli.setColorPressed(ContextCompat.getColor(getActivity(), R.color.colorPrimary));
+			FABSarkiDuzenle.setButtonSize(FloatingActionButton.SIZE_MINI);
+			FABSarkiDuzenle.setLabelText(getString(R.string.duzenle));
+			FABSarkiDuzenle.setImageResource(R.drawable.ic_book_edit);
+			FABSarkiDuzenle.setColorNormal(ContextCompat.getColor(getActivity(), R.color.KoyuMavi2));
+			FABSarkiDuzenle.setColorPressed(ContextCompat.getColor(getActivity(), R.color.colorPrimary));
 
-			FABMenu.addMenuButton(FABAkorCetveli);
+			FABMenu.addMenuButton(FABSarkiDuzenle);
 
-			FABTranspozeArti.setButtonSize(FloatingActionButton.SIZE_MINI);
-			FABTranspozeArti.setLabelText(getString(R.string.tizlestir));
-			FABTranspozeArti.setImageResource(R.drawable.ic_transpoze_arti_beyaz);
-			FABTranspozeArti.setColorNormal(ContextCompat.getColor(getActivity(), R.color.KoyuMavi2));
-			FABTranspozeArti.setColorPressed(ContextCompat.getColor(getActivity(), R.color.colorPrimary));
+			FABSarkiEkleCikar.setButtonSize(FloatingActionButton.SIZE_MINI);
+			FABSarkiEkleCikar.setLabelText(getString(R.string.listemden_sil));
+			FABSarkiEkleCikar.setImageResource(R.drawable.book_minus_beyaz);
+			FABSarkiEkleCikar.setColorNormal(ContextCompat.getColor(getActivity(), R.color.KoyuMavi2));
+			FABSarkiEkleCikar.setColorPressed(ContextCompat.getColor(getActivity(), R.color.colorPrimary));
 
-			FABMenu.addMenuButton(FABTranspozeArti);
-
-			FABTranspozeEksi.setButtonSize(FloatingActionButton.SIZE_MINI);
-			FABTranspozeEksi.setLabelText(getString(R.string.pestlestir));
-			FABTranspozeEksi.setImageResource(R.drawable.ic_transpoze_eksi_beyaz);
-			FABTranspozeEksi.setColorNormal(ContextCompat.getColor(getActivity(), R.color.KoyuMavi2));
-			FABTranspozeEksi.setColorPressed(ContextCompat.getColor(getActivity(), R.color.colorPrimary));
-
-			FABMenu.addMenuButton(FABTranspozeEksi);
-
-			FABListemeEkleCikar.setButtonSize(FloatingActionButton.SIZE_MINI);
-			FABListemeEkleCikar.setLabelText(getString(R.string.listemden_sil));
-			FABListemeEkleCikar.setImageResource(R.drawable.book_minus_beyaz);
-			FABListemeEkleCikar.setColorNormal(ContextCompat.getColor(getActivity(), R.color.KoyuMavi2));
-			FABListemeEkleCikar.setColorPressed(ContextCompat.getColor(getActivity(), R.color.colorPrimary));
-
-			FABMenu.addMenuButton(FABListemeEkleCikar);
+			FABMenu.addMenuButton(FABSarkiEkleCikar);
 		} else {
 			if(SecilenListeID == 0) { // Getirilen liste Akor Defterim listesi ise
-				FABAkorCetveli.setButtonSize(FloatingActionButton.SIZE_MINI);
-				FABAkorCetveli.setLabelText(getString(R.string.akor_cetveli));
-				FABAkorCetveli.setImageResource(R.drawable.akor_cetveli);
-				FABAkorCetveli.setColorNormal(ContextCompat.getColor(getActivity(), R.color.KoyuMavi2));
-				FABAkorCetveli.setColorPressed(ContextCompat.getColor(getActivity(), R.color.colorPrimary));
-
-				FABMenu.addMenuButton(FABAkorCetveli);
-
 				FABPaylas.setButtonSize(FloatingActionButton.SIZE_MINI);
 				FABPaylas.setLabelText(getString(R.string.paylas));
 				FABPaylas.setImageResource(R.drawable.ic_share);
@@ -412,69 +388,29 @@ public class Frg_Sarki extends Fragment implements OnClickListener {
 
 				FABMenu.addMenuButton(FABPaylas);
 
-				FABTranspozeArti.setButtonSize(FloatingActionButton.SIZE_MINI);
-				FABTranspozeArti.setLabelText(getString(R.string.tizlestir));
-				FABTranspozeArti.setImageResource(R.drawable.ic_transpoze_arti_beyaz);
-				FABTranspozeArti.setColorNormal(ContextCompat.getColor(getActivity(), R.color.KoyuMavi2));
-				FABTranspozeArti.setColorPressed(ContextCompat.getColor(getActivity(), R.color.colorPrimary));
+				FABSarkiEkleCikar.setButtonSize(FloatingActionButton.SIZE_MINI);
+				FABSarkiEkleCikar.setLabelText(getString(R.string.listeme_ekle));
+				FABSarkiEkleCikar.setImageResource(R.drawable.book_plus_beyaz);
+				FABSarkiEkleCikar.setColorNormal(ContextCompat.getColor(getActivity(), R.color.KoyuMavi2));
+				FABSarkiEkleCikar.setColorPressed(ContextCompat.getColor(getActivity(), R.color.colorPrimary));
 
-				FABMenu.addMenuButton(FABTranspozeArti);
-
-				FABTranspozeEksi.setButtonSize(FloatingActionButton.SIZE_MINI);
-				FABTranspozeEksi.setLabelText(getString(R.string.pestlestir));
-				FABTranspozeEksi.setImageResource(R.drawable.ic_transpoze_eksi_beyaz);
-				FABTranspozeEksi.setColorNormal(ContextCompat.getColor(getActivity(), R.color.KoyuMavi2));
-				FABTranspozeEksi.setColorPressed(ContextCompat.getColor(getActivity(), R.color.colorPrimary));
-
-				FABMenu.addMenuButton(FABTranspozeEksi);
-
-				FABListemeEkleCikar.setButtonSize(FloatingActionButton.SIZE_MINI);
-				FABListemeEkleCikar.setLabelText(getString(R.string.listeme_ekle));
-				FABListemeEkleCikar.setImageResource(R.drawable.book_plus_beyaz);
-				FABListemeEkleCikar.setColorNormal(ContextCompat.getColor(getActivity(), R.color.KoyuMavi2));
-				FABListemeEkleCikar.setColorPressed(ContextCompat.getColor(getActivity(), R.color.colorPrimary));
-
-				FABMenu.addMenuButton(FABListemeEkleCikar);
+				FABMenu.addMenuButton(FABSarkiEkleCikar);
 			} else { // Getirilen liste Cihaz veritabanındaki liste ise
-				FABAkorCetveli.setButtonSize(FloatingActionButton.SIZE_MINI);
-				FABAkorCetveli.setLabelText(getString(R.string.akor_cetveli));
-				FABAkorCetveli.setImageResource(R.drawable.akor_cetveli);
-				FABAkorCetveli.setColorNormal(ContextCompat.getColor(getActivity(), R.color.KoyuMavi2));
-				FABAkorCetveli.setColorPressed(ContextCompat.getColor(getActivity(), R.color.colorPrimary));
+				FABSarkiDuzenle.setButtonSize(FloatingActionButton.SIZE_MINI);
+				FABSarkiDuzenle.setLabelText(getString(R.string.duzenle));
+				FABSarkiDuzenle.setImageResource(R.drawable.ic_book_edit);
+				FABSarkiDuzenle.setColorNormal(ContextCompat.getColor(getActivity(), R.color.KoyuMavi2));
+				FABSarkiDuzenle.setColorPressed(ContextCompat.getColor(getActivity(), R.color.colorPrimary));
 
-				FABMenu.addMenuButton(FABAkorCetveli);
+				FABMenu.addMenuButton(FABSarkiDuzenle);
 
-				FABPaylas.setButtonSize(FloatingActionButton.SIZE_MINI);
-				FABPaylas.setLabelText(getString(R.string.paylas));
-				FABPaylas.setImageResource(R.drawable.ic_share);
-				FABPaylas.setColorNormal(ContextCompat.getColor(getActivity(), R.color.KoyuMavi2));
-				FABPaylas.setColorPressed(ContextCompat.getColor(getActivity(), R.color.colorPrimary));
+				FABSarkiEkleCikar.setButtonSize(FloatingActionButton.SIZE_MINI);
+				FABSarkiEkleCikar.setLabelText(getString(R.string.listemden_sil));
+				FABSarkiEkleCikar.setImageResource(R.drawable.book_minus_beyaz);
+				FABSarkiEkleCikar.setColorNormal(ContextCompat.getColor(getActivity(), R.color.KoyuMavi2));
+				FABSarkiEkleCikar.setColorPressed(ContextCompat.getColor(getActivity(), R.color.colorPrimary));
 
-				FABMenu.addMenuButton(FABPaylas);
-
-				FABTranspozeArti.setButtonSize(FloatingActionButton.SIZE_MINI);
-				FABTranspozeArti.setLabelText(getString(R.string.tizlestir));
-				FABTranspozeArti.setImageResource(R.drawable.ic_transpoze_arti_beyaz);
-				FABTranspozeArti.setColorNormal(ContextCompat.getColor(getActivity(), R.color.KoyuMavi2));
-				FABTranspozeArti.setColorPressed(ContextCompat.getColor(getActivity(), R.color.colorPrimary));
-
-				FABMenu.addMenuButton(FABTranspozeArti);
-
-				FABTranspozeEksi.setButtonSize(FloatingActionButton.SIZE_MINI);
-				FABTranspozeEksi.setLabelText(getString(R.string.pestlestir));
-				FABTranspozeEksi.setImageResource(R.drawable.ic_transpoze_eksi_beyaz);
-				FABTranspozeEksi.setColorNormal(ContextCompat.getColor(getActivity(), R.color.KoyuMavi2));
-				FABTranspozeEksi.setColorPressed(ContextCompat.getColor(getActivity(), R.color.colorPrimary));
-
-				FABMenu.addMenuButton(FABTranspozeEksi);
-
-				FABListemeEkleCikar.setButtonSize(FloatingActionButton.SIZE_MINI);
-				FABListemeEkleCikar.setLabelText(getString(R.string.listemden_sil));
-				FABListemeEkleCikar.setImageResource(R.drawable.book_minus_beyaz);
-				FABListemeEkleCikar.setColorNormal(ContextCompat.getColor(getActivity(), R.color.KoyuMavi2));
-				FABListemeEkleCikar.setColorPressed(ContextCompat.getColor(getActivity(), R.color.colorPrimary));
-
-				FABMenu.addMenuButton(FABListemeEkleCikar);
+				FABMenu.addMenuButton(FABSarkiEkleCikar);
 			}
 		}
 	}
@@ -519,5 +455,18 @@ public class Frg_Sarki extends Fragment implements OnClickListener {
 
 	public void StandartSnackBarMsj(String Mesaj) {
 		AkorDefterimSys.StandartSnackBarMsj(coordinatorLayout_FrgSarki, Mesaj);
+	}
+
+	public void SarkiSil() {
+		if (veritabani.SarkiSil(SecilenSarkiID)) {
+			FABMenuGuncelle();
+
+			if(SecilenListeID != 0) {
+				FragmentDataConn.FragmentSayfaGetir("anasayfa");
+				FragmentDataConn.SarkiListesiGetir();
+			}
+
+			FragmentDataConn.StandartSnackBarMsj("Sağ", getString(R.string.sarki_silindi, SecilenSarkiAdi, SecilenSanatciAdi));
+		} else StandartSnackBarMsj(getString(R.string.islem_yapilirken_bir_hata_olustu));
 	}
 }

@@ -2,7 +2,9 @@ package com.cnbcyln.app.akordefterim;
 
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.app.Dialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Typeface;
@@ -12,6 +14,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.ContextMenu;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
@@ -330,18 +333,22 @@ public class Sarki_Yonetimi extends AppCompatActivity implements Interface_Async
         AkorDefterimSys.activity = activity;
 
         if(AkorDefterimSys.prefAction.equals("Şarkı eklendi")) {
-            AkorDefterimSys.StandartSnackBarMsj(coordinatorLayout, getString(R.string.sarki_eklendi, AkorDefterimSys.prefEklenenDuzenlenenSanatciAdiSarkiAdi));
+            AkorDefterimSys.StandartSnackBarMsj(coordinatorLayout, getString(R.string.sarki_eklendi, AkorDefterimSys.prefEklenenDuzenlenenSanatciAdi, AkorDefterimSys.prefEklenenDuzenlenenSarkiAdi));
             AkorDefterimSys.prefAction = "";
-            AkorDefterimSys.prefEklenenDuzenlenenSanatciAdiSarkiAdi = "";
+            AkorDefterimSys.prefEklenenDuzenlenenSanatciAdi = "";
+            AkorDefterimSys.prefEklenenDuzenlenenSarkiAdi = "";
+            AkorDefterimSys.prefEklenenDuzenlenenSarkiID = 0;
         } else if(AkorDefterimSys.prefAction.equals("Şarkı düzenlendi")) {
-            AkorDefterimSys.StandartSnackBarMsj(coordinatorLayout, getString(R.string.sarki_duzenlendi, AkorDefterimSys.prefEklenenDuzenlenenSanatciAdiSarkiAdi));
+            AkorDefterimSys.StandartSnackBarMsj(coordinatorLayout, getString(R.string.sarki_duzenlendi, AkorDefterimSys.prefEklenenDuzenlenenSanatciAdi, AkorDefterimSys.prefEklenenDuzenlenenSarkiAdi));
             AkorDefterimSys.prefAction = "";
-            AkorDefterimSys.prefEklenenDuzenlenenSanatciAdiSarkiAdi = "";
+            AkorDefterimSys.prefEklenenDuzenlenenSanatciAdi = "";
+            AkorDefterimSys.prefEklenenDuzenlenenSarkiAdi = "";
+            AkorDefterimSys.prefEklenenDuzenlenenSarkiID = 0;
         } else if(AkorDefterimSys.prefAction.equals("Şarkı eklendi ve gönderildi")) {
             if(!AkorDefterimSys.AlertDialogisShowing(ADDialog)) {
                 ADDialog = AkorDefterimSys.CustomAlertDialog(activity,
                         getString(R.string.sarki_yonetimi),
-                        getString(R.string.sarki_eklendi_gonderildi, AkorDefterimSys.prefEklenenDuzenlenenSanatciAdiSarkiAdi, getString(R.string.uygulama_adi)),
+                        getString(R.string.sarki_eklendi_gonderildi, AkorDefterimSys.prefEklenenDuzenlenenSanatciAdi, AkorDefterimSys.prefEklenenDuzenlenenSarkiAdi, getString(R.string.uygulama_adi)),
                         getString(R.string.tamam),
                         "ADDialog_Kapat");
                 ADDialog.getWindow().getAttributes().windowAnimations = R.style.DialogAnimation;
@@ -349,12 +356,14 @@ public class Sarki_Yonetimi extends AppCompatActivity implements Interface_Async
             }
 
             AkorDefterimSys.prefAction = "";
-            AkorDefterimSys.prefEklenenDuzenlenenSanatciAdiSarkiAdi = "";
+            AkorDefterimSys.prefEklenenDuzenlenenSanatciAdi = "";
+            AkorDefterimSys.prefEklenenDuzenlenenSarkiAdi = "";
+            AkorDefterimSys.prefEklenenDuzenlenenSarkiID = 0;
         } else if(AkorDefterimSys.prefAction.equals("Şarkı eklendi ama gönderilemedi")) {
             if(!AkorDefterimSys.AlertDialogisShowing(ADDialog)) {
                 ADDialog = AkorDefterimSys.CustomAlertDialog(activity,
                         getString(R.string.sarki_yonetimi),
-                        getString(R.string.sarki_eklendi_gonderilemedi, AkorDefterimSys.prefEklenenDuzenlenenSanatciAdiSarkiAdi),
+                        getString(R.string.sarki_eklendi_gonderilemedi, AkorDefterimSys.prefEklenenDuzenlenenSanatciAdi, AkorDefterimSys.prefEklenenDuzenlenenSarkiAdi),
                         getString(R.string.tamam),
                         "ADDialog_Kapat");
                 ADDialog.getWindow().getAttributes().windowAnimations = R.style.DialogAnimation;
@@ -362,7 +371,9 @@ public class Sarki_Yonetimi extends AppCompatActivity implements Interface_Async
             }
 
             AkorDefterimSys.prefAction = "";
-            AkorDefterimSys.prefEklenenDuzenlenenSanatciAdiSarkiAdi = "";
+            AkorDefterimSys.prefEklenenDuzenlenenSanatciAdi = "";
+            AkorDefterimSys.prefEklenenDuzenlenenSarkiAdi = "";
+            AkorDefterimSys.prefEklenenDuzenlenenSarkiID = 0;
         }
 
         spnListeGetir();

@@ -55,17 +55,33 @@
 				app:layout_constraintStart_toStartOf="@+id/v_guideline1"
 				app:layout_constraintTop_toBottomOf="@+id/lblListeler" />
 
-			<TextView
-				android:id="@+id/lblKategoriler"
+			<LinearLayout
+				android:id="@+id/LLKategoriler"
 				android:layout_width="0dp"
 				android:layout_height="wrap_content"
 				android:layout_marginTop="24dp"
-				android:text="@string/kategoriler"
-				android:textColor="@color/KoyuYazi"
-				style="@style/TextAppearance.AppCompat.Small.Inverse"
+				android:orientation="horizontal"
 				app:layout_constraintEnd_toStartOf="@+id/v_guideline2"
 				app:layout_constraintStart_toStartOf="@+id/v_guideline1"
-				app:layout_constraintTop_toBottomOf="@+id/spnListeler" />
+				app:layout_constraintTop_toBottomOf="@+id/spnListeler">
+
+				<TextView
+					android:id="@+id/lblKategoriler"
+					android:layout_width="wrap_content"
+					android:layout_height="wrap_content"
+					android:text="@string/kategoriler"
+					android:textColor="@color/KoyuYazi"
+					style="@style/TextAppearance.AppCompat.Small.Inverse" />
+
+				<com.github.ybq.android.spinkit.SpinKitView
+					android:id="@+id/SKVKategoriler"
+					android:layout_width="wrap_content"
+					android:layout_height="wrap_content"
+					android:layout_marginLeft="8dp"
+					android:layout_gravity="center_vertical"
+					style="@style/SpinKitView.Small.Wave"
+					app:SpinKit_Color="@color/colorAccent"/>
+			</LinearLayout>
 
 			<Spinner
 				android:id="@+id/spnKategoriler"
@@ -75,19 +91,35 @@
 				android:background="@drawable/custom_spinner"
 				app:layout_constraintEnd_toStartOf="@+id/v_guideline2"
 				app:layout_constraintStart_toStartOf="@+id/v_guideline1"
-				app:layout_constraintTop_toBottomOf="@+id/lblKategoriler"/>
+				app:layout_constraintTop_toBottomOf="@+id/LLKategoriler"/>
 
-			<TextView
-				android:id="@+id/lblTarzlar"
+			<LinearLayout
+				android:id="@+id/LLTarzlar"
 				android:layout_width="0dp"
 				android:layout_height="wrap_content"
 				android:layout_marginTop="24dp"
-				android:text="@string/tarzlar"
-				android:textColor="@color/KoyuYazi"
-				style="@style/TextAppearance.AppCompat.Small.Inverse"
+				android:orientation="horizontal"
 				app:layout_constraintEnd_toStartOf="@+id/v_guideline2"
 				app:layout_constraintStart_toStartOf="@+id/v_guideline1"
-				app:layout_constraintTop_toBottomOf="@+id/spnKategoriler" />
+				app:layout_constraintTop_toBottomOf="@+id/spnKategoriler">
+
+				<TextView
+					android:id="@+id/lblTarzlar"
+					android:layout_width="wrap_content"
+					android:layout_height="wrap_content"
+					android:text="@string/tarzlar"
+					android:textColor="@color/KoyuYazi"
+					style="@style/TextAppearance.AppCompat.Small.Inverse" />
+
+				<com.github.ybq.android.spinkit.SpinKitView
+					android:id="@+id/SKVTarzlar"
+					android:layout_width="wrap_content"
+					android:layout_height="wrap_content"
+					android:layout_marginLeft="8dp"
+					android:layout_gravity="center_vertical"
+					style="@style/SpinKitView.Small.Wave"
+					app:SpinKit_Color="@color/colorAccent"/>
+			</LinearLayout>
 
 			<Spinner
 				android:id="@+id/spnTarzlar"
@@ -97,7 +129,7 @@
 				android:background="@drawable/custom_spinner"
 				app:layout_constraintEnd_toStartOf="@+id/v_guideline2"
 				app:layout_constraintStart_toStartOf="@+id/v_guideline1"
-				app:layout_constraintTop_toBottomOf="@+id/lblTarzlar"/>
+				app:layout_constraintTop_toBottomOf="@+id/LLTarzlar"/>
 
 			<TextView
 				android:id="@+id/lblListelemeTipi"

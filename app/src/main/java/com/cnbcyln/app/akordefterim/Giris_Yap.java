@@ -53,6 +53,8 @@ public class Giris_Yap extends AppCompatActivity implements Interface_AsyncRespo
 	TextInputLayout txtILEPostaKullaniciAdi, txtILParola;
 	EditText txtEPostaKullaniciAdi, txtParola;
 
+	String FirebaseToken = "", OSID = "", OSVersiyon = "", UygulamaVersiyon = "";
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -142,10 +144,22 @@ public class Giris_Yap extends AppCompatActivity implements Interface_AsyncRespo
 		btnGirisYap.setOnClickListener(this);
 	}
 
+	@SuppressLint("HardwareIds")
 	@Override
 	protected void onStart() {
 		super.onStart();
+
 		AkorDefterimSys.activity = activity;
+
+		FirebaseToken = FirebaseInstanceId.getInstance().getToken();
+		OSID = Settings.Secure.getString(getContentResolver(), Settings.Secure.ANDROID_ID);
+		OSVersiyon = AkorDefterimSys.AndroidSurumBilgisi(Build.VERSION.SDK_INT);
+
+		try {
+			UygulamaVersiyon = activity.getPackageManager().getPackageInfo(activity.getPackageName(), 0).versionName;
+		} catch (PackageManager.NameNotFoundException e) {
+			e.printStackTrace();
+		}
 	}
 
 	@Override
@@ -201,6 +215,8 @@ public class Giris_Yap extends AppCompatActivity implements Interface_AsyncRespo
 					AkorDefterimSys.DismissProgressDialog(PDGirisYap);
 
 					if(JSONSonuc.getBoolean("Sonuc")) {
+						AkorDefterimSys.HesapPrefSifirla();
+
 						sharedPrefEditor = sharedPref.edit();
 						sharedPrefEditor.putString("prefHesapID", JSONSonuc.getString("HesapID"));
 						sharedPrefEditor.putString("prefEPosta", JSONSonuc.getString("HesapEPosta"));
@@ -212,6 +228,9 @@ public class Giris_Yap extends AppCompatActivity implements Interface_AsyncRespo
 						mIntent.putExtra("Islem", "");
 
 						AkorDefterimSys.EkranGetir(mIntent, "Normal");
+
+						if(!JSONSonuc.getString("HesapFirebaseToken").equals(FirebaseToken))
+							AkorDefterimSys.FirebaseMesajGonder(activity, JSONSonuc.getString("HesapFirebaseToken"), "{\"Islem\":\"CikisYap\", \"HesapFirebaseToken\":\"" + JSONSonuc.getString("HesapFirebaseToken") + "\"}", "FirebaseMesajGonder_CikisYap");
 
 						finishAffinity();
 					} else {
@@ -248,6 +267,9 @@ public class Giris_Yap extends AppCompatActivity implements Interface_AsyncRespo
 					break;
 				case "ADDialog_HesapDurumu_Kapat":
 					AkorDefterimSys.DismissAlertDialog(ADDialog_HesapDurumu);
+					break;
+				case "FirebaseMesajGonder_CikisYap":
+
 					break;
             }
 

@@ -26,7 +26,7 @@
             android:layout_width="fill_parent"
             android:layout_height="wrap_content">
 
-            <com.cnbcyln.app.akordefterim.LLTransparanPanel
+            <com.cnbcyln.app.akordefterim.util.LLTransparanPanel
                 android:id="@+id/transparanPanel1"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
@@ -58,9 +58,9 @@
                     android:layout_width="match_parent"
                     android:layout_height="300dp"/>
 
-            </com.cnbcyln.app.akordefterim.LLTransparanPanel>
+            </com.cnbcyln.app.akordefterim.util.LLTransparanPanel>
 
-            <com.cnbcyln.app.akordefterim.LLTransparanPanel
+            <com.cnbcyln.app.akordefterim.util.LLTransparanPanel
                 android:id="@+id/transparanPanel2"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -121,7 +121,7 @@
                         android:textColor="@color/Beyaz"
                         android:textStyle="bold" />
                 </LinearLayout>
-            </com.cnbcyln.app.akordefterim.LLTransparanPanel>
+            </com.cnbcyln.app.akordefterim.util.LLTransparanPanel>
 
 
         </RelativeLayout>

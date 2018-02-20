@@ -5,7 +5,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.telephony.SmsMessage;
-import android.content.SharedPreferences;
 
 public class DogrulamaKoduSMSReceiver extends BroadcastReceiver {
 	@SuppressWarnings("deprecation")
@@ -30,17 +29,10 @@ public class DogrulamaKoduSMSReceiver extends BroadcastReceiver {
 				Icerik = smsm[i].getMessageBody();
 		    }
 			
-			SharedPreferences sharedPref = context.getSharedPreferences(AkorDefterimSys.PrefAdi, Context.MODE_PRIVATE);
-			
 			if(AkorDefterimSys.SMSGondericiAdi.contains(Kimden)) {
-				switch (sharedPref.getString("prefSMSDogrulamaKoduSayfaAdi", "")) {
-				case "Dogrulama_Kodu":
-					Intent_Dogrulama_Kodu.putExtra("Kimden", Kimden);
-					Intent_Dogrulama_Kodu.putExtra("DogrulamaKodu", Icerik.substring(Icerik.indexOf(":") + 2, Icerik.indexOf(":") + 8));
-					context.sendBroadcast(Intent_Dogrulama_Kodu);
-					
-					break;
-				}
+				Intent_Dogrulama_Kodu.putExtra("Kimden", Kimden);
+				Intent_Dogrulama_Kodu.putExtra("DogrulamaKodu", Icerik.substring(Icerik.indexOf(":") + 2, Icerik.indexOf(":") + 8));
+				context.sendBroadcast(Intent_Dogrulama_Kodu);
 			}
 		}
 	}

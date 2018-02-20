@@ -15,6 +15,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Process;
 import android.provider.Settings;
+import android.support.design.widget.CoordinatorLayout;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
@@ -24,6 +25,7 @@ import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageButton;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.VideoView;
@@ -65,6 +67,9 @@ public class Giris extends AppCompatActivity implements Interface_AsyncResponse 
 	ViewPager VPGirisEkranPager;
 	AlertDialog ADDialog_PlayGoogleServisi, ADDialog_InternetErisimSorunu, ADDialog_HesapDurumu;
 
+	CoordinatorLayout coordinatorLayout;
+	RelativeLayout RLLoader;
+
 	String FirebaseToken = "", OSID = "", OSVersiyon = "", UygulamaVersiyon = "";
 	boolean CikisIcinCiftTiklandiMi = false;
 
@@ -87,7 +92,9 @@ public class Giris extends AppCompatActivity implements Interface_AsyncResponse 
 		AkorDefterimSys.TransparanNotifyBar(); // Notification Bar'ı transparan yapıyoruz.
 		AkorDefterimSys.NotifyIkonParlakligi(); // Notification Bar'daki simgelerin parlaklığını aldık.
 
-		VideoArkaplan = (VideoView) findViewById(R.id.VideoArkaplan);
+		coordinatorLayout = findViewById(R.id.coordinatorLayout);
+
+		VideoArkaplan = findViewById(R.id.VideoArkaplan);
 		VideoArkaplan.setVideoURI(Uri.parse("android.resource://" + getPackageName() + "/" + R.raw.bg_video));
 		VideoArkaplan.start();
 		VideoArkaplan.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
@@ -97,9 +104,11 @@ public class Giris extends AppCompatActivity implements Interface_AsyncResponse 
 			}
 		});
 
-		VPGirisEkranPager = (ViewPager) findViewById(R.id.VPGirisEkranPager);
+		VPGirisEkranPager = findViewById(R.id.VPGirisEkranPager);
 		ViewPagerAdapter ViewPagerAdapter = new ViewPagerAdapter();
 		VPGirisEkranPager.setAdapter(ViewPagerAdapter);
+
+		RLLoader = findViewById(R.id.RLLoader);
 	}
 
 	@Override
@@ -188,6 +197,8 @@ public class Giris extends AppCompatActivity implements Interface_AsyncResponse 
 						Task<GoogleSignInAccount> task = GoogleSignIn.getSignedInAccountFromIntent(data);
 						GoogleSignInAccount acct = task.getResult(ApiException.class);
 
+						RLLoader.setVisibility(View.GONE);
+
 						if (acct != null) {
 							String AdSoyad = acct.getDisplayName();
 							//String personGivenName = acct.getGivenName();
@@ -207,6 +218,8 @@ public class Giris extends AppCompatActivity implements Interface_AsyncResponse 
 				break;
 			case Activity.RESULT_CANCELED: //Second activity beklendmedik sekilde kapanirsa(Mesela cihazdaki back buttonuna tikalnirsa) RESULT_CANCELED degeri doner.
 				//Toast.makeText(activity, "Beklenmedik sekilde second activity sonlandi", Toast.LENGTH_SHORT).show();
+
+				RLLoader.setVisibility(View.GONE);
 
 				break;
 			default:
@@ -296,7 +309,10 @@ public class Giris extends AppCompatActivity implements Interface_AsyncResponse 
 					btnFacebookLogin.setOnClickListener(new OnClickListener() {
 						@Override
 						public void onClick(View v) {
-							LoginManager.getInstance().logInWithReadPermissions(activity, Arrays.asList("public_profile", "email"));
+							if(AkorDefterimSys.InternetErisimKontrolu()) {
+								RLLoader.setVisibility(View.VISIBLE);
+								LoginManager.getInstance().logInWithReadPermissions(activity, Arrays.asList("public_profile", "email"));
+							} else AkorDefterimSys.StandartSnackBarMsj(coordinatorLayout, getString(R.string.internet_baglantisi_saglanamadi));
 						}
 					});
 
@@ -305,8 +321,11 @@ public class Giris extends AppCompatActivity implements Interface_AsyncResponse 
 					btnGoogleLogin.setOnClickListener(new OnClickListener() {
 						@Override
 						public void onClick(View v) {
-							Intent signInIntent = mGoogleSignInClient.getSignInIntent();
-							startActivityForResult(signInIntent, AkorDefterimSys.RC_GOOGLE_LOGIN);
+							if(AkorDefterimSys.InternetErisimKontrolu()) {
+								RLLoader.setVisibility(View.VISIBLE);
+								Intent signInIntent = mGoogleSignInClient.getSignInIntent();
+								startActivityForResult(signInIntent, AkorDefterimSys.RC_GOOGLE_LOGIN);
+							} else AkorDefterimSys.StandartSnackBarMsj(coordinatorLayout, getString(R.string.internet_baglantisi_saglanamadi));
 						}
 					});
 
@@ -471,7 +490,7 @@ public class Giris extends AppCompatActivity implements Interface_AsyncResponse 
                         @Override
                         public void onClick(View v) {
 							Intent mIntent = new Intent(activity, KayitEkran_EPosta.class);
-							mIntent.putExtra("KayitTipi", "Normal");
+							mIntent.putExtra("KayitTipi"), "Normal");
 
 							AkorDefterimSys.EkranGetir(mIntent, "Explode");
                         }
@@ -626,6 +645,8 @@ public class Giris extends AppCompatActivity implements Interface_AsyncResponse 
 			switch (JSONSonuc.getString("Islem")) {
 				case "HesapGirisYap":
 					if(JSONSonuc.getBoolean("Sonuc")) {
+						AkorDefterimSys.HesapPrefSifirla();
+
 						sharedPrefEditor = sharedPref.edit();
 						sharedPrefEditor.putString("prefHesapID", JSONSonuc.getString("HesapID"));
 						sharedPrefEditor.putString("prefEPosta", JSONSonuc.getString("HesapEPosta"));
@@ -637,6 +658,9 @@ public class Giris extends AppCompatActivity implements Interface_AsyncResponse 
 						mIntent.putExtra("Islem", "");
 
 						AkorDefterimSys.EkranGetir(mIntent, "Normal");
+
+						if(!JSONSonuc.getString("HesapFirebaseToken").equals(FirebaseToken))
+							AkorDefterimSys.FirebaseMesajGonder(activity, JSONSonuc.getString("HesapFirebaseToken"), "{\"Islem\":\"CikisYap\", \"HesapFirebaseToken\":\"" + JSONSonuc.getString("HesapFirebaseToken") + "\"}", "FirebaseMesajGonder_CikisYap");
 
 						finishAffinity();
 					} else {
@@ -661,6 +685,9 @@ public class Giris extends AppCompatActivity implements Interface_AsyncResponse 
 					break;
 				case "ADDialog_HesapDurumu_Tamam":
 					AkorDefterimSys.DismissAlertDialog(ADDialog_HesapDurumu);
+					break;
+				case "FirebaseMesajGonder_CikisYap":
+
 					break;
 			}
 
@@ -690,8 +717,11 @@ public class Giris extends AppCompatActivity implements Interface_AsyncResponse 
 					@Override
 					public void onCompleted(JSONObject JSONFacebookGelenVeri, GraphResponse response) {
 						if (response.getError() != null) {
+							RLLoader.setVisibility(View.GONE);
 							Log.d("Hata", "Facebook girişi yapılırken hata oluştu..");
 						} else {
+							RLLoader.setVisibility(View.GONE);
+
 							try {
 								String HesapID = JSONFacebookGelenVeri.getString("id");
 								String AdSoyad = JSONFacebookGelenVeri.getString("name");
@@ -714,11 +744,13 @@ public class Giris extends AppCompatActivity implements Interface_AsyncResponse 
 
 			@Override
 			public void onCancel() {
+				RLLoader.setVisibility(View.GONE);
 				Log.d("","");
 			}
 
 			@Override
 			public void onError(FacebookException error) {
+				RLLoader.setVisibility(View.GONE);
 				Log.d("","");
 			}
 		});

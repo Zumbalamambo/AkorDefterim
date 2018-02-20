@@ -59,22 +59,6 @@
 			app:layout_constraintStart_toEndOf="@+id/btnGeri"
 			app:layout_constraintTop_toTopOf="parent" />
 
-		<com.github.ybq.android.spinkit.SpinKitView
-			android:id="@+id/SKVLoader"
-			style="@style/SpinKitView.Small.FadingCircle"
-			android:layout_width="40dp"
-			android:layout_height="0dp"
-			android:layout_gravity="center"
-			android:layout_marginBottom="8dp"
-			android:layout_marginEnd="8dp"
-			android:layout_marginRight="8dp"
-			android:layout_marginTop="8dp"
-			android:visibility="gone"
-			app:SpinKit_Color="@color/AcikMavi3"
-			app:layout_constraintBottom_toTopOf="@+id/h_guideline1"
-			app:layout_constraintEnd_toEndOf="parent"
-			app:layout_constraintTop_toTopOf="parent" />
-
 		<View
 			android:id="@+id/view1"
 			android:layout_width="0dp"

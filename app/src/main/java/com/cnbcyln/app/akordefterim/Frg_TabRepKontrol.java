@@ -1,10 +1,9 @@
 package com.cnbcyln.app.akordefterim;
 
 import android.app.Activity;
-import android.app.AlertDialog;
-import android.app.ProgressDialog;
 import android.content.SharedPreferences;
 import android.graphics.Typeface;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.v4.app.Fragment;
@@ -28,6 +27,7 @@ import com.cnbcyln.app.akordefterim.Siniflar.SnfListeler;
 import com.cnbcyln.app.akordefterim.Siniflar.SnfTarzlar;
 import com.cnbcyln.app.akordefterim.util.AkorDefterimSys;
 import com.cnbcyln.app.akordefterim.util.Veritabani;
+import com.github.ybq.android.spinkit.SpinKitView;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -49,24 +49,16 @@ public class Frg_TabRepKontrol extends Fragment implements OnClickListener {
 	private List<SnfKategoriler> snfKategoriler;
 	private List<SnfTarzlar> snfTarzlar;
 	private List<SnfListelemeTipi> snfListelemeTipi;
-	ProgressDialog PDDialog;
-	AlertDialog ADDialog_InternetBaglantisi;
 
 	CoordinatorLayout coordinatorLayout;
 	TextView lblListeler, lblKategoriler, lblTarzlar, lblListelemeTipi;
 	Spinner spnListeler, spnKategoriler, spnTarzlar, spnListelemeTipi;
 	Button btnListele;
+	SpinKitView SKVKategoriler, SKVTarzlar;
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 		return inflater.inflate(R.layout.tab_repkontrol, container, false);
-	}
-
-	@Override
-	public void onStart() {
-		super.onStart();
-
-		AkorDefterimSys.activity = activity;
 	}
 
 	@Override
@@ -102,10 +94,55 @@ public class Frg_TabRepKontrol extends Fragment implements OnClickListener {
 					snfTarzlar = veritabani.SnfTarzGetir(true);
 					AdpTarz AdpTarzlar = new AdpTarz(activity, snfTarzlar);
 					spnTarzlar.setAdapter(AdpTarzlar);
+
+					btnListele.setEnabled(true);
 				} else {
-					if(AkorDefterimSys.InternetErisimKontrolu() && SecilenListeID == 0) {
-						AkorDefterimSys.KategoriListesiGetir(getString(R.string.tumu));
-						AkorDefterimSys.TarzListesiGetir(getString(R.string.tumu));
+					if(SecilenListeID == 0) {
+						if(AkorDefterimSys.InternetErisimKontrolu()) {
+							SKVKategoriler.setVisibility(View.VISIBLE);
+							SKVTarzlar.setVisibility(View.VISIBLE);
+							btnListele.setEnabled(false);
+
+							if(snfKategoriler != null) snfKategoriler.clear();
+							else snfKategoriler = new ArrayList<>();
+
+							if(snfTarzlar != null) snfTarzlar.clear();
+							else snfTarzlar = new ArrayList<>();
+
+							// Burada gelen bilgilerde geçikme olursa loader çalıştırıyoruz ve bilgiler gelene kadar loader'ı aktif ediyoruz. Bilgiler geldiği an loaderları görünmez yapıyoruz..
+							new Thread(new Runnable() {
+								public void run() {
+									while(true){
+										if(snfKategoriler.size() > 0 && snfTarzlar.size() > 0) {
+											activity.runOnUiThread(new Runnable() {
+												@Override
+												public void run() {
+													SKVKategoriler.setVisibility(View.GONE);
+													SKVTarzlar.setVisibility(View.GONE);
+													btnListele.setEnabled(true);
+												}
+											});
+
+											break;
+										}
+									}
+								}
+							}).start();
+
+							AkorDefterimSys.KategoriListesiGetir(getString(R.string.tumu));
+							AkorDefterimSys.TarzListesiGetir(getString(R.string.tumu));
+						} else {
+							if(snfKategoriler != null) snfKategoriler.clear();
+							else snfKategoriler = new ArrayList<>();
+
+							if(snfTarzlar != null) snfTarzlar.clear();
+							else snfTarzlar = new ArrayList<>();
+
+							KategoriListesiGetir("[{\"id\":0,\"KategoriAdi\":\"\"}]");
+							TarzListesiGetir("[{\"id\":0,\"TarzAdi\":\"\"}]");
+							btnListele.setEnabled(false);
+							FragmentDataConn.StandartSnackBarMsj(coordinatorLayout, getString(R.string.internet_baglantisi_saglanamadi));
+						}
 					} else {
 						snfKategoriler = veritabani.SnfKategoriGetir(true);
 						AdpKategori AdpKategoriler = new AdpKategori(activity, snfKategoriler);
@@ -114,6 +151,8 @@ public class Frg_TabRepKontrol extends Fragment implements OnClickListener {
 						snfTarzlar = veritabani.SnfTarzGetir(true);
 						AdpTarz AdpTarzlar = new AdpTarz(activity, snfTarzlar);
 						spnTarzlar.setAdapter(AdpTarzlar);
+
+						btnListele.setEnabled(true);
 					}
 				}
 			}
@@ -126,10 +165,16 @@ public class Frg_TabRepKontrol extends Fragment implements OnClickListener {
 		lblKategoriler = (TextView) activity.findViewById(R.id.lblKategoriler);
 		lblKategoriler.setTypeface(YaziFontu, Typeface.BOLD);
 
+		SKVKategoriler = (SpinKitView) activity.findViewById(R.id.SKVKategoriler);
+		SKVKategoriler.setVisibility(View.GONE);
+
 		spnKategoriler = (Spinner) activity.findViewById(R.id.spnKategoriler);
 
 		lblTarzlar = (TextView) activity.findViewById(R.id.lblTarzlar);
 		lblTarzlar.setTypeface(YaziFontu, Typeface.BOLD);
+
+		SKVTarzlar = (SpinKitView) activity.findViewById(R.id.SKVTarzlar);
+		SKVTarzlar.setVisibility(View.GONE);
 
 		spnTarzlar = (Spinner) activity.findViewById(R.id.spnTarzlar);
 
@@ -145,6 +190,13 @@ public class Frg_TabRepKontrol extends Fragment implements OnClickListener {
 		spnDoldur();
 	}
 
+	@Override
+	public void onStart() {
+		super.onStart();
+
+		AkorDefterimSys.activity = activity;
+	}
+
 	public void spnListeGetir() {
 		snfListeler = veritabani.SnfListeGetir(sharedPref.getString("prefOturumTipi", "Cevrimdisi"), false);
 		AdpListelerSPN AdpListelerSPN = new AdpListelerSPN(activity, snfListeler);
@@ -153,9 +205,6 @@ public class Frg_TabRepKontrol extends Fragment implements OnClickListener {
 
 	public void KategoriListesiGetir(String JSONKategoriListesi) {
 		try {
-			if(snfKategoriler != null) snfKategoriler.clear();
-			else snfKategoriler = new ArrayList<>();
-
 			JSONArray JSONGelenVeriArr = new JSONArray(JSONKategoriListesi);
 			JSONObject JSONGelenVeri;
 
@@ -177,9 +226,6 @@ public class Frg_TabRepKontrol extends Fragment implements OnClickListener {
 
 	public void TarzListesiGetir(String JSONTarzListesi) {
 		try {
-			if(snfTarzlar != null) snfTarzlar.clear();
-			else snfTarzlar = new ArrayList<>();
-
 			JSONArray JSONGelenVeriArr = new JSONArray(JSONTarzListesi);
 			JSONObject JSONGelenVeri;
 
@@ -222,11 +268,11 @@ public class Frg_TabRepKontrol extends Fragment implements OnClickListener {
 		switch(v.getId()) {
 			case R.id.btnListele:
 				if(snfListeler.get(spnListeler.getSelectedItemPosition()).getListeAdi().equals(getString(R.string.labeltire)))
-					FragmentDataConn.StandartSnackBarMsj(getString(R.string.liste_bulunamadi));
+					FragmentDataConn.StandartSnackBarMsj(coordinatorLayout, getString(R.string.liste_bulunamadi));
 				else if(snfKategoriler.get(spnKategoriler.getSelectedItemPosition()).getKategoriAdi().equals(getString(R.string.labeltire)))
-					FragmentDataConn.StandartSnackBarMsj(getString(R.string.kategori_bulunamadi));
+					FragmentDataConn.StandartSnackBarMsj(coordinatorLayout, getString(R.string.kategori_bulunamadi));
 				else if(snfTarzlar.get(spnTarzlar.getSelectedItemPosition()).getTarzAdi().equals(getString(R.string.labeltire)))
-					FragmentDataConn.StandartSnackBarMsj(getString(R.string.tarz_bulunamadi));
+					FragmentDataConn.StandartSnackBarMsj(coordinatorLayout, getString(R.string.tarz_bulunamadi));
 				else {
 					int ListeID = snfListeler.get(spnListeler.getSelectedItemPosition()).getId();
 					int KategoriID = snfKategoriler.get(spnKategoriler.getSelectedItemPosition()).getId();
@@ -238,7 +284,7 @@ public class Frg_TabRepKontrol extends Fragment implements OnClickListener {
 							// AnaEkran üzerinden Progress Dialog'u açıyoruz ve "Liste indiriliyor. Lütfen bekleyiniz.." mesajını gösteriyoruz..
 							FragmentDataConn.AnaEkranProgressIslemDialogAc(getString(R.string.liste_indiriliyor_lutfen_bekleyiniz));
 							AkorDefterimSys.SarkiListesiGetir(veritabani, ListeID, KategoriID, TarzID, ListelemeTipi, "");
-						} else FragmentDataConn.StandartSnackBarMsj(getString(R.string.internet_baglantisi_saglanamadi));
+						} else FragmentDataConn.StandartSnackBarMsj(coordinatorLayout, getString(R.string.internet_baglantisi_saglanamadi));
 					} else {
 						// AnaEkran üzerinden Progress Dialog'u açıyoruz ve "Liste indiriliyor. Lütfen bekleyiniz.." mesajını gösteriyoruz..
 						FragmentDataConn.AnaEkranProgressIslemDialogAc(getString(R.string.liste_indiriliyor_lutfen_bekleyiniz));

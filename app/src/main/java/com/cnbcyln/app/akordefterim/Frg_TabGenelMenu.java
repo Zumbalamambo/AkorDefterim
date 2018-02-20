@@ -2,7 +2,6 @@ package com.cnbcyln.app.akordefterim;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
-import android.app.AlertDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -13,7 +12,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
-import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
 import com.cnbcyln.app.akordefterim.Adaptorler.AdpGenelMenu;
@@ -35,11 +33,8 @@ public class Frg_TabGenelMenu extends Fragment implements Interface_AsyncRespons
 	private Activity activity;
 	private AkorDefterimSys AkorDefterimSys;
 	SharedPreferences sharedPref;
-	//Typeface YaziFontu;
 	ListView lstGenelMenu;
-	private ArrayAdapter<String> listAdapter;
 	private List<com.cnbcyln.app.akordefterim.Siniflar.SnfGenelMenu> SnfGenelMenu;
-	AlertDialog Dialog_Hakkinda, Dialog_ProgramKapat, ADDialog_InternetBaglantisi;
 	String Fragment_SayfaTag = "Frg_Anasayfa";
 	Int_DataConn_AnaEkran FragmentDataConn;
 

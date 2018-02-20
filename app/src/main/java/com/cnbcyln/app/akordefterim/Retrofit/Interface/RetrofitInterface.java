@@ -1,6 +1,7 @@
 package com.cnbcyln.app.akordefterim.Retrofit.Interface;
 
 import com.cnbcyln.app.akordefterim.Retrofit.Siniflar.SnfAnasayfaGetir;
+import com.cnbcyln.app.akordefterim.Retrofit.Siniflar.SnfDosyaBilgisiGetir;
 import com.cnbcyln.app.akordefterim.Retrofit.Siniflar.SnfHesapBilgiGetir;
 import com.cnbcyln.app.akordefterim.Retrofit.Siniflar.SnfHesapEkle;
 import com.cnbcyln.app.akordefterim.Retrofit.Siniflar.SnfHesapGirisYap;
@@ -43,6 +44,14 @@ public interface RetrofitInterface {
 
     @GET("phpscriptleri/genel/anasayfa.php")
     Call<SnfAnasayfaGetir> AnasayfaGetir();
+
+    @GET("phpscriptleri/genel/dosya_bilgisi_getir.php")
+    Call<SnfDosyaBilgisiGetir> DosyaBilgisiGetir(@Query("DosyaDizin") String mDosyaDizin,
+                                                 @Query("DosyaAdi") String mDosyaAdi);
+
+    @GET("phpscriptleri/genel/firebase_mesaj_yolla.php")
+    Call<SnfIslemSonuc> FirebaseMesajGonder(@Query("FirebaseToken") String mFirebaseToken,
+                                            @Query("Icerik") String mIcerik);
 
     /* **************************************
        ***                                ***

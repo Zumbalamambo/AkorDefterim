@@ -155,10 +155,10 @@ public class Hesabim extends AppCompatActivity implements Interface_AsyncRespons
 					ADDialog = AkorDefterimSys.H2ButtonCustomAlertDialog(activity,
 							getString(R.string.cikis_yap),
 							getString(R.string.cikis_yap_uyari),
-							activity.getString(R.string.hayir),
-							"ADDialog_Kapat",
 							activity.getString(R.string.evet),
-							"ADDialog_Kapat_CikisYap");
+							"ADDialog_Kapat_CikisYap",
+							activity.getString(R.string.hayir),
+							"ADDialog_Kapat");
 					ADDialog.getWindow().getAttributes().windowAnimations = R.style.DialogAnimation;
 					ADDialog.show();
 				}

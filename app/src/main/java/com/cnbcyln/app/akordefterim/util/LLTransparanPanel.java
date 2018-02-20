@@ -1,4 +1,4 @@
-package com.cnbcyln.app.akordefterim;
+package com.cnbcyln.app.akordefterim.util;
 
 import android.content.Context;
 import android.content.res.TypedArray;

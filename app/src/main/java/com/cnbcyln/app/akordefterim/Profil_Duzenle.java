@@ -162,6 +162,7 @@ public class Profil_Duzenle extends AppCompatActivity implements Interface_Async
 		ImgBuyukProfilResim = findViewById(R.id.ImgBuyukProfilResim);
 
 		CImgProfilResim = findViewById(R.id.CImgProfilResim);
+		CImgProfilResim.setOnClickListener(this);
 
 		lblFotografiDegistir = findViewById(R.id.lblFotografiDegistir);
 		lblFotografiDegistir.setTypeface(YaziFontu, Typeface.BOLD);
@@ -450,6 +451,9 @@ public class Profil_Duzenle extends AppCompatActivity implements Interface_Async
 					Kaydet();
 				} else AkorDefterimSys.StandartSnackBarMsj(coordinatorLayout, getString(R.string.internet_baglantisi_saglanamadi));
 
+				break;
+			case R.id.CImgProfilResim:
+				lblFotografiDegistir.performClick();
 				break;
 			case R.id.lblFotografiDegistir:
 				activity.openContextMenu(lblFotografiDegistir);

@@ -178,7 +178,7 @@
 					android:layout_alignLeft="@+id/CImgProfilResim"
 					android:layout_alignStart="@+id/CImgProfilResim"
 					android:contentDescription="@string/imageDesc"
-					app:srcCompat="@drawable/ic_close_circle_renkli" />
+					app:srcCompat="@drawable/ic_close_circle_mavi" />
 			</RelativeLayout>
 		</LinearLayout>
 

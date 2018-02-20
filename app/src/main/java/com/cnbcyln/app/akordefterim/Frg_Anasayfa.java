@@ -7,6 +7,7 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.graphics.Typeface;
 import android.os.Bundle;
+import android.support.constraint.ConstraintLayout;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.DefaultItemAnimator;
@@ -15,6 +16,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
 
 import com.cnbcyln.app.akordefterim.Adaptorler.AdpAnasayfa;
 import com.cnbcyln.app.akordefterim.Interface.Int_DataConn_AnaEkran;
@@ -31,7 +33,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @SuppressLint({ "HandlerLeak", "DefaultLocale" })
-public class Frg_Anasayfa extends Fragment implements SwipeRefreshLayout.OnRefreshListener {
+public class Frg_Anasayfa extends Fragment implements SwipeRefreshLayout.OnRefreshListener, View.OnClickListener {
 	
 	Activity activity;
 	AkorDefterimSys AkorDefterimSys;
@@ -39,7 +41,9 @@ public class Frg_Anasayfa extends Fragment implements SwipeRefreshLayout.OnRefre
 	SharedPreferences sharedPref;
 	Int_DataConn_AnaEkran FragmentDataConn;
 	Typeface YaziFontu;
+
 	CoordinatorLayout coordinatorLayout_Anasayfa;
+	ConstraintLayout CLYenidenDene;
 	SwipeRefreshLayout SRLAnasayfa;
     RecyclerView RVAnasayfa;
 
@@ -63,6 +67,10 @@ public class Frg_Anasayfa extends Fragment implements SwipeRefreshLayout.OnRefre
 		YaziFontu = AkorDefterimSys.FontGetir(activity, "anivers_regular");
 
 		coordinatorLayout_Anasayfa = activity.findViewById(R.id.coordinatorLayout_Anasayfa);
+
+		CLYenidenDene = activity.findViewById(R.id.CLYenidenDene);
+		CLYenidenDene.setVisibility(View.GONE);
+		CLYenidenDene.setOnClickListener(this);
 
         SRLAnasayfa = activity.findViewById(R.id.SRLAnasayfa);
         SRLAnasayfa.setOnRefreshListener(this);
@@ -99,13 +107,21 @@ public class Frg_Anasayfa extends Fragment implements SwipeRefreshLayout.OnRefre
 	public void SRLAnasayfa_ListeGuncelle() {
 		if(sharedPref.getString("prefOturumTipi", "Cevrimdisi").equals("Cevrimici")) {
 			if(AkorDefterimSys.InternetErisimKontrolu()) {
+				CLYenidenDene.setVisibility(View.GONE);
+				SRLAnasayfa.setVisibility(View.VISIBLE);
 				SRLAnasayfa.setRefreshing(true);
 				AkorDefterimSys.AnasayfaGetir();
 			} else {
+				CLYenidenDene.setVisibility(View.VISIBLE);
+				SRLAnasayfa.setVisibility(View.GONE);
 				SRLAnasayfa.setRefreshing(false);
 				AkorDefterimSys.StandartSnackBarMsj(coordinatorLayout_Anasayfa, getString(R.string.internet_baglantisi_saglanamadi));
 			}
-		} else SRLAnasayfa.setRefreshing(false);
+		} else {
+			CLYenidenDene.setVisibility(View.GONE);
+			SRLAnasayfa.setVisibility(View.GONE);
+			SRLAnasayfa.setRefreshing(false);
+		}
 	}
 
 	public void AnasayfaDoldur(String Icerik) {
@@ -136,9 +152,25 @@ public class Frg_Anasayfa extends Fragment implements SwipeRefreshLayout.OnRefre
 				RVAnasayfa.setHasFixedSize(true);
 				RVAnasayfa.setAdapter(adpAnasayfa);
 				RVAnasayfa.setItemAnimator(new DefaultItemAnimator());
-			} else AkorDefterimSys.StandartSnackBarMsj(coordinatorLayout_Anasayfa, getString(R.string.icerik_bulunamadi));
+
+				CLYenidenDene.setVisibility(View.GONE);
+				SRLAnasayfa.setVisibility(View.VISIBLE);
+			} else {
+				CLYenidenDene.setVisibility(View.VISIBLE);
+				SRLAnasayfa.setVisibility(View.GONE);
+				AkorDefterimSys.StandartSnackBarMsj(coordinatorLayout_Anasayfa, getString(R.string.icerik_bulunamadi));
+			}
 		} catch (JSONException e) {
 			e.printStackTrace();
+		}
+	}
+
+	@Override
+	public void onClick(View v) {
+		switch (v.getId()) {
+			case R.id.CLYenidenDene:
+				SRLAnasayfa_ListeGuncelle();
+				break;
 		}
 	}
 }

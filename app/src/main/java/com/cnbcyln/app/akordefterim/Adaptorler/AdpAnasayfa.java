@@ -92,7 +92,7 @@ public class AdpAnasayfa extends RecyclerView.Adapter<AdpAnasayfa.ViewHolder> {
 			//AkorDefterimSys.NettenResimYukle mNettenResimYukle = new AkorDefterimSys.NettenResimYukle(holder.ImgSanatciResim);
 			//mNettenResimYukle.execute(AkorDefterimSys.SanatciResimleriKlasoruURL + SanatciListesi.get(position).getSanatciID() + ".jpg");
 
-			ImageLoader.getInstance().displayImage(AkorDefterimSys.CBCAPP_HttpsAdres + AkorDefterimSys.SanatciResimleriKlasoruDizini + snfAnasayfa.get(position).getSanatciID() + ".jpg", holder.ImgSanatciResim, animateFirstListener);
+			ImageLoader.getInstance().displayImage(AkorDefterimSys.SanatciResimleriKlasoruDizini + snfAnasayfa.get(position).getSanatciID() + ".jpg", holder.ImgSanatciResim, animateFirstListener);
 		} else
 			holder.ImgSanatciResim.setImageResource(activity.getResources().getIdentifier(activity.getPackageName() + ":drawable/bos_profil", null, null));
 

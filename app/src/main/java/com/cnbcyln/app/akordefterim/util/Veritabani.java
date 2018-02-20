@@ -1,5 +1,9 @@
 package com.cnbcyln.app.akordefterim.util;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.nio.channels.FileChannel;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -10,6 +14,7 @@ import android.annotation.SuppressLint;
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
+import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
@@ -24,14 +29,72 @@ import com.cnbcyln.app.akordefterim.Siniflar.SnfTarzlar;
 @SuppressWarnings("ALL")
 public class Veritabani extends SQLiteOpenHelper {
 
-	private static final String VeritabaniAdi = "AkorDefterim";
+	private AkorDefterimSys AkorDefterimSys;
+	private static final String VeritabaniAdi = "AkorDefterim.db";
+	public String DBAdi = "";
+	//private static File AnaKlasorDizini;
+	private static File YerelDBDizin;
+	//private static File YedekDBDizin;
 	private static int Surum = 2;
+	//private boolean mNeedUpdate = false;
+	private SQLiteDatabase mDataBase;
 	Context context;
 
 	public Veritabani(Context context) {
 		super(context, VeritabaniAdi, null, Surum);
 		this.context = context;
-		//this.Surum = context.getPackageManager().getPackageInfo(context.getPackageName(), 0).versionCode;
+		AkorDefterimSys = new AkorDefterimSys(context);
+
+		//AnaKlasorDizini = new File(AkorDefterimSys.AnaKlasorDizini);
+		YerelDBDizin = AkorDefterimSys.YerelDBDizinGetir();
+		//YedekDBDizin = AkorDefterimSys.YedekDBDizin;
+		this.DBAdi = VeritabaniAdi;
+	}
+
+	/*public void ExportDatabase() {
+		try {
+			if(!AnaKlasorDizini.exists()) AnaKlasorDizini.mkdir();
+			if(!YedekDBDizin.exists()) YedekDBDizin.mkdir();
+
+			if(YedekDBDizin.canWrite()) {
+				File YerelDB = new File(YerelDBDizin + File.separator + VeritabaniAdi);
+				File YedekDB = new File(YedekDBDizin + File.separator + VeritabaniAdi);
+
+				if (YerelDB.exists()) {
+					FileChannel src = new FileInputStream(YerelDB).getChannel();
+					FileChannel Hedef = new FileOutputStream(YedekDB).getChannel();
+					Hedef.transferFrom(src, 0, src.size());
+					src.close();
+					Hedef.close();
+				}
+			}
+		} catch (Exception e) {
+
+		}
+	}
+
+	public void ImportDatabase() {
+		try {
+			File YerelDB = new File(YerelDBDizin.getPath() + File.separator + VeritabaniAdi);
+			File YedekDB = new File(YedekDBDizin.getPath() + File.separator + VeritabaniAdi);
+
+			if (YedekDB.exists()) {
+				if(YerelDB.exists()) YerelDB.delete();
+
+				FileChannel src = new FileInputStream(YedekDB).getChannel();
+				FileChannel Hedef = new FileOutputStream(YerelDB).getChannel();
+				Hedef.transferFrom(src, 0, src.size());
+				src.close();
+				Hedef.close();
+			}
+		} catch (Exception e) {
+
+		}
+	}*/
+
+	public boolean openDataBase() throws SQLException {
+		mDataBase = SQLiteDatabase.openDatabase(YerelDBDizin + File.separator + VeritabaniAdi, null, SQLiteDatabase.CREATE_IF_NECESSARY);
+		return mDataBase != null;
 	}
 
 	@Override
@@ -917,8 +980,8 @@ public class Veritabani extends SQLiteOpenHelper {
 			Sarkilar.setTarzID(cursor.getInt(3));
 			Sarkilar.setSanatciAdi(cursor.getString(4));
 			Sarkilar.setSarkiAdi(cursor.getString(5));
-			Sarkilar.setEklenmeTarihi(cursor.getString(8));
-			Sarkilar.setDuzenlenmeTarihi(cursor.getString(9));
+			Sarkilar.setEklenmeTarihi(cursor.getString(7));
+			Sarkilar.setDuzenlenmeTarihi(cursor.getString(8));
 			snfSarkilarListesi.add(Sarkilar);
 		}
 
@@ -941,8 +1004,8 @@ public class Veritabani extends SQLiteOpenHelper {
 			snfSarki.setTarzID(cursor.getInt(3));
 			snfSarki.setSanatciAdi(cursor.getString(4));
 			snfSarki.setSarkiAdi(cursor.getString(5));
-			snfSarki.setEklenmeTarihi(cursor.getString(8));
-			snfSarki.setDuzenlenmeTarihi(cursor.getString(9));
+			snfSarki.setEklenmeTarihi(cursor.getString(7));
+			snfSarki.setDuzenlenmeTarihi(cursor.getString(8));
 		}
 
 		return snfSarki;

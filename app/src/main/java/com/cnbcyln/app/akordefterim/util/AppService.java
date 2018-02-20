@@ -7,15 +7,10 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.os.IBinder;
-import android.support.annotation.IntegerRes;
 import android.support.annotation.Nullable;
 import android.util.Log;
 
-import com.cnbcyln.app.akordefterim.R;
-import com.google.firebase.iid.FirebaseInstanceId;
 import com.google.firebase.messaging.FirebaseMessaging;
-import com.google.firebase.messaging.FirebaseMessagingService;
-import com.google.firebase.messaging.RemoteMessage;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -26,7 +21,7 @@ import java.util.TimerTask;
 public class AppService extends Service {
     AkorDefterimSys AkorDefterimSys;
     Context context;
-    Veritabani Veritabani;
+    Veritabani veritabani;
     Intent mIntent;
     SharedPreferences sharedPref;
     Timer mTimer;
@@ -40,7 +35,7 @@ public class AppService extends Service {
 
         context = this;
         AkorDefterimSys = new AkorDefterimSys(context);
-        Veritabani = new Veritabani(context);
+        veritabani = new Veritabani(context);
 
         registerReceiver(broadcastreceiver, new IntentFilter("com.cnbcyln.app.akordefterim.util.AppService"));
 
@@ -48,10 +43,9 @@ public class AppService extends Service {
 
         sharedPref = getApplicationContext().getSharedPreferences(AkorDefterimSys.PrefAdi, MODE_PRIVATE);
 
-        if(sharedPref.getString("prefEkranAdi", "AnaEkran").equals("AnaEkran")) mIntent = new Intent("com.cnbcyln.app.akordefterim.AnaEkran");
-        else if(sharedPref.getString("prefEkranAdi", "AnaEkran").equals("GirisEkran")) mIntent = new Intent("com.cnbcyln.app.akordefterim.GirisEkran");
+        mIntent = new Intent("com.cnbcyln.app.akordefterim." + sharedPref.getString("prefBulunulanEkran", "AnaEkran"));
 
-        AppServiceCalismaAraligi = getResources().getInteger(R.integer.AppServiceCalismaAraligi) * 1000;
+        AppServiceCalismaAraligi = 10000;
 
         TimerCalistir();
     }
@@ -76,25 +70,25 @@ public class AppService extends Service {
 
     private void TimerCalistir() {
         mTimer = new Timer();
-        timerTask = new TimerTask() {
+        mTimer.schedule(new TimerTask() {
             @Override
             public void run() {
-                Log.e("Log", "App Service Çalışıyor..");
+                Log.d("AppService", "Servis başladı..");
 
-                mIntent.putExtra("JSONData", "{\"Islem\":\"YeniGuncellemeKontrol\", \"BildirimTipi\":\"Notify\"}");
+                /*mIntent.putExtra("JSONData", "{\"Islem\":\"YeniGuncellemeKontrol\", \"BildirimTipi\":\"Notify\"}");
                 context.sendBroadcast(mIntent);
 
                 mIntent.putExtra("JSONData", "{\"Islem\":\"YeniGuncellemeKontrol\", \"BildirimTipi\":\"Dialog\"}");
-                context.sendBroadcast(mIntent);
+                context.sendBroadcast(mIntent);*/
 
-                mTimer.cancel();
-                timerTask.cancel();
+                //AkorDefterimSys.YeniGuncellemeKontrol();
 
-                TimerCalistir();
+                //if(sharedPref.getBoolean("prefYedekleSenkronizeEt", false) && AkorDefterimSys.InternetErisimKontrolu()) AkorDefterimSys.VeritabaniSenkronizeEt(veritabani.DBAdi, sharedPref.getString("prefHesapID", "") + ".db");
+
+                //mIntent.putExtra("JSONData", "{\"Islem\":\"ToastMesaj\", \"Mesaj\":\"Timer Çalıştı\"}");
+                //context.sendBroadcast(mIntent);
             }
-        };
-
-        mTimer.schedule(timerTask, AppServiceCalismaAraligi);
+        }, 1000, AppServiceCalismaAraligi);
     }
 
     @Override

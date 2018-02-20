@@ -10,10 +10,12 @@
       <w>akordefterim</w>
       <w>akorlar</w>
       <w>alanina</w>
+      <w>alindi</w>
       <w>aliniyor</w>
       <w>anaekran</w>
       <w>anasayfa</w>
       <w>animasyon</w>
+      <w>araligi</w>
       <w>arama</w>
       <w>arkaplan</w>
       <w>ayarla</w>
@@ -23,6 +25,7 @@
       <w>baglantisi</w>
       <w>basla</w>
       <w>baslangic</w>
+      <w>baslat</w>
       <w>basvuru</w>
       <w>belirle</w>
       <w>bildir</w>
@@ -30,15 +33,19 @@
       <w>bilgi</w>
       <w>bilgiler</w>
       <w>bilgileri</w>
+      <w>bilgisi</w>
       <w>bitis</w>
       <w>bosluklu</w>
       <w>btnsolmenu</w>
       <w>btntwitter</w>
       <w>bulunan</w>
       <w>bulundu</w>
+      <w>bulunulan</w>
       <w>buttonlar</w>
       <w>buyuk</w>
       <w>buyukharf</w>
+      <w>calisma</w>
+      <w>calistir</w>
       <w>capi</w>
       <w>cevrimdisi</w>
       <w>cevrimici</w>
@@ -56,11 +63,14 @@
       <w>dogrula</w>
       <w>dogrulama</w>
       <w>dogum</w>
+      <w>dosya</w>
       <w>dosyaokumayazma</w>
       <w>dosyasi</w>
       <w>dunyanin</w>
       <w>durumu</w>
       <w>duzenle</w>
+      <w>duzenleme</w>
+      <w>duzenlendi</w>
       <w>dönüyor</w>
       <w>ekle</w>
       <w>eklenen</w>
@@ -140,6 +150,7 @@
       <w>kontrolu</w>
       <w>korumasi</w>
       <w>kosullari</w>
+      <w>kotu</w>
       <w>koyu</w>
       <w>kucuk</w>
       <w>kucukharf</w>
@@ -197,6 +208,7 @@
       <w>secilen</w>
       <w>secim</w>
       <w>semboller</w>
+      <w>senkronize</w>
       <w>servisi</w>
       <w>sifirla</w>
       <w>sifrele</w>
@@ -249,10 +261,15 @@
       <w>yardım</w>
       <w>yari</w>
       <w>yedek</w>
+      <w>yedekle</w>
+      <w>yedekleri</w>
       <w>yeniden</w>
+      <w>yerel</w>
       <w>yukle</w>
       <w>yukleme</w>
       <w>zaman</w>
+      <w>zamanlayici</w>
+      <w>çalıştı</w>
       <w>çalışıyor</w>
       <w>çevrimdışı</w>
       <w>çevrimiçi</w>

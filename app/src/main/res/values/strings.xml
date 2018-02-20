@@ -9,7 +9,7 @@
     <string name="uygulama_copyright">%s - Copyright © 2016</string> <!-- %s = Uygulama Adı -->
     <!-- <string name="uygulama_telif_hakki_yazisi">Bu uygulama %s tarafından yazılmıştır. Tüm hakları saklıdır.</string> --> <!-- %s = Uygulama Yapımcı Adı -->
     <string name="uygulama_telif_hakki_yazisi">Tüm hakları saklıdır..</string> <!-- %s = Uygulama Yapımcı Adı -->
-    <string name="yenilikler_icerik">Yeni neler yaptık?&lt;br&gt;%s&lt;br&gt;(Yeni Sürüm 2.0.0)&lt;br&gt;* Tasarım tamamiyle değişti.&lt;br&gt;* Tüm yazılımsal alt yapı geliştirildi.</string>
+    <string name="yenilikler_icerik">Yeni neler yaptık?&lt;br&gt;%s&lt;br&gt;(Yeni Sürüm 1.5.0)&lt;br&gt;* Tasarım tamamiyle değişti.&lt;br&gt;* Tüm yazılımsal alt yapı geliştirildi.</string>
 
     <!-- Genel -->
     <string name="bosluk"> </string>
@@ -118,7 +118,7 @@
     <string name="yeni_guncelleme">Yeni Güncelleme</string>
     <string name="resim_guncelleme">Resim Güncelleme</string>
     <string name="geri_yukleme">Geri Yükleme</string>
-    <string name="repertuvar_sifirlama">Repertuvar Sıfırlama</string>
+    <string name="veritabani_sifirla">Veritabanı Sıfırla</string>
     <string name="istek_detay">Istek Detay</string>
     <string name="guc_tasarrufu">Güç Tasarrufu</string>
     <string name="akor_cetveli">Akor Cetveli</string>
@@ -137,6 +137,9 @@
     <string name="guncellemeler_denetleniyor">Güncellemeler denetleniyor..</string>
     <string name="bilgileriniz_guncelleniyor">Bilgileriniz güncelleniyor. Lütfen bekleyiniz..</string>
     <string name="profil_resmi_yukleniyor">Profil resminiz yükleniyor (%s). Lütfen bekleyiniz..</string>
+    <string name="db_yedekleniyor">Veritabanı yedekleniyor (%s). Lütfen bekleyiniz..</string>
+    <string name="db_geri_yukleniyor">Veritabanı geri yükleniyor (%s). Lütfen bekleyiniz..</string>
+    <string name="dosya_yukleniyor">Dosya yükleniyor (%s). Lütfen bekleyiniz..</string>
     <string name="geri_bildirim_ekran_goruntuleri_yukleniyor">Geri bildirim ekran görüntüleri yükleniyor (%s). Lütfen bekleyiniz..</string>
     <string name="lutfen_bekleyiniz">Lütfen bekleyiniz..</string>
     <string name="liste_indiriliyor_lutfen_bekleyiniz">Liste indiriliyor. Lütfen bekleyiniz..</string>
@@ -160,7 +163,7 @@
     <string name="geri_yukleniyor_tarzlar">Tarzlar geri yükleniyor (%s). Lütfen bekleyiniz..</string>
     <string name="geri_yukleniyor_sarkilar">Sarkilar geri yükleniyor (%s). Lütfen bekleyiniz..</string>
 
-    <string name="repertuvar_sifirlama_mesaji">Cihazınızdaki yerel repertuvar sıfırlanacaktır. Onaylıyor musunuz?</string>
+    <string name="veritabani_sifirlama_mesaji">Cihazınızdaki veritabanı sıfırlanacak ve tüm kayıtlar kaybolacaktır. Onaylıyor musunuz?</string>
 
     <string name="konum_listesi_aliniyor_lutfen_bekleyiniz">Konum listesi alınıyor. Lütfen bekleyiniz..</string>
     <string name="dogrulama_kodu_cep" tools:ignore="Typos">Birazdan &lt;b&gt;%s&lt;/b&gt; cep telefon numarasına gelecek olan doğrulama kodu, otomatik olarak alttaki bölüme yazılacaktır. Yazılmasa lütfen doğrulama kodunu elle girin. (Not: Sms gelene kadar lütfen bekleyin. Eğer doğrulama kodu gelmezse &lt;b&gt;Yeniden Gönder&lt;/b&gt;\'e basın)</string>
@@ -386,11 +389,22 @@
     <string name="tarz_adi">Tarz Adı</string>
     <string name="duzenle">Düzenle</string>
     <string name="islemler">İşlemler</string>
-    <string name="yedekleme_islemleri">Yedekleme İşlemleri</string>
+    <string name="repertuvar_islemleri">Repertuvar İşlemleri</string>
     <string name="repertuvar_islemleri_aciklama">Cihaz veritabanındaki kayıtlı olan repertuvara ekleme, çıkarma ve düzenleme işlemlerini kolayca yapabilirsin. Böylelikle internetin olmadığında çevrimdışı modundayken bile repertuvarına ulaşırsın. Ayrıca dilersen repertuvarını &lt;b&gt;%s&lt;/b&gt; bulut depolama alanına yedekleyerek her yerden güncel repertuvarına ulaşırsın. Böylelikle asla veri kaybı yaşamazsın. Ne büyük kolaylık değil mi? :)</string>
     <string name="filtre">Filtre</string>
     <string name="secilen_metin_akor_degil">Seçilen metin akor değil. Akor seçmelisin.</string>
     <string name="secilen_metin_akor_tag_icinde">Seçilen metin akor tagları arasına alınmış.</string>
+    <string name="baglanilamiyor">Bağlanılamıyor</string>
+    <string name="yeniden_denemek_icin_dokun">Yeniden denemek için dokun</string>
+    <string name="yedekle_ve_senkronize_et">Yedekle ve senkronize et</string>
+    <string name="yedekle">Yedekle</string>
+    <string name="veritabani_yedeklendi">Veritabanı yedeklendi.</string>
+    <string name="son_yedekleme">Son Yedekleme: &lt;b&gt;%s&lt;/b&gt;</string>
+    <string name="yerel_veritabani_dosyası_bulunamadi">Yerel veritabanı dosyası bulunamadı.</string>
+    <string name="geri_yukle">Geri Yükle</string>
+    <string name="veritabani_geri_yuklendi">Veritabanı geri yüklendi.</string>
+    <string name="son_geri_yukleme">Son Geri Yükleme: &lt;b&gt;%s&lt;/b&gt;</string>
+    <string name="yedek_veritabani_dosyası_bulunamadi">Yedek veritabanı dosyası bulunamadı.</string>
 
     <!-- EditText Hint'ler -->
     <string name="sanatci_adina_gore_ara">Ara (Sanatçı adına göre)</string>
@@ -485,8 +499,6 @@
     <string name="profil_resmi_guncellenemedi">Profil resmi güncellenemedi.</string>
     <string name="mail_gonderim_hatasi">Mail gönderim hatası. Daha sonra yeniden deneyin..</string>
 
-    <string name="yerel_repertuvar_guncellendi">Yerel repertuvar güncellendi.</string>
-    <string name="hesap_kullanima_kisitlidir">Hesabınız kullanıma kısıtlıdır. Lütfen Hesabım sayfasından Email aktivasyonunu tamamlayınız.</string>
     <string name="islem_yapilirken_bir_hata_olustu">İşlem yapılırken bir hata oluştu. Yeniden deneyiniz.</string>
     <string name="sunucu_baglantisi_kurulamiyor">Sunucu bağlantısı kurulamıyor. Daha sonra yeniden deneyiniz.</string>
     <string name="liste_bulunamadi">Cihazında kayıtlı Liste bulunamadı.</string>
@@ -502,8 +514,8 @@
     <string name="url_hatasi">URL Hatası..</string>
     <string name="dosya_yazma_okuma_hatasi">Dosya yazma/okuma hatası.</string>
     <string name="beklenmedik_hata_meydana_geldi">Beklenmedik hata meydana geldi.</string>
-    <string name="tarih_bilgisi_bulunamadi">Tarih bilgisi bulunamadı..</string>
-    <string name="veritabani_basariyla_sifirlandi">Yerel repertuvar başarıyla sıfırlandı.</string>
+    <string name="tarih_bilgisi_bulunamadi">Tarih bilgisi bulunamadı.</string>
+    <string name="veritabani_sifirlandi">Veritabanı sıfırlandı.</string>
     <string name="buyuk_profil_resim_hatasi">Seçtiğin profil resmi en fazla %sMB büyüklüğünde olmalıdır.</string>
     <string name="dosya_bulunamadi">Dosya bulunamadı.</string>
     <string name="icerik_gonderildi">İçerik gönderildi. Onaylandığında bilgilendirileceksin.</string>
@@ -551,10 +563,10 @@
     <string name="sarki">Şarkı</string>
     <string name="sarkilar">Şarkı(lar)</string>
     <string name="sarki_yonetimi">Şarkı Yönetimi</string>
-    <string name="sarki_eklendi" tools:ignore="Typos">\"%s\" isimli şarkı eklendi.</string>
-    <string name="sarki_eklendi_gonderildi" tools:ignore="Typos">&lt;b&gt;%1$s&lt;/b&gt; isimli şarkı eklendi ve tarafımıza gönderildi. İçerik incelenip onay verildiğinde &lt;b&gt;%2$s&lt;/b&gt; repertuvarına eklenecektir. Katkıda bulunduğun için teşekkür ederiz. :)</string>
-    <string name="sarki_eklendi_gonderilemedi" tools:ignore="Typos">&lt;b&gt;%s&lt;/b&gt; isimli şarkı eklendi fakat tarafımıza gönderilirken bir sorunla karşılaştı. Yeniden dene..</string>
-    <string name="sarki_duzenlendi" tools:ignore="Typos">\"%s\" isimli şarkı düzenlendi.</string>
+    <string name="sarki_eklendi" tools:ignore="Typos">\"%1$s - %2$s\" isimli şarkı eklendi.</string>
+    <string name="sarki_eklendi_gonderildi" tools:ignore="Typos">&lt;b&gt;%1$s - %2$s&lt;/b&gt; isimli şarkı eklendi ve tarafımıza gönderildi. İçerik incelenip onay verildiğinde &lt;b&gt;%3$s&lt;/b&gt; repertuvarına eklenecektir. Katkıda bulunduğun için teşekkür ederiz. :)</string>
+    <string name="sarki_eklendi_gonderilemedi" tools:ignore="Typos">&lt;b&gt;%1$s - %2$s&lt;/b&gt; isimli şarkı eklendi fakat tarafımıza gönderilirken bir sorunla karşılaştı. Yeniden dene..</string>
+    <string name="sarki_duzenlendi" tools:ignore="Typos">\"%1$s - %2$s\" isimli şarkı düzenlendi.</string>
     <string name="sarki_sil_soru">&lt;b&gt;%1$s - %2$s&lt;/b&gt; isimli şarkıyı silmek istiyor musun?</string>
     <string name="sarki_silindi">\"%1$s - %2$s\" isimli şarkı silindi.</string>
     <string name="sarki_bulunamadi">\"%1$s - %2$s\" isimli şarkı bulunamadı.</string>
@@ -635,13 +647,6 @@
     <string name="istek_ayarlari_canli_istek_aciklama" tools:ignore="Typos">Size yakın kişilerden şarkı isteği almanızı sağlar. Alınan istekler, \"İstekler\" ekranına gelir.</string>
     <string name="istek_ayarlari_client_istek_suresi">İstek Süresi</string>
     <string name="istek_ayarlari_client_istek_suresi_aciklama">Kişilerin yapacağı istekler arasındaki bekleme süresidir. (Dakika)</string>
-    <string name="repertuvar_islemleri">Repertuvar İşlemleri</string>
-    <string name="repertuvar_yedekle">Repertuvar yedekle</string>
-    <string name="repertuvar_yedekle_aciklama">Son yedekleme: %s</string>
-    <string name="repertuvar_geri_yukle">Repertuvar geri yükle</string>
-    <string name="repertuvar_geri_yukle_aciklama">Son geri yükleme: %s</string>
-    <string name="repertuvar_sifirla">Repertuvar sıfırla</string>
-    <string name="repertuvar_sifirla_aciklama">Cihazınızdaki yerel repertuvarı sıfırlar</string>
 
     <!-- Hesap Ayarları Sayfası -->
     <string name="bildirimler_ve_senkronizasyon">Bildirimler Ve Senkronizasyon</string>

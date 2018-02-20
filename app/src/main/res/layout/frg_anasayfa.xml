@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <android.support.design.widget.CoordinatorLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/coordinatorLayout_Anasayfa"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
@@ -20,6 +21,75 @@
         android:layout_alignParentTop="true"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true">
+
+        <android.support.constraint.ConstraintLayout
+            android:id="@+id/CLYenidenDene"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <android.support.constraint.Guideline
+                android:id="@+id/v_guideline1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                app:layout_constraintGuide_percent="0.3" />
+
+            <android.support.constraint.Guideline
+                android:id="@+id/v_guideline2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                app:layout_constraintGuide_percent="0.7" />
+
+            <android.support.constraint.Guideline
+                android:id="@+id/h_guideline1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                app:layout_constraintGuide_percent="0.4" />
+
+            <android.support.constraint.Guideline
+                android:id="@+id/h_guideline2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                app:layout_constraintGuide_percent="0.6" />
+
+            <ImageView
+                android:id="@+id/imageView"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:contentDescription="@string/imageDesc"
+                app:layout_constraintBottom_toTopOf="@+id/h_guideline2"
+                app:layout_constraintEnd_toStartOf="@+id/v_guideline2"
+                app:layout_constraintStart_toStartOf="@+id/v_guideline1"
+                app:layout_constraintTop_toTopOf="@+id/h_guideline1"
+                app:srcCompat="@drawable/ic_uzgun_bulut" />
+
+            <TextView
+                android:id="@+id/lblBaglanilamiyor"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="5dp"
+                android:text="@string/baglanilamiyor"
+                android:textColor="@color/Beyaz"
+                app:layout_constraintBottom_toTopOf="@+id/h_guideline2"
+                app:layout_constraintEnd_toStartOf="@+id/v_guideline2"
+                app:layout_constraintStart_toStartOf="@+id/v_guideline1" />
+
+            <TextView
+                android:id="@+id/lblYenidenDene"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="3dp"
+                android:drawableLeft="@drawable/ic_refresh"
+                android:drawablePadding="5dp"
+                android:text="@string/yeniden_denemek_icin_dokun"
+                android:textColor="@color/Beyaz"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/lblBaglanilamiyor" />
+        </android.support.constraint.ConstraintLayout>
 
         <android.support.v4.widget.SwipeRefreshLayout
             xmlns:android="http://schemas.android.com/apk/res/android"

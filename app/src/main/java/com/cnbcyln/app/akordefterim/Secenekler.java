@@ -25,6 +25,7 @@ public class Secenekler extends AppCompatActivity implements OnClickListener {
     private Activity activity;
 	private AkorDefterimSys AkorDefterimSys;
 	SharedPreferences sharedPref;
+	SharedPreferences.Editor sharedPrefEditor;
 	Typeface YaziFontu;
 
 	CoordinatorLayout coordinatorLayout;

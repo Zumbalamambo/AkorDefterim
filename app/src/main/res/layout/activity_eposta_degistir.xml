@@ -97,7 +97,6 @@
 			android:layout_marginLeft="8dp"
 			android:layout_marginTop="16dp"
 			android:textColorHint="@color/KoyuGri"
-			app:hintTextAppearance="@style/TextAppearance.AppCompat.Small.Inverse"
 			app:layout_constraintLeft_toLeftOf="@+id/v_guideline1"
 			app:layout_constraintRight_toLeftOf="@+id/v_guideline2"
 			app:layout_constraintStart_toEndOf="@+id/ImgEPosta"
@@ -109,10 +108,7 @@
 				android:layout_height="match_parent"
 				android:hint="@string/eposta"
 				android:inputType="textEmailAddress"
-				android:maxLines="1"
 				android:textColor="@color/KoyuYazi"
-				android:importantForAutofill="noExcludeDescendants"
-				tools:ignore="UnusedAttribute"
 				style="@style/TextAppearance.AppCompat.Small.Inverse"/>
 		</android.support.design.widget.TextInputLayout>
 

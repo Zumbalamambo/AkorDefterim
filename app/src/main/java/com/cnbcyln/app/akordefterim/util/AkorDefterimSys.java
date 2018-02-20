@@ -1,93 +1,23 @@
 package com.cnbcyln.app.akordefterim.util;
 
-import java.io.BufferedInputStream;
-import java.io.BufferedOutputStream;
-import java.io.BufferedReader;
-import java.io.BufferedWriter;
-import java.io.ByteArrayOutputStream;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
-import java.io.FileWriter;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.io.OutputStream;
-import java.io.Reader;
-import java.io.StringWriter;
-import java.io.UnsupportedEncodingException;
-import java.io.Writer;
-import java.lang.reflect.Field;
-import java.lang.reflect.Method;
-import java.net.HttpURLConnection;
-import java.net.InetAddress;
-import java.net.NetworkInterface;
-import java.net.SocketException;
-import java.net.URL;
-import java.nio.charset.Charset;
-import java.security.cert.CertificateException;
-import java.security.cert.X509Certificate;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Calendar;
-import java.util.Collections;
-import java.util.Date;
-import java.util.Enumeration;
-import java.util.List;
-import java.util.Locale;
-import java.util.concurrent.TimeUnit;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
-
-import com.cnbcyln.app.akordefterim.Adaptorler.AdpAkorlar;
-import com.cnbcyln.app.akordefterim.Adaptorler.AdpTonlar;
-import com.cnbcyln.app.akordefterim.Giris;
-import com.cnbcyln.app.akordefterim.Interface.Interface_AsyncResponse;
-import com.cnbcyln.app.akordefterim.Interface.Int_DataConn_AnaEkran;
-import com.cnbcyln.app.akordefterim.R;
-import com.cnbcyln.app.akordefterim.Retrofit.Interface.RetrofitInterface;
-import com.cnbcyln.app.akordefterim.Retrofit.Network.RetrofitServiceGenerator;
-import com.cnbcyln.app.akordefterim.Retrofit.Siniflar.SnfAnasayfaGetir;
-import com.cnbcyln.app.akordefterim.Retrofit.Siniflar.SnfHesapBilgiGetir;
-import com.cnbcyln.app.akordefterim.Retrofit.Siniflar.SnfHesapEkle;
-import com.cnbcyln.app.akordefterim.Retrofit.Siniflar.SnfHesapGirisYap;
-import com.cnbcyln.app.akordefterim.Retrofit.Siniflar.SnfIslemSonuc;
-import com.cnbcyln.app.akordefterim.Retrofit.Siniflar.SnfKategoriListesiGetir;
-import com.cnbcyln.app.akordefterim.Retrofit.Siniflar.SnfSarkiGetir;
-import com.cnbcyln.app.akordefterim.Retrofit.Siniflar.SnfSarkiListesiGetir;
-import com.cnbcyln.app.akordefterim.Retrofit.Siniflar.SnfSistemDurum;
-import com.cnbcyln.app.akordefterim.Retrofit.Siniflar.SnfTarihSaat;
-import com.cnbcyln.app.akordefterim.Retrofit.Siniflar.SnfTarzListesiGetir;
-import com.cnbcyln.app.akordefterim.Siniflar.SnfAkorlar;
-import com.cnbcyln.app.akordefterim.Siniflar.SnfSarkilar;
-import com.cnbcyln.app.akordefterim.Siniflar.SnfTonlar;
-import com.facebook.share.model.ShareHashtag;
-import com.facebook.share.model.ShareLinkContent;
-import com.facebook.share.widget.ShareDialog;
-import com.google.android.gms.common.ConnectionResult;
-import com.google.android.gms.common.GooglePlayServicesUtil;
-import com.google.android.gms.plus.PlusShare;
-import com.mhk.android.passcodeview.PasscodeView;
-import com.rengwuxian.materialedittext.MaterialEditText;
-import com.theartofdev.edmodo.cropper.CropImage;
-
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.DatePickerDialog;
+import android.app.Dialog;
 import android.app.Fragment;
 import android.app.Notification;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.app.ProgressDialog;
+import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.CursorLoader;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.content.pm.ActivityInfo;
 import android.content.pm.PackageManager;
@@ -109,6 +39,7 @@ import android.net.wifi.WifiInfo;
 import android.net.wifi.WifiManager;
 import android.os.AsyncTask;
 import android.os.Build;
+import android.os.CountDownTimer;
 import android.os.Environment;
 import android.os.Handler;
 import android.os.Message;
@@ -167,6 +98,41 @@ import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.cnbcyln.app.akordefterim.Adaptorler.AdpAkorlar;
+import com.cnbcyln.app.akordefterim.Adaptorler.AdpTonlar;
+import com.cnbcyln.app.akordefterim.AnaEkran;
+import com.cnbcyln.app.akordefterim.Giris;
+import com.cnbcyln.app.akordefterim.Interface.Int_DataConn_AnaEkran;
+import com.cnbcyln.app.akordefterim.Interface.Interface_AsyncResponse;
+import com.cnbcyln.app.akordefterim.R;
+import com.cnbcyln.app.akordefterim.Retrofit.Interface.RetrofitInterface;
+import com.cnbcyln.app.akordefterim.Retrofit.Network.RetrofitServiceGenerator;
+import com.cnbcyln.app.akordefterim.Retrofit.Siniflar.SnfAnasayfaGetir;
+import com.cnbcyln.app.akordefterim.Retrofit.Siniflar.SnfDosyaBilgisiGetir;
+import com.cnbcyln.app.akordefterim.Retrofit.Siniflar.SnfHesapBilgiGetir;
+import com.cnbcyln.app.akordefterim.Retrofit.Siniflar.SnfHesapEkle;
+import com.cnbcyln.app.akordefterim.Retrofit.Siniflar.SnfHesapGirisYap;
+import com.cnbcyln.app.akordefterim.Retrofit.Siniflar.SnfIslemSonuc;
+import com.cnbcyln.app.akordefterim.Retrofit.Siniflar.SnfKategoriListesiGetir;
+import com.cnbcyln.app.akordefterim.Retrofit.Siniflar.SnfSarkiGetir;
+import com.cnbcyln.app.akordefterim.Retrofit.Siniflar.SnfSarkiListesiGetir;
+import com.cnbcyln.app.akordefterim.Retrofit.Siniflar.SnfSistemDurum;
+import com.cnbcyln.app.akordefterim.Retrofit.Siniflar.SnfTarihSaat;
+import com.cnbcyln.app.akordefterim.Retrofit.Siniflar.SnfTarzListesiGetir;
+import com.cnbcyln.app.akordefterim.Siniflar.SnfAkorlar;
+import com.cnbcyln.app.akordefterim.Siniflar.SnfSarkilar;
+import com.cnbcyln.app.akordefterim.Siniflar.SnfTonlar;
+import com.cnbcyln.app.akordefterim.SplashEkran;
+import com.facebook.share.model.ShareHashtag;
+import com.facebook.share.model.ShareLinkContent;
+import com.facebook.share.widget.ShareDialog;
+import com.google.android.gms.common.ConnectionResult;
+import com.google.android.gms.common.GooglePlayServicesUtil;
+import com.google.android.gms.plus.PlusShare;
+import com.mhk.android.passcodeview.PasscodeView;
+import com.rengwuxian.materialedittext.MaterialEditText;
+import com.theartofdev.edmodo.cropper.CropImage;
+
 import org.apache.commons.lang3.RandomStringUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.http.HttpEntity;
@@ -179,6 +145,8 @@ import org.apache.http.conn.ClientConnectionManager;
 import org.apache.http.conn.scheme.Scheme;
 import org.apache.http.conn.scheme.SchemeRegistry;
 import org.apache.http.conn.ssl.SSLSocketFactory;
+import org.apache.http.entity.mime.content.FileBody;
+import org.apache.http.entity.mime.content.StringBody;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.message.BasicNameValuePair;
 import org.apache.http.protocol.HTTP;
@@ -187,6 +155,52 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.jsoup.Jsoup;
+import org.jsoup.nodes.Document;
+import org.jsoup.select.Elements;
+
+import java.io.BufferedInputStream;
+import java.io.BufferedOutputStream;
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.io.OutputStream;
+import java.io.Reader;
+import java.io.StringWriter;
+import java.io.UnsupportedEncodingException;
+import java.io.Writer;
+import java.lang.reflect.Field;
+import java.lang.reflect.Method;
+import java.net.HttpURLConnection;
+import java.net.InetAddress;
+import java.net.MalformedURLException;
+import java.net.NetworkInterface;
+import java.net.SocketException;
+import java.net.URL;
+import java.net.URLConnection;
+import java.nio.charset.Charset;
+import java.security.cert.CertificateException;
+import java.security.cert.X509Certificate;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Calendar;
+import java.util.Collections;
+import java.util.Date;
+import java.util.Enumeration;
+import java.util.List;
+import java.util.Locale;
+import java.util.Timer;
+import java.util.TimerTask;
+import java.util.concurrent.TimeUnit;
 
 import javax.net.ssl.SSLContext;
 import javax.net.ssl.TrustManager;
@@ -215,6 +229,8 @@ public class AkorDefterimSys {
 	List<String> SMSGondericiAdi = Arrays.asList("+908503042567", "C.B.CEYLAN");
 
 	public String AnaKlasorDizini = Environment.getExternalStorageDirectory() + File.separator + "Akor Defterim" + File.separator;
+	private String YerelDBAdi = "";
+	private String YedekDBAdi = "";
 	public int WebBaglantiIstegiToplamSure = 30;
 	public int SMSGondermeToplamSure = 60;
 	public int EPostaGondermeToplamSure = 60;
@@ -232,6 +248,7 @@ public class AkorDefterimSys {
 	public String HtmlTag1_1 = "<span style=\"color: #ea494d;\" onclick=\"AkorGosterici.performClick('";
 	public String HtmlTag1_2 = "');\"><b>";
 	public String HtmlTag2 = "</b></span>";
+	private BroadcastReceiver EskiBroadcastReceiver;
 
 	/** Google API Lokasyon İşlem Değişkenleri **/
 	public int UPDATE_INTERVAL = 4000; // 4 saniye
@@ -239,13 +256,13 @@ public class AkorDefterimSys {
 	public int DISPLACEMENT = 5; // 5 metre
 
 	// **** URL ADRESLERİ
-	public String SanatciResimleriKlasoruDizini = File.separator + AkorDefterimKlasorAdi + "/sanatci_img/";
+	public String SanatciResimleriKlasoruDizini = CBCAPP_HttpsAdres + File.separator + AkorDefterimKlasorAdi + "/sanatci_img/";
 
-	public String ProfilResimleriDizini = File.separator + AkorDefterimKlasorAdi + "/profil_img/";
+	public String ProfilResimleriDizini = CBCAPP_HttpsAdres + File.separator + AkorDefterimKlasorAdi + "/profil_img/";
 	public String PHPProfilResimleriDizini = "../../profil_img/";
 
-	public String YedeklemeKlasoruDizini =  File.separator + AkorDefterimKlasorAdi + "/rep_yedekleri/";
-	public String PHPYedeklemeKlasoruDizini = "../../rep_yedekleri/";
+	public String YedekDBKlasoruDizini = CBCAPP_HttpsAdres + File.separator + AkorDefterimKlasorAdi + "/kullanici_repertuvar_yedekleri/";
+	public String PHPYedekDBKlasoruDizini = "../../kullanici_repertuvar_yedekleri/";
 
 	public String RepertuvarListesiKlasoruDizini = "/rep_listeleri/";
 	public String OnlineRepertuvarListesiKlasoruDizin = "../../../httpdocs/akordefterim/rep_listeleri/";
@@ -253,7 +270,7 @@ public class AkorDefterimSys {
 	public String PHPGeriBildirimEkranGoruntuleriDizini = "../../geri_bildirim_img/";
 
 	// **** Genel İşlemler
-	public String PHPDosyaYukle = "/araclar/genel/dosyayukle.php";
+	public String PHPDosyaYukle = CBCAPP_HttpsAdres + "/akordefterim/phpscriptleri/genel/dosya_yukle.php";
 	public String PHPResimYukle = CBCAPP_HttpsAdres + "/akordefterim/phpscriptleri/genel/resimyukle.php";
 	public String AnasayfaURL = CBCAPP_HttpsAdres + "/akordefterim/phpscriptleri/genel/anasayfa.php";
 	private String ReklamDuyuru = "/araclar/genel/reklamduyuru.php";
@@ -269,7 +286,9 @@ public class AkorDefterimSys {
 
 	// **** GEÇİCİ UYGULAMA VERİLERİ
 	public String prefAction = "";
-	public String prefEklenenDuzenlenenSanatciAdiSarkiAdi = "";
+	public String prefEklenenDuzenlenenSarkiAdi = "";
+	public String prefEklenenDuzenlenenSanatciAdi = "";
+	public int prefEklenenDuzenlenenSarkiID = 0;
 
 	public AkorDefterimSys() {}
 
@@ -288,6 +307,7 @@ public class AkorDefterimSys {
 		return(INSTANCE);
 	}
 
+	@SuppressLint("LongLogTag")
 	public void GenelAyarlar() {
 		final WindowManager.LayoutParams layoutpars = activity.getWindow().getAttributes();
 
@@ -314,7 +334,214 @@ public class AkorDefterimSys {
 		// Ekran ışığını eğer prefEkranIsigiAydinligi değeri ayarlanmamışsa en parlak olan 255'e ayarlıyoruz. Aksi halde ayar ne ise o ayarlanıyor..
 		layoutpars.screenBrightness = sharedPref.getInt("prefEkranIsigiAydinligi", 255) / (float)255;
 		activity.getWindow().setAttributes(layoutpars); // Yeni değerler ekrana uygulanıyor
+
+		try {
+			if(broadcastreceiver != null) activity.unregisterReceiver(broadcastreceiver);
+		} catch (Exception e) {
+			Log.e("BroadcastReceiver", "Broadcast Receiver kayıtlı değil..");
+		}
+
+		try {
+			activity.registerReceiver(broadcastreceiver, new IntentFilter("com.cnbcyln.app.akordefterim." + activity.getClass().getSimpleName()));
+		} catch (Exception e) {
+			Log.e("BroadcastReceiver", "Broadcast Receiver kayıtlı..");
+		}
 	}
+
+	private BroadcastReceiver broadcastreceiver = new BroadcastReceiver() {
+		@Override
+		public void onReceive(Context context, Intent intent) {
+			try {
+				String JSON = intent.getStringExtra("JSONData");
+				JSONObject JSONGelenVeri = new JSONObject(JSON);
+				Intent myIntent;
+
+				switch (JSONGelenVeri.getString("Islem")) {
+					case "ToastMesaj":
+						try {
+							ToastMsj(activity, JSONGelenVeri.getString("Mesaj"), Toast.LENGTH_LONG);
+						} catch (JSONException e) {
+							e.printStackTrace();
+						}
+
+						break;
+					case "SnackBarMesaj":
+						//StandartSnackBarMsj(AnaEkran_CoordinatorLayout, JSONGelenVeri.getString("Mesaj"));
+
+						break;
+					case "NotifyMesaj":
+						myIntent = new Intent(context, SplashEkran.class);
+						NotifyGoster(myIntent, JSONGelenVeri.getString("NotifyBaslik"), JSONGelenVeri.getString("NotifyIcerik"), JSONGelenVeri.getString("SubIcerik"), JSONGelenVeri.getInt("Number"), JSONGelenVeri.getString("TickerIcerik"), JSONGelenVeri.getString("BigNotifyBaslik"), JSONGelenVeri.getString("BigNotifyIcerik"), JSONGelenVeri.getString("BigSubIcerik"), JSONGelenVeri.getBoolean("Titresim"));
+
+						break;
+					case "CikisYap":
+						myIntent = new Intent(activity, AnaEkran.class);
+						NotifyGoster(myIntent, activity.getString(R.string.uygulama_adi), activity.getString(R.string.farkli_bir_cihazdan_oturum_acildi), "", -1, activity.getString(R.string.farkli_bir_cihazdan_oturum_acildi), activity.getString(R.string.uygulama_adi), activity.getString(R.string.farkli_bir_cihazdan_oturum_acildi), "", true);
+						CikisYap();
+						break;
+                    /*case "HesapCikis":
+                        try {
+                            HesapCikisYap(new JSONObject("{\"Islem\":\"HesapCikis\"}"));
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+
+                        break;
+                    case "Firebase_Bildirim":
+                        myIntent = new Intent(context, SplashEkran.class);
+                        AkorDefterimSys.NotifyGoster(myIntent, getString(R.string.uygulama_adi), JSONGelenVeri.getString("MesajIcerik"), "", -1, JSONGelenVeri.getString("MesajIcerik"), getString(R.string.uygulama_adi), JSONGelenVeri.getString("MesajIcerik"), "", true);
+
+                        break;
+                    case "Firebase_YeniSarkiBildirim":
+                        String MesajIcerik = getString(R.string.yeni_sarki_ekleme_notify_mesaji, JSONGelenVeri.getString("SanatciAdi"), JSONGelenVeri.getString("SarkiAdi"), getString(R.string.uygulama_adi));
+
+                        if(sharedPref.getString("prefHesapOturumTipi", "CevrimdisiOturum").equals("CevrimiciOturum")) {
+                            if (AkorDefterimSys.InternetErisimKontrolu()) {
+                                myIntent = new Intent(context, AnaEkran.class);
+                                myIntent.putExtra("Islem", "SarkiGetir");
+                                myIntent.putExtra("SarkiID", JSONGelenVeri.getInt("SarkiID"));
+                                myIntent.putExtra("SarkiAdi", JSONGelenVeri.getString("SarkiAdi"));
+                                myIntent.putExtra("SanatciAdi", JSONGelenVeri.getString("SanatciAdi"));
+                            } else myIntent = new Intent(context, SplashEkran.class);
+                        } else if(sharedPref.getString("prefHesapOturumTipi", "CevrimdisiOturum").equals("CevrimiciGoogleOturum")) {
+                            if (AkorDefterimSys.InternetErisimKontrolu()) {
+                                myIntent = new Intent(context, AnaEkran.class);
+                                myIntent.putExtra("Islem", "SarkiGetir");
+                                myIntent.putExtra("SarkiID", JSONGelenVeri.getInt("SarkiID"));
+                                myIntent.putExtra("SarkiAdi", JSONGelenVeri.getString("SarkiAdi"));
+                                myIntent.putExtra("SanatciAdi", JSONGelenVeri.getString("SanatciAdi"));
+                            } else myIntent = new Intent(context, SplashEkran.class);
+                        } else if(sharedPref.getString("prefHesapOturumTipi", "CevrimdisiOturum").equals("CevrimiciFacebookOturum")) {
+                            if (AkorDefterimSys.InternetErisimKontrolu()) {
+                                myIntent = new Intent(context, AnaEkran.class);
+                                myIntent.putExtra("Islem", "SarkiGetir");
+                                myIntent.putExtra("SarkiID", JSONGelenVeri.getInt("SarkiID"));
+                                myIntent.putExtra("SarkiAdi", JSONGelenVeri.getString("SarkiAdi"));
+                                myIntent.putExtra("SanatciAdi", JSONGelenVeri.getString("SanatciAdi"));
+                            } else myIntent = new Intent(context, SplashEkran.class);
+                        } else myIntent = new Intent(context, SplashEkran.class);
+
+                        AkorDefterimSys.NotifyGoster(myIntent, getString(R.string.uygulama_adi), MesajIcerik, "", -1, MesajIcerik, getString(R.string.uygulama_adi), MesajIcerik, "", true);
+
+                        if (Fragment_SayfaAdi.equals("Frg_Anasayfa")) {
+                            Frg_Anasayfa Frg_Anasayfa = (Frg_Anasayfa) activity.getFragmentManager().findFragmentByTag(Fragment_SayfaAdi);
+                            Frg_Anasayfa.SonEklenenSarkilar_ListeGuncelle();
+                        }
+
+                        break;
+                    case "Firebase_Guncelleme":
+                        myIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("http://play.google.com/store/apps/details?id=" + activity.getPackageName()));
+                        AkorDefterimSys.NotifyGoster(myIntent, getString(R.string.uygulama_adi), getString(R.string.yeni_guncelleme_icerik2), "", -1, getString(R.string.yeni_guncelleme_icerik2), getString(R.string.uygulama_adi), getString(R.string.yeni_guncelleme_icerik2), "", true);
+
+                        break;
+                    case "Firebase_Duyuru_Reklam":
+                        AkorDefterimSys.Duyuru_Reklam_Goster();
+
+                        break;
+                    case "YeniGuncellemeKontrol":
+                        AkorDefterimSys.YeniGuncellemeKontrol(JSONGelenVeri.getString("BildirimTipi"));
+
+                        break;*/
+                    /*case "MuzisyenGPSBilgisiEkleGuncelle":
+                        if (Fragment_SayfaTag.equals("Frg_istekyap")) {
+                            SimpleDateFormat fmt = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+
+                            Frg_IstekYap Frg_IstekYap = (Frg_IstekYap) activity.getFragmentManager().findFragmentByTag(Fragment_SayfaTag);
+                            Frg_IstekYap.SnfMuzisyenBilgisiEkleGuncelle(JSONWebGelenVeri.getInt("HesapID"), JSONWebGelenVeri.getString("Durum"), JSONWebGelenVeri.getString("MuzisyenAd"), JSONWebGelenVeri.getString("MuzisyenSoyad"), JSONWebGelenVeri.getDouble("Enlem"), JSONWebGelenVeri.getDouble("Boylam"), fmt.parse(JSONWebGelenVeri.getString("LokasyonTarihi")));
+                        }
+
+                        break;**/
+                    /*case "WebBaglantiIstegi":
+                        String BaglananIPAdres = JSONGelenVeri.getString("IPAdres");
+
+                        ADDialogWebBaglantiIstegi = AkorDefterimSys.CustomAlertDialog(
+                                activity, R.mipmap.ic_launcher,
+                                getString(R.string.web_baglanti_istegi, BaglananIPAdres),
+                                getString(R.string.web_baglanti_istegi_mesaji, String.valueOf(AkorDefterimSys.WebBaglantiIstegiToplamSure)),
+                                getString(R.string.kabul_et),
+                                getString(R.string.reddet));
+                        ADDialogWebBaglantiIstegi.show();
+
+                        Vibrator vibrator = (Vibrator) context.getSystemService(Context.VIBRATOR_SERVICE);
+                        long[] pattern = {0, 200, 100, 200, 100, 200};
+                        vibrator.vibrate(pattern, -1);
+
+                        ADDialogWebBaglantiIstegi.getButton(AlertDialog.BUTTON_POSITIVE).setOnClickListener(new OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                Intent_PageHandler.putExtra("Islem", "WebBaglantiIstegi");
+                                Intent_PageHandler.putExtra("Sonuc", "KabulEdildi");
+                                activity.sendBroadcast(Intent_PageHandler);
+
+                                ADDialogWebBaglantiIstegi.cancel();
+
+                                if (BaglantiIstegiSayac != null) {
+                                    BaglantiIstegiSayac.cancel();
+                                    BaglantiIstegiSayac = null;
+                                    WebBaglantiIstegiKalanSure = AkorDefterimSys.WebBaglantiIstegiToplamSure;
+                                }
+                            }
+                        });
+
+                        ADDialogWebBaglantiIstegi.getButton(AlertDialog.BUTTON_NEGATIVE).setOnClickListener(new OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                Intent_PageHandler.putExtra("Islem", "WebBaglantiIstegi");
+                                Intent_PageHandler.putExtra("Sonuc", "KabulEdilmedi");
+                                activity.sendBroadcast(Intent_PageHandler);
+
+                                ADDialogWebBaglantiIstegi.cancel();
+
+                                if (BaglantiIstegiSayac != null) {
+                                    BaglantiIstegiSayac.cancel();
+                                    BaglantiIstegiSayac = null;
+                                    WebBaglantiIstegiKalanSure = AkorDefterimSys.WebBaglantiIstegiToplamSure;
+                                }
+                            }
+                        });
+
+                        BaglantiIstegiSayac = new Timer();
+                        BaglantiIstegiDialogSayac_Ayarla();
+                        BaglantiIstegiSayac.schedule(BaglantiIstegiDialogSayac, 10, 1000);
+
+                        break;
+                    case "Frg_TabRepKontrol_Guncelle":
+                        if (Fragment_SayfaAdi.equals("Frg_Istatistik")) {
+                            Frg_Istatistik Frg_Istatistik = (Frg_Istatistik) activity.getFragmentManager().findFragmentByTag(Fragment_SayfaAdi);
+                            Frg_Istatistik.IstatistikGuncelle();
+                        }
+
+                        // Bu şekilde ViewPager içindeki fragment'e, sonrada içindeki fonksiyona ulaşıyoruz.. ;) Not: Sondaki 1 sayısı ViewPager içindeki fragment'ın sırasını belirtir..
+                        //Frg_TabRepKontrol = (Frg_TabRepKontrol) getSupportFragmentManager().findFragmentByTag("android:switcher:" + R.id.VPSolMenuPager + ":1");
+                        Frg_TabRepKontrol Frg_TabRepKontrol = (Frg_TabRepKontrol) SlidingTabFragmentClassGetir(getString(R.string.tabsayfa_repertuvar_kontrol));
+                        Frg_TabRepKontrol.spnListeGetir();
+
+                        if (Fragment_SayfaAdi.equals("Frg_Sarki")) {
+                            Frg_Sarki Frg_Sarki = (Frg_Sarki) activity.getFragmentManager().findFragmentByTag(Fragment_SayfaAdi);
+                            Frg_Sarki.SarkiEklemeDialogGuncelle();
+                        }
+
+                        break;
+                    case "Frg_TabIstekler_Guncelle":
+                        // Bu şekilde ViewPager içindeki fragment'e, sonrada içindeki fonksiyona ulaşıyoruz.. ;) Not: Sondaki 1 sayısı ViewPager içindeki fragment'ın sırasını belirtir..
+                        //Frg_TabIstekler = (Frg_TabIstekler) getSupportFragmentManager().findFragmentByTag("android:switcher:" + R.id.VPSolMenuPager + ":1");
+                        Frg_TabIstekler Frg_TabIstekler = (Frg_TabIstekler) SlidingTabFragmentClassGetir(getString(R.string.tabsayfa_istekler));
+                        if(Frg_TabIstekler != null) Frg_TabIstekler.IstekListesiGetir();
+
+                        break;
+                    case "Frg_Istatistik_Guncelle":
+                        if (Fragment_SayfaAdi.equals("Frg_Istatistik")) {
+                            Frg_Istatistik Frg_Istatistik = (Frg_Istatistik) activity.getFragmentManager().findFragmentByTag(Fragment_SayfaAdi);
+                            Frg_Istatistik.IstatistikGuncelle();
+                        }
+
+                        break;*/
+				}
+			} catch (JSONException e) {
+				e.printStackTrace();
+			}
+		}
+	};
 
 	public void NotifyIkonParlakligi() {
 		// Notification Bar'daki simgelerin parlaklığını aldık
@@ -390,6 +617,13 @@ public class AkorDefterimSys {
 				activity.startActivity(mIntent);
 				break;
 		}
+
+		String IntentClassAdi = mIntent.getComponent().getClassName().toString();
+		String AcilanEkranAdi = IntentClassAdi.substring(IntentClassAdi.lastIndexOf(".") + 1, IntentClassAdi.length());
+
+		sharedPrefEditor = sharedPref.edit();
+		sharedPrefEditor.putString("prefBulunulanEkran", AcilanEkranAdi);
+		sharedPrefEditor.apply();
 	}
 
 	@NonNull
@@ -585,7 +819,10 @@ public class AkorDefterimSys {
 	}
 
 	public Boolean GirisYapildiMi() {
-		return !sharedPref.getString("prefHesapID", "").equals("") && !sharedPref.getString("prefEPosta", "").equals("") && !sharedPref.getString("prefParolaSHA1", "").equals("");
+		return sharedPref.getString("prefOturumTipi", "Cevrimdisi").equals("Cevrimici") &&
+				!sharedPref.getString("prefHesapID", "").equals("") &&
+				!sharedPref.getString("prefEPosta", "").equals("") &&
+				!sharedPref.getString("prefParolaSHA1", "").equals("");
 	}
 
 	public void CikisYap() {
@@ -1027,10 +1264,22 @@ public class AkorDefterimSys {
 			}
 		});
 
-		return new AlertDialog.Builder(activity)
+		final AlertDialog ADDialog = new AlertDialog.Builder(activity)
 				.setView(ViewDialogCustom)
 				.setCancelable(false)
 				.create();
+
+		ADDialog.setOnKeyListener(new Dialog.OnKeyListener() {
+			@Override
+			public boolean onKey(DialogInterface arg0, int keyCode, KeyEvent event) {
+				if (keyCode == KeyEvent.KEYCODE_BACK) {
+					DismissAlertDialog(ADDialog);
+				}
+				return true;
+			}
+		});
+
+		return ADDialog;
 	}
 
 	@SuppressLint("InflateParams")
@@ -1053,14 +1302,24 @@ public class AkorDefterimSys {
 			}
 		});
 
-		AlertDialog Dialog = new AlertDialog.Builder(activity)
+		final AlertDialog ADDialog = new AlertDialog.Builder(activity)
 				.setCustomTitle(ViewDialogBaslik)
 				.setView(DialogLayoutContent)
 				.setNeutralButton(ButtonMsjText, null)
 				.setCancelable(false)
 				.create();
 
-		return Dialog;
+		ADDialog.setOnKeyListener(new Dialog.OnKeyListener() {
+			@Override
+			public boolean onKey(DialogInterface arg0, int keyCode, KeyEvent event) {
+				if (keyCode == KeyEvent.KEYCODE_BACK) {
+					DismissAlertDialog(ADDialog);
+				}
+				return true;
+			}
+		});
+
+		return ADDialog;
 	}
 
 	@SuppressLint("InflateParams")
@@ -1102,10 +1361,22 @@ public class AkorDefterimSys {
 			}
 		});
 
-		return new AlertDialog.Builder(activity)
+		final AlertDialog ADDialog = new AlertDialog.Builder(activity)
 				.setView(ViewDialogCustom)
 				.setCancelable(false)
 				.create();
+
+		ADDialog.setOnKeyListener(new Dialog.OnKeyListener() {
+			@Override
+			public boolean onKey(DialogInterface arg0, int keyCode, KeyEvent event) {
+				if (keyCode == KeyEvent.KEYCODE_BACK) {
+					DismissAlertDialog(ADDialog);
+				}
+				return true;
+			}
+		});
+
+		return ADDialog;
 	}
 
 	@SuppressLint("InflateParams")
@@ -1195,10 +1466,22 @@ public class AkorDefterimSys {
 			}
 		});
 
-		return new AlertDialog.Builder(activity)
+		final AlertDialog ADDialog = new AlertDialog.Builder(activity)
 				.setView(DialogLayoutContent)
 				.setCancelable(false)
 				.create();
+
+		ADDialog.setOnKeyListener(new Dialog.OnKeyListener() {
+			@Override
+			public boolean onKey(DialogInterface arg0, int keyCode, KeyEvent event) {
+				if (keyCode == KeyEvent.KEYCODE_BACK) {
+					DismissAlertDialog(ADDialog);
+				}
+				return true;
+			}
+		});
+
+		return ADDialog;
 	}
 
 	@SuppressLint("InflateParams")
@@ -1240,10 +1523,22 @@ public class AkorDefterimSys {
 			}
 		});
 
-		return new AlertDialog.Builder(activity)
+		final AlertDialog ADDialog = new AlertDialog.Builder(activity)
 				.setView(ViewDialogCustom)
 				.setCancelable(false)
 				.create();
+
+		ADDialog.setOnKeyListener(new Dialog.OnKeyListener() {
+			@Override
+			public boolean onKey(DialogInterface arg0, int keyCode, KeyEvent event) {
+				if (keyCode == KeyEvent.KEYCODE_BACK) {
+					DismissAlertDialog(ADDialog);
+				}
+				return true;
+			}
+		});
+
+		return ADDialog;
 	}
 
 	@SuppressLint("InflateParams")
@@ -1295,10 +1590,22 @@ public class AkorDefterimSys {
 			}
 		});
 
-		return new AlertDialog.Builder(activity)
+		final AlertDialog ADDialog = new AlertDialog.Builder(activity)
 				.setView(ViewDialogCustom)
 				.setCancelable(false)
 				.create();
+
+		ADDialog.setOnKeyListener(new Dialog.OnKeyListener() {
+			@Override
+			public boolean onKey(DialogInterface arg0, int keyCode, KeyEvent event) {
+				if (keyCode == KeyEvent.KEYCODE_BACK) {
+					DismissAlertDialog(ADDialog);
+				}
+				return true;
+			}
+		});
+
+		return ADDialog;
 	}
 
 	@SuppressLint("InflateParams")
@@ -1358,48 +1665,90 @@ public class AkorDefterimSys {
 			}
 		});
 
-		return new AlertDialog.Builder(activity)
+		final AlertDialog ADDialog = new AlertDialog.Builder(activity)
 				.setView(ViewDialogCustom)
 				.setCancelable(false)
 				.create();
+
+		ADDialog.setOnKeyListener(new Dialog.OnKeyListener() {
+			@Override
+			public boolean onKey(DialogInterface arg0, int keyCode, KeyEvent event) {
+				if (keyCode == KeyEvent.KEYCODE_BACK) {
+					DismissAlertDialog(ADDialog);
+				}
+				return true;
+			}
+		});
+
+		return ADDialog;
 	}
 
 	@SuppressLint("InflateParams")
 	public AlertDialog CustomAlertDialog(Activity activity, View DialogLayoutContent) {
-		AlertDialog Dialog = new AlertDialog.Builder(activity)
+		final AlertDialog ADDialog = new AlertDialog.Builder(activity)
 				.setView(DialogLayoutContent)
 				.setCancelable(false)
 				.create();
 
-		return Dialog;
+		ADDialog.setOnKeyListener(new Dialog.OnKeyListener() {
+			@Override
+			public boolean onKey(DialogInterface arg0, int keyCode, KeyEvent event) {
+				if (keyCode == KeyEvent.KEYCODE_BACK) {
+					DismissAlertDialog(ADDialog);
+				}
+				return true;
+			}
+		});
+
+		return ADDialog;
 	}
 
 	@SuppressLint("InflateParams")
 	public AlertDialog CustomAlertDialog(Activity activity, View DialogLayoutContent, String NormalButtonMsjText) {
-		AlertDialog Dialog = new AlertDialog.Builder(activity)
+		final AlertDialog ADDialog = new AlertDialog.Builder(activity)
 				.setView(DialogLayoutContent)
 				.setNeutralButton(NormalButtonMsjText, null)
 				.setCancelable(false)
 				.create();
 
-		return Dialog;
+		ADDialog.setOnKeyListener(new Dialog.OnKeyListener() {
+			@Override
+			public boolean onKey(DialogInterface arg0, int keyCode, KeyEvent event) {
+				if (keyCode == KeyEvent.KEYCODE_BACK) {
+					DismissAlertDialog(ADDialog);
+				}
+				return true;
+			}
+		});
+
+		return ADDialog;
 	}
 
 	@SuppressLint("InflateParams")
 	public AlertDialog CustomAlertDialog(Activity activity, View DialogLayoutContent, String OnayButtonMsjText, String IptalButtonMsjText) {
-		AlertDialog Dialog = new AlertDialog.Builder(activity)
+		final AlertDialog ADDialog = new AlertDialog.Builder(activity)
 				.setView(DialogLayoutContent)
 				.setPositiveButton(OnayButtonMsjText, null)
 				.setNegativeButton(IptalButtonMsjText, null)
 				.setCancelable(false)
 				.create();
 
-		return Dialog;
+		ADDialog.setOnKeyListener(new Dialog.OnKeyListener() {
+			@Override
+			public boolean onKey(DialogInterface arg0, int keyCode, KeyEvent event) {
+				if (keyCode == KeyEvent.KEYCODE_BACK) {
+					DismissAlertDialog(ADDialog);
+				}
+				return true;
+			}
+		});
+
+		return ADDialog;
 	}
 
 	@SuppressLint("InflateParams")
 	public AlertDialog CustomAlertDialog(Activity activity, View DialogLayoutContent, String OnayButtonMsjText, String IptalButtonMsjText, String NormalButtonMsjText) {
-		AlertDialog Dialog = new AlertDialog.Builder(activity)
+		final AlertDialog ADDialog = new AlertDialog.Builder(activity)
 				.setView(DialogLayoutContent)
 				.setPositiveButton(OnayButtonMsjText, null)
 				.setNegativeButton(IptalButtonMsjText, null)
@@ -1407,7 +1756,17 @@ public class AkorDefterimSys {
 				.setCancelable(false)
 				.create();
 
-		return Dialog;
+		ADDialog.setOnKeyListener(new Dialog.OnKeyListener() {
+			@Override
+			public boolean onKey(DialogInterface arg0, int keyCode, KeyEvent event) {
+				if (keyCode == KeyEvent.KEYCODE_BACK) {
+					DismissAlertDialog(ADDialog);
+				}
+				return true;
+			}
+		});
+
+		return ADDialog;
 	}
 
 	@SuppressLint("InflateParams")
@@ -1426,14 +1785,24 @@ public class AkorDefterimSys {
 		lblDialogBaslik.setTypeface(YaziFontu, Typeface.BOLD);
 		lblDialogBaslik.setText(new SpannableStringBuilder(Html.fromHtml(Baslik)));
 
-		AlertDialog Dialog = new AlertDialog.Builder(activity)
+		final AlertDialog ADDialog = new AlertDialog.Builder(activity)
 				.setCustomTitle(ViewDialogBaslik)
 				.setView(DialogLayoutContent)
 				.setNeutralButton(ButtonMsjText, null)
 				.setCancelable(false)
 				.create();
 
-		return Dialog;
+		ADDialog.setOnKeyListener(new Dialog.OnKeyListener() {
+			@Override
+			public boolean onKey(DialogInterface arg0, int keyCode, KeyEvent event) {
+				if (keyCode == KeyEvent.KEYCODE_BACK) {
+					DismissAlertDialog(ADDialog);
+				}
+				return true;
+			}
+		});
+
+		return ADDialog;
 	}
 
 	@SuppressLint("InflateParams")
@@ -1448,7 +1817,7 @@ public class AkorDefterimSys {
 		lblDialogBaslik.setTypeface(YaziFontu, Typeface.BOLD);
 		lblDialogBaslik.setText(new SpannableStringBuilder(Html.fromHtml(Baslik)));
 
-		AlertDialog Dialog = new AlertDialog.Builder(activity)
+		final AlertDialog ADDialog = new AlertDialog.Builder(activity)
 				.setCustomTitle(DialogLayoutContent)
 				.setView(DialogLayoutContent)
 				.setPositiveButton(OnayButtonMsjText, null)
@@ -1456,19 +1825,39 @@ public class AkorDefterimSys {
 				.setCancelable(KapanabilirMi)
 				.create();
 
-		return Dialog;
+		ADDialog.setOnKeyListener(new Dialog.OnKeyListener() {
+			@Override
+			public boolean onKey(DialogInterface arg0, int keyCode, KeyEvent event) {
+				if (keyCode == KeyEvent.KEYCODE_BACK) {
+					DismissAlertDialog(ADDialog);
+				}
+				return true;
+			}
+		});
+
+		return ADDialog;
 	}
 
 	@SuppressLint("InflateParams")
 	public AlertDialog CustomAlertDialog(Activity activity, View DialogLayoutContent, String OnayButtonMsjText, String IptalButtonMsjText, Boolean KapanabilirMi) {
-		AlertDialog Dialog = new AlertDialog.Builder(activity)
+		final AlertDialog ADDialog = new AlertDialog.Builder(activity)
 				.setView(DialogLayoutContent)
 				.setPositiveButton(OnayButtonMsjText, null)
 				.setNegativeButton(IptalButtonMsjText, null)
 				.setCancelable(KapanabilirMi)
 				.create();
 
-		return Dialog;
+		ADDialog.setOnKeyListener(new Dialog.OnKeyListener() {
+			@Override
+			public boolean onKey(DialogInterface arg0, int keyCode, KeyEvent event) {
+				if (keyCode == KeyEvent.KEYCODE_BACK) {
+					DismissAlertDialog(ADDialog);
+				}
+				return true;
+			}
+		});
+
+		return ADDialog;
 	}
 
 	@SuppressLint("InflateParams")
@@ -1487,7 +1876,7 @@ public class AkorDefterimSys {
 		lblDialogBaslik.setTypeface(YaziFontu, Typeface.BOLD);
 		lblDialogBaslik.setText(new SpannableStringBuilder(Html.fromHtml(Baslik)));
 
-		AlertDialog Dialog = new AlertDialog.Builder(activity)
+		final AlertDialog ADDialog = new AlertDialog.Builder(activity)
 				.setCustomTitle(ViewDialogBaslik)
 				.setView(DialogLayoutContent)
 				.setPositiveButton(OnayButtonMsjText, null)
@@ -1496,7 +1885,17 @@ public class AkorDefterimSys {
 				.setCancelable(false)
 				.create();
 
-		return Dialog;
+		ADDialog.setOnKeyListener(new Dialog.OnKeyListener() {
+			@Override
+			public boolean onKey(DialogInterface arg0, int keyCode, KeyEvent event) {
+				if (keyCode == KeyEvent.KEYCODE_BACK) {
+					DismissAlertDialog(ADDialog);
+				}
+				return true;
+			}
+		});
+
+		return ADDialog;
 	}
 
 	@SuppressLint("InflateParams")
@@ -1515,7 +1914,7 @@ public class AkorDefterimSys {
 		lblDialogBaslik.setTypeface(YaziFontu, Typeface.BOLD);
 		lblDialogBaslik.setText(new SpannableStringBuilder(Html.fromHtml(Baslik)));
 
-		AlertDialog Dialog = new AlertDialog.Builder(activity)
+		final AlertDialog ADDialog = new AlertDialog.Builder(activity)
 				.setCustomTitle(ViewDialogBaslik)
 				.setMessage(new SpannableStringBuilder(Html.fromHtml(Mesaj)))
 				.setPositiveButton(OnayButtonMsjText, null)
@@ -1524,7 +1923,17 @@ public class AkorDefterimSys {
 				.setCancelable(false)
 				.create();
 
-		return Dialog;
+		ADDialog.setOnKeyListener(new Dialog.OnKeyListener() {
+			@Override
+			public boolean onKey(DialogInterface arg0, int keyCode, KeyEvent event) {
+				if (keyCode == KeyEvent.KEYCODE_BACK) {
+					DismissAlertDialog(ADDialog);
+				}
+				return true;
+			}
+		});
+
+		return ADDialog;
 	}
 
 	@SuppressLint("InflateParams")
@@ -1542,7 +1951,7 @@ public class AkorDefterimSys {
 		lblDialogBaslik.setTypeface(YaziFontu, Typeface.BOLD);
 		lblDialogBaslik.setText(new SpannableStringBuilder(Html.fromHtml(Baslik)));
 
-		AlertDialog Dialog = new AlertDialog.Builder(activity)
+		final AlertDialog ADDialog = new AlertDialog.Builder(activity)
 				.setCustomTitle(ViewDialogBaslik)
 				.setMessage(new SpannableStringBuilder(Html.fromHtml(Mesaj)))
 				.setPositiveButton(OnayButtonMsjText, null)
@@ -1550,7 +1959,17 @@ public class AkorDefterimSys {
 				.setCancelable(false)
 				.create();
 
-		return Dialog;
+		ADDialog.setOnKeyListener(new Dialog.OnKeyListener() {
+			@Override
+			public boolean onKey(DialogInterface arg0, int keyCode, KeyEvent event) {
+				if (keyCode == KeyEvent.KEYCODE_BACK) {
+					DismissAlertDialog(ADDialog);
+				}
+				return true;
+			}
+		});
+
+		return ADDialog;
 	}
 
 	@SuppressLint("InflateParams")
@@ -1569,22 +1988,32 @@ public class AkorDefterimSys {
 		lblDialogBaslik.setTypeface(YaziFontu, Typeface.BOLD);
 		lblDialogBaslik.setText(new SpannableStringBuilder(Html.fromHtml(Baslik)));
 
-		AlertDialog Dialog = new AlertDialog.Builder(activity)
+		final AlertDialog ADDialog = new AlertDialog.Builder(activity)
 				.setCustomTitle(ViewDialogBaslik)
 				.setMessage(new SpannableStringBuilder(Html.fromHtml(Mesaj)))
 				.setPositiveButton(OnayButtonMsjText, null)
 				.setCancelable(false)
 				.create();
 
-		return Dialog;
+		ADDialog.setOnKeyListener(new Dialog.OnKeyListener() {
+			@Override
+			public boolean onKey(DialogInterface arg0, int keyCode, KeyEvent event) {
+				if (keyCode == KeyEvent.KEYCODE_BACK) {
+					DismissAlertDialog(ADDialog);
+				}
+				return true;
+			}
+		});
+
+		return ADDialog;
 	}
 
-	public void NotifyGoster(Intent ıntent, String NotifyBaslik, String NotifyIcerik, String SubIcerik, int Number, String TickerIcerik, String BigNotifyBaslik, String BigNotifyIcerik, String BigSubIcerik, Boolean Titresim) {
+	public void NotifyGoster(Intent intent, String NotifyBaslik, String NotifyIcerik, String SubIcerik, int Number, String TickerIcerik, String BigNotifyBaslik, String BigNotifyIcerik, String BigSubIcerik, Boolean Titresim) {
 		Uri defaultSoundUri;
 		PendingIntent pendingIntent;
 		Notification.Builder NotifyBuilder;
 
-		pendingIntent = PendingIntent.getActivity(activity, 0, ıntent, PendingIntent.FLAG_UPDATE_CURRENT);
+		pendingIntent = PendingIntent.getActivity(activity, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
 		defaultSoundUri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
 
 		/*RemoteViews remoteViews = new RemoteViews(context.getPackageName(), R.layout.custom_notification_view);
@@ -2085,9 +2514,11 @@ public class AkorDefterimSys {
 
 	// PHP İŞLEMLERİ - Retrofit 2
 
-	public void TarihSaatGetir(final String Islem) {
+	public void TarihSaatGetir(Activity activity, final String Islem) {
 		RetrofitInterface retrofitInterface = RetrofitServiceGenerator.createService(activity, RetrofitInterface.class);
-		final Interface_AsyncResponse AsyncResponse = (Interface_AsyncResponse) activity;
+		final Interface_AsyncResponse AsyncResponse;
+		if(activity != null) AsyncResponse = (Interface_AsyncResponse) activity;
+		else AsyncResponse = (Interface_AsyncResponse) this.activity;
 
 		Call<SnfTarihSaat> snfTarihSaatCall = retrofitInterface.TarihSaatGetir();
 		snfTarihSaatCall.enqueue(new Callback<SnfTarihSaat>() {
@@ -2102,7 +2533,7 @@ public class AkorDefterimSys {
 
 			@Override
 			public void onFailure(Call<SnfTarihSaat> call, Throwable t) {
-				AsyncResponse.AsyncTaskReturnValue("{\"Islem\":\"TarihSaatGetir\", \"Sonuc\":false}");
+				AsyncResponse.AsyncTaskReturnValue("{\"Islem\":\"" + Islem + "\", \"Sonuc\":false}");
 			}
 		});
 	}
@@ -2238,7 +2669,7 @@ public class AkorDefterimSys {
 					SnfHesapGirisYap snfHesapGirisYap = response.body();
 
 					// getHata'nin false olması durumu hata yok demektir..
-					if(!snfHesapGirisYap.getHata()) AsyncResponse.AsyncTaskReturnValue("{\"Islem\":\"HesapGirisYap\", \"Sonuc\":" + snfHesapGirisYap.getSonuc() + ", \"HesapID\":\"" + snfHesapGirisYap.getHesapID() + "\", \"HesapEPosta\":\"" + snfHesapGirisYap.getHesapEPosta() + "\", \"HesapDurum\":\"" + snfHesapGirisYap.getHesapDurum() + "\", \"HesapParolaSHA1\":\"" + snfHesapGirisYap.getHesapParolaSHA1() + "\", \"HesapDurumBilgi\":\"" + snfHesapGirisYap.getHesapDurumBilgi() + "\"}");
+					if(!snfHesapGirisYap.getHata()) AsyncResponse.AsyncTaskReturnValue("{\"Islem\":\"HesapGirisYap\", \"Sonuc\":" + snfHesapGirisYap.getSonuc() + ", \"HesapID\":\"" + snfHesapGirisYap.getHesapID() + "\", \"HesapFirebaseToken\":\"" + snfHesapGirisYap.getHesapFirebaseToken() + "\", \"HesapEPosta\":\"" + snfHesapGirisYap.getHesapEPosta() + "\", \"HesapDurum\":\"" + snfHesapGirisYap.getHesapDurum() + "\", \"HesapParolaSHA1\":\"" + snfHesapGirisYap.getHesapParolaSHA1() + "\", \"HesapDurumBilgi\":\"" + snfHesapGirisYap.getHesapDurumBilgi() + "\"}");
 					else AsyncResponse.AsyncTaskReturnValue("{\"Islem\":\"HesapGirisYap\", \"Sonuc\":false}");
 				} else AsyncResponse.AsyncTaskReturnValue("{\"Islem\":\"HesapGirisYap\", \"Sonuc\":false}");
 			}
@@ -2387,7 +2818,7 @@ public class AkorDefterimSys {
 		});
 	}
 
-	public void SarkiListesiGetir(Veritabani veritabani, final int mListeID, int mKategoriID, int mTarzID, final int mListelemeTipi, final String SecilenSanatciAdi) {
+	public void SarkiListesiGetir(Veritabani veritabani, final int mListeID, final int mKategoriID, final int mTarzID, final int mListelemeTipi, final String SecilenSanatciAdi) {
 		RetrofitInterface retrofitInterface = RetrofitServiceGenerator.createService(activity, RetrofitInterface.class);
 		final Interface_AsyncResponse AsyncResponse = (Interface_AsyncResponse) activity;
 
@@ -2399,13 +2830,13 @@ public class AkorDefterimSys {
 					if(response.isSuccessful()) {
 						SnfSarkiListesiGetir snfSarkiListesiGetir = response.body();
 
-						AsyncResponse.AsyncTaskReturnValue("{\"Islem\":\"SarkiListesiGetir\", \"Sonuc\":true, \"ListeID\":" + mListeID + ", \"ListelemeTipi\":" + mListelemeTipi + ", \"SarkiListesi\":" + snfSarkiListesiGetir.getSarkiListesi() + ", \"SecilenSanatciAdi\":\"" + SecilenSanatciAdi + "\"}");
-					} else AsyncResponse.AsyncTaskReturnValue("{\"Islem\":\"SarkiListesiGetir\", \"Sonuc\":false, \"ListeID\":" + mListeID + ", \"ListelemeTipi\":" + mListelemeTipi + ", \"SarkiListesi\":\"[]\", \"SecilenSanatciAdi\":\"" + SecilenSanatciAdi + "\"}");
+						AsyncResponse.AsyncTaskReturnValue("{\"Islem\":\"SarkiListesiGetir\", \"Sonuc\":true, \"ListeID\":" + mListeID + ", \"KategoriID\":" + mKategoriID + ", \"TarzID\":" + mTarzID + ", \"ListelemeTipi\":" + mListelemeTipi + ", \"SarkiListesi\":" + snfSarkiListesiGetir.getSarkiListesi() + ", \"SecilenSanatciAdi\":\"" + SecilenSanatciAdi + "\"}");
+					} else AsyncResponse.AsyncTaskReturnValue("{\"Islem\":\"SarkiListesiGetir\", \"Sonuc\":false, \"ListeID\":" + mListeID + ", \"KategoriID\":" + mKategoriID + ", \"TarzID\":" + mTarzID + ", \"ListelemeTipi\":" + mListelemeTipi + ", \"SarkiListesi\":\"[]\", \"SecilenSanatciAdi\":\"" + SecilenSanatciAdi + "\"}");
 				}
 
 				@Override
 				public void onFailure(Call<SnfSarkiListesiGetir> call, Throwable t) {
-					AsyncResponse.AsyncTaskReturnValue("{\"Islem\":\"SarkiListesiGetir\", \"Sonuc\":false, \"ListeID\":" + mListeID + ", \"ListelemeTipi\":" + mListelemeTipi + ", \"SarkiListesi\":\"[]\", \"SecilenSanatciAdi\":\"" + SecilenSanatciAdi + "\"}");
+					AsyncResponse.AsyncTaskReturnValue("{\"Islem\":\"SarkiListesiGetir\", \"Sonuc\":false, \"ListeID\":" + mListeID + ", \"KategoriID\":" + mKategoriID + ", \"TarzID\":" + mTarzID + ", \"ListelemeTipi\":" + mListelemeTipi + ", \"SarkiListesi\":\"[]\", \"SecilenSanatciAdi\":\"" + SecilenSanatciAdi + "\"}");
 				}
 			});
 		} else {
@@ -2429,8 +2860,8 @@ public class AkorDefterimSys {
 					}
 				}
 
-				AsyncResponse.AsyncTaskReturnValue("{\"Islem\":\"SarkiListesiGetir\", \"Sonuc\":true, \"ListeID\":" + mListeID + ", \"ListelemeTipi\":" + mListelemeTipi + ", \"SarkiListesi\":" + JSONArrSarkilar.toString() + ", \"SecilenSanatciAdi\":\"" + SecilenSanatciAdi + "\"}");
-			} else AsyncResponse.AsyncTaskReturnValue("{\"Islem\":\"SarkiListesiGetir\", \"Sonuc\":false, \"ListeID\":" + mListeID + ", \"ListelemeTipi\":" + mListelemeTipi + ", \"SarkiListesi\":\"[]\", \"SecilenSanatciAdi\":\"" + SecilenSanatciAdi + "\"}");
+				AsyncResponse.AsyncTaskReturnValue("{\"Islem\":\"SarkiListesiGetir\", \"Sonuc\":true, \"ListeID\":" + mListeID + ", \"KategoriID\":" + mKategoriID + ", \"TarzID\":" + mTarzID + ", \"ListelemeTipi\":" + mListelemeTipi + ", \"SarkiListesi\":" + JSONArrSarkilar.toString() + ", \"SecilenSanatciAdi\":\"" + SecilenSanatciAdi + "\"}");
+			} else AsyncResponse.AsyncTaskReturnValue("{\"Islem\":\"SarkiListesiGetir\", \"Sonuc\":false, \"ListeID\":" + mListeID + ", \"KategoriID\":" + mKategoriID + ", \"TarzID\":" + mTarzID + ", \"ListelemeTipi\":" + mListelemeTipi + ", \"SarkiListesi\":\"[]\", \"SecilenSanatciAdi\":\"" + SecilenSanatciAdi + "\"}");
 		}
 	}
 
@@ -2490,99 +2921,68 @@ public class AkorDefterimSys {
 		});
 	}
 
+	public void DosyaBilgisiGetir(Activity activity, String DosyaDizin, String DosyaAdi, final String Islem) {
+		RetrofitInterface retrofitInterface = RetrofitServiceGenerator.createService(activity, RetrofitInterface.class);
+		final Interface_AsyncResponse AsyncResponse;
+		if(activity != null) AsyncResponse = (Interface_AsyncResponse) activity;
+		else AsyncResponse = (Interface_AsyncResponse) this.activity;
 
+		Call<SnfDosyaBilgisiGetir> snfDosyaBilgisiGetirCall = retrofitInterface.DosyaBilgisiGetir(DosyaDizin, DosyaAdi);
+		snfDosyaBilgisiGetirCall.enqueue(new Callback<SnfDosyaBilgisiGetir>() {
+			@Override
+			public void onResponse(Call<SnfDosyaBilgisiGetir> call, Response<SnfDosyaBilgisiGetir> response) {
+				if(response.isSuccessful()) {
+					SnfDosyaBilgisiGetir snfDosyaBilgisiGetir = response.body();
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-	public void FirebaseMesajGonder(String FirebaseToken, String Icerik) {
-		new FirebaseMesajGonder().execute(FirebaseToken, Icerik);
-	}
-
-	private class FirebaseMesajGonder extends AsyncTask<String, String, String> {
-		String FirebaseToken, Icerik;
-
-		@Override
-		protected void onPreExecute() {
-			super.onPreExecute();
-		}
-
-		@Override
-		protected String doInBackground(String... parametre) {
-			FirebaseToken = String.valueOf(parametre[0]);
-			Icerik = String.valueOf(parametre[1]);
-
-			List<NameValuePair> nameValuePairs = new ArrayList<>();
-			nameValuePairs.add(new BasicNameValuePair("firebasetoken", FirebaseToken));
-			nameValuePairs.add(new BasicNameValuePair("icerik", Icerik));
-			String sonuc = null;
-
-			try {
-				HttpClient httpClient = new DefaultHttpClient();
-				HttpPost httpPost = new HttpPost(PHPFirebaseNotify);
-				httpPost.setEntity(new UrlEncodedFormEntity(nameValuePairs, HTTP.UTF_8));
-				HttpResponse response = httpClient.execute(httpPost);
-				HttpEntity entity = response.getEntity();
-				InputStream is = entity.getContent();
-				BufferedReader reader = new BufferedReader(new InputStreamReader(is, "UTF-8"), 8);
-				StringBuilder sb = new StringBuilder();
-
-				String line;
-
-				while ((line = reader.readLine()) != null) {
-					sb.append(line).append("\n");
+					// getHata'nin false olması durumu hata yok demektir..
+					if(!snfDosyaBilgisiGetir.getHata())
+						AsyncResponse.AsyncTaskReturnValue("{\"Islem\":\"" + Islem + "\", \"Sonuc\":" + snfDosyaBilgisiGetir.getSonuc() + ", \"Aciklama\":\"" + snfDosyaBilgisiGetir.getAciklama() + "\", \"LastModified\":\"" + snfDosyaBilgisiGetir.getLastModified() + "\", \"DosyaBoyutu\":\"" + snfDosyaBilgisiGetir.getDosyaBoyutu() + "\"}");
+					else AsyncResponse.AsyncTaskReturnValue("{\"Islem\":\"" + Islem + "\", \"Sonuc\":false}");
 				}
-
-				sonuc = sb.toString();
-			} catch (IOException e) {
-				e.printStackTrace();
 			}
 
-			return sonuc;
-		}
-
-		@Override
-		protected void onPostExecute(String Sonuc) {
-			try {
-				JSONObject JSONGelenVeri = new JSONObject(new JSONArray(Sonuc).getString(0));
-
-				switch (JSONGelenVeri.getInt("sonuc")) {
-					case 1:
-						Log.i("Firebase", "Mesaj gönderildi..");
-
-						break;
-					case 0:
-						Log.i("Firebase", "Mesaj gönderilemedi..");
-
-						break;
-				}
-			} catch (JSONException e) {
-				e.printStackTrace();
+			@Override
+			public void onFailure(Call<SnfDosyaBilgisiGetir> call, Throwable t) {
+				AsyncResponse.AsyncTaskReturnValue("{\"Islem\":\"" + Islem + ", \"Sonuc\":false}");
 			}
-		}
-
-		@Override
-		protected void onProgressUpdate(String... Deger) {
-			super.onProgressUpdate(Deger);
-		}
-
-		@Override
-		protected void onCancelled(String Sonuc) {
-			super.onCancelled(Sonuc);
-		}
+		});
 	}
+
+	public void FirebaseMesajGonder(Activity activity, String mFirebaseToken, String mIcerik, final String Islem) {
+		RetrofitInterface retrofitInterface = RetrofitServiceGenerator.createService(activity, RetrofitInterface.class);
+		final Interface_AsyncResponse AsyncResponse;
+		if(activity != null) AsyncResponse = (Interface_AsyncResponse) activity;
+		else AsyncResponse = (Interface_AsyncResponse) this.activity;
+
+		Call<SnfIslemSonuc> snfIslemSonucCall = retrofitInterface.FirebaseMesajGonder(mFirebaseToken, mIcerik);
+		snfIslemSonucCall.enqueue(new Callback<SnfIslemSonuc>() {
+			@Override
+			public void onResponse(Call<SnfIslemSonuc> call, Response<SnfIslemSonuc> response) {
+				if(response.isSuccessful()) {
+					SnfIslemSonuc snfIslemSonuc = response.body();
+
+					AsyncResponse.AsyncTaskReturnValue("{\"Islem\":\"" + Islem + "\", \"Sonuc\":true, \"Aciklama\":\"" + snfIslemSonuc.getAciklama() + "\"}");
+				} else AsyncResponse.AsyncTaskReturnValue("{\"Islem\":\"" + Islem + "\", \"Sonuc\":false}");
+			}
+
+			@Override
+			public void onFailure(Call<SnfIslemSonuc> call, Throwable t) {
+				AsyncResponse.AsyncTaskReturnValue("{\"Islem\":\"" + Islem + "\", \"Sonuc\":false}");
+			}
+		});
+	}
+
+
+
+
+
+
+
+
+
+
+
+
 
 	public void YeniGuncellemeKontrol() {
 		if (InternetErisimKontrolu()) new YeniGuncellemeKontrol().execute();
@@ -2602,7 +3002,7 @@ public class AkorDefterimSys {
 
 			try {
 				YeniVersiyon = Jsoup.connect("https://play.google.com/store/apps/details?id=" + activity.getPackageName())
-						.timeout(30000)
+						.timeout(60*1000)
 						.userAgent("Mozilla/5.0 (Windows; U; WindowsNT 5.1; en-US; rv1.8.1.6) Gecko/20070725 Firefox/2.0.0.6")
 						.referrer("http://www.google.com")
 						.get()
@@ -2622,8 +3022,8 @@ public class AkorDefterimSys {
 			String YeniVersiyonAdi, GecerliVersiyonAdi = null;
 
 			if(Sonuc != null && !Sonuc.equals("")) {
-				YeniVersiyonCode = Integer.parseInt(Sonuc.replace(".", ""));
-				YeniVersiyonAdi = Sonuc;
+				YeniVersiyonCode = Integer.parseInt(Sonuc.trim().replace(".", "").replace(" ", ""));
+				YeniVersiyonAdi = Sonuc.trim().replace(" ", "");
 
 				try {
 					GecerliVersiyonCode = activity.getPackageManager().getPackageInfo(activity.getPackageName(), 0).versionCode + 100;
@@ -3676,6 +4076,12 @@ public class AkorDefterimSys {
 				Dialog_ImgGitarKlavye.setScaleType(ImageView.ScaleType.FIT_START);
 			}
 		});
+
+		for(int i = 0;i < snfAkorlar.size();i ++) {
+			if(snfAkorlar.get(i).getSecimYazi()) {
+				Dialog_lstAkorlar.setSelection(i);
+			}
+		}
 
 		ADDialogAkorGosterici.show();
 
@@ -6173,13 +6579,15 @@ public class AkorDefterimSys {
 		String[] BulunanAkorlar = StringUtils.substringsBetween(Icerik,HtmlTag1_1,HtmlTag2);
 		String Akor, NormalTagliAkor, HtmlTagliAkor;
 
-		for (String BulunanAkorHtmlli : BulunanAkorlar) {
-			Akor = BulunanAkorHtmlli.substring(BulunanAkorHtmlli.indexOf("<b>") + 3, BulunanAkorHtmlli.length());
-			NormalTagliAkor = NormalTag1 + Akor + NormalTag2;
-			HtmlTagliAkor = HtmlTag1_1 + Akor + HtmlTag1_2 + Akor + HtmlTag2;
+		if(BulunanAkorlar != null) {
+			for (String BulunanAkorHtmlli : BulunanAkorlar) {
+				Akor = BulunanAkorHtmlli.substring(BulunanAkorHtmlli.indexOf("<b>") + 3, BulunanAkorHtmlli.length());
+				NormalTagliAkor = NormalTag1 + Akor + NormalTag2;
+				HtmlTagliAkor = HtmlTag1_1 + Akor + HtmlTag1_2 + Akor + HtmlTag2;
 
-			if (Icerik.contains(HtmlTagliAkor)) {
-				Icerik = Icerik.replace(HtmlTagliAkor, NormalTagliAkor);
+				if (Icerik.contains(HtmlTagliAkor)) {
+					Icerik = Icerik.replace(HtmlTagliAkor, NormalTagliAkor);
+				}
 			}
 		}
 
@@ -6191,11 +6599,13 @@ public class AkorDefterimSys {
 		String[] BulunanAkorlar = StringUtils.substringsBetween(Icerik,NormalTag1,NormalTag2);
 		String NormalTagliAkor, HtmlTagliAkor;
 
-		for (String Akor : BulunanAkorlar) {
-			NormalTagliAkor = NormalTag1 + Akor + NormalTag2;
-			HtmlTagliAkor = HtmlTag1_1 + Akor + HtmlTag1_2 + Akor + HtmlTag2;
-			if (Icerik.contains(NormalTagliAkor)) {
-				Icerik = Icerik.replace(NormalTagliAkor, HtmlTagliAkor);
+		if(BulunanAkorlar != null) {
+			for (String Akor : BulunanAkorlar) {
+				NormalTagliAkor = NormalTag1 + Akor + NormalTag2;
+				HtmlTagliAkor = HtmlTag1_1 + Akor + HtmlTag1_2 + Akor + HtmlTag2;
+				if (Icerik.contains(NormalTagliAkor)) {
+					Icerik = Icerik.replace(NormalTagliAkor, HtmlTagliAkor);
+				}
 			}
 		}
 
@@ -6268,6 +6678,317 @@ public class AkorDefterimSys {
 					AramaPanel.setVisibility(View.GONE);
 				}
 			}
+		}
+	}
+
+	public void ZamanlayiciBaslat(Activity activity, String SayimTipi, int TickMs, int ToplamZamanMs, final String Islem) {
+		// Timer: Kodumuzun belli bir zaman sonra, belli bir zaman aralıklarıyla tekrar tekrar çalışmasını istiyorsak
+		// Handler: Belli bir zaman sonra kodun sadece bir kere çalışmasını isteyebiliriz..
+		// Countdown: Tick ve Finish methodlarını alır. Tick, aradan geçen zamanda çalışır. Finish, geri sayım bittiğinde çalışır..
+
+		final Interface_AsyncResponse AsyncResponse;
+		if(activity != null) AsyncResponse = (Interface_AsyncResponse) activity;
+		else AsyncResponse = (Interface_AsyncResponse) this.activity;
+
+		switch (SayimTipi) {
+			case "Timer":
+				Timer scanTimer = new Timer();
+				scanTimer.schedule(new TimerTask() {
+					@Override
+					public void run() {
+						AsyncResponse.AsyncTaskReturnValue("{\"Islem\":" + Islem + "}");
+					}
+				}, TickMs, ToplamZamanMs);
+				break;
+			case "Handler":
+				new Handler().postDelayed(new Runnable() {
+					@Override
+					public void run() {
+						AsyncResponse.AsyncTaskReturnValue("{\"Islem\":" + Islem + "}");
+					}
+				}, ToplamZamanMs);
+
+				break;
+			case "Countdown":
+				new CountDownTimer(ToplamZamanMs, TickMs) {
+					public void onTick(long millisUntilFinished) {
+						AsyncResponse.AsyncTaskReturnValue("{\"Islem\":" + Islem + ", \"Method\":\"Tick\"}");
+					}
+
+					public void onFinish() {
+						AsyncResponse.AsyncTaskReturnValue("{\"Islem\":" + Islem + ", \"Method\":\"Finish\"}");
+					}
+				}.start();
+
+				break;
+		}
+	}
+
+	public File YerelDBDizinGetir() {
+		File YerelDBDizin = null;
+
+		if (android.os.Build.VERSION.SDK_INT >= 17) {
+			if(activity != null) YerelDBDizin = new File(activity.getApplicationInfo().dataDir + "/databases/");
+			else if(context != null) YerelDBDizin = new File(context.getApplicationInfo().dataDir + "/databases/");
+		} else {
+			if(activity != null) YerelDBDizin = new File("/data/data/" + activity.getPackageName() + "/databases/");
+			else if(context != null)YerelDBDizin = new File("/data/data/" + context.getPackageName() + "/databases/");
+		}
+
+		return YerelDBDizin;
+	}
+
+	@SuppressWarnings("ResultOfMethodCallIgnored")
+	@SuppressLint({"InflateParams", "StaticFieldLeak"})
+	private class DBYedekle extends AsyncTask<Void, Integer, String> {
+		long totalSize = 0;
+
+		@Override
+		protected void onPreExecute() {
+			super.onPreExecute();
+		}
+
+		@Override
+		protected String doInBackground(Void... parametre) {
+			return UploadFile();
+		}
+
+		private String UploadFile() {
+			String Sonuc;
+
+			try {
+				File YerelDB = new File(YerelDBDizinGetir() + File.separator + YerelDBAdi);
+				AndroidMultiPartEntity entity = new AndroidMultiPartEntity(new AndroidMultiPartEntity.ProgressListener() {
+					@Override
+					public void transferred(long num) {
+						publishProgress((int) ((num / (float) totalSize) * 100));
+					}
+				});
+
+				HttpClient httpclient = new DefaultHttpClient();
+				HttpPost httppost = new HttpPost(PHPDosyaYukle);
+
+				// Adding file data to http body
+				entity.addPart("Dosya", new FileBody(YerelDB));
+				entity.addPart("Dizin", new StringBody(PHPYedekDBKlasoruDizini));
+				entity.addPart("DosyaAdi", new StringBody(YedekDBAdi));
+
+				totalSize = entity.getContentLength();
+				httppost.setEntity(entity);
+
+				// Making server call
+				HttpResponse response = httpclient.execute(httppost);
+				//HttpEntity r_entity = response.getEntity();
+
+				int statusCode = response.getStatusLine().getStatusCode();
+				if (statusCode == 200) {
+					// Server response
+					Sonuc = "OK";
+				} else {
+					Sonuc = "Error occurred! Http Status Code: " + statusCode;
+				}
+			} catch (FileNotFoundException e) {
+				e.printStackTrace();
+				Sonuc = "FileNotFoundException";
+			} catch (MalformedURLException e) {
+				e.printStackTrace();
+				Sonuc = "MalformedURLException";
+			} catch (IOException e) {
+				e.printStackTrace();
+				Sonuc = "IOException";
+			}
+
+			return Sonuc;
+		}
+
+		@Override
+		protected void onPostExecute(String Sonuc) {
+			switch (Sonuc) {
+				case "OK":
+					RetrofitInterface retrofitInterface = RetrofitServiceGenerator.createService(activity, RetrofitInterface.class);
+
+					Call<SnfDosyaBilgisiGetir> snfDosyaBilgisiGetirCall = retrofitInterface.DosyaBilgisiGetir(PHPYedekDBKlasoruDizini, YedekDBAdi);
+					snfDosyaBilgisiGetirCall.enqueue(new Callback<SnfDosyaBilgisiGetir>() {
+						@Override
+						public void onResponse(Call<SnfDosyaBilgisiGetir> call, Response<SnfDosyaBilgisiGetir> response) {
+							if(response.isSuccessful()) {
+								SnfDosyaBilgisiGetir snfDosyaBilgisiGetir = response.body();
+
+								@SuppressLint("SimpleDateFormat")
+								SimpleDateFormat SDF = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+
+								File YerelDB = new File(YerelDBDizinGetir() + File.separator + YerelDBAdi);
+								try {
+									YerelDB.setLastModified(SDF.parse(snfDosyaBilgisiGetir != null ? snfDosyaBilgisiGetir.getLastModified():"").getTime());
+								} catch (ParseException e) {
+									e.printStackTrace();
+								}
+
+								Log.d("DB Yedekle Senkronize", "DB Yedeklendi..");
+							}
+						}
+
+						@Override
+						public void onFailure(Call<SnfDosyaBilgisiGetir> call, Throwable t) {
+
+						}
+					});
+
+					break;
+				case "FileNotFoundException":
+					Log.d("DB Yedekle Senkronize", activity != null ? activity.getString(R.string.islem_yapilirken_bir_hata_olustu) : context.getString(R.string.islem_yapilirken_bir_hata_olustu));
+					break;
+				case "MalformedURLException":
+					Log.d("DB Yedekle Senkronize", activity != null ? activity.getString(R.string.url_hatasi) : context.getString(R.string.url_hatasi));
+					break;
+				case "IOException":
+					Log.d("DB Yedekle Senkronize", activity != null ? activity.getString(R.string.dosya_yazma_okuma_hatasi) : context.getString(R.string.dosya_yazma_okuma_hatasi));
+					break;
+				default:
+					Log.d("DB Yedekle Senkronize", activity != null ? activity.getString(R.string.beklenmedik_hata_meydana_geldi) : context.getString(R.string.beklenmedik_hata_meydana_geldi));
+					break;
+			}
+		}
+
+		@Override
+		protected void onProgressUpdate(final Integer... Deger) {
+			//Log.d("DB Yedekle Senkronize", activity != null ? activity.getString(R.string.dosya_yukleniyor, String.valueOf(Deger[0]) + "%") : context.getString(R.string.dosya_yukleniyor, String.valueOf(Deger[0]) + "%"));
+		}
+
+		@Override
+		protected void onCancelled(String Sonuc) {
+			super.onCancelled(Sonuc);
+		}
+	}
+
+	private class DBGeriYukle extends AsyncTask<String, String, String> {
+		@Override
+		protected void onPreExecute() {
+			super.onPreExecute();
+		}
+
+		@Override
+		protected String doInBackground(String... param) {
+			int count;
+			try {
+				String YedekDBURL = param[0];
+
+				URL url = new URL(YedekDBURL);
+				URLConnection conection = url.openConnection();
+				conection.connect();
+				// this will be useful so that you can show a tipical 0-100% progress bar
+				int lenghtOfFile = conection.getContentLength();
+
+				// download the file
+				InputStream input = new BufferedInputStream(url.openStream(), 8192);
+
+				// Output stream
+				File YerelDB = new File(YerelDBDizinGetir() + File.separator + YerelDBAdi);
+				OutputStream output = new FileOutputStream(YerelDB);
+
+				byte data[] = new byte[1024];
+
+				long total = 0;
+
+				while ((count = input.read(data)) != -1) {
+					total += count;
+					// publishing the progress....
+					// After this onProgressUpdate will be called
+					publishProgress(""+(int)((total*100)/lenghtOfFile));
+
+					// writing data to file
+					output.write(data, 0, count);
+				}
+
+				// flushing output
+				output.flush();
+
+				// closing streams
+				output.close();
+				input.close();
+
+			} catch (Exception e) {
+				Log.e("Error: ", e.getMessage());
+			}
+
+			return null;
+		}
+
+		@Override
+		protected void onPostExecute(String file_url) {
+			Log.d("DB Yedekle Senkronize", "YedekDB Geri yüklendi ve açıldı..");
+		}
+
+		protected void onProgressUpdate(String... progress) {
+			// setting progress percentage
+			//pDialog.setProgress(Integer.parseInt(progress[0]));
+		}
+
+		@Override
+		protected void onCancelled(String Sonuc) {
+			super.onCancelled(Sonuc);
+		}
+	}
+
+	public void VeritabaniSenkronizeEt(String YerelDBAdi, final String YedekDBAdi) {
+		this.YerelDBAdi = YerelDBAdi;
+		this.YedekDBAdi = YedekDBAdi;
+		final File YerelDB = new File(YerelDBDizinGetir() + File.separator + YerelDBAdi);
+
+		if(YerelDB.exists()) {
+			RetrofitInterface retrofitInterface = RetrofitServiceGenerator.createService(activity, RetrofitInterface.class);
+
+			Call<SnfDosyaBilgisiGetir> snfDosyaBilgisiGetirCall = retrofitInterface.DosyaBilgisiGetir(PHPYedekDBKlasoruDizini, YedekDBAdi);
+			snfDosyaBilgisiGetirCall.enqueue(new Callback<SnfDosyaBilgisiGetir>() {
+				@Override
+				public void onResponse(Call<SnfDosyaBilgisiGetir> call, Response<SnfDosyaBilgisiGetir> response) {
+					if(response.isSuccessful()) {
+						SnfDosyaBilgisiGetir snfDosyaBilgisiGetir = response.body();
+
+						switch (snfDosyaBilgisiGetir != null ? snfDosyaBilgisiGetir.getAciklama():"") {
+							case "Dosya bulundu.":
+								try {
+									@SuppressLint("SimpleDateFormat")
+									SimpleDateFormat SDF = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+
+									long YerelDBLastModified = new Date(YerelDB.lastModified()).getTime();
+									long YedekDBLastModified = SDF.parse(snfDosyaBilgisiGetir != null ? snfDosyaBilgisiGetir.getLastModified():"").getTime();
+
+									if(YerelDBLastModified > YedekDBLastModified) { // Eğer YerelDB'nin son değiştirilme tarihi YedekDB'nin son değiştirilme tarihinden büyükse
+										if(YerelDB.exists()) {
+											new DBYedekle().execute(); // Bu durumda YerelDB'yi yedekle..
+										}
+										else {
+											new DBGeriYukle().execute(YedekDBKlasoruDizini + YedekDBAdi); // Yerel DB silinmiş demektir. YedekDB geri yüklenecek..
+										}
+									} else if(YerelDBLastModified < YedekDBLastModified) {
+										new DBGeriYukle().execute(YedekDBKlasoruDizini + YedekDBAdi); // YedekDB geri yüklenecek..
+									}
+									else if(YerelDBLastModified == YedekDBLastModified) {
+										Log.d("DB Yedekle Senkronize", "DB Güncel..");
+									}
+								} catch (ParseException e) {
+									e.printStackTrace();
+								}
+								break;
+							case "Dosya bulunamadı.":
+								if(YerelDB.exists()) { // YerelDB dosyası var ise
+									new DBYedekle().execute(); // Bu durumda Yerel DB'yi yedekle..
+								}
+
+								break;
+							default:
+
+								break;
+						}
+					}
+				}
+
+				@Override
+				public void onFailure(Call<SnfDosyaBilgisiGetir> call, Throwable t) {
+
+				}
+			});
 		}
 	}
 }

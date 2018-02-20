@@ -156,8 +156,17 @@
 					app:layout_constraintTop_toBottomOf="@+id/view3"
 					tools:targetApi="lollipop" />
 
-				<View
+				<!--<View
 					android:id="@+id/view4"
+					android:layout_width="0dp"
+					android:layout_height="1dp"
+					android:background="@drawable/cizgi_ortagri"
+					app:layout_constraintEnd_toStartOf="@+id/v_guideline2"
+					app:layout_constraintStart_toStartOf="@+id/v_guideline1"
+					app:layout_constraintTop_toBottomOf="@+id/btnRepertuvarIslemleri" />-->
+
+				<View
+					android:id="@+id/view5"
 					android:layout_width="0dp"
 					android:layout_height="1dp"
 					android:background="@drawable/cizgi_ortagri"
@@ -176,10 +185,10 @@
 					android:text="@string/destek"
 					android:textColor="@color/KoyuYazi"
 					app:layout_constraintStart_toStartOf="@+id/v_guideline1"
-					app:layout_constraintTop_toBottomOf="@+id/view4" />
+					app:layout_constraintTop_toBottomOf="@+id/view5" />
 
 				<View
-					android:id="@+id/view5"
+					android:id="@+id/view6"
 					android:layout_width="0dp"
 					android:layout_height="1dp"
 					android:background="@drawable/cizgi_ortagri"
@@ -206,11 +215,11 @@
 					style="@style/TextAppearance.AppCompat.Small.Inverse"
 					app:layout_constraintEnd_toEndOf="parent"
 					app:layout_constraintStart_toStartOf="parent"
-					app:layout_constraintTop_toBottomOf="@+id/view5"
+					app:layout_constraintTop_toBottomOf="@+id/view6"
 					tools:targetApi="lollipop" />
 
 				<View
-					android:id="@+id/view6"
+					android:id="@+id/view7"
 					android:layout_width="0dp"
 					android:layout_height="1dp"
 					android:background="@drawable/cizgi_ortagri"
@@ -236,11 +245,11 @@
 					style="@style/TextAppearance.AppCompat.Small.Inverse"
 					app:layout_constraintEnd_toEndOf="parent"
 					app:layout_constraintStart_toStartOf="parent"
-					app:layout_constraintTop_toBottomOf="@+id/view6"
+					app:layout_constraintTop_toBottomOf="@+id/view7"
 					tools:targetApi="lollipop" />
 
 				<View
-					android:id="@+id/view7"
+					android:id="@+id/view8"
 					android:layout_width="0dp"
 					android:layout_height="1dp"
 					android:background="@drawable/cizgi_ortagri"
@@ -266,11 +275,11 @@
 					style="@style/TextAppearance.AppCompat.Small.Inverse"
 					app:layout_constraintEnd_toEndOf="parent"
 					app:layout_constraintStart_toStartOf="parent"
-					app:layout_constraintTop_toBottomOf="@+id/view7"
+					app:layout_constraintTop_toBottomOf="@+id/view8"
 					tools:targetApi="lollipop" />
 
 				<View
-					android:id="@+id/view8"
+					android:id="@+id/view9"
 					android:layout_width="0dp"
 					android:layout_height="1dp"
 					android:background="@drawable/cizgi_ortagri"
@@ -289,10 +298,10 @@
 					android:text="@string/hakkinda"
 					android:textColor="@color/KoyuYazi"
 					app:layout_constraintStart_toStartOf="@+id/v_guideline1"
-					app:layout_constraintTop_toBottomOf="@+id/view8" />
+					app:layout_constraintTop_toBottomOf="@+id/view9" />
 
 				<View
-					android:id="@+id/view9"
+					android:id="@+id/view10"
 					android:layout_width="0dp"
 					android:layout_height="1dp"
 					android:background="@drawable/cizgi_ortagri"
@@ -319,11 +328,11 @@
 					style="@style/TextAppearance.AppCompat.Small.Inverse"
 					app:layout_constraintEnd_toEndOf="parent"
 					app:layout_constraintStart_toStartOf="parent"
-					app:layout_constraintTop_toBottomOf="@+id/view9"
+					app:layout_constraintTop_toBottomOf="@+id/view10"
 					tools:targetApi="lollipop" />
 
 				<View
-					android:id="@+id/view10"
+					android:id="@+id/view11"
 					android:layout_width="0dp"
 					android:layout_height="1dp"
 					android:background="@drawable/cizgi_ortagri"
@@ -349,11 +358,11 @@
 					style="@style/TextAppearance.AppCompat.Small.Inverse"
 					app:layout_constraintEnd_toEndOf="parent"
 					app:layout_constraintStart_toStartOf="parent"
-					app:layout_constraintTop_toBottomOf="@+id/view10"
+					app:layout_constraintTop_toBottomOf="@+id/view11"
 					tools:targetApi="lollipop" />
 
 				<View
-					android:id="@+id/view11"
+					android:id="@+id/view12"
 					android:layout_width="0dp"
 					android:layout_height="1dp"
 					android:background="@drawable/cizgi_ortagri"
@@ -379,11 +388,11 @@
 					style="@style/TextAppearance.AppCompat.Small.Inverse"
 					app:layout_constraintEnd_toEndOf="parent"
 					app:layout_constraintStart_toStartOf="parent"
-					app:layout_constraintTop_toBottomOf="@+id/view11"
+					app:layout_constraintTop_toBottomOf="@+id/view12"
 					tools:targetApi="lollipop" />
 
 				<View
-					android:id="@+id/view12"
+					android:id="@+id/view13"
 					android:layout_width="0dp"
 					android:layout_height="1dp"
 					android:background="@drawable/cizgi_ortagri"
@@ -409,11 +418,11 @@
 					style="@style/TextAppearance.AppCompat.Small.Inverse"
 					app:layout_constraintEnd_toEndOf="parent"
 					app:layout_constraintStart_toStartOf="parent"
-					app:layout_constraintTop_toBottomOf="@+id/view12"
+					app:layout_constraintTop_toBottomOf="@+id/view13"
 					tools:targetApi="lollipop" />
 
 				<View
-					android:id="@+id/view13"
+					android:id="@+id/view14"
 					android:layout_width="0dp"
 					android:layout_height="1dp"
 					android:background="@drawable/cizgi_ortagri"

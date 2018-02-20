@@ -37,8 +37,7 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
 
         sharedPref = getApplicationContext().getSharedPreferences(AkorDefterimSys.PrefAdi, MODE_PRIVATE);
 
-        if(sharedPref.getString("prefEkranAdi", "AnaEkran").equals("AnaEkran")) mIntent = new Intent("com.cnbcyln.app.akordefterim.AnaEkran");
-        else if(sharedPref.getString("prefEkranAdi", "AnaEkran").equals("GirisEkran")) mIntent = new Intent("com.cnbcyln.app.akordefterim.GirisEkran");
+        mIntent = new Intent("com.cnbcyln.app.akordefterim." + sharedPref.getString("prefBulunulanEkran", "AnaEkran"));
     }
 
     @Override
@@ -47,7 +46,7 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
          * Önemli not!!: uygulama kapalı olsa bile firebase'den bildirim geliyordu ama Broadcast yapamıyordu.
          * Bunun nedeni, uygulama kapalı olduğu için uygulamadan broadcast yapamaz.
          * Bu nedenle sadece bildirim tipi işlemleri notification şeklinde bu class içinde bir void tanımladık
-         * Ve bu class içinden nitification çağırdık. Bu sayede artık uygulama kapalı olsa bile notification alabildik ;)
+         * Ve bu class içinden notification çağırdık. Bu sayede artık uygulama kapalı olsa bile notification alabildik ;)
          */
         try {
             JSONObject JSONGelenVeri = new JSONObject(new JSONObject(remoteMessage.getData()).getString("JSONData"));
@@ -57,26 +56,17 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
 
             switch (JSONGelenVeri.getString("Islem")) {
                 case "Bildirim":
-                    //mIntent.putExtra("JSONData", "{\"Islem\":\"Firebase_Bildirim\", \"MesajIcerik\":\"" + JSONGelenVeri.getString("MesajIcerik") + "\"}");
-                    //this.sendBroadcast(mIntent);
-
                     myIntent = new Intent(context, SplashEkran.class);
                     NotifyGoster(myIntent, getString(R.string.uygulama_adi), JSONGelenVeri.getString("MesajIcerik"), "", -1, JSONGelenVeri.getString("MesajIcerik"), getString(R.string.uygulama_adi), JSONGelenVeri.getString("MesajIcerik"), "", true);
 
                     break;
                 case "YeniSarkiBildirim":
-                    //mIntent.putExtra("JSONData", "{\"Islem\":\"Firebase_YeniSarkiBildirim\", \"SarkiID\":" + JSONGelenVeri.getInt("SarkiID") + ", \"SanatciAdi\":\"" + JSONGelenVeri.getString("SanatciAdi") + "\", \"SarkiAdi\":\"" + JSONGelenVeri.getString("SarkiAdi") + "\"}");
-                    //this.sendBroadcast(mIntent);
-
                     String MesajIcerik = getString(R.string.yeni_sarki_ekleme_notify_mesaji, JSONGelenVeri.getString("SanatciAdi"), JSONGelenVeri.getString("SarkiAdi"), getString(R.string.uygulama_adi));
                     myIntent = new Intent(context, SplashEkran.class);
                     NotifyGoster(myIntent, getString(R.string.uygulama_adi), MesajIcerik, "", -1, MesajIcerik, getString(R.string.uygulama_adi), MesajIcerik, "", true);
 
                     break;
                 case "Guncelleme":
-                    //mIntent.putExtra("JSONData", "{\"Islem\":\"Firebase_Guncelleme\"}");
-                    //this.sendBroadcast(mIntent);
-
                     myIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("http://play.google.com/store/apps/details?id=" + context.getPackageName()));
                     NotifyGoster(myIntent, getString(R.string.uygulama_adi), getString(R.string.yeni_guncelleme_icerik2), "", -1, getString(R.string.yeni_guncelleme_icerik2), getString(R.string.uygulama_adi), getString(R.string.yeni_guncelleme_icerik2), "", true);
 
@@ -86,14 +76,13 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
                     this.sendBroadcast(mIntent);
 
                     break;
-                case "PushHesapCikis":
+                case "CikisYap":
                     String FirebaseToken = FirebaseInstanceId.getInstance().getToken();
 
-                    if(JSONGelenVeri.getString("FirebaseToken").equals(FirebaseToken)) { // Sisteme yeni giriş yapan FirebaseToken, cihazda giriş yapmış olan FirebaseToken'a eşit ise, cihazda giriş yapmış olan FirebaseToken'a çıkış yaptır
-                        mIntent.putExtra("JSONData", "{\"Islem\":\"Firebase_HesapCikis\"}");
-                        this.sendBroadcast(mIntent);
+                    if(JSONGelenVeri.getString("HesapFirebaseToken").equals(FirebaseToken)) { // Sisteme yeni giriş yapan FirebaseToken, cihazda giriş yapmış olan FirebaseToken'a eşit ise, cihazda giriş yapmış olan FirebaseToken'a çıkış yaptır
+                        //mIntent.putExtra("JSONData", "{\"Islem\":\"CikisYap\"}");
+                        //this.sendBroadcast(mIntent);
                     }
-
                     break;
             }
         } catch (JSONException e) {

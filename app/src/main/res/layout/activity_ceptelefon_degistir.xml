@@ -127,8 +127,7 @@
 				android:inputType="number"
 				android:digits="0123456789 ()"
 				android:maxLines="1"
-				android:textColor="@color/KoyuYazi"
-				tools:ignore="UnusedAttribute" />
+				android:textColor="@color/KoyuYazi" />
 		</android.support.design.widget.TextInputLayout>
 
 		<TextView

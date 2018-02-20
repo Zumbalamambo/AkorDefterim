@@ -52,14 +52,14 @@
                 android:layout_height="?android:attr/actionBarSize"
                 android:background="@color/Beyaz">
 
-                <ImageButton
+                <!--<ImageButton
                     android:id="@+id/btnSarkiEkle_AnaPanel"
                     android:layout_width="60dp"
                     android:layout_height="match_parent"
                     android:layout_alignParentLeft="true"
                     android:background="@drawable/custom_button2"
                     android:contentDescription="@string/imageDesc"
-                    app:srcCompat="@drawable/ic_plus_box_siyah" />
+                    app:srcCompat="@drawable/ic_plus_box_siyah" />-->
 
                 <ImageButton
                     android:id="@+id/btnAra_AnaPanel"

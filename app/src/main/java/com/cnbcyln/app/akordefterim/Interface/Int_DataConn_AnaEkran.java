@@ -14,6 +14,8 @@ public interface Int_DataConn_AnaEkran {
 	void SarkiPaylas(String Platform, String Baslik, String Icerik, String URL);
 	void AnaEkranProgressIslemDialogAc(String Mesaj);
 	void AnaEkranProgressIslemDialogKapat();
-	void StandartSnackBarMsj(CoordinatorLayout mCoordinatorLayout, String Mesaj);
+	void SarkiListesiGetir();
 	void StandartSnackBarMsj(String Mesaj);
+	void StandartSnackBarMsj(CoordinatorLayout coordinatorLayout, String Mesaj);
+	void StandartSnackBarMsj(String Menu, String Mesaj);
 }

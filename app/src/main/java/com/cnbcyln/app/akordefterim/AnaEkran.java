@@ -6,8 +6,10 @@ import android.app.AlertDialog;
 import android.app.Fragment;
 import android.app.FragmentTransaction;
 import android.app.ProgressDialog;
+import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.graphics.Typeface;
@@ -39,6 +41,7 @@ import com.cnbcyln.app.akordefterim.Interface.Interface_AsyncResponse;
 import com.cnbcyln.app.akordefterim.ResideMenu.ResideMenu;
 import com.cnbcyln.app.akordefterim.Siniflar.SnfSarkilar;
 import com.cnbcyln.app.akordefterim.util.AkorDefterimSys;
+import com.cnbcyln.app.akordefterim.util.AppService;
 import com.cnbcyln.app.akordefterim.util.Veritabani;
 
 import org.json.JSONArray;
@@ -63,7 +66,7 @@ public class AnaEkran extends AppCompatActivity implements Int_DataConn_AnaEkran
 	SharedPreferences.Editor sharedPrefEditor;
     Typeface YaziFontu;
     ProgressDialog PDIslem;
-    AlertDialog ADDialog_InternetBaglantisi, ADDialog_CikisYap, ADDialog_Egitim;
+    AlertDialog ADDialog;
     InputMethodManager imm;
     LayoutInflater layoutInflater;
     private List<SnfSarkilar> snfSarkilar;
@@ -73,13 +76,13 @@ public class AnaEkran extends AppCompatActivity implements Int_DataConn_AnaEkran
     ImageButton btnSolMenu, btnSagMenu;
     LinearLayout LLSayfa;
     TextView lblSayfaBaslik, lblMenuSag_OrtaMesaj;
-    CoordinatorLayout coordinatorLayout;
+    CoordinatorLayout AnaEkran_CoordinatorLayout;
     ResideMenu resideMenu;
 
     // Sliding Menü Sağ Değişkenler Tanımlamaları
     CoordinatorLayout coordinatorLayoutSag;
     RelativeLayout RLSarkiListesi_AnaPanel, RLSarkiListesi_AramaPanel;
-    ImageButton btnSarkiEkle_AnaPanel, btnAra_AnaPanel, btnGeri_AramaPanel;
+    ImageButton btnAra_AnaPanel, btnGeri_AramaPanel;
     EditText txtAra_AramaPanel;
     FastScroller_Listview lstSarkiListesi;
 
@@ -91,14 +94,15 @@ public class AnaEkran extends AppCompatActivity implements Int_DataConn_AnaEkran
 
 	String UygulamaVersiyon, Fragment_SayfaAdi;
     boolean CikisIcinCiftTiklandiMi = false;
-    int SecilenListeID = 0, SecilenListelemeTipi = 0;
+    int SecilenListeID = 0, SecilenKategoriID = 0, SecilenTarzID = 0, SecilenListelemeTipi = 0;
 
 	@SuppressWarnings("ConstantConditions")
     @SuppressLint({"InflateParams", "CommitTransaction", "ClickableViewAccessibility", "ResourceAsColor"})
     @Override
 	protected void onCreate(final Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.activity_ana);
+
+        setContentView(R.layout.activity_ana);
 
         /* **************************************
            ***                                ***
@@ -106,18 +110,19 @@ public class AnaEkran extends AppCompatActivity implements Int_DataConn_AnaEkran
            ***                                ***
            **************************************/
 
-		activity = this;
-		AkorDefterimSys = AkorDefterimSys.getInstance();
+        activity = this;
+        AkorDefterimSys = AkorDefterimSys.getInstance();
         AkorDefterimSys.activity = activity;
         veritabani = new Veritabani(activity);
-		YaziFontu = AkorDefterimSys.FontGetir(activity, "anivers_regular");
-		sharedPref = activity.getSharedPreferences(AkorDefterimSys.PrefAdi, Context.MODE_PRIVATE);
+        YaziFontu = AkorDefterimSys.FontGetir(activity, "anivers_regular");
+        sharedPref = activity.getSharedPreferences(AkorDefterimSys.PrefAdi, Context.MODE_PRIVATE);
+        startService(new Intent(getApplicationContext(), AppService.class));
 
         imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE); // İstenildiği zaman klavyeyi gizlemeye yarayan kod tanımlayıcısı
 
-		AkorDefterimSys.GenelAyarlar(); // Uygulama için genel ayarları uyguladık.
-		//AkorDefterimSys.TransparanNotifyBar(); // Notification Bar'ı transparan yapıyoruz.
-		//AkorDefterimSys.NotifyIkonParlakligi(); // Notification Bar'daki simgelerin parlaklığını aldık.
+        AkorDefterimSys.GenelAyarlar(); // Uygulama için genel ayarları uyguladık.
+        //AkorDefterimSys.TransparanNotifyBar(); // Notification Bar'ı transparan yapıyoruz.
+        //AkorDefterimSys.NotifyIkonParlakligi(); // Notification Bar'daki simgelerin parlaklığını aldık.
 
         try {
             UygulamaVersiyon = activity.getPackageManager().getPackageInfo(activity.getPackageName(), 0).versionName;
@@ -150,9 +155,6 @@ public class AnaEkran extends AppCompatActivity implements Int_DataConn_AnaEkran
 
         RLSarkiListesi_AnaPanel = ViewSlidingSagMenuContainer.findViewById(R.id.RLSarkiListesi_AnaPanel);
         RLSarkiListesi_AnaPanel.setVisibility(View.VISIBLE);
-
-        btnSarkiEkle_AnaPanel = ViewSlidingSagMenuContainer.findViewById(R.id.btnSarkiEkle_AnaPanel);
-        btnSarkiEkle_AnaPanel.setOnClickListener(this);
 
         btnAra_AnaPanel = ViewSlidingSagMenuContainer.findViewById(R.id.btnAra_AnaPanel);
         btnAra_AnaPanel.setEnabled(false);
@@ -239,38 +241,38 @@ public class AnaEkran extends AppCompatActivity implements Int_DataConn_AnaEkran
         lstSarkiListesi.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View arg1, int position, long arg3) {
-                // Eğer listeden şarkı arama alanına yazı GİRİLMEMİŞSE "snfSarkilar" sıfından kayıt baz alarak içerik getirtiyoruz..
-                if (txtAra_AramaPanel.getText().length() == 0) {
-                    if(SecilenListeID == 0) {
-                        if(AkorDefterimSys.InternetErisimKontrolu()) {
-                            AnaEkranProgressIslemDialogAc(getString(R.string.icerik_indiriliyor_lutfen_bekleyiniz));
-                            AkorDefterimSys.SarkiGetir(veritabani, SecilenListeID, snfSarkilar.get(position).getId(), snfSarkilar.get(position).getSanatciAdi(), snfSarkilar.get(position).getSarkiAdi());
-                        } else AkorDefterimSys.StandartSnackBarMsj(coordinatorLayoutSag, getString(R.string.internet_baglantisi_saglanamadi));
-                    } else {
+            // Eğer listeden şarkı arama alanına yazı GİRİLMEMİŞSE "snfSarkilar" sıfından kayıt baz alarak içerik getirtiyoruz..
+            if (txtAra_AramaPanel.getText().length() == 0) {
+                if(SecilenListeID == 0) {
+                    if(AkorDefterimSys.InternetErisimKontrolu()) {
                         AnaEkranProgressIslemDialogAc(getString(R.string.icerik_indiriliyor_lutfen_bekleyiniz));
                         AkorDefterimSys.SarkiGetir(veritabani, SecilenListeID, snfSarkilar.get(position).getId(), snfSarkilar.get(position).getSanatciAdi(), snfSarkilar.get(position).getSarkiAdi());
-                    }
-                } else { // Eğer listeden şarkı arama alanına yazı GİRİLMİŞSE "snfSarkilarTemp" sıfından kayıt baz alarak içerik getirtiyoruz..
-                    if(SecilenListeID == 0) {
-                        if(AkorDefterimSys.InternetErisimKontrolu()) {
-                            AnaEkranProgressIslemDialogAc(getString(R.string.icerik_indiriliyor_lutfen_bekleyiniz));
-                            AkorDefterimSys.SarkiGetir(veritabani, SecilenListeID, snfSarkilarTemp.get(position).getId(), snfSarkilarTemp.get(position).getSanatciAdi(), snfSarkilarTemp.get(position).getSarkiAdi());
-                        } else AkorDefterimSys.StandartSnackBarMsj(coordinatorLayoutSag, getString(R.string.internet_baglantisi_saglanamadi));
-                    } else {
+                    } else AkorDefterimSys.StandartSnackBarMsj(coordinatorLayoutSag, getString(R.string.internet_baglantisi_saglanamadi));
+                } else {
+                    AnaEkranProgressIslemDialogAc(getString(R.string.icerik_indiriliyor_lutfen_bekleyiniz));
+                    AkorDefterimSys.SarkiGetir(veritabani, SecilenListeID, snfSarkilar.get(position).getId(), snfSarkilar.get(position).getSanatciAdi(), snfSarkilar.get(position).getSarkiAdi());
+                }
+            } else { // Eğer listeden şarkı arama alanına yazı GİRİLMİŞSE "snfSarkilarTemp" sıfından kayıt baz alarak içerik getirtiyoruz..
+                if(SecilenListeID == 0) {
+                    if(AkorDefterimSys.InternetErisimKontrolu()) {
                         AnaEkranProgressIslemDialogAc(getString(R.string.icerik_indiriliyor_lutfen_bekleyiniz));
                         AkorDefterimSys.SarkiGetir(veritabani, SecilenListeID, snfSarkilarTemp.get(position).getId(), snfSarkilarTemp.get(position).getSanatciAdi(), snfSarkilarTemp.get(position).getSarkiAdi());
-                    }
+                    } else AkorDefterimSys.StandartSnackBarMsj(coordinatorLayoutSag, getString(R.string.internet_baglantisi_saglanamadi));
+                } else {
+                    AnaEkranProgressIslemDialogAc(getString(R.string.icerik_indiriliyor_lutfen_bekleyiniz));
+                    AkorDefterimSys.SarkiGetir(veritabani, SecilenListeID, snfSarkilarTemp.get(position).getId(), snfSarkilarTemp.get(position).getSanatciAdi(), snfSarkilarTemp.get(position).getSarkiAdi());
                 }
+            }
 
-                AkorDefterimSys.KlavyeKapat();
+            AkorDefterimSys.KlavyeKapat();
             }
         });
         lstSarkiListesi.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
             @Override
             public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
-                /*if (RLSarkiListesi_SarkiAramaPanel.getVisibility() != View.VISIBLE && !AdpSarkiListesiLST.isSelectable()) { //Şarkı listesinde şarkılar seçilebilir durumda mı? Yani checkbox görünüyor mu? => Görünmüyorsa..
-                    AdpSarkiListesiLST.setSelectable(position);
-                }*/
+                    /*if (RLSarkiListesi_SarkiAramaPanel.getVisibility() != View.VISIBLE && !AdpSarkiListesiLST.isSelectable()) { //Şarkı listesinde şarkılar seçilebilir durumda mı? Yani checkbox görünüyor mu? => Görünmüyorsa..
+                        AdpSarkiListesiLST.setSelectable(position);
+                    }*/
 
                 return true;
             }
@@ -311,7 +313,7 @@ public class AnaEkran extends AppCompatActivity implements Int_DataConn_AnaEkran
            ***                                ***
            **************************************/
 
-        coordinatorLayout = activity.findViewById(R.id.coordinatorLayout);
+        AnaEkran_CoordinatorLayout = activity.findViewById(R.id.AnaEkran_CoordinatorLayout);
 
         btnSolMenu = findViewById(R.id.btnSolMenu);
         btnSolMenu.setOnClickListener(this);
@@ -324,16 +326,16 @@ public class AnaEkran extends AppCompatActivity implements Int_DataConn_AnaEkran
 
         LLSayfa = findViewById(R.id.LLSayfa);
 
-		/*int x = LLMenu.getRight();
-		int y = LLMenu.getBottom();
+        /*int x = LLMenu.getRight();
+        int y = LLMenu.getBottom();
 
-		int startRadius = 0;
-		int endRadius = (int) Math.hypot(CLMenu.getWidth(), CLMenu.getHeight());
+        int startRadius = 0;
+        int endRadius = (int) Math.hypot(CLMenu.getWidth(), CLMenu.getHeight());
 
-		if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.LOLLIPOP) {
-			Animator anim = ViewAnimationUtils.createCircularReveal(LLMenu, x, y, startRadius, endRadius);
-			mSlidingRootNavBuilder.setAnim(anim);
-		}*/
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.LOLLIPOP) {
+            Animator anim = ViewAnimationUtils.createCircularReveal(LLMenu, x, y, startRadius, endRadius);
+            mSlidingRootNavBuilder.setAnim(anim);
+        }*/
 
         Bundle extras = getIntent().getExtras();
 
@@ -347,7 +349,7 @@ public class AnaEkran extends AppCompatActivity implements Int_DataConn_AnaEkran
         }
 	}
 
-    @Override
+    /*@Override
     public void onSaveInstanceState(Bundle savedInstanceState) {
         switch (Fragment_SayfaAdi) {
             case "Frg_Anasayfa":
@@ -360,16 +362,23 @@ public class AnaEkran extends AppCompatActivity implements Int_DataConn_AnaEkran
                 savedInstanceState.putString("SayfaAdi", "anasayfa");
                 break;
         }
-        super.onSaveInstanceState(savedInstanceState);
-    }
 
-    public void onRestoreInstanceState(Bundle savedInstanceState) {
+        ToneGenerator toneG = new ToneGenerator(AudioManager.STREAM_ALARM, 50);
+        toneG.startTone(ToneGenerator.TONE_CDMA_ALERT_CALL_GUARD, 200);
+
+        super.onSaveInstanceState(savedInstanceState);
+    }*/
+
+    /*public void onRestoreInstanceState(Bundle savedInstanceState) {
         // Görünüm hiyerarşisini tekrar yüklemek için superclass olarak çağrılır.
         super.onRestoreInstanceState(savedInstanceState);
         // Bilgileri geri yükle
-        FragmentSayfaGetir(savedInstanceState.getString("SayfaAdi"));
-    }
+        //FragmentSayfaGetir(savedInstanceState.getString("SayfaAdi"));
 
+        AkorDefterimSys.ToastMsj(activity, savedInstanceState.getString("SayfaAdi"), Toast.LENGTH_SHORT);
+    }*/
+
+    @SuppressWarnings("ResultOfMethodCallIgnored")
     @Override
     protected void onStart() {
         super.onStart();
@@ -379,16 +388,20 @@ public class AnaEkran extends AppCompatActivity implements Int_DataConn_AnaEkran
         if(AkorDefterimSys.prefAction.equals("Şarkı eklendi")) {
             if(Fragment_SayfaAdi.equals("Frg_Sarki")) {
                 Frg_Sarki Frg_Sarki = (Frg_Sarki) activity.getFragmentManager().findFragmentByTag(Fragment_SayfaAdi);
-                Frg_Sarki.StandartSnackBarMsj(getString(R.string.sarki_eklendi, AkorDefterimSys.prefEklenenDuzenlenenSanatciAdiSarkiAdi));
+                Frg_Sarki.StandartSnackBarMsj(getString(R.string.sarki_eklendi, AkorDefterimSys.prefEklenenDuzenlenenSanatciAdi, AkorDefterimSys.prefEklenenDuzenlenenSarkiAdi));
             }
 
             AkorDefterimSys.prefAction = "";
-            AkorDefterimSys.prefEklenenDuzenlenenSanatciAdiSarkiAdi = "";
+            AkorDefterimSys.prefEklenenDuzenlenenSanatciAdi = "";
+            AkorDefterimSys.prefEklenenDuzenlenenSarkiAdi = "";
+            AkorDefterimSys.prefEklenenDuzenlenenSarkiID = 0;
         } else if(AkorDefterimSys.prefAction.equals("Şarkı düzenlendi")) {
-            if(Fragment_SayfaAdi.equals("Frg_Sarki")) {
-                Frg_Sarki Frg_Sarki = (Frg_Sarki) activity.getFragmentManager().findFragmentByTag(Fragment_SayfaAdi);
-                Frg_Sarki.StandartSnackBarMsj(getString(R.string.sarki_duzenlendi));
-            }
+            SarkiListesiGetir();
+            AkorDefterimSys.SarkiGetir(veritabani, SecilenListeID, AkorDefterimSys.prefEklenenDuzenlenenSarkiID, AkorDefterimSys.prefEklenenDuzenlenenSanatciAdi, AkorDefterimSys.prefEklenenDuzenlenenSarkiAdi);
+
+            // Şarkı düzenlendiyse düzenlenen şarkıyı yeniden çağırıyoruz. Çağırma işleminde olduğu için SnackBar Mesaj gösteremiyorduk.
+            // Bu sebeple şarkıyı çağırdıktan 1 saniye sonra SnackBar Mesajı göstermesini istedik.
+            AkorDefterimSys.ZamanlayiciBaslat(activity, "Handler", 0, 1000, "Sarki_Duzenlendi_SnackBarMsj_Goster");
         }
 
         Frg_TabRepKontrol Frg_TabRepKontrol_1 = (Frg_TabRepKontrol) SlidingTabFragmentClassGetir(getString(R.string.tabsayfa_repertuvar_kontrol));
@@ -396,16 +409,16 @@ public class AnaEkran extends AppCompatActivity implements Int_DataConn_AnaEkran
 
         if(sharedPref.getBoolean("prefEgitimTamamlandiMi", false)) AkorDefterimSys.YeniSurumYeniliklerDialog();
         else {
-            if(!AkorDefterimSys.AlertDialogisShowing(ADDialog_Egitim)) {
-                ADDialog_Egitim = AkorDefterimSys.H2ButtonCustomAlertDialog(activity,
+            if(!AkorDefterimSys.AlertDialogisShowing(ADDialog)) {
+                ADDialog = AkorDefterimSys.H2ButtonCustomAlertDialog(activity,
                         getString(R.string.egitim),
                         getString(R.string.egitime_katilmak_istermisin),
                         getString(R.string.hayir),
                         "ADDialog_Egitim_Hayir",
                         getString(R.string.evet),
                         "ADDialog_Egitim_Evet");
-                ADDialog_Egitim.getWindow().getAttributes().windowAnimations = R.style.DialogAnimation;
-                ADDialog_Egitim.show();
+                ADDialog.getWindow().getAttributes().windowAnimations = R.style.DialogAnimation;
+                ADDialog.show();
             }
         }
     }
@@ -485,8 +498,8 @@ public class AnaEkran extends AppCompatActivity implements Int_DataConn_AnaEkran
                 if(AkorDefterimSys.GirisYapildiMi()) {
                     if(AkorDefterimSys.InternetErisimKontrolu()) {
                         AkorDefterimSys.EkranGetir(new Intent(activity, Hesabim.class), "Slide");
-                    } else AkorDefterimSys.StandartSnackBarMsj(coordinatorLayout, getString(R.string.internet_baglantisi_saglanamadi));
-                } else AkorDefterimSys.StandartSnackBarMsj(coordinatorLayout, getString(R.string.devam_etmek_icin_giris_yapmalisin));
+                    } else AkorDefterimSys.StandartSnackBarMsj(AnaEkran_CoordinatorLayout, getString(R.string.internet_baglantisi_saglanamadi));
+                } else AkorDefterimSys.StandartSnackBarMsj(AnaEkran_CoordinatorLayout, getString(R.string.devam_etmek_icin_giris_yapmalisin));
                 break;
             case "girisyap": // Giriş Yap
                 AkorDefterimSys.CikisYap();
@@ -574,13 +587,32 @@ public class AnaEkran extends AppCompatActivity implements Int_DataConn_AnaEkran
     }
 
     @Override
+    public void SarkiListesiGetir() {
+        // AnaEkran üzerinden Progress Dialog'u açıyoruz ve "Liste indiriliyor. Lütfen bekleyiniz.." mesajını gösteriyoruz..
+        AnaEkranProgressIslemDialogAc(getString(R.string.liste_indiriliyor_lutfen_bekleyiniz));
+        AkorDefterimSys.SarkiListesiGetir(veritabani, SecilenListeID, SecilenKategoriID, SecilenTarzID, SecilenListelemeTipi, "");
+    }
+
+    @Override
     public void StandartSnackBarMsj(String Mesaj) {
+        AkorDefterimSys.StandartSnackBarMsj(AnaEkran_CoordinatorLayout, Mesaj);
+    }
+
+    @Override
+    public void StandartSnackBarMsj(CoordinatorLayout coordinatorLayout, String Mesaj) {
         AkorDefterimSys.StandartSnackBarMsj(coordinatorLayout, Mesaj);
     }
 
     @Override
-    public void StandartSnackBarMsj(CoordinatorLayout mCoordinatorLayout, String Mesaj) {
-        AkorDefterimSys.StandartSnackBarMsj(mCoordinatorLayout, Mesaj);
+    public void StandartSnackBarMsj(String AcikOlanMenu, String Mesaj) {
+        switch (AcikOlanMenu) {
+            case "Sağ":
+                AkorDefterimSys.StandartSnackBarMsj(coordinatorLayoutSag, Mesaj);
+                break;
+            case "Sol":
+                AkorDefterimSys.StandartSnackBarMsj(coordinatorLayoutSol, Mesaj);
+                break;
+        }
     }
 
     @Override
@@ -590,7 +622,7 @@ public class AnaEkran extends AppCompatActivity implements Int_DataConn_AnaEkran
 
             switch (JSONSonuc.getString("Islem")) {
                 case "ADDialog_Egitim_Evet":
-                    AkorDefterimSys.DismissAlertDialog(ADDialog_Egitim);
+                    AkorDefterimSys.DismissAlertDialog(ADDialog);
                     AkorDefterimSys.EkranGetir(new Intent(activity, Egitim.class), "Slide");
 
                     sharedPrefEditor = sharedPref.edit();
@@ -598,24 +630,13 @@ public class AnaEkran extends AppCompatActivity implements Int_DataConn_AnaEkran
                     sharedPrefEditor.apply();
                     break;
                 case "ADDialog_Egitim_Hayir":
-                    AkorDefterimSys.DismissAlertDialog(ADDialog_Egitim);
+                    AkorDefterimSys.DismissAlertDialog(ADDialog);
 
                     sharedPrefEditor = sharedPref.edit();
                     sharedPrefEditor.putBoolean("prefEgitimTamamlandiMi", true);
                     sharedPrefEditor.apply();
 
                     AkorDefterimSys.YeniSurumYeniliklerDialog();
-                    break;
-                case "ADDialog_InternetBaglantisi_Kapat":
-                    AkorDefterimSys.DismissAlertDialog(ADDialog_InternetBaglantisi);
-                    break;
-                case "ADDialog_CikisYap_Iptal":
-                    AkorDefterimSys.DismissAlertDialog(ADDialog_CikisYap);
-                    break;
-                case "ADDialog_CikisYap_CikisYap":
-                    AkorDefterimSys.DismissAlertDialog(ADDialog_CikisYap);
-
-                    AkorDefterimSys.CikisYap();
                     break;
                 case "PDIslem_Timeout":
                     AnaEkranProgressIslemDialogKapat();
@@ -639,9 +660,13 @@ public class AnaEkran extends AppCompatActivity implements Int_DataConn_AnaEkran
                 case "SarkiListesiGetir":
                     AnaEkranProgressIslemDialogKapat();
 
+                    SecilenListeID = JSONSonuc.getInt("ListeID");
+                    SecilenKategoriID = JSONSonuc.getInt("KategoriID");
+                    SecilenTarzID = JSONSonuc.getInt("TarzID");
+
                     // Secilen Listeleme Tipini integer olarak düzenliyoruz. Çünkü Harf sıralaması fonksiyonu bizden integer istiyor..
                     SecilenListelemeTipi = JSONSonuc.getInt("ListelemeTipi");
-                    SecilenListeID = JSONSonuc.getInt("ListeID");
+
 
                     try {
                         if(snfSarkilar != null) snfSarkilar.clear(); // snfSarkilar sınıfı null değilse (Yani tanımlı sınıf varsa) içindeki tüm kayıtları temizliyoruz.
@@ -752,7 +777,33 @@ public class AnaEkran extends AppCompatActivity implements Int_DataConn_AnaEkran
                             FT.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
                             FT.commit();// Çağırma işlemini yaptırıyoruz..
                         }
-                    } else AkorDefterimSys.StandartSnackBarMsj(coordinatorLayout, getString(R.string.secilen_sarki_bulunamadi));
+                    } else AkorDefterimSys.StandartSnackBarMsj(AnaEkran_CoordinatorLayout, getString(R.string.secilen_sarki_bulunamadi));
+                    break;
+                case "Sarki_Duzenlendi_SnackBarMsj_Goster":
+                    if(Fragment_SayfaAdi.equals("Frg_Sarki")) {
+                        Frg_Sarki Frg_Sarki = (Frg_Sarki) activity.getFragmentManager().findFragmentByTag(Fragment_SayfaAdi);
+                        Frg_Sarki.StandartSnackBarMsj(getString(R.string.sarki_duzenlendi, AkorDefterimSys.prefEklenenDuzenlenenSanatciAdi, AkorDefterimSys.prefEklenenDuzenlenenSarkiAdi));
+                    }
+
+                    AkorDefterimSys.prefAction = "";
+                    AkorDefterimSys.prefEklenenDuzenlenenSanatciAdi = "";
+                    AkorDefterimSys.prefEklenenDuzenlenenSarkiAdi = "";
+                    AkorDefterimSys.prefEklenenDuzenlenenSarkiID = 0;
+                    break;
+                case "Frg_Sarki_ADDialog_SarkiSil_Evet":
+                    if(Fragment_SayfaAdi.equals("Frg_Sarki")) {
+                        Frg_Sarki Frg_Sarki = (Frg_Sarki) activity.getFragmentManager().findFragmentByTag(Fragment_SayfaAdi);
+                        Frg_Sarki.SarkiSil();
+                        AkorDefterimSys.DismissAlertDialog(Frg_Sarki.ADDialog);
+                    }
+
+                    break;
+                case "Frg_Sarki_ADDialog_SarkiSil_Hayir":
+                    if(Fragment_SayfaAdi.equals("Frg_Sarki")) {
+                        Frg_Sarki Frg_Sarki = (Frg_Sarki) activity.getFragmentManager().findFragmentByTag(Fragment_SayfaAdi);
+                        AkorDefterimSys.DismissAlertDialog(Frg_Sarki.ADDialog);
+                    }
+
                     break;
             }
         } catch (JSONException e) {
@@ -768,9 +819,6 @@ public class AnaEkran extends AppCompatActivity implements Int_DataConn_AnaEkran
                 break;
             case R.id.btnSagMenu:
                 SlidingIslem(2);
-                break;
-            case R.id.btnSarkiEkle_AnaPanel:
-                //veritabani.VeritabaniSifirla();
                 break;
             case R.id.btnAra_AnaPanel:
                 AkorDefterimSys.AramaPanelAc(RLSarkiListesi_AnaPanel.getId(),RLSarkiListesi_AramaPanel.getId(),txtAra_AramaPanel, imm);

@@ -200,6 +200,7 @@ public class Sarki_EkleDuzenle extends AppCompatActivity implements Interface_As
 
 		ChkIcerikGonder = findViewById(R.id.ChkIcerikGonder);
 		ChkIcerikGonder.setTypeface(YaziFontu);
+		ChkIcerikGonder.setVisibility(View.GONE);
 		AkorDefterimSys.setTextViewHTML(ChkIcerikGonder);
 
 		btnIleri = findViewById(R.id.btnIleri);
@@ -213,16 +214,7 @@ public class Sarki_EkleDuzenle extends AppCompatActivity implements Interface_As
 		SecilenSarkiAdi = mBundle.getString("SecilenSarkiAdi");
 		SecilenSarkiIcerik = mBundle.getString("SecilenSarkiIcerik");
 
-		if(Islem.equals("SarkiEkle")) {
-			//txtSanatciAdi.setEnabled(false);
-			//txtSarkiAdi.setEnabled(false);
-			ChkIcerikGonder.setVisibility(View.GONE);
-		} else if(Islem.equals("YeniSarkiEkle")) {
-			//txtSanatciAdi.setEnabled(true);
-			//txtSarkiAdi.setEnabled(true);
-			ChkIcerikGonder.setVisibility(View.VISIBLE);
-		} else if(Islem.equals("SarkiDuzenle"))
-			ChkIcerikGonder.setVisibility(View.GONE);
+		if(Islem.equals("YeniSarkiEkle") && AkorDefterimSys.GirisYapildiMi()) ChkIcerikGonder.setVisibility(View.VISIBLE);
 
 		txtSanatciAdi.setText(SecilenSanatciAdi);
 		txtSarkiAdi.setText(SecilenSarkiAdi);

@@ -14,6 +14,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.Process;
 import android.provider.Settings;
+import android.util.Log;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.RelativeLayout;
@@ -221,12 +222,15 @@ public class SplashEkran extends Activity implements Interface_AsyncResponse {
 						sharedPrefEditor.putString("prefEPosta", JSONSonuc.getString("HesapEPosta"));
 						sharedPrefEditor.putString("prefParolaSHA1", JSONSonuc.getString("HesapParolaSHA1"));
 						sharedPrefEditor.putString("prefOturumTipi", "Cevrimici");
-                        sharedPrefEditor.apply();
+						sharedPrefEditor.apply();
 
 						Intent mIntent = new Intent(activity, AnaEkran.class);
 						mIntent.putExtra("Islem", "");
 
 						AkorDefterimSys.EkranGetir(mIntent, "Normal");
+
+						if(!JSONSonuc.getString("HesapFirebaseToken").equals(FirebaseToken))
+							AkorDefterimSys.FirebaseMesajGonder(activity, JSONSonuc.getString("HesapFirebaseToken"), "{\"Islem\":\"CikisYap\", \"HesapFirebaseToken\":\"" + JSONSonuc.getString("HesapFirebaseToken") + "\"}", "FirebaseMesajGonder_CikisYap");
 
 						finishAffinity();
 					} else {
@@ -337,6 +341,9 @@ public class SplashEkran extends Activity implements Interface_AsyncResponse {
 
 					AkorDefterimSys.EkranGetir(new Intent(activity, Giris.class), "Normal");
 					finishAffinity();
+					break;
+				case "FirebaseMesajGonder_CikisYap":
+
 					break;
 			}
 
