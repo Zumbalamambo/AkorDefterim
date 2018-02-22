@@ -405,7 +405,7 @@ public class Sarki_Yonetimi extends AppCompatActivity implements Interface_Async
                 FiltreMenuKapat();
                 break;
 			case R.id.btnGeri_AnaPanel:
-				onBackPressed();
+				AkorDefterimSys.EkranKapat();
 				break;
             case R.id.btnFiltre_AnaPanel:
                 if (!FiltreMenuAcikMi) { // Filtre menu kapalıysa
@@ -523,7 +523,7 @@ public class Sarki_Yonetimi extends AppCompatActivity implements Interface_Async
                     break;
                 case "ADDialog_Kapat_GeriGit":
                     AkorDefterimSys.DismissAlertDialog(ADDialog);
-                    onBackPressed();
+                    AkorDefterimSys.EkranKapat();
                     break;
             }
 

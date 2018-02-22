@@ -169,7 +169,7 @@ public class KayitEkran_Parola_Belirle extends AppCompatActivity implements OnCl
 
 		AkorDefterimSys.activity = activity;
 
-		if(AkorDefterimSys.prefAction.equals("Vazgec")) onBackPressed();
+		if(AkorDefterimSys.prefAction.equals("Vazgec")) AkorDefterimSys.EkranKapat();
 	}
 
 	@Override
@@ -190,11 +190,11 @@ public class KayitEkran_Parola_Belirle extends AppCompatActivity implements OnCl
 				AkorDefterimSys.UnFocusEditText(txtParolaTekrar);
 				break;
 			case R.id.btnGeri:
-				onBackPressed();
+				AkorDefterimSys.EkranKapat();
 				break;
 			case R.id.lblVazgec:
 				AkorDefterimSys.prefAction = "Vazgec";
-				onBackPressed();
+				AkorDefterimSys.EkranKapat();
 				break;
 			case R.id.btnIleri:
 				IleriIslem();

@@ -129,7 +129,7 @@ public class Hesabim extends AppCompatActivity implements Interface_AsyncRespons
 	public void onClick(View v) {
 		switch (v.getId()) {
 			case R.id.btnGeri:
-				onBackPressed();
+				AkorDefterimSys.EkranKapat();
 
 				break;
 			case R.id.btnProfiliDuzenle:
@@ -235,7 +235,7 @@ public class Hesabim extends AppCompatActivity implements Interface_AsyncRespons
 					AkorDefterimSys.CikisYap();
 					break;
 				case "PDBilgilerAliniyor_Timeout":
-					onBackPressed();
+					AkorDefterimSys.EkranKapat();
 					break;
 			}
 		} catch (JSONException e) {

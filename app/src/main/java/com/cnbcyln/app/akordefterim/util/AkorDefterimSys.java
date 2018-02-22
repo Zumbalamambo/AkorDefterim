@@ -78,6 +78,7 @@ import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewAnimationUtils;
+import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
 import android.view.animation.AnimationUtils;
@@ -90,6 +91,7 @@ import android.widget.CompoundButton;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.FrameLayout;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
@@ -221,7 +223,7 @@ public class AkorDefterimSys {
 	private SharedPreferences sharedPref;
 	private SharedPreferences.Editor sharedPrefEditor;
 	private SharedPreferences.OnSharedPreferenceChangeListener sharedPrefChanged;
-	private AlertDialog ADDialog;
+	private AlertDialog ADDialog, ADDialog_Yenilikler;
 
 	// PHP AYARLARI (MAİL VE SMS GÖNDERİMİ)
 	public String CBCAPP_HttpsAdres = "https://www.cbcapp.net";
@@ -258,7 +260,7 @@ public class AkorDefterimSys {
 	// **** URL ADRESLERİ
 	public String SanatciResimleriKlasoruDizini = CBCAPP_HttpsAdres + File.separator + AkorDefterimKlasorAdi + "/sanatci_img/";
 
-	public String ProfilResimleriDizini = CBCAPP_HttpsAdres + File.separator + AkorDefterimKlasorAdi + "/profil_img/";
+	public String ProfilResimleriDizini = File.separator + AkorDefterimKlasorAdi + "/profil_img/";
 	public String PHPProfilResimleriDizini = "../../profil_img/";
 
 	public String YedekDBKlasoruDizini = CBCAPP_HttpsAdres + File.separator + AkorDefterimKlasorAdi + "/kullanici_repertuvar_yedekleri/";
@@ -352,6 +354,7 @@ public class AkorDefterimSys {
 		@Override
 		public void onReceive(Context context, Intent intent) {
 			try {
+				final Interface_AsyncResponse AsyncResponse = (Interface_AsyncResponse) activity;
 				String JSON = intent.getStringExtra("JSONData");
 				JSONObject JSONGelenVeri = new JSONObject(JSON);
 				Intent myIntent;
@@ -375,9 +378,14 @@ public class AkorDefterimSys {
 
 						break;
 					case "CikisYap":
-						myIntent = new Intent(activity, AnaEkran.class);
-						NotifyGoster(myIntent, activity.getString(R.string.uygulama_adi), activity.getString(R.string.farkli_bir_cihazdan_oturum_acildi), "", -1, activity.getString(R.string.farkli_bir_cihazdan_oturum_acildi), activity.getString(R.string.uygulama_adi), activity.getString(R.string.farkli_bir_cihazdan_oturum_acildi), "", true);
-						CikisYap();
+						if(GirisYapildiMi()) {
+							myIntent = new Intent(activity, AnaEkran.class);
+							NotifyGoster(myIntent, activity.getString(R.string.uygulama_adi), activity.getString(R.string.farkli_bir_cihazdan_oturum_acildi), "", -1, activity.getString(R.string.farkli_bir_cihazdan_oturum_acildi), activity.getString(R.string.uygulama_adi), activity.getString(R.string.farkli_bir_cihazdan_oturum_acildi), "", true);
+							CikisYap();
+						}
+						break;
+					case "DogrulamaKoduYaz":
+						AsyncResponse.AsyncTaskReturnValue("{\"Islem\":\"" + JSONGelenVeri.getString("Islem") + "\", \"DogrulamaKodu\":\"" + JSONGelenVeri.getString("DogrulamaKodu") + "\"}");
 						break;
                     /*case "HesapCikis":
                         try {
@@ -626,6 +634,11 @@ public class AkorDefterimSys {
 		sharedPrefEditor.apply();
 	}
 
+	public void EkranKapat() {
+		KlavyeKapat();
+		activity.finish();
+	}
+
 	@NonNull
 	private float[] EkranDPGetir() {
 		Display display = activity.getWindowManager().getDefaultDisplay();
@@ -828,7 +841,7 @@ public class AkorDefterimSys {
 	public void CikisYap() {
 		HesapPrefSifirla();
 
-		EkranGetir(new Intent(activity, Giris.class), "Normal");
+		EkranGetir(new Intent(activity, SplashEkran.class), "Normal");
 		activity.finishAffinity();
 	}
 
@@ -993,7 +1006,8 @@ public class AkorDefterimSys {
 		return Font;
 	}
 
-	public String TarihSeciciDialog(final EditText txtTarih) {
+	public void TarihSeciciDialog(final EditText txtTarih, final String Islem) {
+		final Interface_AsyncResponse AsyncResponse = (Interface_AsyncResponse) activity;
 		int Yil, Ay, Gun;
 
 		KlavyeKapat();
@@ -1033,9 +1047,13 @@ public class AkorDefterimSys {
 				if(String.valueOf(monthOfYear+1).length() == 1) Ay = "0" + String.valueOf(monthOfYear+1);
 				else Ay = String.valueOf(monthOfYear+1);
 
-				txtTarih.setText(String.format("%s%s%s%s%s", String.valueOf(Gun), TarihGunAyYilAyiracREGEX, String.valueOf(Ay), TarihGunAyYilAyiracREGEX, String.valueOf(year))); // Ayarla butonu tıklandığında textview'a yazdırıyoruz
+				String Tarih = String.format("%s%s%s%s%s", String.valueOf(Gun), TarihGunAyYilAyiracREGEX, String.valueOf(Ay), TarihGunAyYilAyiracREGEX, String.valueOf(year));
+
+				txtTarih.setText(Tarih); // Ayarla butonu tıklandığında textview'a yazdırıyoruz
 
                 UnFocusEditText(txtTarih);
+
+				AsyncResponse.AsyncTaskReturnValue("{\"Islem\":\"" + Islem + "\"}");
 			}
 		}, Yil, Ay, Gun); // Başlarken set edilcek değerlerimizi atıyoruz
 
@@ -1051,8 +1069,6 @@ public class AkorDefterimSys {
 		});
 
 		datePicker.show();
-
-		return txtTarih.getText().toString();
 	}
 
 	private void makeLinkClickable(SpannableStringBuilder strBuilder, final URLSpan span) {
@@ -1266,46 +1282,6 @@ public class AkorDefterimSys {
 
 		final AlertDialog ADDialog = new AlertDialog.Builder(activity)
 				.setView(ViewDialogCustom)
-				.setCancelable(false)
-				.create();
-
-		ADDialog.setOnKeyListener(new Dialog.OnKeyListener() {
-			@Override
-			public boolean onKey(DialogInterface arg0, int keyCode, KeyEvent event) {
-				if (keyCode == KeyEvent.KEYCODE_BACK) {
-					DismissAlertDialog(ADDialog);
-				}
-				return true;
-			}
-		});
-
-		return ADDialog;
-	}
-
-	@SuppressLint("InflateParams")
-	public AlertDialog CustomAlertDialog(Activity activity, String Baslik, View DialogLayoutContent, String ButtonMsjText, final String ButtonIslem) {
-		final Interface_AsyncResponse AsyncResponse = (Interface_AsyncResponse) activity;
-		LayoutInflater inflater = activity.getLayoutInflater();
-		View ViewDialogBaslik;
-		Resources res = activity.getResources();
-		Typeface YaziFontu = FontGetir(activity, "anivers_regular");
-
-		ViewDialogBaslik = inflater.inflate(R.layout.dialog_custom_baslik, null);
-
-		TextView lblDialogBaslik = ViewDialogBaslik.findViewById(R.id.lblDialogBaslik);
-		lblDialogBaslik.setTypeface(YaziFontu, Typeface.BOLD);
-		lblDialogBaslik.setText(new SpannableStringBuilder(Html.fromHtml(Baslik)));
-		lblDialogBaslik.setOnClickListener(new View.OnClickListener() {
-			@Override
-			public void onClick(View v) {
-				AsyncResponse.AsyncTaskReturnValue("{\"Islem\":\"" + ButtonIslem + "\"}");
-			}
-		});
-
-		final AlertDialog ADDialog = new AlertDialog.Builder(activity)
-				.setCustomTitle(ViewDialogBaslik)
-				.setView(DialogLayoutContent)
-				.setNeutralButton(ButtonMsjText, null)
 				.setCancelable(false)
 				.create();
 
@@ -2749,6 +2725,31 @@ public class AkorDefterimSys {
 		});
 	}
 
+	public void HesapTelefonGuncelle(String mHesapID, String mFirebaseToken, String mOSID, String mOSVersiyon, String mTelKodu, String mCepTelefon, String mUygulamaVersiyon, final String mIslem) {
+		RetrofitInterface retrofitInterface = RetrofitServiceGenerator.createService(activity, RetrofitInterface.class);
+		final Interface_AsyncResponse AsyncResponse = (Interface_AsyncResponse) activity;
+
+		Call<SnfIslemSonuc> snfIslemSonucCall = retrofitInterface.HesapTelefonGuncelle(mHesapID, mFirebaseToken, mOSID, mOSVersiyon, mTelKodu, mCepTelefon, mUygulamaVersiyon);
+		snfIslemSonucCall.enqueue(new Callback<SnfIslemSonuc>() {
+			@Override
+			public void onResponse(Call<SnfIslemSonuc> call, Response<SnfIslemSonuc> response) {
+				if(response.isSuccessful()) {
+					SnfIslemSonuc snfIslemSonuc = response.body();
+
+					// getHata'nin false olması durumu hata yok demektir..
+					if(!snfIslemSonuc.getHata())
+						AsyncResponse.AsyncTaskReturnValue("{\"Islem\":\"" + mIslem + "\", \"Sonuc\":" + snfIslemSonuc.getSonuc() + ", \"Aciklama\":\"" + snfIslemSonuc.getAciklama() + "\"}");
+					else AsyncResponse.AsyncTaskReturnValue("{\"Islem\":\"" + mIslem + "\", \"Sonuc\":false, \"Aciklama\":\"\"}");
+				} else AsyncResponse.AsyncTaskReturnValue("{\"Islem\":\"" + mIslem + "\", \"Sonuc\":false, \"Aciklama\":\"\"}");
+			}
+
+			@Override
+			public void onFailure(Call<SnfIslemSonuc> call, Throwable t) {
+				AsyncResponse.AsyncTaskReturnValue("{\"Islem\":\"" + mIslem + "\", \"Sonuc\":false}");
+			}
+		});
+	}
+
 	public void GeriBildirimEkle(String mYenidenGeriBildirimGondermeSuresi, String mHesapID, String mBildirimTipi, String mIcerik, String mIPAdres, final String mIslem) {
 		RetrofitInterface retrofitInterface = RetrofitServiceGenerator.createService(activity, RetrofitInterface.class);
 		final Interface_AsyncResponse AsyncResponse = (Interface_AsyncResponse) activity;
@@ -2984,6 +2985,10 @@ public class AkorDefterimSys {
 
 
 
+
+
+
+
 	public void YeniGuncellemeKontrol() {
 		if (InternetErisimKontrolu()) new YeniGuncellemeKontrol().execute();
 	}
@@ -3053,35 +3058,58 @@ public class AkorDefterimSys {
 	public void YeniSurumYeniliklerDialog() {
 		try {
 			int GecerliVersiyonCode = activity.getPackageManager().getPackageInfo(activity.getPackageName(), 0).versionCode;
-			String GecerliVersiyonAdi = activity.getPackageManager().getPackageInfo(activity.getPackageName(), 0).versionName;
+			String GecerliVersiyonAdi = String.format("%s%s", "v", activity.getPackageManager().getPackageInfo(activity.getPackageName(), 0).versionName);
 			sharedPref = activity.getSharedPreferences(PrefAdi, MODE_PRIVATE);
 
 			if (GecerliVersiyonCode > sharedPref.getInt("prefEskiVersiyonCode", 1)) {
-				Typeface YaziFontu = FontGetir(activity, "anivers_regular");
-				LayoutInflater inflater = activity.getLayoutInflater();
-				View ViewDialogContent = inflater.inflate(R.layout.dialog_uygulama_yenilikler, null);
+				if(!AlertDialogisShowing(ADDialog_Yenilikler)) {
+					LayoutInflater inflater = activity.getLayoutInflater();
+					View ViewDialogCustom;
+					Typeface YaziFontu = FontGetir(activity, "anivers_regular");
 
-				ADDialog = CustomAlertDialog(activity,
-						activity.getString(R.string.yenilikler),
-						ViewDialogContent,
-						activity.getString(R.string.tamam),
-						"ADDialog_Kapat");
-				ADDialog.getWindow().getAttributes().windowAnimations = R.style.DialogAnimation;
+					ViewDialogCustom = inflater.inflate(R.layout.dialog_uygulama_yenilikler, null);
 
-				TextView Dialog_lblVersiyonNo = ViewDialogContent.findViewById(R.id.Dialog_lblVersiyonNo);
-				Dialog_lblVersiyonNo.setTypeface(YaziFontu);
-				Dialog_lblVersiyonNo.setText(String.format("%s%s", "v", GecerliVersiyonAdi));
+					TextView Dialog_lblVersiyonNo = ViewDialogCustom.findViewById(R.id.Dialog_lblVersiyonNo);
+					Dialog_lblVersiyonNo.setTypeface(YaziFontu, Typeface.BOLD);
+					Dialog_lblVersiyonNo.setText(GecerliVersiyonAdi);
 
-				TextView Dialog_lblYenilikler = ViewDialogContent.findViewById(R.id.Dialog_lblYenilikler);
-				Dialog_lblYenilikler.setTypeface(YaziFontu);
+					TextView Dialog_lblYenilikler = ViewDialogCustom.findViewById(R.id.Dialog_lblYenilikler_Baslik);
+					Dialog_lblYenilikler.setTypeface(YaziFontu, Typeface.BOLD);
 
-				TextView Dialog_lblYenilikler_Icerik = ViewDialogContent.findViewById(R.id.Dialog_lblYenilikler_Icerik);
-				Dialog_lblYenilikler_Icerik.setTypeface(YaziFontu);
-				Dialog_lblYenilikler_Icerik.setText(activity.getString(R.string.yenilikler_icerik));
-				setTextViewHTML(Dialog_lblYenilikler_Icerik);
-				Dialog_lblYenilikler_Icerik.setMovementMethod(ScrollingMovementMethod.getInstance());
+					TextView Dialog_lblYenilikler_Icerik = ViewDialogCustom.findViewById(R.id.Dialog_lblYenilikler_Icerik);
+					Dialog_lblYenilikler_Icerik.setTypeface(YaziFontu);
+					Dialog_lblYenilikler_Icerik.setText(activity.getString(R.string.yenilikler_icerik, GecerliVersiyonAdi));
+					setTextViewHTML(Dialog_lblYenilikler_Icerik);
+					Dialog_lblYenilikler_Icerik.setMovementMethod(ScrollingMovementMethod.getInstance());
 
-				ADDialog.show();
+					Button btnDialogButton = ViewDialogCustom.findViewById(R.id.btnDialogButton);
+					btnDialogButton.setTypeface(YaziFontu, Typeface.BOLD);
+					btnDialogButton.setText(activity.getString(R.string.tamam));
+					btnDialogButton.setOnClickListener(new View.OnClickListener() {
+						@Override
+						public void onClick(View v) {
+							DismissAlertDialog(ADDialog_Yenilikler);
+						}
+					});
+
+					ADDialog_Yenilikler = new AlertDialog.Builder(activity)
+							.setView(ViewDialogCustom)
+							.setCancelable(false)
+							.create();
+
+					ADDialog_Yenilikler.setOnKeyListener(new Dialog.OnKeyListener() {
+						@Override
+						public boolean onKey(DialogInterface arg0, int keyCode, KeyEvent event) {
+							if (keyCode == KeyEvent.KEYCODE_BACK) {
+								DismissAlertDialog(ADDialog_Yenilikler);
+							}
+							return true;
+						}
+					});
+
+					ADDialog_Yenilikler.getWindow().getAttributes().windowAnimations = R.style.DialogAnimation;
+					ADDialog_Yenilikler.show();
+				}
 
 				sharedPrefEditor = sharedPref.edit();
 				sharedPrefEditor.putInt("prefEskiVersiyonCode", GecerliVersiyonCode);
@@ -6368,7 +6396,13 @@ public class AkorDefterimSys {
 				AndroidVersiyon = "Android 7.0 (Nougat)";
 				break;
 			case 25:
-				AndroidVersiyon = "Android 7.1 (Nougat)";
+				AndroidVersiyon = "Android 7.1.1 (Nougat)";
+				break;
+			case 26:
+				AndroidVersiyon = "Android 8.0.0 (Oreo)";
+				break;
+			case 27:
+				AndroidVersiyon = "Android 8.1.0 (Oreo)";
 				break;
 			default:
 				AndroidVersiyon = String.valueOf(Build.VERSION.SDK_INT);

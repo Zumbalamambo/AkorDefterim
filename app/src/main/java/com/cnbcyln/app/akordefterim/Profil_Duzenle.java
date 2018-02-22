@@ -36,6 +36,7 @@ import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.TableLayout;
 import android.widget.TextView;
 
 import com.cnbcyln.app.akordefterim.Interface.Interface_AsyncResponse;
@@ -96,7 +97,7 @@ public class Profil_Duzenle extends AppCompatActivity implements Interface_Async
 
 	CoordinatorLayout coordinatorLayout;
 	ConstraintLayout ConstraintLayout1, ConstraintLayout2;
-	ImageButton btnGeri, btnKaydet;
+	ImageButton btnGeri, btnKaydet, btnDogumTarihSil, btnTelefonNumarasiSil;
 	TextInputLayout txtILAdSoyad, txtILDogumTarih, txtILKullaniciAdi;
 	EditText txtAdSoyad, txtDogumTarih, txtKullaniciAdi;
 	TextView lblBaslik, lblFotografiDegistir, lblFotografiDegistir2, lblGenelBilgiler, lblGizliBilgiler, lblEPostaAdresi, lblEPostaAdresi2, lblTelefonNumarasi, lblTelefonNumarasi2;
@@ -226,12 +227,15 @@ public class Profil_Duzenle extends AppCompatActivity implements Interface_Async
 			public void onFocusChange(View v, boolean hasFocus) {
 				if(!DogumTarihAlaninaGirildiMi) { // Bu kontrol sayesinde edittext alanına tıklandığında klavyenin kapatılmasını sağladık..
 					DogumTarihAlaninaGirildiMi = true;
-					txtDogumTarih.setText(AkorDefterimSys.TarihSeciciDialog(txtDogumTarih));
-					AkorDefterimSys.KlavyeKapat();
+					AkorDefterimSys.TarihSeciciDialog(txtDogumTarih, "TarihSeciciDialog");
 				} else DogumTarihAlaninaGirildiMi = false;
 			}
 		});
 		txtDogumTarih.setOnClickListener(this);
+
+		btnDogumTarihSil = findViewById(R.id.btnDogumTarihSil);
+		btnDogumTarihSil.setVisibility(View.GONE);
+		btnDogumTarihSil.setOnClickListener(this);
 
 		txtILKullaniciAdi = findViewById(R.id.txtILKullaniciAdi);
 		txtILKullaniciAdi.setTypeface(YaziFontu);
@@ -291,6 +295,10 @@ public class Profil_Duzenle extends AppCompatActivity implements Interface_Async
 
 		lblTelefonNumarasi2 = findViewById(R.id.lblTelefonNumarasi2);
 		lblTelefonNumarasi2.setTypeface(YaziFontu, Typeface.BOLD);
+
+		btnTelefonNumarasiSil = findViewById(R.id.btnTelefonNumarasiSil);
+		btnTelefonNumarasiSil.setVisibility(View.GONE);
+		btnTelefonNumarasiSil.setOnClickListener(this);
 	}
 
 	@SuppressLint("HardwareIds")
@@ -443,41 +451,51 @@ public class Profil_Duzenle extends AppCompatActivity implements Interface_Async
 				AkorDefterimSys.UnFocusEditText(txtKullaniciAdi);
 				break;
 			case R.id.btnGeri:
-				onBackPressed();
-
+				AkorDefterimSys.EkranKapat();
 				break;
 			case R.id.btnKaydet:
 				if(AkorDefterimSys.InternetErisimKontrolu()) {
 					Kaydet();
 				} else AkorDefterimSys.StandartSnackBarMsj(coordinatorLayout, getString(R.string.internet_baglantisi_saglanamadi));
-
 				break;
 			case R.id.CImgProfilResim:
 				lblFotografiDegistir.performClick();
 				break;
 			case R.id.lblFotografiDegistir:
 				activity.openContextMenu(lblFotografiDegistir);
-
 				break;
 			case R.id.lblFotografiDegistir2:
 				activity.openContextMenu(lblFotografiDegistir2);
-
 				break;
 			case R.id.txtDogumTarih:
-				txtDogumTarih.setText(AkorDefterimSys.TarihSeciciDialog(txtDogumTarih));
-				AkorDefterimSys.KlavyeKapat();
+				AkorDefterimSys.TarihSeciciDialog(txtDogumTarih, "TarihSeciciDialog");
+				break;
+			case R.id.btnDogumTarihSil:
+				txtDogumTarih.setText("");
+				btnDogumTarihSil.setVisibility(View.GONE);
 				break;
 			case R.id.LLEPostaAdresi:
 				if(AkorDefterimSys.InternetErisimKontrolu()) {
 					AkorDefterimSys.EkranGetir(new Intent(activity, EPosta_Degistir.class), "Slide");
 				} else AkorDefterimSys.StandartSnackBarMsj(coordinatorLayout, getString(R.string.internet_baglantisi_saglanamadi));
-
 				break;
 			case R.id.LLTelefonNumarasi:
 				if(AkorDefterimSys.InternetErisimKontrolu()) {
 					AkorDefterimSys.EkranGetir(new Intent(activity, CepTelefonu_Degistir.class), "Slide");
 				} else AkorDefterimSys.StandartSnackBarMsj(coordinatorLayout, getString(R.string.internet_baglantisi_saglanamadi));
-
+				break;
+			case R.id.btnTelefonNumarasiSil:
+				if(AkorDefterimSys.InternetErisimKontrolu()) {
+					if(!AkorDefterimSys.AlertDialogisShowing(ADDialog)) {
+						ADDialog = AkorDefterimSys.H2ButtonCustomAlertDialog(activity,
+								getString(R.string.telefon_numarasi),
+								getString(R.string.telefon_numarasi_sil_soru),
+								getString(R.string.evet), "ADDialog_Telefon_Numarasi_Sil_Evet",
+								getString(R.string.hayir), "ADDialog_Kapat");
+						ADDialog.getWindow().getAttributes().windowAnimations = R.style.DialogAnimation;
+						ADDialog.show();
+					}
+				} else AkorDefterimSys.StandartSnackBarMsj(coordinatorLayout, getString(R.string.internet_baglantisi_saglanamadi));
 				break;
 		}
 	}
@@ -615,10 +633,13 @@ public class Profil_Duzenle extends AppCompatActivity implements Interface_Async
 							txtAdSoyad.setText(JSONSonuc.getString("AdSoyad"));
 
 							try {
-								SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault());
-								Date inputDate = format.parse(JSONSonuc.getString("DogumTarih"));
-								format = new SimpleDateFormat("dd" + AkorDefterimSys.TarihGunAyYilAyiracREGEX + "MM" + AkorDefterimSys.TarihGunAyYilAyiracREGEX + "yyyy", Locale.getDefault());
-								txtDogumTarih.setText(format.format(inputDate));
+								if(!JSONSonuc.getString("DogumTarih").equals("0000-00-00 00:00:00")) {
+									SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault());
+									Date inputDate = format.parse(JSONSonuc.getString("DogumTarih"));
+									format = new SimpleDateFormat("dd" + AkorDefterimSys.TarihGunAyYilAyiracREGEX + "MM" + AkorDefterimSys.TarihGunAyYilAyiracREGEX + "yyyy", Locale.getDefault());
+									txtDogumTarih.setText(format.format(inputDate));
+									btnDogumTarihSil.setVisibility(View.VISIBLE);
+								}
 							} catch (ParseException e) {
 								e.printStackTrace();
 							}
@@ -629,8 +650,13 @@ public class Profil_Duzenle extends AppCompatActivity implements Interface_Async
 							if(JSONSonuc.getString("EPosta").equals("")) lblEPostaAdresi2.setText(String.format("%s%s%s", "(", getString(R.string.belirtilmemis), ")"));
 							else lblEPostaAdresi2.setText(JSONSonuc.getString("EPosta"));
 
-							if(JSONSonuc.getString("CepTelefon").equals("")) lblTelefonNumarasi2.setText(String.format("%s%s%s", "(", getString(R.string.belirtilmemis), ")"));
-							else lblTelefonNumarasi2.setText(String.format("%s%s%s", "+", JSONSonuc.getString("TelKodu"), JSONSonuc.getString("CepTelefon")));
+							if(JSONSonuc.getString("CepTelefon").equals("")) {
+								lblTelefonNumarasi2.setText(String.format("%s%s%s", "(", getString(R.string.belirtilmemis), ")"));
+								btnTelefonNumarasiSil.setVisibility(View.GONE);
+							} else {
+								lblTelefonNumarasi2.setText(String.format("%s%s%s", "+", JSONSonuc.getString("TelKodu"), JSONSonuc.getString("CepTelefon")));
+								btnTelefonNumarasiSil.setVisibility(View.VISIBLE);
+							}
 						}
 					} else {
 						if(!AkorDefterimSys.AlertDialogisShowing(ADDialog)) {
@@ -720,12 +746,40 @@ public class Profil_Duzenle extends AppCompatActivity implements Interface_Async
 						}
 					}
 					break;
+				case "TarihSeciciDialog":
+					btnDogumTarihSil.setVisibility(View.VISIBLE);
+					break;
+				case "ADDialog_Telefon_Numarasi_Sil_Evet":
+					AkorDefterimSys.DismissAlertDialog(ADDialog);
+
+					if(!AkorDefterimSys.ProgressDialogisShowing(PDBilgilerGuncelleniyor)) {
+						PDBilgilerGuncelleniyor = AkorDefterimSys.CustomProgressDialog(getString(R.string.bilgileriniz_guncelleniyor), false, AkorDefterimSys.ProgressBarTimeoutSuresi, "PDBilgilerGuncelleniyor_Timeout");
+						PDBilgilerGuncelleniyor.show();
+					}
+
+					AkorDefterimSys.HesapTelefonGuncelle(sharedPref.getString("prefHesapID",""),  FirebaseToken, OSID, OSVersiyon,"", "", UygulamaVersiyon, "HesapTelefonGuncelle");
+					break;
+				case "HesapTelefonGuncelle":
+					AkorDefterimSys.DismissProgressDialog(PDBilgilerGuncelleniyor);
+
+					if(JSONSonuc.getBoolean("Sonuc")) {
+						if(!AkorDefterimSys.AlertDialogisShowing(ADDialog)) {
+							ADDialog = AkorDefterimSys.CustomAlertDialog(activity,
+									getString(R.string.profili_duzenle),
+									getString(R.string.hesap_bilgileri_guncellendi),
+									activity.getString(R.string.tamam),
+									"ADDialog_Kapat_GeriGit");
+							ADDialog.getWindow().getAttributes().windowAnimations = R.style.DialogAnimation;
+							ADDialog.show();
+						}
+					} else AkorDefterimSys.StandartSnackBarMsj(coordinatorLayout, getString(R.string.islem_yapilirken_bir_hata_olustu));
+					break;
 				case "ADDialog_Kapat":
 					AkorDefterimSys.DismissAlertDialog(ADDialog);
 					break;
 				case "ADDialog_Kapat_GeriGit":
 					AkorDefterimSys.DismissAlertDialog(ADDialog);
-					onBackPressed();
+					AkorDefterimSys.EkranKapat();
 					break;
 				case "ADDialog_Kapat_CikisYap":
 					AkorDefterimSys.DismissAlertDialog(ADDialog);
@@ -733,11 +787,11 @@ public class Profil_Duzenle extends AppCompatActivity implements Interface_Async
 					break;
 				case "PDBilgilerAliniyor_Timeout":
 					AkorDefterimSys.DismissProgressDialog(PDBilgilerAliniyor);
-					onBackPressed();
+					AkorDefterimSys.EkranKapat();
 					break;
 				case "PDBilgilerGuncelleniyor_Timeout":
 					AkorDefterimSys.DismissProgressDialog(PDBilgilerGuncelleniyor);
-					onBackPressed();
+					AkorDefterimSys.EkranKapat();
 					break;
 			}
 		} catch (JSONException e) {
@@ -786,7 +840,7 @@ public class Profil_Duzenle extends AppCompatActivity implements Interface_Async
 				// Adding file data to http body
 				entity.addPart("Dosya", new FileBody(SecilenProfilResmiFile));
 				entity.addPart("Dizin", new StringBody(AkorDefterimSys.PHPProfilResimleriDizini));
-				entity.addPart("DosyaAdi",new StringBody(sharedPref.getString("prefHesapID","")));
+				entity.addPart("DosyaAdi", new StringBody(sharedPref.getString("prefHesapID","")));
 
 				totalSize = entity.getContentLength();
 				httppost.setEntity(entity);
@@ -935,10 +989,10 @@ public class Profil_Duzenle extends AppCompatActivity implements Interface_Async
 				imm.showSoftInput(txtAdSoyad, 0);
 			} else txtILAdSoyad.setError(null);
 
-			if(TextUtils.isEmpty(DogumTarih))
+			/*if(TextUtils.isEmpty(DogumTarih))
 				txtILDogumTarih.setError(getString(R.string.hata_bos_alan));
 			else
-				txtILDogumTarih.setError(null);
+				txtILDogumTarih.setError(null);*/
 
 			if (TextUtils.isEmpty(KullaniciAdi)) {
 				txtILKullaniciAdi.setError(getString(R.string.hata_bos_alan));
@@ -967,7 +1021,7 @@ public class Profil_Duzenle extends AppCompatActivity implements Interface_Async
 				imm.showSoftInput(txtKullaniciAdi, 0);
 			} else txtILKullaniciAdi.setError(null);
 
-			if(txtILAdSoyad.getError() == null && txtILDogumTarih.getError() == null && txtILKullaniciAdi.getError() == null) {
+			if(txtILAdSoyad.getError() == null/* && txtILDogumTarih.getError() == null*/ && txtILKullaniciAdi.getError() == null) {
 				btnKaydet.setEnabled(false);
 				AkorDefterimSys.UnFocusEditText(txtAdSoyad);
 				AkorDefterimSys.UnFocusEditText(txtDogumTarih);
@@ -986,10 +1040,12 @@ public class Profil_Duzenle extends AppCompatActivity implements Interface_Async
 				}
 
 				try {
-					SimpleDateFormat format = new SimpleDateFormat("dd/MM/yyyy");
-					Date inputDate = format.parse(DogumTarih + " 00:00:00");
-					format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-					DogumTarih = format.format(inputDate);
+					if(!TextUtils.isEmpty(DogumTarih)) {
+						SimpleDateFormat format = new SimpleDateFormat("dd/MM/yyyy");
+						Date inputDate = format.parse(DogumTarih);
+						format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+						DogumTarih = format.format(inputDate);
+					} else DogumTarih = "0000-00-00 00:00:00";
 				} catch (ParseException e) {
 					e.printStackTrace();
 				}

@@ -6,10 +6,8 @@ import android.app.AlertDialog;
 import android.app.Fragment;
 import android.app.FragmentTransaction;
 import android.app.ProgressDialog;
-import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
-import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.graphics.Typeface;
@@ -43,6 +41,7 @@ import com.cnbcyln.app.akordefterim.Siniflar.SnfSarkilar;
 import com.cnbcyln.app.akordefterim.util.AkorDefterimSys;
 import com.cnbcyln.app.akordefterim.util.AppService;
 import com.cnbcyln.app.akordefterim.util.Veritabani;
+import com.surveymonkey.surveymonkeyandroidsdk.SurveyMonkey;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -71,6 +70,7 @@ public class AnaEkran extends AppCompatActivity implements Int_DataConn_AnaEkran
     LayoutInflater layoutInflater;
     private List<SnfSarkilar> snfSarkilar;
     private List<SnfSarkilar> snfSarkilarTemp;
+    private SurveyMonkey sdkInstance;             // <<<<<<================================ BURDA KALDIN..
 
     // AnaEkran Değişken Tanımlamaları
     ImageButton btnSolMenu, btnSagMenu;
@@ -117,6 +117,7 @@ public class AnaEkran extends AppCompatActivity implements Int_DataConn_AnaEkran
         YaziFontu = AkorDefterimSys.FontGetir(activity, "anivers_regular");
         sharedPref = activity.getSharedPreferences(AkorDefterimSys.PrefAdi, Context.MODE_PRIVATE);
         startService(new Intent(getApplicationContext(), AppService.class));
+        sdkInstance = new SurveyMonkey();
 
         imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE); // İstenildiği zaman klavyeyi gizlemeye yarayan kod tanımlayıcısı
 
@@ -407,20 +408,7 @@ public class AnaEkran extends AppCompatActivity implements Int_DataConn_AnaEkran
         Frg_TabRepKontrol Frg_TabRepKontrol_1 = (Frg_TabRepKontrol) SlidingTabFragmentClassGetir(getString(R.string.tabsayfa_repertuvar_kontrol));
         if(Frg_TabRepKontrol_1 != null) Frg_TabRepKontrol_1.spnDoldur();
 
-        if(sharedPref.getBoolean("prefEgitimTamamlandiMi", false)) AkorDefterimSys.YeniSurumYeniliklerDialog();
-        else {
-            if(!AkorDefterimSys.AlertDialogisShowing(ADDialog)) {
-                ADDialog = AkorDefterimSys.H2ButtonCustomAlertDialog(activity,
-                        getString(R.string.egitim),
-                        getString(R.string.egitime_katilmak_istermisin),
-                        getString(R.string.hayir),
-                        "ADDialog_Egitim_Hayir",
-                        getString(R.string.evet),
-                        "ADDialog_Egitim_Evet");
-                ADDialog.getWindow().getAttributes().windowAnimations = R.style.DialogAnimation;
-                ADDialog.show();
-            }
-        }
+        AkorDefterimSys.YeniSurumYeniliklerDialog();
     }
 
     @Override
@@ -645,8 +633,10 @@ public class AnaEkran extends AppCompatActivity implements Int_DataConn_AnaEkran
                     if(Fragment_SayfaAdi.equals("Frg_Anasayfa")) {
                         Frg_Anasayfa Frg_Anasayfa = (Frg_Anasayfa) activity.getFragmentManager().findFragmentByTag(Fragment_SayfaAdi);
 
-                        if(JSONSonuc.getBoolean("Sonuc")) Frg_Anasayfa.AnasayfaDoldur(JSONSonuc.getString("SarkiListesi"));
-                        else Frg_Anasayfa.AnasayfaDoldur("");
+                        if(Frg_Anasayfa != null) {
+                            if(JSONSonuc.getBoolean("Sonuc")) Frg_Anasayfa.AnasayfaDoldur(JSONSonuc.getString("SarkiListesi"));
+                            else Frg_Anasayfa.AnasayfaDoldur("");
+                        }
                     }
                     break;
                 case "KategoriListesiGetir":

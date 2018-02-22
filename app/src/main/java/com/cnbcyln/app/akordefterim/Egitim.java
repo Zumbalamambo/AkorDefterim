@@ -148,12 +148,12 @@ public class Egitim extends AppCompatActivity implements View.OnClickListener {
                     // Sonraki sayfa
                     viewPager.setCurrentItem(SayfaNo);
                 } else {
-                    onBackPressed();
+                    AkorDefterimSys.EkranKapat();
                 }
 
                 break;
             case R.id.btnGec:
-                onBackPressed();
+                AkorDefterimSys.EkranKapat();
 
                 break;
         }

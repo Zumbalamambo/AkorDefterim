@@ -212,7 +212,7 @@ public class Destek_GeriBildirim extends AppCompatActivity implements Interface_
                 AkorDefterimSys.UnFocusEditText(txtIcerik);
                 break;
 			case R.id.btnKapat:
-				onBackPressed();
+				AkorDefterimSys.EkranKapat();
 				break;
             case R.id.btnGonder:
                 Gonder();
@@ -365,11 +365,11 @@ public class Destek_GeriBildirim extends AppCompatActivity implements Interface_
                     break;
                 case "ADDialog_Kapat_GeriGit":
                     AkorDefterimSys.DismissAlertDialog(ADDialog);
-                    onBackPressed();
+                    AkorDefterimSys.EkranKapat();
                     break;
                 case "PDIslem_Timeout":
                     AkorDefterimSys.DismissProgressDialog(PDIslem);
-                    onBackPressed();
+                    AkorDefterimSys.EkranKapat();
                     break;
             }
         } catch (JSONException e) {

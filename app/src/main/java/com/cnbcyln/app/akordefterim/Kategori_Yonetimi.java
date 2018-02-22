@@ -236,7 +236,7 @@ public class Kategori_Yonetimi extends AppCompatActivity implements Interface_As
                 AkorDefterimSys.UnFocusAll(null,RelativeLayout1,null,null,null);
                 break;
 			case R.id.btnGeri_AnaPanel:
-				onBackPressed();
+				AkorDefterimSys.EkranKapat();
 				break;
             case R.id.btnAra_AnaPanel:
                 AkorDefterimSys.AramaPanelAc(RLKategoriYonetimi_AnaPanel.getId(),RLKategoriYonetimi_AramaPanel.getId(),txtAra_AramaPanel, imm);
@@ -378,7 +378,7 @@ public class Kategori_Yonetimi extends AppCompatActivity implements Interface_As
                     break;
                 case "ADDialog_Kapat_GeriGit":
                     AkorDefterimSys.DismissAlertDialog(ADDialog);
-                    onBackPressed();
+                    AkorDefterimSys.EkranKapat();
                     break;
             }
 

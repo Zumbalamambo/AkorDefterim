@@ -80,7 +80,7 @@ public class Hesabina_Eris_Hesabini_Bul extends AppCompatActivity implements Int
 		btnGeri.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				onBackPressed();
+				AkorDefterimSys.EkranKapat();
 			}
 		});
 

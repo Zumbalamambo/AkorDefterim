@@ -159,7 +159,7 @@ public class Hesabina_Eris_Hesabini_Bul2 extends AppCompatActivity implements In
 	public void onClick(View v) {
 		switch (v.getId()) {
 			case R.id.btnGeri:
-				onBackPressed();
+				AkorDefterimSys.EkranKapat();
 
 				break;
 			case R.id.btnEPostaGonder:
@@ -283,14 +283,14 @@ public class Hesabina_Eris_Hesabini_Bul2 extends AppCompatActivity implements In
 
 					// Tarih bilgisi alındıysa sonuç true döner..
 					if(JSONSonuc.getBoolean("Sonuc")) {
-						sharedPrefEditor = sharedPref.edit();
-						sharedPrefEditor.putString("prefEPostaGonderiTarihi", JSONSonuc.getString("TarihSaat"));
-						sharedPrefEditor.apply();
+						//sharedPrefEditor = sharedPref.edit();
+						//sharedPrefEditor.putString("prefEPostaGonderiTarihi", JSONSonuc.getString("TarihSaat"));
+						//sharedPrefEditor.apply();
 
-						EPostaKalanSure = AkorDefterimSys.EPostaGondermeToplamSure;
+						//EPostaKalanSure = AkorDefterimSys.EPostaGondermeToplamSure;
 
-						AkorDefterimSys.ZamanlayiciBaslat(activity, "Countdown", 1000, EPostaKalanSure * 1000, "ZamanlayiciBaslat_EPostaKalanSure");
-						btnEPostaGonder.setText(getString(R.string.eposta_gonder2, AkorDefterimSys.ZamanFormatMMSS(EPostaKalanSure)));
+						//AkorDefterimSys.ZamanlayiciBaslat(activity, "Countdown", 1000, EPostaKalanSure * 1000, "ZamanlayiciBaslat_EPostaKalanSure");
+						//btnEPostaGonder.setText(getString(R.string.eposta_gonder2, AkorDefterimSys.ZamanFormatMMSS(EPostaKalanSure)));
 
 						if(!AkorDefterimSys.AlertDialogisShowing(ADDialog)) {
 							ADDialog = AkorDefterimSys.CustomAlertDialog(activity,

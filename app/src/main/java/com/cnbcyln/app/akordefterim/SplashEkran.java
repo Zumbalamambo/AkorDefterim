@@ -214,9 +214,9 @@ public class SplashEkran extends Activity implements Interface_AsyncResponse {
 					// PDGirisYap Progress Dialog'u kapattık
 					AkorDefterimSys.DismissProgressDialog(PDGirisYap);
 
-					if(JSONSonuc.getBoolean("Sonuc")) {
-						AkorDefterimSys.HesapPrefSifirla();
+					AkorDefterimSys.HesapPrefSifirla();
 
+					if(JSONSonuc.getBoolean("Sonuc")) {
 						sharedPrefEditor = sharedPref.edit();
 						sharedPrefEditor.putString("prefHesapID", JSONSonuc.getString("HesapID"));
 						sharedPrefEditor.putString("prefEPosta", JSONSonuc.getString("HesapEPosta"));
@@ -234,8 +234,6 @@ public class SplashEkran extends Activity implements Interface_AsyncResponse {
 
 						finishAffinity();
 					} else {
-						AkorDefterimSys.HesapPrefSifirla();
-
 						switch (JSONSonuc.getString("HesapDurum")) {
 							case "Ban":
                                 if(!AkorDefterimSys.AlertDialogisShowing(ADDialog_HesapDurumu)) {

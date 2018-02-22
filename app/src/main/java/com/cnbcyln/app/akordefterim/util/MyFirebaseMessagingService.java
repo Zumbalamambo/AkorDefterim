@@ -42,33 +42,63 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
 
     @Override
     public void onMessageReceived(RemoteMessage remoteMessage) {
-        /**
-         * Önemli not!!: uygulama kapalı olsa bile firebase'den bildirim geliyordu ama Broadcast yapamıyordu.
-         * Bunun nedeni, uygulama kapalı olduğu için uygulamadan broadcast yapamaz.
-         * Bu nedenle sadece bildirim tipi işlemleri notification şeklinde bu class içinde bir void tanımladık
-         * Ve bu class içinden notification çağırdık. Bu sayede artık uygulama kapalı olsa bile notification alabildik ;)
+        /*
+          Önemli not!!: uygulama kapalı olsa bile firebase'den bildirim geliyordu ama Broadcast yapamıyordu.
+          Bunun nedeni, uygulama kapalı olduğu için uygulamadan broadcast yapamaz.
+          Bu nedenle sadece bildirim tipi işlemleri notification şeklinde bu class içinde bir void tanımladık
+          Ve bu class içinden notification çağırdık. Bu sayede artık uygulama kapalı olsa bile notification alabildik ;)
          */
         try {
             JSONObject JSONGelenVeri = new JSONObject(new JSONObject(remoteMessage.getData()).getString("JSONData"));
             //JSONObject JSONGelenVeri = new JSONObject(remoteMessage.getNotification().getBody());
 
             Intent myIntent;
+            String MesajIcerik;
 
             switch (JSONGelenVeri.getString("Islem")) {
                 case "Bildirim":
+                    MesajIcerik = JSONGelenVeri.getString("MesajIcerik");
+
                     myIntent = new Intent(context, SplashEkran.class);
-                    NotifyGoster(myIntent, getString(R.string.uygulama_adi), JSONGelenVeri.getString("MesajIcerik"), "", -1, JSONGelenVeri.getString("MesajIcerik"), getString(R.string.uygulama_adi), JSONGelenVeri.getString("MesajIcerik"), "", true);
+                    NotifyGoster(myIntent, getString(R.string.uygulama_adi),
+                            MesajIcerik,
+                            "",
+                            -1,
+                            MesajIcerik,
+                            getString(R.string.uygulama_adi),
+                            MesajIcerik,
+                            "",
+                            true);
 
                     break;
                 case "YeniSarkiBildirim":
-                    String MesajIcerik = getString(R.string.yeni_sarki_ekleme_notify_mesaji, JSONGelenVeri.getString("SanatciAdi"), JSONGelenVeri.getString("SarkiAdi"), getString(R.string.uygulama_adi));
+                    MesajIcerik = getString(R.string.yeni_sarki_ekleme_notify_mesaji, JSONGelenVeri.getString("SanatciAdi"), JSONGelenVeri.getString("SarkiAdi"), getString(R.string.uygulama_adi));
+
                     myIntent = new Intent(context, SplashEkran.class);
-                    NotifyGoster(myIntent, getString(R.string.uygulama_adi), MesajIcerik, "", -1, MesajIcerik, getString(R.string.uygulama_adi), MesajIcerik, "", true);
+                    NotifyGoster(myIntent,
+                            getString(R.string.uygulama_adi),
+                            MesajIcerik,
+                            "",
+                            -1,
+                            MesajIcerik,
+                            getString(R.string.uygulama_adi),
+                            MesajIcerik,
+                            "",
+                            true);
 
                     break;
                 case "Guncelleme":
                     myIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("http://play.google.com/store/apps/details?id=" + context.getPackageName()));
-                    NotifyGoster(myIntent, getString(R.string.uygulama_adi), getString(R.string.yeni_guncelleme_icerik2), "", -1, getString(R.string.yeni_guncelleme_icerik2), getString(R.string.uygulama_adi), getString(R.string.yeni_guncelleme_icerik2), "", true);
+                    NotifyGoster(myIntent,
+                            getString(R.string.uygulama_adi),
+                            getString(R.string.yeni_guncelleme_icerik2),
+                            "",
+                            -1,
+                            getString(R.string.yeni_guncelleme_icerik2),
+                            getString(R.string.uygulama_adi),
+                            getString(R.string.yeni_guncelleme_icerik2),
+                            "",
+                            true);
 
                     break;
                 case "DuyuruReklam":
@@ -80,8 +110,8 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
                     String FirebaseToken = FirebaseInstanceId.getInstance().getToken();
 
                     if(JSONGelenVeri.getString("HesapFirebaseToken").equals(FirebaseToken)) { // Sisteme yeni giriş yapan FirebaseToken, cihazda giriş yapmış olan FirebaseToken'a eşit ise, cihazda giriş yapmış olan FirebaseToken'a çıkış yaptır
-                        //mIntent.putExtra("JSONData", "{\"Islem\":\"CikisYap\"}");
-                        //this.sendBroadcast(mIntent);
+                        mIntent.putExtra("JSONData", "{\"Islem\":\"CikisYap\"}");
+                        this.sendBroadcast(mIntent);
                     }
                     break;
             }

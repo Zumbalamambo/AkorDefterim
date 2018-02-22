@@ -17,11 +17,11 @@
     <integer name="ParolaKarakterSayisi_MAX">25</integer>
     <integer name="GeriBildirimKarakterSayisi_MIN">30</integer>
     <integer name="GeriBildirimKarakterSayisi_MAX">500</integer>
-    <integer name="AppServiceCalismaAraligi">180</integer> <!-- 180 Saniye = 3 Dakika-->
+    <integer name="AppServiceCalismaAraligi">10</integer> <!-- 10 Saniye -->
     <integer name="ProfilResimYuklemeBoyutu">5</integer>
-    <integer name="EPostaGondermeToplamSure">180</integer> <!-- 180 Saniye = 3 Dakika-->
-    <integer name="SMSGondermeToplamSure">180</integer> <!-- 180 Saniye = 3 Dakika-->
-    <integer name="YenidenGeriBildirimGondermeSuresi">5</integer> <!-- 5 Dakika-->
+    <integer name="EPostaGondermeToplamSure">180</integer> <!-- 180 Saniye = 3 Dakika -->
+    <integer name="SMSGondermeToplamSure">180</integer> <!-- 180 Saniye = 3 Dakika -->
+    <integer name="YenidenGeriBildirimGondermeSuresi">5</integer> <!-- 5 Dakika -->
     <integer name="SarkiAdiKarakterSayisi_MIN">2</integer>
     <integer name="SarkiAdiKarakterSayisi_MAX">40</integer>
 

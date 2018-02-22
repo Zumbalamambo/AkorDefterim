@@ -125,7 +125,7 @@
 			android:layout_marginRight="4dp"
 			android:layout_marginStart="4dp"
 			android:layout_marginTop="16dp"
-			android:text="@string/eposta_adresini_kimseye_gormeyecek"
+			android:text="@string/eposta_adresi_paylasilmayacak"
 			android:textColor="@color/KoyuYazi"
 			style="@style/TextAppearance.AppCompat.Small.Inverse"
 			app:layout_constraintLeft_toLeftOf="@+id/v_guideline1"

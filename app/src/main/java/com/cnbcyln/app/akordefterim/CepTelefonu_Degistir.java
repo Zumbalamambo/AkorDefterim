@@ -5,10 +5,8 @@ import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
-import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
-import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.graphics.Typeface;
@@ -27,7 +25,6 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.cnbcyln.app.akordefterim.Interface.Interface_AsyncResponse;
 import com.cnbcyln.app.akordefterim.util.AkorDefterimSys;
@@ -158,8 +155,6 @@ public class CepTelefonu_Degistir extends AppCompatActivity implements Interface
 
 		AkorDefterimSys.activity = activity;
 
-		activity.registerReceiver(broadcastreceiver, new IntentFilter("com.cnbcyln.app.akordefterim." + activity.getClass().getSimpleName()));
-
 		if(AkorDefterimSys.GirisYapildiMi()) {
 			if(AkorDefterimSys.prefAction.equals("IslemTamamlandi")) finish();
 			else {
@@ -193,16 +188,6 @@ public class CepTelefonu_Degistir extends AppCompatActivity implements Interface
 		super.onBackPressed();
 	}
 
-	@Override
-	protected void onDestroy() {
-		AkorDefterimSys.KlavyeKapat();
-		AkorDefterimSys.DismissAlertDialog(ADDialog);
-
-		unregisterReceiver(broadcastreceiver);
-
-		super.onDestroy();
-	}
-
 	@SuppressLint("SimpleDateFormat")
 	@Override
 	public void onClick(View v) {
@@ -213,7 +198,7 @@ public class CepTelefonu_Degistir extends AppCompatActivity implements Interface
 				break;
 			case R.id.btnIptal:
 				AkorDefterimSys.prefAction = "";
-				finish();
+				AkorDefterimSys.EkranKapat();
 				break;
 			case R.id.btnKaydet:
 				Kaydet();
@@ -230,7 +215,7 @@ public class CepTelefonu_Degistir extends AppCompatActivity implements Interface
 					DogrulamaKodu = AkorDefterimSys.KodUret(6, true, false, false, false);
 
 					// Onay kodu belirtilen eposta adresine gönderiliyor
-					AkorDefterimSys.SMSGonder(CCPTelKodu.getSelectedCountryCode(), YazilanCepTelefonu, getString(R.string.sms_dosrulama_kodu_icerik, DogrulamaKodu, getString(R.string.uygulama_adi)));
+					AkorDefterimSys.SMSGonder(CCPTelKodu.getSelectedCountryCode(), YazilanCepTelefonu, getString(R.string.sms_dogrulama_kodu_icerik, DogrulamaKodu, getString(R.string.uygulama_adi)));
 				} else {
 					AkorDefterimSys.DismissProgressDialog(PDIslem);
 
@@ -363,7 +348,7 @@ public class CepTelefonu_Degistir extends AppCompatActivity implements Interface
 								DogrulamaKodu = AkorDefterimSys.KodUret(6, true, false, false, false);
 
 								// Onay kodu belirtilen eposta adresine gönderiliyor
-								AkorDefterimSys.SMSGonder(CCPTelKodu.getSelectedCountryCode(), YazilanCepTelefonu, getString(R.string.sms_dosrulama_kodu_icerik, DogrulamaKodu, getString(R.string.uygulama_adi)));
+								AkorDefterimSys.SMSGonder(CCPTelKodu.getSelectedCountryCode(), YazilanCepTelefonu, getString(R.string.sms_dogrulama_kodu_icerik, DogrulamaKodu, getString(R.string.uygulama_adi)));
 							}
 						} else {
 							btnIptal.setEnabled(true);
@@ -422,25 +407,22 @@ public class CepTelefonu_Degistir extends AppCompatActivity implements Interface
 						AkorDefterimSys.setTextViewHTML(lblKalanSure);
 						lblKalanSure.setVisibility(View.GONE);
 
-						AkorDefterimSys.StandartSnackBarMsj(coordinatorLayout, getString(R.string.sure_bitti_yeniden_basvuru_yapilabilir));
+						//AkorDefterimSys.StandartSnackBarMsj(coordinatorLayout, getString(R.string.sure_bitti_yeniden_basvuru_yapilabilir));
 					}
 					break;
 				case "PDIslem_Timeout":
 					AkorDefterimSys.DismissProgressDialog(PDIslem);
-
-					onBackPressed();
+					AkorDefterimSys.EkranKapat();
 					break;
 				case "ADDialog_Kapat":
 					AkorDefterimSys.DismissAlertDialog(ADDialog);
 					break;
 				case "ADDialog_Kapat_GeriGit":
 					AkorDefterimSys.DismissAlertDialog(ADDialog);
-
-					onBackPressed();
+					AkorDefterimSys.EkranKapat();
 					break;
 				case "ADDialog_Kapat_CikisYap":
 					AkorDefterimSys.DismissAlertDialog(ADDialog);
-
 					AkorDefterimSys.CikisYap();
 					break;
 			}
@@ -493,42 +475,4 @@ public class CepTelefonu_Degistir extends AppCompatActivity implements Interface
 			}
 		} else AkorDefterimSys.StandartSnackBarMsj(coordinatorLayout, getString(R.string.internet_baglantisi_saglanamadi));
 	}
-
-	private BroadcastReceiver broadcastreceiver = new BroadcastReceiver() {
-		@Override
-		public void onReceive(Context context, Intent intent) {
-			try {
-				String JSON = intent.getStringExtra("JSONData");
-				JSONObject JSONGelenVeri = new JSONObject(JSON);
-				Intent myIntent;
-
-				switch (JSONGelenVeri.getString("Islem")) {
-					case "ToastMesaj":
-						try {
-							AkorDefterimSys.ToastMsj(activity, JSONGelenVeri.getString("Mesaj"), Toast.LENGTH_LONG);
-						} catch (JSONException e) {
-							e.printStackTrace();
-						}
-
-						break;
-					case "SnackBarMesaj":
-						AkorDefterimSys.StandartSnackBarMsj(coordinatorLayout, JSONGelenVeri.getString("Mesaj"));
-
-						break;
-					case "NotifyMesaj":
-						myIntent = new Intent(context, SplashEkran.class);
-						AkorDefterimSys.NotifyGoster(myIntent, JSONGelenVeri.getString("NotifyBaslik"), JSONGelenVeri.getString("NotifyIcerik"), JSONGelenVeri.getString("SubIcerik"), JSONGelenVeri.getInt("Number"), JSONGelenVeri.getString("TickerIcerik"), JSONGelenVeri.getString("BigNotifyBaslik"), JSONGelenVeri.getString("BigNotifyIcerik"), JSONGelenVeri.getString("BigSubIcerik"), JSONGelenVeri.getBoolean("Titresim"));
-
-						break;
-					case "CikisYap":
-						myIntent = new Intent(activity, AnaEkran.class);
-						AkorDefterimSys.NotifyGoster(myIntent, getString(R.string.uygulama_adi), getString(R.string.farkli_bir_cihazdan_oturum_acildi), "", -1, getString(R.string.farkli_bir_cihazdan_oturum_acildi), getString(R.string.uygulama_adi), getString(R.string.farkli_bir_cihazdan_oturum_acildi), "", true);
-						AkorDefterimSys.CikisYap();
-						break;
-				}
-			} catch (JSONException e) {
-				e.printStackTrace();
-			}
-		}
-	};
 }

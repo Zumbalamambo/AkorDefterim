@@ -86,6 +86,11 @@ public class Secenekler extends AppCompatActivity implements OnClickListener {
         btnSorunBildir.setOnClickListener(this);
         registerForContextMenu(btnSorunBildir);
 
+        if(!AkorDefterimSys.GirisYapildiMi()) {
+            btnSorunBildir.setEnabled(false);
+            btnSorunBildir.setAlpha((float) 0.5);
+        }
+
         lblHakkinda = findViewById(R.id.lblHakkinda);
         lblHakkinda.setTypeface(YaziFontu, Typeface.BOLD);
 
@@ -116,7 +121,7 @@ public class Secenekler extends AppCompatActivity implements OnClickListener {
 	public void onClick(View v) {
 		switch (v.getId()) {
 			case R.id.btnGeri:
-				onBackPressed();
+				AkorDefterimSys.EkranKapat();
 				break;
             case R.id.btnEkranIsigi:
                 AkorDefterimSys.EkranGetir(new Intent(activity, Ayarlar_Ekran_Isigi.class), "Slide");
@@ -131,23 +136,17 @@ public class Secenekler extends AppCompatActivity implements OnClickListener {
 
                 break;
             case R.id.btnSorunBildir:
-                if(AkorDefterimSys.GirisYapildiMi()) {
-                    if(AkorDefterimSys.InternetErisimKontrolu()) {
-                        openContextMenu(btnSorunBildir);
-                    } else AkorDefterimSys.StandartSnackBarMsj(coordinatorLayout, getString(R.string.internet_baglantisi_saglanamadi));
-                } else AkorDefterimSys.StandartSnackBarMsj(coordinatorLayout, getString(R.string.devam_etmek_icin_giris_yapmalisin));
+                openContextMenu(btnSorunBildir);
 
                 break;
             case R.id.btnOyVer:
-                if(AkorDefterimSys.InternetErisimKontrolu()) {
-                    String appPackageName = activity.getPackageName(); // getPackageName() from Context or Activity object
+                String appPackageName = activity.getPackageName(); // getPackageName() from Context or Activity object
 
-                    try {
-                        startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("market://details?id=" + appPackageName)));
-                    } catch (android.content.ActivityNotFoundException e) {
-                        startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("https://play.google.com/store/apps/details?id=" + appPackageName)));
-                    }
-                } else AkorDefterimSys.StandartSnackBarMsj(coordinatorLayout, getString(R.string.internet_baglantisi_saglanamadi));
+                try {
+                    startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("market://details?id=" + appPackageName)));
+                } catch (android.content.ActivityNotFoundException e) {
+                    startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("https://play.google.com/store/apps/details?id=" + appPackageName)));
+                }
                 break;
             case R.id.btnGizlilikIlkesi:
                 startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("https://www.cbcapp.net/akordefterim/gizlilikpolitikasi.html")));

@@ -193,7 +193,7 @@ public class Parola_Degistir extends AppCompatActivity implements Interface_Asyn
                 AkorDefterimSys.UnFocusEditText(txtYeniParolaTekrar);
 				break;
 			case R.id.btnKapat:
-				onBackPressed();
+				AkorDefterimSys.EkranKapat();
 				break;
 			case R.id.btnKaydet:
 				Kaydet();
@@ -290,14 +290,14 @@ public class Parola_Degistir extends AppCompatActivity implements Interface_Asyn
                     break;
                 case "ADDialog_Kapat_GeriGit":
                     AkorDefterimSys.DismissAlertDialog(ADDialog);
-                    onBackPressed();
+                    AkorDefterimSys.EkranKapat();
                     break;
                 case "ADDialog_Kapat_CikisYap":
                     AkorDefterimSys.DismissAlertDialog(ADDialog);
                     AkorDefterimSys.CikisYap();
                     break;
                 case "PDBilgiIslem_Timeout":
-                    onBackPressed();
+                    AkorDefterimSys.EkranKapat();
                     break;
 			}
 

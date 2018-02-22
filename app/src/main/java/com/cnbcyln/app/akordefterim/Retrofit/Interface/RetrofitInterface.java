@@ -104,6 +104,15 @@ public interface RetrofitInterface {
                                            @Query("CepTelefon") String mCepTelefon,
                                            @Query("UygulamaVersiyon") String mUygulamaVersiyon);
 
+    @GET("phpscriptleri/hesapislemleri/hesap_telefon_guncelle.php")
+    Call<SnfIslemSonuc> HesapTelefonGuncelle(@Query("HesapID") String mHesapID,
+                                           @Query("FirebaseToken") String mFirebaseToken,
+                                           @Query("OSID") String mOSID,
+                                           @Query("OSVersiyon") String mOSVersiyon,
+                                           @Query("TelKodu") String mTelKodu,
+                                           @Query("CepTelefon") String mCepTelefon,
+                                           @Query("UygulamaVersiyon") String mUygulamaVersiyon);
+
     /* **************************************
        ***                                ***
        ***     GERİ BİLDİRİM İŞLEMLERİ    ***

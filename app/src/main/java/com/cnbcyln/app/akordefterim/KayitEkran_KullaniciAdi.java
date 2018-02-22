@@ -46,6 +46,7 @@ import org.apache.http.entity.mime.content.StringBody;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.json.JSONException;
 import org.json.JSONObject;
+import org.w3c.dom.Text;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
@@ -191,11 +192,11 @@ public class KayitEkran_KullaniciAdi extends AppCompatActivity implements Interf
 				AkorDefterimSys.UnFocusEditText(txtKullaniciAdi);
 				break;
 			case R.id.btnGeri:
-				onBackPressed();
+				AkorDefterimSys.EkranKapat();
 				break;
 			case R.id.lblVazgec:
 				AkorDefterimSys.prefAction = "Vazgec";
-				onBackPressed();
+				AkorDefterimSys.EkranKapat();
 				break;
 			case R.id.btnTamamla:
 				Tamamla();
@@ -226,10 +227,12 @@ public class KayitEkran_KullaniciAdi extends AppCompatActivity implements Interf
 						}
 
 						try {
-							SimpleDateFormat format = new SimpleDateFormat("dd/MM/yyyy");
-							Date inputDate = format.parse(DogumTarih);
-							format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-							DogumTarih = format.format(inputDate);
+							if(!TextUtils.isEmpty(DogumTarih)) {
+								SimpleDateFormat format = new SimpleDateFormat("dd/MM/yyyy");
+								Date inputDate = format.parse(DogumTarih);
+								format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+								DogumTarih = format.format(inputDate);
+							} else DogumTarih = "0000-00-00 00:00:00";
 						} catch (ParseException e) {
 							e.printStackTrace();
 						}

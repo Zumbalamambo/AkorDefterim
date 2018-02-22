@@ -49,7 +49,7 @@ public class Giris_Yardimi extends AppCompatActivity implements Interface_AsyncR
 		btnGeri.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				onBackPressed();
+				AkorDefterimSys.EkranKapat();
 			}
 		});
 

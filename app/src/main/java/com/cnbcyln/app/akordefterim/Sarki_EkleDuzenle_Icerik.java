@@ -193,7 +193,7 @@ public class Sarki_EkleDuzenle_Icerik extends AppCompatActivity implements Inter
 	public void onClick(View v) {
 		switch (v.getId()) {
 			case R.id.btnGeri:
-				onBackPressed();
+				AkorDefterimSys.EkranKapat();
 				break;
             case R.id.btnKaydet:
 				if(Islem.equals("SarkiEkle") || Islem.equals("YeniSarkiEkle")) {
@@ -353,7 +353,7 @@ public class Sarki_EkleDuzenle_Icerik extends AppCompatActivity implements Inter
                     finish();
                     break;
                 case "PDIslem_Timeout":
-                    onBackPressed();
+                    AkorDefterimSys.EkranKapat();
                     break;
 			}
 

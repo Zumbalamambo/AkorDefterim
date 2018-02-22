@@ -87,7 +87,7 @@ public class Hesabina_Eris_Sms_Gonder extends AppCompatActivity implements Inter
 		btnGeri.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				onBackPressed();
+				AkorDefterimSys.EkranKapat();
 			}
 		});
 

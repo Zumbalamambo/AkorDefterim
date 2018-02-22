@@ -38,7 +38,7 @@ public class EPosta_Degistir extends AppCompatActivity implements Interface_Asyn
 	SharedPreferences sharedPref;
 	SharedPreferences.Editor sharedPrefEditor;
 	Typeface YaziFontu;
-	AlertDialog ADDialog_HesapDurumu, ADDialog_Hata;
+	AlertDialog ADDialog;
 	ProgressDialog PDIslem;
 	InputMethodManager imm;
 
@@ -126,7 +126,7 @@ public class EPosta_Degistir extends AppCompatActivity implements Interface_Asyn
 		AkorDefterimSys.activity = activity;
 
 		if(AkorDefterimSys.GirisYapildiMi()) {
-			if(AkorDefterimSys.prefAction.equals("IslemTamamlandi")) onBackPressed();
+			if(AkorDefterimSys.prefAction.equals("IslemTamamlandi")) finish();
 			else {
 				// prefEPostaGonderiTarihi isimli prefkey var mı?
 				if(sharedPref.contains("prefEPostaGonderiTarihi")) { // Varsa
@@ -161,7 +161,7 @@ public class EPosta_Degistir extends AppCompatActivity implements Interface_Asyn
 				break;
 			case R.id.btnIptal:
 				AkorDefterimSys.prefAction = "";
-				onBackPressed();
+				AkorDefterimSys.EkranKapat();
 				break;
 			case R.id.btnKaydet:
 				Kaydet();
@@ -200,27 +200,17 @@ public class EPosta_Degistir extends AppCompatActivity implements Interface_Asyn
 							lblKalanSure.setVisibility(View.GONE);
 						}
 					} else {
-						if(!AkorDefterimSys.AlertDialogisShowing(ADDialog_Hata)) {
-							ADDialog_Hata = AkorDefterimSys.CustomAlertDialog(activity,
+						if(!AkorDefterimSys.AlertDialogisShowing(ADDialog)) {
+							ADDialog = AkorDefterimSys.CustomAlertDialog(activity,
 									getString(R.string.hata),
 									getString(R.string.islem_yapilirken_bir_hata_olustu),
 									activity.getString(R.string.tamam),
 									"ADDialog_Hata_Kapat");
-							ADDialog_Hata.getWindow().getAttributes().windowAnimations = R.style.DialogAnimation;
-							ADDialog_Hata.show();
+							ADDialog.getWindow().getAttributes().windowAnimations = R.style.DialogAnimation;
+							ADDialog.show();
 						}
 					}
 
-					break;
-				case "PDIslem_Timeout":
-					AkorDefterimSys.DismissProgressDialog(PDIslem);
-
-					onBackPressed();
-					break;
-				case "ADDialog_Hata_Kapat":
-					AkorDefterimSys.DismissAlertDialog(ADDialog_Hata);
-
-					onBackPressed();
 					break;
 				case "HesapBilgiGetir":
 					if(JSONSonuc.getBoolean("Sonuc")) { // Eğer yazılan e-posta adresi kayıtlı ise
@@ -233,14 +223,14 @@ public class EPosta_Degistir extends AppCompatActivity implements Interface_Asyn
 							AkorDefterimSys.StandartSnackBarMsj(coordinatorLayout, getString(R.string.eposta_kayitli));
 						else { // Aynı ise
 							if(JSONSonuc.getString("HesapDurum").equals("Ban")) { // Eğer hesap banlanmışsa
-								if(!AkorDefterimSys.AlertDialogisShowing(ADDialog_HesapDurumu)) {
-									ADDialog_HesapDurumu = AkorDefterimSys.CustomAlertDialog(activity,
+								if(!AkorDefterimSys.AlertDialogisShowing(ADDialog)) {
+									ADDialog = AkorDefterimSys.CustomAlertDialog(activity,
 											getString(R.string.hesap_durumu),
 											getString(R.string.hesap_banlandi, JSONSonuc.getString("HesapDurumBilgi"), getString(R.string.uygulama_yapimci_site)),
 											activity.getString(R.string.tamam),
-											"ADDialog_HesapDurumu_Kapat");
-									ADDialog_HesapDurumu.getWindow().getAttributes().windowAnimations = R.style.DialogAnimation;
-									ADDialog_HesapDurumu.show();
+											"ADDialog_Kapat_CikisYap");
+									ADDialog.getWindow().getAttributes().windowAnimations = R.style.DialogAnimation;
+									ADDialog.show();
 								}
 							} else finish(); // Bu durumda aynı e-posta adresi olduğu için güncel demek oluyor. Hiçbir işlem yapmıyoruz..
 						}
@@ -253,11 +243,6 @@ public class EPosta_Degistir extends AppCompatActivity implements Interface_Asyn
 					}
 
 					break;
-				case "ADDialog_HesapDurumu_Kapat":
-					AkorDefterimSys.DismissAlertDialog(ADDialog_HesapDurumu);
-
-					AkorDefterimSys.CikisYap();
-					break;
 				case "EPostaGonder":
 					// Eğer EPosta gönderildiyse sonuç true döner..
 					if(JSONSonuc.getBoolean("Sonuc")) AkorDefterimSys.TarihSaatGetir(activity, "TarihSaatGetir_DevamEt"); // Öncelikle sistem saatini öğreniyoruz. Daha sonra E-Posta gönderdikten sonra sistem tarihini kullanıcıya kaydediyoruz..
@@ -265,10 +250,8 @@ public class EPosta_Degistir extends AppCompatActivity implements Interface_Asyn
 						btnIptal.setEnabled(true);
 						btnKaydet.setEnabled(true);
 						AkorDefterimSys.DismissProgressDialog(PDIslem);
-
 						AkorDefterimSys.StandartSnackBarMsj(coordinatorLayout, getString(R.string.islem_yapilirken_bir_hata_olustu));
 					}
-
 					break;
 				case "TarihSaatGetir_DevamEt":
 					btnIptal.setEnabled(true);
@@ -277,9 +260,9 @@ public class EPosta_Degistir extends AppCompatActivity implements Interface_Asyn
 
 					// Tarih bilgisi alındıysa sonuç true döner..
 					if(JSONSonuc.getBoolean("Sonuc")) {
-						sharedPrefEditor = sharedPref.edit();
-						sharedPrefEditor.putString("prefEPostaGonderiTarihi", JSONSonuc.getString("TarihSaat"));
-						sharedPrefEditor.apply();
+						//sharedPrefEditor = sharedPref.edit();
+						//sharedPrefEditor.putString("prefEPostaGonderiTarihi", JSONSonuc.getString("TarihSaat"));
+						//sharedPrefEditor.apply();
 
 						// Yeni açılacak olan intent'e gönderilecek bilgileri tanımlıyoruz
 						Intent mIntent = new Intent(activity, Dogrulama_Kodu.class);
@@ -289,7 +272,6 @@ public class EPosta_Degistir extends AppCompatActivity implements Interface_Asyn
 
 						AkorDefterimSys.EkranGetir(mIntent, "Slide");
 					} else AkorDefterimSys.StandartSnackBarMsj(coordinatorLayout, getString(R.string.islem_yapilirken_bir_hata_olustu));
-
 					break;
 				case "ZamanlayiciBaslat_EPostaKalanSure":
 					if(JSONSonuc.getString("Method").equals("Tick")) {
@@ -307,8 +289,20 @@ public class EPosta_Degistir extends AppCompatActivity implements Interface_Asyn
 						AkorDefterimSys.setTextViewHTML(lblKalanSure);
 						lblKalanSure.setVisibility(View.GONE);
 
-						AkorDefterimSys.StandartSnackBarMsj(coordinatorLayout, getString(R.string.sure_bitti_yeniden_basvuru_yapilabilir));
+						//AkorDefterimSys.StandartSnackBarMsj(coordinatorLayout, getString(R.string.sure_bitti_yeniden_basvuru_yapilabilir));
 					}
+					break;
+				case "PDIslem_Timeout":
+					AkorDefterimSys.DismissProgressDialog(PDIslem);
+					finish();
+					break;
+				case "ADDialog_Hata_Kapat":
+					AkorDefterimSys.DismissAlertDialog(ADDialog);
+					finish();
+					break;
+				case "ADDialog_Kapat_CikisYap":
+					AkorDefterimSys.DismissAlertDialog(ADDialog);
+					AkorDefterimSys.CikisYap();
 					break;
 			}
 		} catch (JSONException e) {

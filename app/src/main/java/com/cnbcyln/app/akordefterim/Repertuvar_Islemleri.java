@@ -3,10 +3,8 @@ package com.cnbcyln.app.akordefterim;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.AlertDialog;
-import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Typeface;
@@ -16,7 +14,6 @@ import android.support.design.widget.CoordinatorLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.ContextMenu;
-import android.view.KeyEvent;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -65,7 +62,7 @@ public class Repertuvar_Islemleri extends AppCompatActivity implements Interface
 	SharedPreferences.Editor sharedPrefEditor;
 	Typeface YaziFontu;
 	AlertDialog ADDialog;
-	ProgressDialog PDDBYedekleniyor, PDDBGeriYukleniyor;
+	ProgressDialog PDIslem, PDDBYedekleniyor, PDDBGeriYukleniyor;
     File YerelDB;
 
 	CoordinatorLayout coordinatorLayout;
@@ -143,7 +140,7 @@ public class Repertuvar_Islemleri extends AppCompatActivity implements Interface
 
         lblSonGeriYukleTarihi = findViewById(R.id.lblSonGeriYukleTarihi);
         lblSonGeriYukleTarihi.setTypeface(YaziFontu, Typeface.NORMAL);
-        lblSonGeriYukleTarihi.setText(getString(R.string.son_yedekleme, sharedPref.getString("prefSonGeriYuklemeTarihi", "-")));
+        lblSonGeriYukleTarihi.setText(getString(R.string.son_geri_yukleme, sharedPref.getString("prefSonGeriYuklemeTarihi", "-")));
         AkorDefterimSys.setTextViewHTML(lblSonGeriYukleTarihi);
 
         btnVeritabaniSifirla = findViewById(R.id.btnVeritabaniSifirla);
@@ -162,13 +159,29 @@ public class Repertuvar_Islemleri extends AppCompatActivity implements Interface
     protected void onStart() {
         super.onStart();
         AkorDefterimSys.activity = activity;
+
+        // Burada öncelikle internet bağlantısını, kullanıcının giriş yapıp yapmadığını ve prefSonYedeklenmeTarihi bilgisinin olup olmadığını kontrol ediyoruz..
+        // Eğer biri false dönerse kullanıcının server'daki DB dosyasının bilgisini çekip prefSonYedeklenmeTarihi kaydına eşitliyoruz.
+        // Böylelikle uygulamanın kayıtlı pref bilgilerini silene dek bir daha server tarafından DB Dosyasına ulaşıp bilgi çekmiyoruz..
+        // Çünkü zaten her yedekleme işlemi yapıldığında prefSonYedeklenmeTarihi bilgisi güncelleniyor. Biz bu fonksiyonu uygulamayı ilk kuran kişilerin bilgi alabilmesi için yaptık..
+        if(AkorDefterimSys.InternetErisimKontrolu() && AkorDefterimSys.GirisYapildiMi() && sharedPref.getString("prefSonYedeklenmeTarihi", "-").equals("-")) {
+            if(!AkorDefterimSys.ProgressDialogisShowing(PDIslem)) { // Eğer progress dialog açık değilse
+                PDIslem = AkorDefterimSys.CustomProgressDialog(getString(R.string.lutfen_bekleyiniz), false, AkorDefterimSys.ProgressBarTimeoutSuresi, "PDIslem_Timeout");
+                PDIslem.show();
+            }
+
+            AkorDefterimSys.DosyaBilgisiGetir(activity, AkorDefterimSys.PHPYedekDBKlasoruDizini, sharedPref.getString("prefHesapID", "") + ".db", "DosyaBilgisiGetir_YedekDB");
+        } else {
+            lblSonYedeklemeTarihi.setText(getString(R.string.son_yedekleme, sharedPref.getString("prefSonYedeklenmeTarihi", "-")));
+            AkorDefterimSys.setTextViewHTML(lblSonYedeklemeTarihi);
+        }
     }
 
     @Override
 	public void onClick(View v) {
 		switch (v.getId()) {
 			case R.id.btnGeri:
-				onBackPressed();
+				AkorDefterimSys.EkranKapat();
 				break;
             case R.id.btnListeYonetimi:
                 AkorDefterimSys.EkranGetir(new Intent(activity, Liste_Yonetimi.class), "Slide");
@@ -258,6 +271,21 @@ public class Repertuvar_Islemleri extends AppCompatActivity implements Interface
             SimpleDateFormat SDF2 = new SimpleDateFormat("dd MMMM yyyy - HH:mm:ss");
 
             switch (JSONSonuc.getString("Islem")) {
+                case "DosyaBilgisiGetir_YedekDB":
+                    AkorDefterimSys.DismissProgressDialog(PDIslem);
+
+                    if(JSONSonuc.getString("Aciklama").equals("Dosya bulundu.")) {
+                        sharedPrefEditor = sharedPref.edit();
+                        sharedPrefEditor.putString("prefSonYedeklenmeTarihi", SDF2.format(SDF1.parse(JSONSonuc.getString("LastModified"))));
+                        sharedPrefEditor.apply();
+
+                        lblSonYedeklemeTarihi.setText(getString(R.string.son_yedekleme, sharedPref.getString("prefSonYedeklenmeTarihi", "-")));
+                        AkorDefterimSys.setTextViewHTML(lblSonYedeklemeTarihi);
+                    } else if(JSONSonuc.getString("Aciklama").equals("Dosya bulunamadı.")) {
+                        lblSonYedeklemeTarihi.setText(getString(R.string.son_yedekleme, sharedPref.getString("prefSonYedeklenmeTarihi", "-")));
+                        AkorDefterimSys.setTextViewHTML(lblSonYedeklemeTarihi);
+                    }
+                    break;
                 case "TarihSaatOgren_Son_Yedeklenme_Tarihini_Guncelle":
                     AkorDefterimSys.DismissProgressDialog(PDDBYedekleniyor);
 
@@ -318,11 +346,11 @@ public class Repertuvar_Islemleri extends AppCompatActivity implements Interface
                     break;
                 case "PDDBYedekleniyor_Timeout":
                     AkorDefterimSys.DismissProgressDialog(PDDBYedekleniyor);
-                    onBackPressed();
+                    AkorDefterimSys.EkranKapat();
                     break;
                 case "PDDBGeriYukleniyor_Timeout":
                     AkorDefterimSys.DismissProgressDialog(PDDBGeriYukleniyor);
-                    onBackPressed();
+                    AkorDefterimSys.EkranKapat();
                     break;
                 case "ADDialog_Veritabani_Sifirla_Evet":
                     AkorDefterimSys.DismissAlertDialog(ADDialog);

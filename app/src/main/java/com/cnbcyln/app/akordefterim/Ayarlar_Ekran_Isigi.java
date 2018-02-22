@@ -93,7 +93,7 @@ public class Ayarlar_Ekran_Isigi extends AppCompatActivity implements OnClickLis
 	public void onClick(View v) {
 		switch (v.getId()) {
 			case R.id.btnGeri:
-				onBackPressed();
+				AkorDefterimSys.EkranKapat();
 				break;
 		}
 	}

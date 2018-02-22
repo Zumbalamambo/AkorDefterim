@@ -190,7 +190,7 @@ public class Giris_Yap extends AppCompatActivity implements Interface_AsyncRespo
 				AkorDefterimSys.UnFocusEditText(txtParola);
 				break;
 			case R.id.btnGeri:
-				onBackPressed();
+				AkorDefterimSys.EkranKapat();
 				break;
 			case R.id.btnGirisYap:
 				Giris();
@@ -214,9 +214,9 @@ public class Giris_Yap extends AppCompatActivity implements Interface_AsyncRespo
 					// PDGirisYap Progress Dialog'u kapattık
 					AkorDefterimSys.DismissProgressDialog(PDGirisYap);
 
-					if(JSONSonuc.getBoolean("Sonuc")) {
-						AkorDefterimSys.HesapPrefSifirla();
+					AkorDefterimSys.HesapPrefSifirla();
 
+					if(JSONSonuc.getBoolean("Sonuc")) {
 						sharedPrefEditor = sharedPref.edit();
 						sharedPrefEditor.putString("prefHesapID", JSONSonuc.getString("HesapID"));
 						sharedPrefEditor.putString("prefEPosta", JSONSonuc.getString("HesapEPosta"));
@@ -234,8 +234,6 @@ public class Giris_Yap extends AppCompatActivity implements Interface_AsyncRespo
 
 						finishAffinity();
 					} else {
-						AkorDefterimSys.HesapPrefSifirla();
-
 						switch (JSONSonuc.getString("HesapDurum")) {
 							case "Ban":
 								if(!AkorDefterimSys.AlertDialogisShowing(ADDialog_HesapDurumu)) {

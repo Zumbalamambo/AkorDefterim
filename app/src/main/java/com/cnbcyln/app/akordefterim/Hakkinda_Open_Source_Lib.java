@@ -82,7 +82,7 @@ public class Hakkinda_Open_Source_Lib extends AppCompatActivity implements OnCli
 	public void onClick(View v) {
 		switch (v.getId()) {
 			case R.id.btnKapat:
-				onBackPressed();
+				AkorDefterimSys.EkranKapat();
 				break;
 		}
 	}

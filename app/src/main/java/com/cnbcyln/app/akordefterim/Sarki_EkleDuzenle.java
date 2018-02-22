@@ -236,7 +236,7 @@ public class Sarki_EkleDuzenle extends AppCompatActivity implements Interface_As
 		if(AkorDefterimSys.prefAction.equals("Şarkı eklendi") ||
 				AkorDefterimSys.prefAction.equals("Şarkı düzenlendi") ||
 				AkorDefterimSys.prefAction.equals("Şarkı eklendi ve gönderildi") ||
-				AkorDefterimSys.prefAction.equals("Şarkı eklendi ama gönderilemedi")) onBackPressed();
+				AkorDefterimSys.prefAction.equals("Şarkı eklendi ama gönderilemedi")) AkorDefterimSys.EkranKapat();
 	}
 
 	@Override
@@ -257,7 +257,7 @@ public class Sarki_EkleDuzenle extends AppCompatActivity implements Interface_As
 				AkorDefterimSys.UnFocusAll(null,null,null,null,ConstraintLayout2);
 				break;
 			case R.id.btnGeri:
-				onBackPressed();
+				AkorDefterimSys.EkranKapat();
 				break;
 			case R.id.btnIleri:
 				Ileri();
@@ -534,11 +534,11 @@ public class Sarki_EkleDuzenle extends AppCompatActivity implements Interface_As
 					break;
                 case "ADDialog_Kapat_GeriGit":
                     AkorDefterimSys.DismissAlertDialog(ADDialog);
-                    onBackPressed();
+                    AkorDefterimSys.EkranKapat();
                     break;
                 case "PDIslem_Timeout":
 					AkorDefterimSys.DismissProgressDialog(PDIslem);
-                    onBackPressed();
+                    AkorDefterimSys.EkranKapat();
                     break;
 			}
 

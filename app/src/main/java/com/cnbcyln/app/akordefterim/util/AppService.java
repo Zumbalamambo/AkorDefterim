@@ -10,6 +10,7 @@ import android.os.IBinder;
 import android.support.annotation.Nullable;
 import android.util.Log;
 
+import com.cnbcyln.app.akordefterim.R;
 import com.google.firebase.messaging.FirebaseMessaging;
 
 import org.json.JSONException;
@@ -21,13 +22,11 @@ import java.util.TimerTask;
 public class AppService extends Service {
     AkorDefterimSys AkorDefterimSys;
     Context context;
-    Veritabani veritabani;
+    //Veritabani veritabani;
     Intent mIntent;
     SharedPreferences sharedPref;
     Timer mTimer;
     TimerTask timerTask;
-
-    int AppServiceCalismaAraligi;
 
     @Override
     public void onCreate() {
@@ -35,9 +34,9 @@ public class AppService extends Service {
 
         context = this;
         AkorDefterimSys = new AkorDefterimSys(context);
-        veritabani = new Veritabani(context);
+        //veritabani = new Veritabani(context);
 
-        registerReceiver(broadcastreceiver, new IntentFilter("com.cnbcyln.app.akordefterim.util.AppService"));
+        //registerReceiver(broadcastreceiver, new IntentFilter("com.cnbcyln.app.akordefterim.util.AppService"));
 
         FirebaseMessaging.getInstance().subscribeToTopic("akordefterim");
 
@@ -45,9 +44,7 @@ public class AppService extends Service {
 
         mIntent = new Intent("com.cnbcyln.app.akordefterim." + sharedPref.getString("prefBulunulanEkran", "AnaEkran"));
 
-        AppServiceCalismaAraligi = 10000;
-
-        TimerCalistir();
+        TimerCalistir(getResources().getInteger(R.integer.AppServiceCalismaAraligi) + 1000);
     }
 
     @Override
@@ -56,7 +53,7 @@ public class AppService extends Service {
             mTimer.cancel();
             timerTask.cancel();
 
-            unregisterReceiver(broadcastreceiver);
+            //unregisterReceiver(broadcastreceiver);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -68,12 +65,12 @@ public class AppService extends Service {
         return null;
     }
 
-    private void TimerCalistir() {
+    private void TimerCalistir(int AppServiceCalismaAraligi) {
         mTimer = new Timer();
         mTimer.schedule(new TimerTask() {
             @Override
             public void run() {
-                Log.d("AppService", "Servis başladı..");
+                //Log.d("AppService", "Servis başladı..");
 
                 /*mIntent.putExtra("JSONData", "{\"Islem\":\"YeniGuncellemeKontrol\", \"BildirimTipi\":\"Notify\"}");
                 context.sendBroadcast(mIntent);
@@ -96,7 +93,7 @@ public class AppService extends Service {
         return START_STICKY;
     }
 
-    private BroadcastReceiver broadcastreceiver = new BroadcastReceiver() {
+    /*private BroadcastReceiver broadcastreceiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
             try {
@@ -112,5 +109,5 @@ public class AppService extends Service {
                 e.printStackTrace();
             }
         }
-    };
+    };*/
 }

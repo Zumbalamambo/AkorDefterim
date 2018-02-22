@@ -16,7 +16,7 @@ public class DogrulamaKoduSMSReceiver extends BroadcastReceiver {
 		Bundle bundle = intent.getExtras();
 		
 		SmsMessage[] smsm;
-		String Kimden = "", Icerik = "";
+		String Kimden = "", Icerik = "", DogrulamaKodu = "";
 		
 		if (bundle != null) {
 			Object[] pdus = (Object[]) bundle.get("pdus");
@@ -28,10 +28,11 @@ public class DogrulamaKoduSMSReceiver extends BroadcastReceiver {
 				Kimden = smsm[i].getOriginatingAddress();
 				Icerik = smsm[i].getMessageBody();
 		    }
+
+			DogrulamaKodu = Icerik.substring(Icerik.indexOf(":") + 2, Icerik.indexOf(":") + 8);
 			
 			if(AkorDefterimSys.SMSGondericiAdi.contains(Kimden)) {
-				Intent_Dogrulama_Kodu.putExtra("Kimden", Kimden);
-				Intent_Dogrulama_Kodu.putExtra("DogrulamaKodu", Icerik.substring(Icerik.indexOf(":") + 2, Icerik.indexOf(":") + 8));
+				Intent_Dogrulama_Kodu.putExtra("JSONData", "{\"Islem\":\"DogrulamaKoduYaz\", \"DogrulamaKodu\":\"" + DogrulamaKodu + "\"}");
 				context.sendBroadcast(Intent_Dogrulama_Kodu);
 			}
 		}

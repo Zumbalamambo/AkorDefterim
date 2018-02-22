@@ -132,7 +132,7 @@ public class KayitEkran_EPosta extends AppCompatActivity implements Interface_As
 
         if(AkorDefterimSys.prefAction.equals("Vazgec")) {
 			AkorDefterimSys.prefAction = "";
-            onBackPressed();
+            AkorDefterimSys.EkranKapat();
         }
     }
 
@@ -151,10 +151,10 @@ public class KayitEkran_EPosta extends AppCompatActivity implements Interface_As
 				AkorDefterimSys.UnFocusEditText(txtEPosta);
 				break;
 			case R.id.btnGeri:
-				onBackPressed();
+				AkorDefterimSys.EkranKapat();
 				break;
 			case R.id.lblVazgec:
-				onBackPressed();
+				AkorDefterimSys.EkranKapat();
 				break;
 			case R.id.btnIleri:
 				IleriIslem();

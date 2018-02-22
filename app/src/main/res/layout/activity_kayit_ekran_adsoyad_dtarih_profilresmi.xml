@@ -114,6 +114,8 @@
 					android:id="@+id/txtILAdSoyad"
 					android:layout_width="match_parent"
 					android:layout_height="wrap_content"
+					android:layout_marginRight="8dp"
+					android:layout_marginEnd="8dp"
 					android:textColorHint="@color/KoyuGri">
 
 					<EditText
@@ -126,22 +128,45 @@
 						style="@style/TextAppearance.AppCompat.Small.Inverse"/>
 				</android.support.design.widget.TextInputLayout>
 
-				<android.support.design.widget.TextInputLayout
-					android:id="@+id/txtILDogumTarih"
+				<android.support.constraint.ConstraintLayout
 					android:layout_width="match_parent"
 					android:layout_height="wrap_content"
 					android:layout_marginTop="8dp"
-					android:textColorHint="@color/KoyuGri">
+					android:orientation="horizontal">
 
-					<EditText
-						android:id="@+id/txtDogumTarih"
-						android:layout_width="match_parent"
+					<android.support.design.widget.TextInputLayout
+						android:id="@+id/txtILDogumTarih"
+						android:layout_width="0dp"
 						android:layout_height="wrap_content"
-						android:hint="@string/dogumtarihi"
-						android:textColor="@color/KoyuYazi"
-                        android:inputType="date"
-						style="@style/TextAppearance.AppCompat.Small.Inverse"/>
-				</android.support.design.widget.TextInputLayout>
+						android:layout_marginEnd="8dp"
+						android:layout_marginRight="8dp"
+						android:textColorHint="@color/KoyuGri"
+						app:layout_constraintEnd_toStartOf="@+id/btnDogumTarihSil"
+						app:layout_constraintStart_toStartOf="parent">
+
+						<EditText
+							android:id="@+id/txtDogumTarih"
+							style="@style/TextAppearance.AppCompat.Small.Inverse"
+							android:layout_width="match_parent"
+							android:layout_height="wrap_content"
+							android:hint="@string/dogumtarihi_opsiyonel"
+							android:inputType="date"
+							android:textColor="@color/KoyuYazi" />
+					</android.support.design.widget.TextInputLayout>
+
+					<ImageButton
+						android:id="@+id/btnDogumTarihSil"
+						android:layout_width="32dp"
+						android:layout_height="32dp"
+						android:layout_marginEnd="8dp"
+						android:layout_marginRight="8dp"
+						android:background="@drawable/custom_button2"
+						android:contentDescription="@string/imageDesc"
+						app:layout_constraintBottom_toBottomOf="parent"
+						app:layout_constraintEnd_toEndOf="parent"
+						app:layout_constraintTop_toTopOf="parent"
+						app:srcCompat="@drawable/ic_close" />
+				</android.support.constraint.ConstraintLayout>
 			</LinearLayout>
 
 			<RelativeLayout

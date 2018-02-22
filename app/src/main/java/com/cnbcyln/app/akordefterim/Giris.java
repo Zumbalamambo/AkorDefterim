@@ -129,6 +129,8 @@ public class Giris extends AppCompatActivity implements Interface_AsyncResponse 
 
 		FacebookLoginInit();
 		GoogleAPIInit(false);
+
+		AkorDefterimSys.YeniSurumYeniliklerDialog();
 	}
 
 	@Override
@@ -640,13 +642,11 @@ public class Giris extends AppCompatActivity implements Interface_AsyncResponse 
 		try {
 			JSONObject JSONSonuc = new JSONObject(sonuc);
 
-			AkorDefterimSys.HesapPrefSifirla();
-
 			switch (JSONSonuc.getString("Islem")) {
 				case "HesapGirisYap":
-					if(JSONSonuc.getBoolean("Sonuc")) {
-						AkorDefterimSys.HesapPrefSifirla();
+					AkorDefterimSys.HesapPrefSifirla();
 
+					if(JSONSonuc.getBoolean("Sonuc")) {
 						sharedPrefEditor = sharedPref.edit();
 						sharedPrefEditor.putString("prefHesapID", JSONSonuc.getString("HesapID"));
 						sharedPrefEditor.putString("prefEPosta", JSONSonuc.getString("HesapEPosta"));
@@ -664,8 +664,6 @@ public class Giris extends AppCompatActivity implements Interface_AsyncResponse 
 
 						finishAffinity();
 					} else {
-						AkorDefterimSys.HesapPrefSifirla();
-
 						switch (JSONSonuc.getString("HesapDurum")) {
 							case "Ban":
 								if(!AkorDefterimSys.AlertDialogisShowing(ADDialog_HesapDurumu)) {

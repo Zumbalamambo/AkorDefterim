@@ -256,7 +256,7 @@ public class Bagli_Hesaplar extends AppCompatActivity implements Interface_Async
 	public void onClick(View v) {
 		switch (v.getId()) {
 			case R.id.btnGeri:
-				onBackPressed();
+				AkorDefterimSys.EkranKapat();
 				break;
 		}
 	}
@@ -328,14 +328,14 @@ public class Bagli_Hesaplar extends AppCompatActivity implements Interface_Async
                     break;
                 case "ADDialog_Kapat_GeriGit":
                     AkorDefterimSys.DismissAlertDialog(ADDialog);
-                    onBackPressed();
+                    AkorDefterimSys.EkranKapat();
                     break;
                 case "ADDialog_Kapat_CikisYap":
                     AkorDefterimSys.DismissAlertDialog(ADDialog);
                     AkorDefterimSys.CikisYap();
                     break;
                 case "PDIslem_Timeout":
-                    onBackPressed();
+                    AkorDefterimSys.EkranKapat();
                     break;
 			}
 

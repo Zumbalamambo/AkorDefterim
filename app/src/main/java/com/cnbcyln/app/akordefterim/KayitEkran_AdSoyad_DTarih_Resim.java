@@ -18,11 +18,14 @@ import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
+import android.widget.TableLayout;
 import android.widget.TextView;
 
 import com.cnbcyln.app.akordefterim.Interface.Interface_AsyncResponse;
@@ -48,7 +51,7 @@ public class KayitEkran_AdSoyad_DTarih_Resim extends AppCompatActivity implement
 	InputMethodManager imm;
 
 	CoordinatorLayout coordinatorLayout;
-	ImageButton btnGeri;
+	ImageButton btnGeri, btnDogumTarihSil;
 	Button btnIleri;
 	TextInputLayout txtILAdSoyad, txtILDogumTarih;
 	TextView lblVazgec, lblBaslik, lblAdSoyadResimAciklama;
@@ -153,11 +156,15 @@ public class KayitEkran_AdSoyad_DTarih_Resim extends AppCompatActivity implement
 			public void onFocusChange(View v, boolean hasFocus) {
 				if(!DogumTarihAlaninaGirildiMi) { // Bu kontrol sayesinde edittext alanına tıklandığında klavyenin kapatılmasını sağladık..
 					DogumTarihAlaninaGirildiMi = true;
-					txtDogumTarih.setText(AkorDefterimSys.TarihSeciciDialog(txtDogumTarih));
+					AkorDefterimSys.TarihSeciciDialog(txtDogumTarih, "TarihSeciciDialog");
 				} else DogumTarihAlaninaGirildiMi = false;
 			}
 		});
 		txtDogumTarih.setOnClickListener(this);
+
+		btnDogumTarihSil = findViewById(R.id.btnDogumTarihSil);
+		btnDogumTarihSil.setVisibility(View.GONE);
+		btnDogumTarihSil.setOnClickListener(this);
 
         CImgProfilResim = findViewById(R.id.CImgProfilResim);
 		CImgProfilResim.setOnClickListener(this);
@@ -180,7 +187,7 @@ public class KayitEkran_AdSoyad_DTarih_Resim extends AppCompatActivity implement
 
 		AkorDefterimSys.activity = activity;
 
-		if(AkorDefterimSys.prefAction.equals("Vazgec")) onBackPressed();
+		if(AkorDefterimSys.prefAction.equals("Vazgec")) AkorDefterimSys.EkranKapat();
 	}
 
 	@Override
@@ -201,17 +208,21 @@ public class KayitEkran_AdSoyad_DTarih_Resim extends AppCompatActivity implement
 				AkorDefterimSys.UnFocusEditText(txtDogumTarih);
 				break;
 			case R.id.btnGeri:
-				onBackPressed();
+				AkorDefterimSys.EkranKapat();
 				break;
 			case R.id.lblVazgec:
 				AkorDefterimSys.prefAction = "Vazgec";
-				onBackPressed();
+				AkorDefterimSys.EkranKapat();
 				break;
 			case R.id.btnIleri:
 				IleriIslem();
 				break;
 			case R.id.txtDogumTarih:
-				txtDogumTarih.setText(AkorDefterimSys.TarihSeciciDialog(txtDogumTarih));
+				AkorDefterimSys.TarihSeciciDialog(txtDogumTarih, "TarihSeciciDialog");
+				break;
+			case R.id.btnDogumTarihSil:
+				txtDogumTarih.setText("");
+				btnDogumTarihSil.setVisibility(View.GONE);
 				break;
 			case R.id.CImgProfilResim:
 				AkorDefterimSys.IntentGetir(new String[]{"GaleridenResimGetir", String.valueOf(DOSYAOKUMAYAZMA_IZIN), String.valueOf(RESIMSEC)});
@@ -283,6 +294,9 @@ public class KayitEkran_AdSoyad_DTarih_Resim extends AppCompatActivity implement
 					AkorDefterimSys.DismissAlertDialog(ADDialog_Profil_Resim);
 					SonrakiEkran();
 					break;
+				case "TarihSeciciDialog":
+					btnDogumTarihSil.setVisibility(View.VISIBLE);
+					break;
 			}
 
 		} catch (JSONException e) {
@@ -317,13 +331,13 @@ public class KayitEkran_AdSoyad_DTarih_Resim extends AppCompatActivity implement
 				imm.showSoftInput(txtAdSoyad, 0);
 			} else txtILAdSoyad.setError(null);
 
-			if(TextUtils.isEmpty(DogumTarih)) {
+			/*if(TextUtils.isEmpty(DogumTarih)) {
 				txtILDogumTarih.setError(getString(R.string.hata_bos_alan));
 				AkorDefterimSys.UnFocusEditText(txtAdSoyad);
 				AkorDefterimSys.UnFocusEditText(txtDogumTarih);
-			} else txtILDogumTarih.setError(null);
+			} else txtILDogumTarih.setError(null);*/
 
-			if(txtILAdSoyad.getError() == null && txtILDogumTarih.getError() == null) {
+			if(txtILAdSoyad.getError() == null/* && txtILDogumTarih.getError() == null*/) {
 				AkorDefterimSys.UnFocusEditText(txtAdSoyad);
 				AkorDefterimSys.UnFocusEditText(txtDogumTarih);
 

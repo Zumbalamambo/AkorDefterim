@@ -1,71 +1,99 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical">
-
-    <ImageView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:contentDescription="@string/imageDesc"
-        android:scaleType="centerCrop"
-        android:src="@drawable/bg" />
+    android:background="@color/Beyaz">
 
     <RelativeLayout
-        android:id="@+id/RLBanner"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="10dp">
+        android:id="@+id/RLContainer"
+        android:layout_width="0dp"
+        android:layout_height="500dp"
+        android:orientation="vertical"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
 
-        <com.cnbcyln.app.akordefterim.util.ResizableImageView
-            android:id="@+id/ImgBanner"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:src="@drawable/banner_trans" />
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:contentDescription="@string/imageDesc"
+            android:scaleType="centerCrop"
+            android:src="@drawable/bg" />
 
-        <TextView
-            android:id="@+id/Dialog_lblVersiyonNo"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignEnd="@+id/ImgBanner"
-            android:layout_alignRight="@+id/ImgBanner"
-            android:layout_alignBottom="@+id/ImgBanner"
+        <RelativeLayout
+            android:id="@+id/RLBanner"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <com.cnbcyln.app.akordefterim.util.ResizableImageView
+                android:id="@+id/ImgBanner"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/banner_trans" />
+
+            <TextView
+                android:id="@+id/Dialog_lblVersiyonNo"
+                style="@style/TextAppearance.AppCompat.Small.Inverse"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignBottom="@+id/ImgBanner"
+                android:layout_alignEnd="@+id/ImgBanner"
+                android:layout_alignRight="@+id/ImgBanner"
+                android:layout_margin="10dp"
+                android:text="@string/labeltire"
+                android:textColor="@color/Gri" />
+        </RelativeLayout>
+
+        <com.cnbcyln.app.akordefterim.util.LLTransparanPanel
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_below="@+id/RLBanner"
             android:layout_margin="10dp"
-            android:gravity="center"
-            android:text="@string/labeltire"
-            android:textStyle="bold"
-            android:textColor="#f6edf3" />
+            android:orientation="vertical"
+            android:padding="10dp">
+
+            <TextView
+                android:id="@+id/Dialog_lblYenilikler_Baslik"
+                style="@style/TextAppearance.AppCompat.Medium.Inverse"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="10dp"
+                android:text="@string/yenilikler"
+                android:textColor="@color/TuruncuYazi" />
+
+            <TextView
+                android:id="@+id/Dialog_lblYenilikler_Icerik"
+                style="@style/TextAppearance.AppCompat.Small.Inverse"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/labeltire"
+                android:textColor="@color/Beyaz" />
+
+        </com.cnbcyln.app.akordefterim.util.LLTransparanPanel>
     </RelativeLayout>
 
-    <com.cnbcyln.app.akordefterim.util.LLTransparanPanel
-        android:id="@+id/transparanPanel1"
-        android:layout_width="fill_parent"
+    <View
+        android:id="@+id/view2"
+        android:layout_width="0dp"
+        android:layout_height="1dp"
+        android:background="@drawable/cizgi_ortagri"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/RLContainer" />
+
+    <Button
+        android:id="@+id/btnDialogButton"
+        style="@style/TextAppearance.AppCompat.Medium.Inverse"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/RLBanner"
-        android:layout_marginRight="5dp"
-        android:layout_marginBottom="5dp"
-        android:layout_marginLeft="5dp"
-        android:orientation="vertical"
-        android:padding="5dp" >
+        android:background="@drawable/custom_button2"
+        android:gravity="center"
+        android:text="@string/labeltire"
+        android:textAppearance="@style/TextAppearance.AppCompat"
+        android:textColor="@color/KoyuYazi"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/view2" />
 
-        <TextView
-            android:id="@+id/Dialog_lblYenilikler"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="10dp"
-            android:text="@string/yenilikler"
-            android:textSize="@dimen/yazi_boyutu16"
-            android:textColor="@color/TuruncuYazi"
-            android:textStyle="bold" />
-
-        <TextView
-            android:id="@+id/Dialog_lblYenilikler_Icerik"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/labeltire"
-
-            android:textColor="@color/Beyaz"
-            android:textStyle="normal" />
-
-    </com.cnbcyln.app.akordefterim.util.LLTransparanPanel>
-</RelativeLayout>
+</android.support.constraint.ConstraintLayout>
