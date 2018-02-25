@@ -11,8 +11,6 @@ public class DogrulamaKoduSMSReceiver extends BroadcastReceiver {
 	@Override
 	public void onReceive(Context context, Intent intent) {
 		AkorDefterimSys AkorDefterimSys = new AkorDefterimSys(context);
-		Intent Intent_Dogrulama_Kodu = new Intent("com.cnbcyln.app.akordefterim.Dogrulama_Kodu");
-		
 		Bundle bundle = intent.getExtras();
 		
 		SmsMessage[] smsm;
@@ -28,12 +26,15 @@ public class DogrulamaKoduSMSReceiver extends BroadcastReceiver {
 				Kimden = smsm[i].getOriginatingAddress();
 				Icerik = smsm[i].getMessageBody();
 		    }
-
-			DogrulamaKodu = Icerik.substring(Icerik.indexOf(":") + 2, Icerik.indexOf(":") + 8);
 			
 			if(AkorDefterimSys.SMSGondericiAdi.contains(Kimden)) {
-				Intent_Dogrulama_Kodu.putExtra("JSONData", "{\"Islem\":\"DogrulamaKoduYaz\", \"DogrulamaKodu\":\"" + DogrulamaKodu + "\"}");
-				context.sendBroadcast(Intent_Dogrulama_Kodu);
+				if(Icerik.contains("Doğrulama kodu")) {
+					DogrulamaKodu = Icerik.substring(Icerik.indexOf(":") + 2, Icerik.indexOf(":") + 8);
+
+					Intent Intent_Dogrulama_Kodu = new Intent("com.cnbcyln.app.akordefterim.Dogrulama_Kodu");
+					Intent_Dogrulama_Kodu.putExtra("JSONData", "{\"Islem\":\"DogrulamaKoduYaz\", \"DogrulamaKodu\":\"" + DogrulamaKodu + "\"}");
+					context.sendBroadcast(Intent_Dogrulama_Kodu);
+				}
 			}
 		}
 	}

@@ -64,7 +64,7 @@ public class Bagli_Hesaplar extends AppCompatActivity implements Interface_Async
 	TextView lblBaslik, lblBagliHesaplarAciklama, lblFacebook, lblGoogle;
 	Switch SFacebook, SGoogle;
 
-	String FirebaseToken = "", OSID = "", OSVersiyon = "", UygulamaVersiyon = "";
+	String FirebaseToken = "", OSID = "", OSVersiyon = "", UygulamaVersiyon = "", BulunanGoogleID = "", BulunanFacebookID = "";
 	Boolean SFacebookIlkDefamiDegisiyor = true, SGoogleIlkDefamiDegisiyor = true;
 
 	@Override
@@ -196,7 +196,7 @@ public class Bagli_Hesaplar extends AppCompatActivity implements Interface_Async
                     PDIslem.show();
                 }
 
-                AkorDefterimSys.HesapBilgiGetir(null, sharedPref.getString("prefHesapID",""), "", "", "HesapBilgiGetir");
+                AkorDefterimSys.HesapBilgiGetir(null, sharedPref.getString("prefHesapID",""), "", "", "", "", "HesapBilgiGetir");
             } else AkorDefterimSys.StandartSnackBarMsj(coordinatorLayout, getString(R.string.internet_baglantisi_saglanamadi));
         }
     }
@@ -226,7 +226,7 @@ public class Bagli_Hesaplar extends AppCompatActivity implements Interface_Async
                             //String personGivenName = acct.getGivenName();
                             //String personFamilyName = acct.getFamilyName();
                             //String personEmail = acct.getEmail();
-                            String GoogleID = acct.getId();
+                            BulunanGoogleID = acct.getId();
                             //Uri personPhoto = acct.getPhotoUrl();
 
                             if(!AkorDefterimSys.ProgressDialogisShowing(PDIslem)) {
@@ -234,7 +234,7 @@ public class Bagli_Hesaplar extends AppCompatActivity implements Interface_Async
                                 PDIslem.show();
                             }
 
-                            AkorDefterimSys.HesapBilgiGuncelle(sharedPref.getString("prefHesapID",""), "", GoogleID, FirebaseToken, OSID, OSVersiyon, "", "", "","", "", "", "", "", "", UygulamaVersiyon, "HesapBilgiGuncelle");
+                            AkorDefterimSys.HesapBilgiGetir(null, "", "", "", "", BulunanGoogleID, "HesapBilgiGetir_GoogleID");
                         }
                     } catch (ApiException e) {
                         e.printStackTrace();
@@ -266,13 +266,13 @@ public class Bagli_Hesaplar extends AppCompatActivity implements Interface_Async
 		try {
 			JSONObject JSONSonuc = new JSONObject(sonuc);
 
-            btnGeri.setEnabled(true);
-            SFacebook.setEnabled(true);
-            SGoogle.setEnabled(true);
-            AkorDefterimSys.DismissProgressDialog(PDIslem);
-
 			switch (JSONSonuc.getString("Islem")) {
                 case "HesapBilgiGetir":
+                    btnGeri.setEnabled(true);
+                    SFacebook.setEnabled(true);
+                    SGoogle.setEnabled(true);
+                    AkorDefterimSys.DismissProgressDialog(PDIslem);
+
                     if(JSONSonuc.getBoolean("Sonuc")) {
                         if(JSONSonuc.getString("HesapDurum").equals("Ban")) { // Eğer hesap banlanmışsa
                             if(!AkorDefterimSys.AlertDialogisShowing(ADDialog)) {
@@ -308,14 +308,51 @@ public class Bagli_Hesaplar extends AppCompatActivity implements Interface_Async
                     }
 
                     break;
+                case "HesapBilgiGetir_GoogleID":
+                    if(JSONSonuc.getBoolean("Sonuc")) {
+                        SGoogle.setChecked(false);
+
+                        if(!AkorDefterimSys.AlertDialogisShowing(ADDialog)) {
+                            ADDialog = AkorDefterimSys.CustomAlertDialog(activity,
+                                    getString(R.string.hesap_durumu),
+                                    getString(R.string.google_hesabi_bagli_durumda),
+                                    getString(R.string.tamam),
+                                    "ADDialog_Kapat");
+                            ADDialog.getWindow().getAttributes().windowAnimations = R.style.DialogAnimation;
+                            ADDialog.show();
+                        }
+                    } else AkorDefterimSys.HesapBilgiGuncelle(sharedPref.getString("prefHesapID",""), "", BulunanGoogleID, FirebaseToken, OSID, OSVersiyon, "", "", "","", "", "", "", "", "", UygulamaVersiyon, "HesapBilgiGuncelle");
+
+                    break;
+                case "HesapBilgiGetir_FacebookID":
+                    if(JSONSonuc.getBoolean("Sonuc")) {
+                        SFacebook.setChecked(false);
+
+                        if(!AkorDefterimSys.AlertDialogisShowing(ADDialog)) {
+                            ADDialog = AkorDefterimSys.CustomAlertDialog(activity,
+                                    getString(R.string.hesap_durumu),
+                                    getString(R.string.facebook_hesabi_bagli_durumda),
+                                    getString(R.string.tamam),
+                                    "ADDialog_Kapat");
+                            ADDialog.getWindow().getAttributes().windowAnimations = R.style.DialogAnimation;
+                            ADDialog.show();
+                        }
+                    } else AkorDefterimSys.HesapBilgiGuncelle(sharedPref.getString("prefHesapID",""), BulunanFacebookID, "", FirebaseToken, OSID, OSVersiyon, "", "", "","", "", "", "", "", "", UygulamaVersiyon, "HesapBilgiGuncelle");
+
+                    break;
                 case "HesapBilgiGuncelle":
+                    btnGeri.setEnabled(true);
+                    SFacebook.setEnabled(true);
+                    SGoogle.setEnabled(true);
+                    AkorDefterimSys.DismissProgressDialog(PDIslem);
+
                     if(JSONSonuc.getBoolean("Sonuc")) {
 
                     } else {
                         if(!AkorDefterimSys.AlertDialogisShowing(ADDialog)) {
                             ADDialog = AkorDefterimSys.CustomAlertDialog(activity,
                                     getString(R.string.hata),
-                                    getString(R.string.parolan_guncellenemedi),
+                                    getString(R.string.islem_yapilirken_bir_hata_olustu),
                                     getString(R.string.tamam),
                                     "ADDialog_Kapat_GeriGit");
                             ADDialog.getWindow().getAttributes().windowAnimations = R.style.DialogAnimation;
@@ -368,14 +405,14 @@ public class Bagli_Hesaplar extends AppCompatActivity implements Interface_Async
                             Log.d("Hata", "Facebook girişi yapılırken hata oluştu..");
                         } else {
                             try {
-                                String FacebookID = JSONFacebookGelenVeri.getString("id");
+                                BulunanFacebookID = JSONFacebookGelenVeri.getString("id");
 
                                 if(!AkorDefterimSys.ProgressDialogisShowing(PDIslem)) {
                                     PDIslem = AkorDefterimSys.CustomProgressDialog(getString(R.string.islem_yapiliyor), false, AkorDefterimSys.ProgressBarTimeoutSuresi, "PDIslem_Timeout");
                                     PDIslem.show();
                                 }
 
-                                AkorDefterimSys.HesapBilgiGuncelle(sharedPref.getString("prefHesapID",""), FacebookID, "", FirebaseToken, OSID, OSVersiyon, "", "", "","", "", "", "", "", "", UygulamaVersiyon, "HesapBilgiGuncelle");
+                                AkorDefterimSys.HesapBilgiGetir(null, "", "", "", BulunanFacebookID, "", "HesapBilgiGetir_FacebookID");
                             } catch (JSONException e) {
                                 e.printStackTrace();
                             }

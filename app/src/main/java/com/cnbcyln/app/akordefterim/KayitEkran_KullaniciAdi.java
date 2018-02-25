@@ -317,7 +317,7 @@ public class KayitEkran_KullaniciAdi extends AppCompatActivity implements Interf
 					PDIslem.show();
 				}
 
-				AkorDefterimSys.HesapBilgiGetir(null, "", "", KullaniciAdi, "HesapBilgiGetir");
+				AkorDefterimSys.HesapBilgiGetir(null, "", "", KullaniciAdi, "", "", "HesapBilgiGetir");
 			}
 		} else AkorDefterimSys.StandartSnackBarMsj(coordinatorLayout, getString(R.string.internet_baglantisi_saglanamadi));
 	}

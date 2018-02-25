@@ -2,6 +2,7 @@ package com.cnbcyln.app.akordefterim.Retrofit.Interface;
 
 import com.cnbcyln.app.akordefterim.Retrofit.Siniflar.SnfAnasayfaGetir;
 import com.cnbcyln.app.akordefterim.Retrofit.Siniflar.SnfDosyaBilgisiGetir;
+import com.cnbcyln.app.akordefterim.Retrofit.Siniflar.SnfDuyurular;
 import com.cnbcyln.app.akordefterim.Retrofit.Siniflar.SnfHesapBilgiGetir;
 import com.cnbcyln.app.akordefterim.Retrofit.Siniflar.SnfHesapEkle;
 import com.cnbcyln.app.akordefterim.Retrofit.Siniflar.SnfHesapGirisYap;
@@ -30,6 +31,9 @@ public interface RetrofitInterface {
 
     @GET("phpscriptleri/genel/sistemdurum.php")
     Call<SnfSistemDurum> SistemDurumKontrol();
+
+    @GET("phpscriptleri/genel/duyuru_getir.php")
+    Call<SnfDuyurular> DuyuruGetir();
 
     @GET("phpscriptleri/mail/index.php")
     Call<SnfIslemSonuc> EPostaGonder(@Query("EPosta") String mEPosta,
@@ -84,7 +88,11 @@ public interface RetrofitInterface {
                                          @Query("AdSoyad") String mAdSoyad);
 
     @GET("phpscriptleri/hesapislemleri/hesap_bilgi_getir.php")
-    Call<SnfHesapBilgiGetir> HesapBilgiGetir(@Query("HesapID") String mHesapID, @Query("TelKodu") String mTelKodu, @Query("EPostaKullaniciAdiTelefon") String mEPostaKullaniciAdiTelefon);
+    Call<SnfHesapBilgiGetir> HesapBilgiGetir(@Query("HesapID") String mHesapID,
+                                             @Query("TelKodu") String mTelKodu,
+                                             @Query("EPostaKullaniciAdiTelefon") String mEPostaKullaniciAdiTelefon,
+                                             @Query("FacebookID") String mFacebookID,
+                                             @Query("GoogleID") String mGoogleID);
 
     @GET("phpscriptleri/hesapislemleri/hesap_bilgi_guncelle.php")
     Call<SnfIslemSonuc> HesapBilgiGuncelle(@Query("HesapID") String mHesapID,

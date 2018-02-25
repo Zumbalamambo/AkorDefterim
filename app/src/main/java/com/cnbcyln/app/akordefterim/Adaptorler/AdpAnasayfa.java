@@ -4,6 +4,7 @@ import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.graphics.Bitmap;
 import android.graphics.Typeface;
+import android.support.constraint.ConstraintLayout;
 import android.support.v7.widget.PopupMenu;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -54,6 +55,7 @@ public class AdpAnasayfa extends RecyclerView.Adapter<AdpAnasayfa.ViewHolder> {
 	}*/
 
 	public static class ViewHolder extends RecyclerView.ViewHolder {
+		ConstraintLayout CLSonEklenenSarki;
 		ImageView ImgSanatciResim;
 		TextView lblSanatciAdi;
 		TextView lblSonEklenenSarkiAdi;
@@ -63,6 +65,7 @@ public class AdpAnasayfa extends RecyclerView.Adapter<AdpAnasayfa.ViewHolder> {
 		public ViewHolder(View view) {
 			super(view);
 
+			CLSonEklenenSarki = view.findViewById(R.id.CLSonEklenenSarki);
 			ImgSanatciResim = view.findViewById(R.id.ImgSanatciResim);
 			lblSanatciAdi = view.findViewById(R.id.lblSanatciAdi);
 			lblSonEklenenSarkiAdi = view.findViewById(R.id.lblSonEklenenSarkiAdi);
@@ -88,13 +91,19 @@ public class AdpAnasayfa extends RecyclerView.Adapter<AdpAnasayfa.ViewHolder> {
 
 	@Override
 	public void onBindViewHolder(AdpAnasayfa.ViewHolder holder, @SuppressLint("RecyclerView") final int position) {
+		holder.CLSonEklenenSarki.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				showPopupMenu(v, snfAnasayfa.get(position).getSanatciID(), snfAnasayfa.get(position).getSanatciAdi(), snfAnasayfa.get(position).getSonEklenenSarkiID(), snfAnasayfa.get(position).getSonEklenenSarkiAdi());
+			}
+		});
+
 		if(snfAnasayfa.get(position).getSanatciResimVarMi()) {
 			//AkorDefterimSys.NettenResimYukle mNettenResimYukle = new AkorDefterimSys.NettenResimYukle(holder.ImgSanatciResim);
 			//mNettenResimYukle.execute(AkorDefterimSys.SanatciResimleriKlasoruURL + SanatciListesi.get(position).getSanatciID() + ".jpg");
 
 			ImageLoader.getInstance().displayImage(AkorDefterimSys.SanatciResimleriKlasoruDizini + snfAnasayfa.get(position).getSanatciID() + ".jpg", holder.ImgSanatciResim, animateFirstListener);
-		} else
-			holder.ImgSanatciResim.setImageResource(activity.getResources().getIdentifier(activity.getPackageName() + ":drawable/bos_profil", null, null));
+		} else holder.ImgSanatciResim.setImageResource(activity.getResources().getIdentifier(activity.getPackageName() + ":drawable/bos_profil", null, null));
 
 		holder.lblSanatciAdi.setText(snfAnasayfa.get(position).getSanatciAdi());
 		holder.lblSanatciAdi.setTypeface(YaziFontu, Typeface.BOLD);

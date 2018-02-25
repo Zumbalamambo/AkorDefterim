@@ -111,6 +111,7 @@ import com.cnbcyln.app.akordefterim.Retrofit.Interface.RetrofitInterface;
 import com.cnbcyln.app.akordefterim.Retrofit.Network.RetrofitServiceGenerator;
 import com.cnbcyln.app.akordefterim.Retrofit.Siniflar.SnfAnasayfaGetir;
 import com.cnbcyln.app.akordefterim.Retrofit.Siniflar.SnfDosyaBilgisiGetir;
+import com.cnbcyln.app.akordefterim.Retrofit.Siniflar.SnfDuyurular;
 import com.cnbcyln.app.akordefterim.Retrofit.Siniflar.SnfHesapBilgiGetir;
 import com.cnbcyln.app.akordefterim.Retrofit.Siniflar.SnfHesapEkle;
 import com.cnbcyln.app.akordefterim.Retrofit.Siniflar.SnfHesapGirisYap;
@@ -2657,11 +2658,11 @@ public class AkorDefterimSys {
 		});
 	}
 
-	public void HesapBilgiGetir(final Fragment fragment, String mHesapID, String mTelKodu, String mEPostaKullaniciAdiTelefon, final String Islem) {
+	public void HesapBilgiGetir(final Fragment fragment, String mHesapID, String mTelKodu, String mEPostaKullaniciAdiTelefon, String mFacebookID, String mGoogleID, final String Islem) {
 		RetrofitInterface retrofitInterface = RetrofitServiceGenerator.createService(activity, RetrofitInterface.class);
 		final Interface_AsyncResponse AsyncResponse = (Interface_AsyncResponse) activity;
 
-		Call<SnfHesapBilgiGetir> snfHesapBilgiGetirCall = retrofitInterface.HesapBilgiGetir(mHesapID, mTelKodu, mEPostaKullaniciAdiTelefon);
+		Call<SnfHesapBilgiGetir> snfHesapBilgiGetirCall = retrofitInterface.HesapBilgiGetir(mHesapID, mTelKodu, mEPostaKullaniciAdiTelefon, mFacebookID, mGoogleID);
 		snfHesapBilgiGetirCall.enqueue(new Callback<SnfHesapBilgiGetir>() {
 			@Override
 			public void onResponse(Call<SnfHesapBilgiGetir> call, Response<SnfHesapBilgiGetir> response) {
@@ -2944,7 +2945,7 @@ public class AkorDefterimSys {
 
 			@Override
 			public void onFailure(Call<SnfDosyaBilgisiGetir> call, Throwable t) {
-				AsyncResponse.AsyncTaskReturnValue("{\"Islem\":\"" + Islem + ", \"Sonuc\":false}");
+				AsyncResponse.AsyncTaskReturnValue("{\"Islem\":\"" + Islem + "\", \"Sonuc\":false}");
 			}
 		});
 	}
@@ -2973,6 +2974,32 @@ public class AkorDefterimSys {
 		});
 	}
 
+	public void DuyuruGetir() {
+		RetrofitInterface retrofitInterface = RetrofitServiceGenerator.createService(activity, RetrofitInterface.class);
+		final Interface_AsyncResponse AsyncResponse;
+		if(activity != null) AsyncResponse = (Interface_AsyncResponse) activity;
+		else AsyncResponse = (Interface_AsyncResponse) this.activity;
+
+		Call<SnfDuyurular> snfDuyurularCall = retrofitInterface.DuyuruGetir();
+		snfDuyurularCall.enqueue(new Callback<SnfDuyurular>() {
+			@Override
+			public void onResponse(Call<SnfDuyurular> call, Response<SnfDuyurular> response) {
+				if(response.isSuccessful()) {
+					SnfDuyurular snfDuyurular = response.body();
+
+					// getHata'nin false olması durumu hata yok demektir..
+					if(!snfDuyurular.getHata())
+						AsyncResponse.AsyncTaskReturnValue("{\"Islem\":\"DuyuruGetir\", \"Sonuc\":" + snfDuyurular.getSonuc() + ", \"Durum\":\"" + snfDuyurular.getDurum() + "\", \"Baslik\":\"" + snfDuyurular.getBaslik()+ "\", \"Icerik\":\"" + snfDuyurular.getIcerik() + "\", \"Tarih\":\"" + snfDuyurular.getTarih() + "\", \"Tip\":\"" + snfDuyurular.getTip() + "\"}");
+					else AsyncResponse.AsyncTaskReturnValue("{\"Islem\":\"DuyuruGetir\", \"Sonuc\":false}");
+				}
+			}
+
+			@Override
+			public void onFailure(Call<SnfDuyurular> call, Throwable t) {
+				AsyncResponse.AsyncTaskReturnValue("{\"Islem\":\"DuyuruGetir\", \"Sonuc\":false}");
+			}
+		});
+	}
 
 
 
@@ -3014,8 +3041,9 @@ public class AkorDefterimSys {
 						.select("div[itemprop=softwareVersion]")
 						.first()
 						.ownText();
-			} catch (IOException e) {
-				e.printStackTrace();
+			} catch (Exception e) {
+				//e.printStackTrace();
+				Log.e("YeniGuncelleme Hatası", e.getMessage());
 			}
 
 			return YeniVersiyon;
@@ -3117,176 +3145,6 @@ public class AkorDefterimSys {
 			}
 		} catch (PackageManager.NameNotFoundException e) {
 			e.printStackTrace();
-		}
-	}
-
-	public void Duyuru_Reklam_Goster() {
-		if(InternetErisimKontrolu()) new Duyuru_Reklam_Goster().execute();
-	}
-
-	private class Duyuru_Reklam_Goster extends AsyncTask<String, String, String> {
-		Bitmap ResimBitmap = null;
-
-		@Override
-		protected void onPreExecute() {
-			super.onPreExecute();
-		}
-
-		@Override
-		protected String doInBackground(String... parametre) {
-			String sonuc = null;
-
-			try{
-				HttpClient httpClient = new DefaultHttpClient();
-				HttpPost httpPost = new HttpPost(ReklamDuyuru);
-				HttpResponse response = httpClient.execute(httpPost);
-				HttpEntity entity = response.getEntity();
-				InputStream is = entity.getContent();
-				BufferedReader reader = new BufferedReader(new InputStreamReader(is, "UTF-8"), 8);
-				StringBuilder sb = new StringBuilder();
-
-				String line;
-
-				while ((line = reader.readLine()) != null)
-				{
-					sb.append(line).append("\n");
-				}
-
-				sonuc = sb.toString();
-
-				JSONObject JSONGelenVeri = new JSONObject(new JSONArray(sonuc).getString(0));
-
-				if(JSONGelenVeri.getString("Tip").equals("Resim")) {
-					URL url = new URL(JSONGelenVeri.getString("Icerik"));
-					HttpURLConnection.setFollowRedirects(false);
-					HttpURLConnection con = (HttpURLConnection) url.openConnection();
-					con.setRequestMethod("HEAD");
-
-					if((con.getResponseCode() == HttpURLConnection.HTTP_OK)){
-						ResimBitmap = BitmapFactory.decodeStream((InputStream)new URL(JSONGelenVeri.getString("Icerik")).getContent());
-					} else ResimBitmap = BitmapFactory.decodeResource(activity.getResources(), R.drawable.banner_trans);
-				}
-			} catch (IOException  | JSONException e) {
-				e.printStackTrace();
-			}
-
-			return sonuc;
-		}
-
-		@SuppressLint("InflateParams")
-		@Override
-		protected void onPostExecute(String Sonuc) {
-			try {
-				final JSONObject JSONGelenVeri = new JSONObject(new JSONArray(Sonuc).getString(0));
-
-				if(JSONGelenVeri.getBoolean("Durum")) {
-					DismissAlertDialog(ADDialog);
-
-					sharedPref = activity.getSharedPreferences(PrefAdi, MODE_PRIVATE);
-
-					SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault());
-					Date ReklamDuyuruTarih1 = format.parse(sharedPref.getString("ReklamDuyuruTarih", "1990-01-01 00:00:00"));
-					Date ReklamDuyuruTarih2 = format.parse(JSONGelenVeri.getString("Tarih"));
-
-					if (ReklamDuyuruTarih2.after(ReklamDuyuruTarih1)) {
-						Typeface YaziFontu = FontGetir(activity, "anivers_regular");
-						LayoutInflater inflater = activity.getLayoutInflater();
-						View ViewDialogContent = null;
-						final Boolean[] BirDahaGostermeSeciliMi = {false};
-						CheckBox Dialog_chkBirDahaGosterme;
-
-						switch (JSONGelenVeri.getString("Tip")) {
-							case "Yazi":
-								ViewDialogContent = inflater.inflate(R.layout.dialog_reklam_duyuru_yazi, null);
-
-								TextView Dialog_lblVersiyonNo = ViewDialogContent.findViewById(R.id.Dialog_lblVersiyonNo);
-								Dialog_lblVersiyonNo.setTypeface(YaziFontu, Typeface.BOLD);
-								Dialog_lblVersiyonNo.setText(String.valueOf("v").concat(activity.getPackageManager().getPackageInfo(activity.getPackageName(), 0).versionName));
-
-								TextView Dialog_lblDuyuru_Reklam_Icerik = ViewDialogContent.findViewById(R.id.Dialog_lblDuyuru_Reklam_Icerik);
-								Dialog_lblDuyuru_Reklam_Icerik.setTypeface(YaziFontu);
-								Dialog_lblDuyuru_Reklam_Icerik.setText(new SpannableString(Html.fromHtml(JSONGelenVeri.getString("Icerik"))));
-								Dialog_lblDuyuru_Reklam_Icerik.setMovementMethod(ScrollingMovementMethod.getInstance());
-
-								/*final WebView Dialog_WebDuyuru_Reklam_Icerik  = (WebView) ViewDialogContent.findViewById(R.id.Dialog_WebDuyuru_Reklam_Icerik);
-								Dialog_WebDuyuru_Reklam_Icerik.setBackgroundColor(Color.TRANSPARENT);
-								Dialog_WebDuyuru_Reklam_Icerik.getSettings().setJavaScriptEnabled(true);
-								Dialog_WebDuyuru_Reklam_Icerik.getSettings().setBuiltInZoomControls(false);
-								Dialog_WebDuyuru_Reklam_Icerik.getSettings().setDisplayZoomControls(false);
-
-								activity.runOnUiThread(new Runnable() {
-									@Override
-									public void run() {
-										try {
-											Dialog_WebDuyuru_Reklam_Icerik.loadDataWithBaseURL(null, "<!DOCTYPE html><body>" + JSONGelenVeri.getString("Icerik") + "</body></html>", "text/html", "utf-8", null);
-										} catch (JSONException e) {
-											e.printStackTrace();
-										}
-									}
-								});*/
-
-								Dialog_chkBirDahaGosterme = ViewDialogContent.findViewById(R.id.Dialog_chkBirDahaGosterme);
-								Dialog_chkBirDahaGosterme.setTypeface(YaziFontu);
-								Dialog_chkBirDahaGosterme.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-									@Override
-									public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-										BirDahaGostermeSeciliMi[0] = isChecked;
-									}
-								});
-
-								break;
-							case "Resim":
-								ViewDialogContent = inflater.inflate(R.layout.dialog_reklam_duyuru_resim, null);
-
-								ImageView Dialog_ImgResim = ViewDialogContent.findViewById(R.id.Dialog_ImgResim);
-								Dialog_ImgResim.setImageBitmap(ResimBitmap);
-
-								Dialog_chkBirDahaGosterme = ViewDialogContent.findViewById(R.id.Dialog_chkBirDahaGosterme);
-								Dialog_chkBirDahaGosterme.setTypeface(YaziFontu);
-								Dialog_chkBirDahaGosterme.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-									@Override
-									public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-										BirDahaGostermeSeciliMi[0] = isChecked;
-									}
-								});
-								break;
-						}
-
-						ADDialog = CustomAlertDialog(activity, R.mipmap.ic_launcher, JSONGelenVeri.getString("Baslik"), ViewDialogContent, activity.getString(R.string.tamam));
-						ADDialog.getWindow().getAttributes().windowAnimations = R.style.DialogAnimation;
-						ADDialog.show();
-
-						ADDialog.getButton(AlertDialog.BUTTON_NEUTRAL).setOnClickListener(new View.OnClickListener() {
-							@Override
-							public void onClick(View v) {
-								try {
-									if (BirDahaGostermeSeciliMi[0]) {
-										sharedPrefEditor = sharedPref.edit();
-										sharedPrefEditor.putString("ReklamDuyuruTarih", JSONGelenVeri.getString("Tarih"));
-										sharedPrefEditor.apply();
-									}
-
-									ADDialog.cancel();
-								} catch (JSONException e) {
-									e.printStackTrace();
-								}
-							}
-						});
-					}
-				}
-			} catch (PackageManager.NameNotFoundException | ParseException | JSONException e) {
-				e.printStackTrace();
-			}
-		}
-
-		@Override
-		protected void onProgressUpdate(String... Deger) {
-			super.onProgressUpdate(Deger);
-		}
-
-		@Override
-		protected void onCancelled(String Sonuc) {
-			super.onCancelled(Sonuc);
 		}
 	}
 

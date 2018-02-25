@@ -9,7 +9,8 @@
         android:layout_height="match_parent"
         android:contentDescription="@string/imageDesc"
         android:scaleType="centerCrop"
-        android:src="@drawable/bg" />
+        android:src="@drawable/bg"
+        android:layout_above="@+id/view1"/>
 
     <com.cnbcyln.app.akordefterim.util.ResizableImageView
         android:id="@+id/ImgBanner"
@@ -32,23 +33,16 @@
     <com.cnbcyln.app.akordefterim.util.LLTransparanPanel
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_above="@+id/view1"
+        android:layout_above="@+id/Dialog_chkTekrarGosterme"
         android:layout_below="@+id/ImgBanner"
-        android:layout_margin="10dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:layout_marginTop="10dp"
         android:orientation="vertical"
         android:padding="10dp">
 
         <TextView
-            android:id="@+id/Dialog_lblYenilikler_Baslik"
-            style="@style/TextAppearance.AppCompat.Medium.Inverse"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="10dp"
-            android:text="@string/yenilikler"
-            android:textColor="@color/TuruncuYazi" />
-
-        <TextView
-            android:id="@+id/Dialog_lblYenilikler_Icerik"
+            android:id="@+id/Dialog_lblDuyuru_Icerik"
             style="@style/TextAppearance.AppCompat.Small.Inverse"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -56,6 +50,19 @@
             android:textColor="@color/Beyaz" />
 
     </com.cnbcyln.app.akordefterim.util.LLTransparanPanel>
+
+    <CheckBox
+        android:id="@+id/Dialog_chkTekrarGosterme"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:layout_marginBottom="8dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginStart="8dp"
+        android:layout_above="@+id/view1"
+        android:text="@string/tekrar_gosterme"
+        android:textColor="@color/Beyaz"
+        android:theme="@style/MyCheckBoxTuruncu" />
 
     <View
         android:id="@+id/view1"

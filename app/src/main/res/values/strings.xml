@@ -12,13 +12,15 @@
     <string name="yenilikler_icerik">
         Yeni neler yaptık?&lt;br&gt;&lt;br&gt;
         &lt;b&gt;(Yeni Sürüm %s)&lt;/b&gt;&lt;br&gt;* Genel yazılımsal hatalar giderildi.&lt;br&gt;* Görsel düzenlemeler yapıldı.&lt;br&gt;&lt;br&gt;
+        (Eski Sürüm 1.5.5)&lt;/b&gt;&lt;br&gt;* Genel yazılımsal hatalar giderildi.&lt;br&gt;* Görsel düzenlemeler yapıldı.&lt;br&gt;&lt;br&gt;
+        (Eski Sürüm 1.5.4)&lt;/b&gt;&lt;br&gt;* Genel yazılımsal hatalar giderildi.&lt;br&gt;* Kayıt olma ve profil güncelleme politikasında düzenlemeler yapıldı.&lt;br&gt;* Görsel düzenlemeler yapıldı.&lt;br&gt;&lt;br&gt;
+        (Eski Sürüm 1.5.3)&lt;/b&gt;&lt;br&gt;* Genel yazılımsal hatalar giderildi.&lt;br&gt;* Görsel düzenlemeler yapıldı.&lt;br&gt;&lt;br&gt;
         (Eski Sürüm 1.5.2)&lt;/b&gt;&lt;br&gt;* Genel yazılımsal hatalar giderildi.&lt;br&gt;* Görsel düzenlemeler yapıldı.&lt;br&gt;&lt;br&gt;
         (Eski Sürüm 1.5.1)&lt;/b&gt;&lt;br&gt;* Genel yazılımsal hatalar giderildi.&lt;br&gt;* Görsel düzenlemeler yapıldı.&lt;br&gt;&lt;br&gt;
         (Eski Sürüm 1.5.0)&lt;/b&gt;&lt;br&gt;* Tasarım tamamıyla değişti.&lt;br&gt;* Tüm yazılımsal alt yapı geliştirildi.&lt;br&gt;&lt;br&gt;
         (Eski Sürüm 1.4.9)&lt;br&gt;* Genel yazılımsal hatalar giderildi.&lt;br&gt;* Görsel düzenlemeler yapıldı.&lt;br&gt;&lt;br&gt;
         (Eski Sürüm 1.4.8)&lt;br&gt;* Genel yazılımsal hatalar giderildi.&lt;br&gt;* Görsel düzenlemeler yapıldı.&lt;br&gt;&lt;br&gt;
-        (Eski Sürüm 1.4.7)&lt;br&gt;* Genel yazılımsal hatalar giderildi.&lt;br&gt;* Görsel düzenlemeler yapıldı.&lt;br&gt;&lt;br&gt;
-        (Eski Sürüm 1.4.6)&lt;br&gt;* Artık bildirimler uygulama kapalı olsa bile cihazınıza ulaşabilecek ve yeniliklerden daha hızlı bir şekilde haberdar olabileceksiniz.&lt;br&gt;* Şarkıyı sosyal medya platformlarında (Şimdilik Google ve Facebook) paylaşabileceğiniz özellik eklendi. Şarkı içeriğini açıp, sol alttaki işlem menüsünden paylaş tuşunu bulabilirsiniz.&lt;br&gt;* Genel yazılımsal hatalar giderildi.&lt;br&gt;* Görsel düzenlemeler yapıldı.</string>
+        (Eski Sürüm 1.4.7)&lt;br&gt;* Genel yazılımsal hatalar giderildi.&lt;br&gt;* Görsel düzenlemeler yapıldı.</string>
 
     <!-- Genel -->
     <string name="bosluk"> </string>
@@ -32,6 +34,7 @@
     <string name="sarki_sanatci_adi">Sanatçı ya da şarkı adı</string>
     <string name="yeniden_dene">Yeniden dene</string>
     <string name="yeniden_gonder">Yeniden gönder</string>
+    <string name="cevrimici">Çevrimiçi</string>
     <string name="cevrimdisi">Çevrimdışı</string>
     <string name="kaydet">Kaydet</string>
     <string name="sifirla">Sıfırla</string>
@@ -342,7 +345,7 @@
     <string name="yeni">Yeni</string>
     <string name="sarki_paylas_facebook_icerik">\"%1$s - %2$s\" isimli şarkıyı sevdim ve akorlarını paylaştım. Görmek ister misin? :)</string>
     <string name="sarki_paylas_google_icerik">\"%1$s - %2$s\" isimli şarkıyı sevdim ve akorlarını paylaştım. Görmek ister misin? :) Aşağıdaki linke tıkla..\n\n%3$s</string>
-    <string name="bir_daha_gosterme">Bir daha gösterme</string>
+    <string name="tekrar_gosterme">Tekrar gösterme</string>
     <string name="cok_yakinda">Çok Yakında</string>
     <string name="yukleniyor">Yükleniyor..</string>
     <string name="giris_ekran_aciklama">Kolayca giriş yap..</string>
@@ -477,6 +480,9 @@
     <string name="kullaniciadi_kayitli">Belirlediğin kullanıcı adı kayıtlı. Farklı bir kullanıcı adı dene.</string>
     <string name="eposta_kayitli">Belirlediğin e-posta adresi kayıtlı. Farklı bir e-posta adresi dene.</string>
     <string name="ceptelefonu_kayitli">Belirlediğin cep telefonu kayıtlı. Farklı bir cep telefonu dene.</string>
+
+    <string name="facebook_hesabi_bagli_durumda">Belirttiğiniz Facebook hesabı, başka bir hesaba bağlanmış durumda. Lütfen başka bir Facebook hesabı dene.</string>
+    <string name="google_hesabi_bagli_durumda">Belirttiğiniz Google hesabı, başka bir hesaba bağlanmış durumda. Lütfen başka bir Google hesabı dene.</string>
 
     <!-- Toast Mesajlar -->
     <string name="txtdogumtarih_hata1">Doğum Tarihi alanını boş bırakamazsınız.</string>
@@ -704,6 +710,11 @@
     <string name="egitim_10_icerik">Seçilen şarkı içeriğinin görüntülendiği ekrandır. Ekranın sağ alt köşesindeki tuşa basarak içerik hakkında işlem menüsü açılır. Aynı zamanda şarkı içeriğindeki herhangi bir akora dokunarak akor cetveli üzerindeki pozisyonunu görebilirsiniz.</string>
     <string name="egitim_11_baslik">Web Yönetim Sistemi</string>
     <string name="egitim_11_icerik">Web Yönetim Sistemi, web tarayıcınız üzerinden Android cihazınıza doğrudan erişmenizi sağlar. Bu sayede cihazınıza kayıtlı olan tüm şarkıları bilgisayarınız üzerinden yönetebilirsiniz.\n\nÖNEMLİ NOT: Android aygıt ve bilgisayar aynı WiFi ağ üzerinde internete bağlı olması gerekir. Aksi halde web yönetim sayfası doğru çalışmayacaktır. Web yönetim sayfasının açılma hızı WiFi trafiğine göre değişkenlik gösterir..</string>
+
+    <string name="promoter_prompt">We\'re glad you love our app! Now please rate us in the app store!</string>
+    <string name="detractor_prompt">We\'re sorry you\'re experiencing problems with our app, we promise to address the issues you experienced as quickly as possible.</string>
+    <string name="thanks_prompt">Thanks for responding to our survey!</string>
+    <string name="error_prompt">SM SDK Error - see logs</string>
 
     <!-- WEB İÇİ YAZILAR -->
 

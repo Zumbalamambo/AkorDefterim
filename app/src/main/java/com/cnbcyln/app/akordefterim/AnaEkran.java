@@ -3,10 +3,12 @@ package com.cnbcyln.app.akordefterim;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.app.Dialog;
 import android.app.Fragment;
 import android.app.FragmentTransaction;
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
@@ -19,11 +21,15 @@ import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.text.method.ScrollingMovementMethod;
 import android.util.TypedValue;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
+import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
@@ -41,16 +47,18 @@ import com.cnbcyln.app.akordefterim.Siniflar.SnfSarkilar;
 import com.cnbcyln.app.akordefterim.util.AkorDefterimSys;
 import com.cnbcyln.app.akordefterim.util.AppService;
 import com.cnbcyln.app.akordefterim.util.Veritabani;
-import com.surveymonkey.surveymonkeyandroidsdk.SurveyMonkey;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.text.Collator;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
@@ -65,12 +73,11 @@ public class AnaEkran extends AppCompatActivity implements Int_DataConn_AnaEkran
 	SharedPreferences.Editor sharedPrefEditor;
     Typeface YaziFontu;
     ProgressDialog PDIslem;
-    AlertDialog ADDialog;
+    AlertDialog ADDialog, ADDialog_Duyuru;
     InputMethodManager imm;
     LayoutInflater layoutInflater;
     private List<SnfSarkilar> snfSarkilar;
     private List<SnfSarkilar> snfSarkilarTemp;
-    private SurveyMonkey sdkInstance;             // <<<<<<================================ BURDA KALDIN..
 
     // AnaEkran Değişken Tanımlamaları
     ImageButton btnSolMenu, btnSagMenu;
@@ -117,7 +124,6 @@ public class AnaEkran extends AppCompatActivity implements Int_DataConn_AnaEkran
         YaziFontu = AkorDefterimSys.FontGetir(activity, "anivers_regular");
         sharedPref = activity.getSharedPreferences(AkorDefterimSys.PrefAdi, Context.MODE_PRIVATE);
         startService(new Intent(getApplicationContext(), AppService.class));
-        sdkInstance = new SurveyMonkey();
 
         imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE); // İstenildiği zaman klavyeyi gizlemeye yarayan kod tanımlayıcısı
 
@@ -409,6 +415,8 @@ public class AnaEkran extends AppCompatActivity implements Int_DataConn_AnaEkran
         if(Frg_TabRepKontrol_1 != null) Frg_TabRepKontrol_1.spnDoldur();
 
         AkorDefterimSys.YeniSurumYeniliklerDialog();
+
+        if(AkorDefterimSys.InternetErisimKontrolu()) AkorDefterimSys.DuyuruGetir();
     }
 
     @Override
@@ -466,7 +474,11 @@ public class AnaEkran extends AppCompatActivity implements Int_DataConn_AnaEkran
                 if(Fragment_SayfaAdi != "Frg_Anasayfa") {
                     Fragment_Sayfa = new Frg_Anasayfa();// Fragment sayfa belirle
                     Fragment_SayfaAdi = "Frg_Anasayfa";
-                    lblSayfaBaslik.setText(String.format("%s%s%s", getString(R.string.anasayfa), " - ", getString(R.string.son_eklenen_sarkilar)));
+
+                    if(sharedPref.getString("prefOturumTipi", "Cevrimdisi").equals("Cevrimici"))
+                        lblSayfaBaslik.setText(String.format("%s%s%s (%s)", getString(R.string.anasayfa), " - ", getString(R.string.son_eklenen_sarkilar), getString(R.string.cevrimici)));
+                    else if(sharedPref.getString("prefOturumTipi", "Cevrimdisi").equals("Cevrimdisi"))
+                        lblSayfaBaslik.setText(String.format("%s%s%s (%s)", getString(R.string.anasayfa), " - ", getString(R.string.son_eklenen_sarkilar), getString(R.string.cevrimdisi)));
 
                     if(FT == null && Fragment_Sayfa == null)
                         FT.add(R.id.LLSayfa, Fragment_Sayfa, Fragment_SayfaAdi); // FT.add(<Hangi layout içinde çağırılacaksa id'si>, <Çağırılan Fragment>, <Çağırılan Fragment Takma Adı>);
@@ -606,7 +618,7 @@ public class AnaEkran extends AppCompatActivity implements Int_DataConn_AnaEkran
     @Override
     public void AsyncTaskReturnValue(String sonuc) {
         try {
-            JSONObject JSONSonuc = new JSONObject(sonuc);
+            final JSONObject JSONSonuc = new JSONObject(sonuc);
 
             switch (JSONSonuc.getString("Islem")) {
                 case "ADDialog_Egitim_Evet":
@@ -795,8 +807,76 @@ public class AnaEkran extends AppCompatActivity implements Int_DataConn_AnaEkran
                     }
 
                     break;
+                case "DuyuruGetir":
+                    if(JSONSonuc.getBoolean("Sonuc")) {
+                        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault());
+                        Date DuyuruTarih1 = format.parse(sharedPref.getString("prefDuyuruTarih", "1990-01-01 00:00:00"));
+                        Date DuyuruTarih2 = format.parse(JSONSonuc.getString("Tarih"));
+
+                        if (DuyuruTarih2.getTime() > DuyuruTarih1.getTime()) {
+                            if(JSONSonuc.getString("Tip").equals("Yazi")) {
+                                if(!AkorDefterimSys.AlertDialogisShowing(ADDialog_Duyuru)) {
+                                    LayoutInflater inflater = activity.getLayoutInflater();
+                                    View ViewDialogCustom = inflater.inflate(R.layout.dialog_duyurular, null);
+
+                                    TextView Dialog_lblVersiyonNo = ViewDialogCustom.findViewById(R.id.Dialog_lblVersiyonNo);
+                                    Dialog_lblVersiyonNo.setTypeface(YaziFontu, Typeface.BOLD);
+                                    Dialog_lblVersiyonNo.setText(UygulamaVersiyon);
+
+                                    TextView Dialog_lblDuyuru_Icerik = ViewDialogCustom.findViewById(R.id.Dialog_lblDuyuru_Icerik);
+                                    Dialog_lblDuyuru_Icerik.setTypeface(YaziFontu);
+                                    Dialog_lblDuyuru_Icerik.setText(JSONSonuc.getString("Icerik"));
+                                    AkorDefterimSys.setTextViewHTML(Dialog_lblDuyuru_Icerik);
+                                    Dialog_lblDuyuru_Icerik.setMovementMethod(ScrollingMovementMethod.getInstance());
+
+                                    final CheckBox Dialog_chkTekrarGosterme = ViewDialogCustom.findViewById(R.id.Dialog_chkTekrarGosterme);
+
+                                    Button btnDialogButton = ViewDialogCustom.findViewById(R.id.btnDialogButton);
+                                    btnDialogButton.setTypeface(YaziFontu, Typeface.BOLD);
+                                    btnDialogButton.setText(activity.getString(R.string.tamam));
+                                    btnDialogButton.setOnClickListener(new View.OnClickListener() {
+                                        @Override
+                                        public void onClick(View v) {
+                                            try {
+                                                AkorDefterimSys.DismissAlertDialog(ADDialog_Duyuru);
+
+                                                if (Dialog_chkTekrarGosterme.isChecked()) {
+                                                    sharedPrefEditor = sharedPref.edit();
+                                                    sharedPrefEditor.putString("prefDuyuruTarih", JSONSonuc.getString("Tarih"));
+                                                    sharedPrefEditor.apply();
+                                                }
+                                            } catch (JSONException e) {
+                                                e.printStackTrace();
+                                            }
+                                        }
+                                    });
+
+                                    ADDialog_Duyuru = new AlertDialog.Builder(activity)
+                                            .setView(ViewDialogCustom)
+                                            .setCancelable(false)
+                                            .create();
+
+                                    ADDialog_Duyuru.setOnKeyListener(new Dialog.OnKeyListener() {
+                                        @Override
+                                        public boolean onKey(DialogInterface arg0, int keyCode, KeyEvent event) {
+                                            if (keyCode == KeyEvent.KEYCODE_BACK) {
+                                                AkorDefterimSys.DismissAlertDialog(ADDialog_Duyuru);
+                                            }
+                                            return true;
+                                        }
+                                    });
+
+                                    ADDialog_Duyuru.getWindow().getAttributes().windowAnimations = R.style.DialogAnimation;
+                                    ADDialog_Duyuru.show();
+                                }
+                            } else if(JSONSonuc.getString("Tip").equals("Resim")) {
+
+                            }
+                        }
+                    }
+                    break;
             }
-        } catch (JSONException e) {
+        } catch (JSONException | ParseException e) {
             e.printStackTrace();
         }
     }

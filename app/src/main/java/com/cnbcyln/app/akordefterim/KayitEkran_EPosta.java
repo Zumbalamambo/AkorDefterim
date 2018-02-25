@@ -253,7 +253,7 @@ public class KayitEkran_EPosta extends AppCompatActivity implements Interface_As
 					PDEPosta.show();
 				}
 
-				AkorDefterimSys.HesapBilgiGetir(null, "", "", EPosta, "HesapBilgiGetir");
+				AkorDefterimSys.HesapBilgiGetir(null, "", "", EPosta, "", "", "HesapBilgiGetir");
 			}
 		} else AkorDefterimSys.StandartSnackBarMsj(coordinatorLayout, getString(R.string.internet_baglantisi_saglanamadi));
 	}

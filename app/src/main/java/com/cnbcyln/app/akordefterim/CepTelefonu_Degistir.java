@@ -174,7 +174,7 @@ public class CepTelefonu_Degistir extends AppCompatActivity implements Interface
 						PDIslem.show();
 					}
 
-					AkorDefterimSys.HesapBilgiGetir(null, sharedPref.getString("prefHesapID", ""), "", "", "HesapBilgiGetir_CepTelefon_Bilgisi_Al");
+					AkorDefterimSys.HesapBilgiGetir(null, sharedPref.getString("prefHesapID", ""), "", "", "", "", "HesapBilgiGetir_CepTelefon_Bilgisi_Al");
 				}
 			}
 		} else AkorDefterimSys.CikisYap();
@@ -261,7 +261,7 @@ public class CepTelefonu_Degistir extends AppCompatActivity implements Interface
 							lblKalanSure.setVisibility(View.GONE);
 						}
 
-						AkorDefterimSys.HesapBilgiGetir(null, sharedPref.getString("prefHesapID", ""), "", "", "HesapBilgiGetir_CepTelefon_Bilgisi_Al");
+						AkorDefterimSys.HesapBilgiGetir(null, sharedPref.getString("prefHesapID", ""), "", "", "", "", "HesapBilgiGetir_CepTelefon_Bilgisi_Al");
 					} else {
 						btnIptal.setEnabled(true);
 						btnKaydet.setEnabled(true);
@@ -470,7 +470,7 @@ public class CepTelefonu_Degistir extends AppCompatActivity implements Interface
 						PDIslem.show();
 					}
 
-					AkorDefterimSys.HesapBilgiGetir(null, "", CCPTelKodu.getSelectedCountryCode(), YazilanCepTelefonu, "HesapBilgiGetir_CepTelefon_Kontrol");
+					AkorDefterimSys.HesapBilgiGetir(null, "", CCPTelKodu.getSelectedCountryCode(), YazilanCepTelefonu, "", "", "HesapBilgiGetir_CepTelefon_Kontrol");
 				}
 			}
 		} else AkorDefterimSys.StandartSnackBarMsj(coordinatorLayout, getString(R.string.internet_baglantisi_saglanamadi));

@@ -38,6 +38,7 @@
     </RelativeLayout>
 
     <LinearLayout
+        android:id="@+id/LLContainer"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical"
@@ -88,9 +89,18 @@
                 android:layout_height="wrap_content"
                 android:textColor="@color/Beyaz"
                 android:theme="@style/MyCheckBoxTuruncu"
-                android:text="@string/bir_daha_gosterme"/>
+                android:text="@string/tekrar_gosterme"/>
         </LinearLayout>
     </LinearLayout>
 
-
+    <Button
+        android:id="@+id/btnDialogButton"
+        style="@style/TextAppearance.AppCompat.Medium.Inverse"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/LLContainer"
+        android:background="@drawable/custom_button2"
+        android:text="@string/labeltire"
+        android:textAppearance="@style/TextAppearance.AppCompat"
+        android:textColor="@color/KoyuYazi" />
 </RelativeLayout>

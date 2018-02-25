@@ -40,7 +40,7 @@
                 android:layout_height="wrap_content"
                 android:textColor="@color/Beyaz"
                 android:theme="@style/MyCheckBoxTuruncu"
-                android:text="@string/bir_daha_gosterme"/>
+                android:text="@string/tekrar_gosterme"/>
         </LinearLayout>
     </LinearLayout>
 </RelativeLayout>

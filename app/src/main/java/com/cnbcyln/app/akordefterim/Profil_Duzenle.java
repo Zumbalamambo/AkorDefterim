@@ -330,7 +330,7 @@ public class Profil_Duzenle extends AppCompatActivity implements Interface_Async
 					PDBilgilerAliniyor.show();
 				}
 
-				AkorDefterimSys.HesapBilgiGetir(null, sharedPref.getString("prefHesapID",""), "", "", "HesapBilgiGetir");
+				AkorDefterimSys.HesapBilgiGetir(null, sharedPref.getString("prefHesapID",""), "", "", "", "", "HesapBilgiGetir");
 			} else AkorDefterimSys.CikisYap();
 		}
 
@@ -733,7 +733,7 @@ public class Profil_Duzenle extends AppCompatActivity implements Interface_Async
 					break;
 				case "HesapBilgiGuncelle_Profil_Resim2":
 					if(JSONSonuc.getBoolean("Sonuc")) {
-						AkorDefterimSys.HesapBilgiGetir(null, sharedPref.getString("prefHesapID",""), "", "", "HesapBilgiGetir");
+						AkorDefterimSys.HesapBilgiGetir(null, sharedPref.getString("prefHesapID",""), "", "", "", "", "HesapBilgiGetir");
 					} else {
 						if(!AkorDefterimSys.AlertDialogisShowing(ADDialog)) {
 							ADDialog = AkorDefterimSys.CustomAlertDialog(activity,

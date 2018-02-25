@@ -377,7 +377,7 @@ public class Parola_Degistir extends AppCompatActivity implements Interface_Asyn
                     PDBilgiIslem.show();
                 }
 
-                AkorDefterimSys.HesapBilgiGetir(null, sharedPref.getString("prefHesapID",""), "", "", "HesapBilgiGetir");
+                AkorDefterimSys.HesapBilgiGetir(null, sharedPref.getString("prefHesapID",""), "", "", "", "", "HesapBilgiGetir");
             }
         } else AkorDefterimSys.StandartSnackBarMsj(coordinatorLayout, getString(R.string.internet_baglantisi_saglanamadi));
 	}

@@ -114,7 +114,7 @@ public class Hesabim extends AppCompatActivity implements Interface_AsyncRespons
 				PDBilgilerAliniyor.show();
 			}
 
-			AkorDefterimSys.HesapBilgiGetir(null, sharedPref.getString("prefHesapID",""), "", "", "HesapBilgiGetir");
+			AkorDefterimSys.HesapBilgiGetir(null, sharedPref.getString("prefHesapID",""), "", "", "", "", "HesapBilgiGetir");
 		} else AkorDefterimSys.CikisYap();
 	}
 
