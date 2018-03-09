@@ -83,6 +83,7 @@ public class Egitim extends AppCompatActivity implements View.OnClickListener {
     protected void onStart() {
         super.onStart();
         AkorDefterimSys.activity = activity;
+        AkorDefterimSys.SharePrefAyarlarınıUygula();
     }
 
     private void addBottomDots(int currentPage) {

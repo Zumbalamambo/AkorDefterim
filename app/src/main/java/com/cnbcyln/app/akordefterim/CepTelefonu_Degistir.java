@@ -155,6 +155,8 @@ public class CepTelefonu_Degistir extends AppCompatActivity implements Interface
 
 		AkorDefterimSys.activity = activity;
 
+		AkorDefterimSys.SharePrefAyarlarınıUygula();
+
 		if(AkorDefterimSys.GirisYapildiMi()) {
 			if(AkorDefterimSys.prefAction.equals("IslemTamamlandi")) finish();
 			else {

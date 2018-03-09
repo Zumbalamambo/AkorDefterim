@@ -159,6 +159,7 @@ public class Repertuvar_Islemleri extends AppCompatActivity implements Interface
     protected void onStart() {
         super.onStart();
         AkorDefterimSys.activity = activity;
+        AkorDefterimSys.SharePrefAyarlarınıUygula();
 
         // Burada öncelikle internet bağlantısını, kullanıcının giriş yapıp yapmadığını ve prefSonYedeklenmeTarihi bilgisinin olup olmadığını kontrol ediyoruz..
         // Eğer biri false dönerse kullanıcının server'daki DB dosyasının bilgisini çekip prefSonYedeklenmeTarihi kaydına eşitliyoruz.

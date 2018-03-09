@@ -331,6 +331,7 @@ public class Sarki_Yonetimi extends AppCompatActivity implements Interface_Async
         super.onStart();
 
         AkorDefterimSys.activity = activity;
+        AkorDefterimSys.SharePrefAyarlarınıUygula();
 
         if(AkorDefterimSys.prefAction.equals("Şarkı eklendi")) {
             AkorDefterimSys.StandartSnackBarMsj(coordinatorLayout, getString(R.string.sarki_eklendi, AkorDefterimSys.prefEklenenDuzenlenenSanatciAdi, AkorDefterimSys.prefEklenenDuzenlenenSarkiAdi));

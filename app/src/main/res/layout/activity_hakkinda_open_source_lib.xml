@@ -4,15 +4,15 @@
 	android:id="@+id/coordinatorLayout"
 	android:layout_width="match_parent"
 	android:layout_height="match_parent"
+	android:descendantFocusability="beforeDescendants"
+	android:focusableInTouchMode="true"
+	android:keepScreenOn="true"
 	android:background="@color/Beyaz">
 
 	<android.support.constraint.ConstraintLayout
 		android:id="@+id/ConstraintLayout1"
 		android:layout_width="match_parent"
-		android:layout_height="match_parent"
-		android:descendantFocusability="beforeDescendants"
-		android:focusableInTouchMode="true"
-		android:keepScreenOn="true">
+		android:layout_height="match_parent">
 
 		<android.support.constraint.Guideline
 			android:id="@+id/v_guideline1"

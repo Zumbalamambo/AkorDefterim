@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/CLGeriBildirim"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="8dp">
+
+    <!--<android.support.constraint.Guideline
+        android:id="@+id/h_guideline1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.6" />-->
+
+    <RelativeLayout
+        android:id="@+id/RLDurum"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
+        app:layout_constraintBottom_toBottomOf="@+id/lblDurum"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/lblKonu">
+
+        <com.cnbcyln.app.akordefterim.util.CircleImageView
+            android:id="@+id/CImgDurum"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:background="@drawable/ic_circle_mavi"
+            app:civ_border_color="@color/circle_imageview_border_color"
+            app:civ_border_width="@dimen/circle_imageview_border_width" />
+
+        <ImageView
+            android:id="@+id/ImgEPostaIcon"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:layout_centerHorizontal="true"
+            android:layout_centerVertical="true"
+            app:srcCompat="@drawable/ic_email_beyaz" />
+    </RelativeLayout>
+
+    <TextView
+        android:id="@+id/lblKonu"
+        style="@style/TextAppearance.AppCompat.Medium.Inverse"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="8dp"
+        android:layout_marginStart="8dp"
+        android:text="@string/labeltire"
+        android:textColor="@color/KoyuYazi"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/RLDurum"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/lblTarih"
+        style="@style/TextAppearance.AppCompat.Small.Inverse"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="8dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="5dp"
+        android:text="@string/olusturulma_tarihi"
+        android:textColor="@color/KoyuYazi"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/RLDurum"
+        app:layout_constraintTop_toBottomOf="@+id/lblKonu" />
+
+    <TextView
+        android:id="@+id/lblDurum"
+        style="@style/TextAppearance.AppCompat.Small.Inverse"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="8dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="5dp"
+        android:text="@string/durum_s"
+        android:textColor="@color/KoyuYazi"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/RLDurum"
+        app:layout_constraintTop_toBottomOf="@+id/lblTarih" />
+
+    <!--<RelativeLayout
+        android:layout_width="24dp"
+        android:layout_height="24dp">
+
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@drawable/ic_circle" />
+
+        <TextView
+            style="@style/TextAppearance.AppCompat.Small"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_centerHorizontal="true"
+            android:text="10"
+            android:textColor="@color/Beyaz" />
+    </RelativeLayout>-->
+</android.support.constraint.ConstraintLayout>

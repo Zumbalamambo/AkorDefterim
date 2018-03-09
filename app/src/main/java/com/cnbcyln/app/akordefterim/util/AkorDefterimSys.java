@@ -27,9 +27,7 @@ import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.BitmapFactory.Options;
-import android.graphics.Canvas;
 import android.graphics.Color;
-import android.graphics.Paint;
 import android.graphics.Typeface;
 import android.media.RingtoneManager;
 import android.net.ConnectivityManager;
@@ -48,7 +46,6 @@ import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.support.annotation.RequiresApi;
 import android.support.constraint.ConstraintLayout;
-import android.support.constraint.Guideline;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.Snackbar;
 import android.support.design.widget.TextInputLayout;
@@ -78,32 +75,22 @@ import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewAnimationUtils;
-import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
 import android.view.animation.AnimationUtils;
 import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputMethodManager;
-import android.widget.AdapterView;
 import android.widget.Button;
-import android.widget.CheckBox;
-import android.widget.CompoundButton;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.FrameLayout;
-import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.ListView;
 import android.widget.RelativeLayout;
-import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.cnbcyln.app.akordefterim.Adaptorler.AdpAkorlar;
-import com.cnbcyln.app.akordefterim.Adaptorler.AdpTonlar;
 import com.cnbcyln.app.akordefterim.AnaEkran;
-import com.cnbcyln.app.akordefterim.Giris;
 import com.cnbcyln.app.akordefterim.Interface.Int_DataConn_AnaEkran;
 import com.cnbcyln.app.akordefterim.Interface.Interface_AsyncResponse;
 import com.cnbcyln.app.akordefterim.R;
@@ -115,6 +102,7 @@ import com.cnbcyln.app.akordefterim.Retrofit.Siniflar.SnfDuyurular;
 import com.cnbcyln.app.akordefterim.Retrofit.Siniflar.SnfHesapBilgiGetir;
 import com.cnbcyln.app.akordefterim.Retrofit.Siniflar.SnfHesapEkle;
 import com.cnbcyln.app.akordefterim.Retrofit.Siniflar.SnfHesapGirisYap;
+import com.cnbcyln.app.akordefterim.Retrofit.Siniflar.SnfIPAdres;
 import com.cnbcyln.app.akordefterim.Retrofit.Siniflar.SnfIslemSonuc;
 import com.cnbcyln.app.akordefterim.Retrofit.Siniflar.SnfKategoriListesiGetir;
 import com.cnbcyln.app.akordefterim.Retrofit.Siniflar.SnfSarkiGetir;
@@ -122,9 +110,7 @@ import com.cnbcyln.app.akordefterim.Retrofit.Siniflar.SnfSarkiListesiGetir;
 import com.cnbcyln.app.akordefterim.Retrofit.Siniflar.SnfSistemDurum;
 import com.cnbcyln.app.akordefterim.Retrofit.Siniflar.SnfTarihSaat;
 import com.cnbcyln.app.akordefterim.Retrofit.Siniflar.SnfTarzListesiGetir;
-import com.cnbcyln.app.akordefterim.Siniflar.SnfAkorlar;
 import com.cnbcyln.app.akordefterim.Siniflar.SnfSarkilar;
-import com.cnbcyln.app.akordefterim.Siniflar.SnfTonlar;
 import com.cnbcyln.app.akordefterim.SplashEkran;
 import com.facebook.share.model.ShareHashtag;
 import com.facebook.share.model.ShareLinkContent;
@@ -138,11 +124,8 @@ import com.theartofdev.edmodo.cropper.CropImage;
 
 import org.apache.commons.lang3.RandomStringUtils;
 import org.apache.commons.lang3.StringUtils;
-import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
-import org.apache.http.NameValuePair;
 import org.apache.http.client.HttpClient;
-import org.apache.http.client.entity.UrlEncodedFormEntity;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.conn.ClientConnectionManager;
 import org.apache.http.conn.scheme.Scheme;
@@ -151,15 +134,11 @@ import org.apache.http.conn.ssl.SSLSocketFactory;
 import org.apache.http.entity.mime.content.FileBody;
 import org.apache.http.entity.mime.content.StringBody;
 import org.apache.http.impl.client.DefaultHttpClient;
-import org.apache.http.message.BasicNameValuePair;
-import org.apache.http.protocol.HTTP;
 import org.jetbrains.annotations.Contract;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.jsoup.Jsoup;
-import org.jsoup.nodes.Document;
-import org.jsoup.select.Elements;
 
 import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
@@ -181,7 +160,6 @@ import java.io.UnsupportedEncodingException;
 import java.io.Writer;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
-import java.net.HttpURLConnection;
 import java.net.InetAddress;
 import java.net.MalformedURLException;
 import java.net.NetworkInterface;
@@ -251,7 +229,7 @@ public class AkorDefterimSys {
 	public String HtmlTag1_1 = "<span style=\"color: #ea494d;\" onclick=\"AkorGosterici.performClick('";
 	public String HtmlTag1_2 = "');\"><b>";
 	public String HtmlTag2 = "</b></span>";
-	private BroadcastReceiver EskiBroadcastReceiver;
+	public String AkorHtmlURLAssets = "file:///android_asset/akorhtml/index.html";
 
 	/** Google API Lokasyon İşlem Değişkenleri **/
 	public int UPDATE_INTERVAL = 4000; // 4 saniye
@@ -319,24 +297,26 @@ public class AkorDefterimSys {
 
 		sharedPref = activity.getSharedPreferences(PrefAdi, Context.MODE_PRIVATE); // Genel Ayarlar objesi
 
-		sharedPrefChanged = new SharedPreferences.OnSharedPreferenceChangeListener() { // Uygulama içi ayar değişikliği olduğunda tetiklenen method
-			@Override
-			public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
-				switch (key) {
-					case "prefEkranIsigiAydinligi":
-						// Ekran ışığını eğer prefEkranIsigiAydinligi değeri ayarlanmamışsa en parlak olan 255'e ayarlıyoruz. Aksi halde ayar ne ise o ayarlanıyor..
-						layoutpars.screenBrightness = sharedPref.getInt("prefEkranIsigiAydinligi", 255) / (float)255;
-						activity.getWindow().setAttributes(layoutpars); // Yeni değerler ekrana uygulanıyor
+		if(GirisYapildiMi() || activity.getClass().getSimpleName().equals("Ayarlar_Ekran_Isigi")) { // Yalnızca giriş yapan kullanıcılar ya da ayarlar ekran ışığı sayfasında olan kullanıcılar için geçerli
+			sharedPrefChanged = new SharedPreferences.OnSharedPreferenceChangeListener() { // Uygulama içi ayar değişikliği olduğunda tetiklenen method
+				@Override
+				public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
+					switch (key) {
+						case "prefEkranIsigiAydinligi":
+							// Ekran ışığını eğer prefEkranIsigiAydinligi değeri ayarlanmamışsa en parlak olan 255'e ayarlıyoruz. Aksi halde ayar ne ise o ayarlanıyor..
+							layoutpars.screenBrightness = sharedPref.getInt("prefEkranIsigiAydinligi", 255) / (float)255;
+							activity.getWindow().setAttributes(layoutpars); // Yeni değerler ekrana uygulanıyor
 
-						break;
+							break;
+					}
 				}
-			}
-		};
-		sharedPref.registerOnSharedPreferenceChangeListener(sharedPrefChanged);
+			};
+			sharedPref.registerOnSharedPreferenceChangeListener(sharedPrefChanged);
 
-		// Ekran ışığını eğer prefEkranIsigiAydinligi değeri ayarlanmamışsa en parlak olan 255'e ayarlıyoruz. Aksi halde ayar ne ise o ayarlanıyor..
-		layoutpars.screenBrightness = sharedPref.getInt("prefEkranIsigiAydinligi", 255) / (float)255;
-		activity.getWindow().setAttributes(layoutpars); // Yeni değerler ekrana uygulanıyor
+			// Ekran ışığını eğer prefEkranIsigiAydinligi değeri ayarlanmamışsa en parlak olan 255'e ayarlıyoruz. Aksi halde ayar ne ise o ayarlanıyor..
+			layoutpars.screenBrightness = sharedPref.getInt("prefEkranIsigiAydinligi", 255) / (float)255;
+			activity.getWindow().setAttributes(layoutpars); // Yeni değerler ekrana uygulanıyor
+		}
 
 		try {
 			if(broadcastreceiver != null) activity.unregisterReceiver(broadcastreceiver);
@@ -349,6 +329,14 @@ public class AkorDefterimSys {
 		} catch (Exception e) {
 			Log.e("BroadcastReceiver", "Broadcast Receiver kayıtlı..");
 		}
+	}
+
+	public void SharePrefAyarlarınıUygula() {
+		final WindowManager.LayoutParams layoutpars = activity.getWindow().getAttributes();
+
+		// Ekran ışığını eğer prefEkranIsigiAydinligi değeri ayarlanmamışsa en parlak olan 255'e ayarlıyoruz. Aksi halde ayar ne ise o ayarlanıyor..
+		layoutpars.screenBrightness = sharedPref.getInt("prefEkranIsigiAydinligi", 255) / (float)255;
+		activity.getWindow().setAttributes(layoutpars); // Yeni değerler ekrana uygulanıyor
 	}
 
 	private BroadcastReceiver broadcastreceiver = new BroadcastReceiver() {
@@ -869,10 +857,14 @@ public class AkorDefterimSys {
 			NetworkInfo wifiInfo = conMgr.getNetworkInfo(ConnectivityManager.TYPE_WIFI);
 			NetworkInfo MobileInfo = conMgr.getNetworkInfo(ConnectivityManager.TYPE_MOBILE);
 
-			if (wifiInfo.isConnected()) {
-				return conMgr.getActiveNetworkInfo() != null && conMgr.getActiveNetworkInfo().isAvailable() && conMgr.getActiveNetworkInfo().isConnected();
-			} else if (MobileInfo.isConnected()) {
-				return conMgr.getActiveNetworkInfo() != null && conMgr.getActiveNetworkInfo().isAvailable() && conMgr.getActiveNetworkInfo().isConnected();
+			if(wifiInfo != null && MobileInfo != null) {
+				if (wifiInfo.isConnected()) {
+					return conMgr.getActiveNetworkInfo() != null && conMgr.getActiveNetworkInfo().isAvailable() && conMgr.getActiveNetworkInfo().isConnected();
+				} else if (MobileInfo.isConnected()) {
+					return conMgr.getActiveNetworkInfo() != null && conMgr.getActiveNetworkInfo().isAvailable() && conMgr.getActiveNetworkInfo().isConnected();
+				} else {
+					return false;
+				}
 			} else {
 				return false;
 			}
@@ -881,10 +873,14 @@ public class AkorDefterimSys {
 			NetworkInfo wifiInfo = conMgr.getNetworkInfo(ConnectivityManager.TYPE_WIFI);
 			NetworkInfo MobileInfo = conMgr.getNetworkInfo(ConnectivityManager.TYPE_MOBILE);
 
-			if (wifiInfo.isConnected()) {
-				return conMgr.getActiveNetworkInfo() != null && conMgr.getActiveNetworkInfo().isAvailable() && conMgr.getActiveNetworkInfo().isConnected();
-			} else if (MobileInfo.isConnected()) {
-				return conMgr.getActiveNetworkInfo() != null && conMgr.getActiveNetworkInfo().isAvailable() && conMgr.getActiveNetworkInfo().isConnected();
+			if(wifiInfo != null && MobileInfo != null) {
+				if (wifiInfo.isConnected()) {
+					return conMgr.getActiveNetworkInfo() != null && conMgr.getActiveNetworkInfo().isAvailable() && conMgr.getActiveNetworkInfo().isConnected();
+				} else if (MobileInfo.isConnected()) {
+					return conMgr.getActiveNetworkInfo() != null && conMgr.getActiveNetworkInfo().isAvailable() && conMgr.getActiveNetworkInfo().isConnected();
+				} else {
+					return false;
+				}
 			} else {
 				return false;
 			}
@@ -897,10 +893,14 @@ public class AkorDefterimSys {
 			NetworkInfo wifiInfo = conMgr.getNetworkInfo(ConnectivityManager.TYPE_WIFI);
 			NetworkInfo MobileInfo = conMgr.getNetworkInfo(ConnectivityManager.TYPE_MOBILE);
 
-			if (wifiInfo.isConnected()) {
-				return conMgr.getActiveNetworkInfo() != null && conMgr.getActiveNetworkInfo().isAvailable() && conMgr.getActiveNetworkInfo().isConnected();
-			} else if (MobileInfo.isConnected()) {
-				return conMgr.getActiveNetworkInfo() != null && conMgr.getActiveNetworkInfo().isAvailable() && conMgr.getActiveNetworkInfo().isConnected();
+			if(wifiInfo != null && MobileInfo != null) {
+				if (wifiInfo.isConnected()) {
+					return conMgr.getActiveNetworkInfo() != null && conMgr.getActiveNetworkInfo().isAvailable() && conMgr.getActiveNetworkInfo().isConnected();
+				} else if (MobileInfo.isConnected()) {
+					return conMgr.getActiveNetworkInfo() != null && conMgr.getActiveNetworkInfo().isAvailable() && conMgr.getActiveNetworkInfo().isConnected();
+				} else {
+					return false;
+				}
 			} else {
 				return false;
 			}
@@ -2111,6 +2111,35 @@ public class AkorDefterimSys {
 		return ip;
 	}
 
+	public String getIPAddress(boolean useIPv4) {
+		try {
+			List<NetworkInterface> interfaces = Collections.list(NetworkInterface.getNetworkInterfaces());
+			for (NetworkInterface intf : interfaces) {
+				List<InetAddress> addrs = Collections.list(intf.getInetAddresses());
+				for (InetAddress addr : addrs) {
+					if (!addr.isLoopbackAddress()) {
+						String sAddr = addr.getHostAddress();
+						//boolean isIPv4 = InetAddressUtils.isIPv4Address(sAddr);
+						boolean isIPv4 = sAddr.indexOf(':')<0;
+
+						if (useIPv4) {
+							if (isIPv4)
+								return sAddr;
+						} else {
+							if (!isIPv4) {
+								int delim = sAddr.indexOf('%'); // drop ip6 zone suffix
+								return delim<0 ? sAddr.toUpperCase() : sAddr.substring(0, delim).toUpperCase();
+							}
+						}
+					}
+				}
+			}
+		} catch (Exception ex) { } // for now eat exceptions
+		return "";
+	}
+
+
+
 	public static class NettenResimYukle extends AsyncTask<String, Void, Bitmap> {
 		ImageView bmImage;
 
@@ -2490,6 +2519,30 @@ public class AkorDefterimSys {
 	}
 
 	// PHP İŞLEMLERİ - Retrofit 2
+
+	public void IPAdresGetir(Activity activity) {
+		RetrofitInterface retrofitInterface = RetrofitServiceGenerator.createService(activity, RetrofitInterface.class);
+		final Interface_AsyncResponse AsyncResponse;
+		if(activity != null) AsyncResponse = (Interface_AsyncResponse) activity;
+		else AsyncResponse = (Interface_AsyncResponse) this.activity;
+
+		Call<SnfIPAdres> snfIPAdresCall = retrofitInterface.IPAdresGetir();
+		snfIPAdresCall.enqueue(new Callback<SnfIPAdres>() {
+			@Override
+			public void onResponse(Call<SnfIPAdres> call, Response<SnfIPAdres> response) {
+				if(response.isSuccessful()) {
+					SnfIPAdres snfIPAdres = response.body();
+
+					AsyncResponse.AsyncTaskReturnValue("{\"Islem\":\"IPAdresGetir\", \"IPAdres\":\"" + snfIPAdres.getIPAdres() + "\"}");
+				} else AsyncResponse.AsyncTaskReturnValue("{\"Islem\":\"IPAdresGetir\", \"IPAdres\":\"127.0.0.1\"}");
+			}
+
+			@Override
+			public void onFailure(Call<SnfIPAdres> call, Throwable t) {
+				AsyncResponse.AsyncTaskReturnValue("{\"Islem\":\"IPAdresGetir\", \"IPAdres\":\"127.0.0.1\"}");
+			}
+		});
+	}
 
 	public void TarihSaatGetir(Activity activity, final String Islem) {
 		RetrofitInterface retrofitInterface = RetrofitServiceGenerator.createService(activity, RetrofitInterface.class);
@@ -3001,6 +3054,28 @@ public class AkorDefterimSys {
 		});
 	}
 
+	/*public void GeriBildirimListesiGetir(String EPosta, String ParolaSHA1) {
+		RetrofitInterface retrofitInterface = RetrofitServiceGenerator.createService(activity, RetrofitInterface.class);
+		final Interface_AsyncResponse AsyncResponse = (Interface_AsyncResponse) activity;
+
+		Call<SnfGeriBildirimListesiGetir> snfGeriBildirimListesiGetirCall = retrofitInterface.GeriBildirimListesiGetir(EPosta, ParolaSHA1);
+		snfGeriBildirimListesiGetirCall.enqueue(new Callback<SnfGeriBildirimListesiGetir>() {
+			@Override
+			public void onResponse(Call<SnfGeriBildirimListesiGetir> call, Response<SnfGeriBildirimListesiGetir> response) {
+				if(response.isSuccessful()) {
+					SnfGeriBildirimListesiGetir snfGeriBildirimListesiGetir = response.body();
+
+					AsyncResponse.AsyncTaskReturnValue("{\"Islem\":\"GeriBildirimListesiGetir\", \"Sonuc\":true, \"GeriBildirimListesi\":" + snfGeriBildirimListesiGetir.getGeriBildirimListesi() + "}");
+				} else AsyncResponse.AsyncTaskReturnValue("{\"Islem\":\"GeriBildirimListesiGetir\", \"Sonuc\":false, \"GeriBildirimListesi\":\"[]\"}");
+			}
+
+			@Override
+			public void onFailure(Call<SnfGeriBildirimListesiGetir> call, Throwable t) {
+				AsyncResponse.AsyncTaskReturnValue("{\"Islem\":\"GeriBildirimListesiGetir\", \"Sonuc\":false, \"GeriBildirimListesi\":\"[]\"}");
+			}
+		});
+	}*/
+
 
 
 
@@ -3092,10 +3167,8 @@ public class AkorDefterimSys {
 			if (GecerliVersiyonCode > sharedPref.getInt("prefEskiVersiyonCode", 1)) {
 				if(!AlertDialogisShowing(ADDialog_Yenilikler)) {
 					LayoutInflater inflater = activity.getLayoutInflater();
-					View ViewDialogCustom;
+					View ViewDialogCustom = inflater.inflate(R.layout.dialog_uygulama_yenilikler, null);
 					Typeface YaziFontu = FontGetir(activity, "anivers_regular");
-
-					ViewDialogCustom = inflater.inflate(R.layout.dialog_uygulama_yenilikler, null);
 
 					TextView Dialog_lblVersiyonNo = ViewDialogCustom.findViewById(R.id.Dialog_lblVersiyonNo);
 					Dialog_lblVersiyonNo.setTypeface(YaziFontu, Typeface.BOLD);
@@ -3394,51 +3467,51 @@ public class AkorDefterimSys {
 			case "Mutlaka_EnAzBir_KucukHarf_Icermeli":
 				return txt.matches("^(?=.*[a-zığüşöç]).{1,}$");
 			case "Mutlaka_EnAzBir_BuyukHarf_Icermeli":
-				return txt.matches("^(?=.*[A-ZĞÜŞIÖÇ]).{1,}$");
+				return txt.matches("^(?=.*[A-ZĞÜŞİÖÇ]).{1,}$");
 			case "Mutlaka_EnAzBir_KucukHarf_BuyukHarf_Icermeli":
 				return txt.matches("^(?=.*[a-zığüşöç])(?=.*[A-Z]).{1,}$");
 			case "Mutlaka_EnAzBir_Sayi_KucukHarf_BuyukHarf_Icermeli":
-				return txt.matches("^(?=.*[0-9])(?=.*[a-zığüşöç])(?=.*[A-ZĞÜŞIÖÇ]).{1,}$");
+				return txt.matches("^(?=.*[0-9])(?=.*[a-zığüşöç])(?=.*[A-ZĞÜŞİÖÇ]).{1,}$");
 			case "Mutlaka_EnAzBir_Sayi_KucukHarf_Icermeli":
 				return txt.matches("^(?=.*[0-9])(?=.*[a-zığüşöç]).{1,}$");
 			case "Mutlaka_EnAzBir_Sayi_BuyukHarf_Icermeli":
-				return txt.matches("^(?=.*[0-9])(?=.*[A-ZĞÜŞIÖÇ]).{1,}$");
+				return txt.matches("^(?=.*[0-9])(?=.*[A-ZĞÜŞİÖÇ]).{1,}$");
 
 			case "SadeceKucukHarf":
 				return txt.matches("^[a-zığüşöç]*$");
 			case "SadeceBuyukHarf":
 				return txt.matches("^[A-ZĞÜŞIÖÇ]*$");
 			case "SadeceKucukHarfBuyukHarf":
-				return txt.matches("^[a-zığüşöçA-ZĞÜŞIÖÇ]*$");
+				return txt.matches("^[a-zığüşöçA-ZĞÜŞİÖÇ]*$");
 			case "SadeceKucukHarfBuyukHarfOzelKarakter":
-				return txt.matches("^[a-zığüşöçA-ZĞÜŞIÖÇ_().,+!*/\\-]*$");
+				return txt.matches("^[a-zığüşöçA-ZĞÜŞİÖÇ_().,+!*/\\-]*$");
 			case "SadeceSayi":
 				return txt.matches("^[0-9]*$");
 			case "SadeceSayiKucukHarf":
 				return txt.matches("^[0-9a-zığüşöç]*$");
 			case "SadeceSayiBuyukHarf":
-				return txt.matches("^[0-9A-ZĞÜŞIÖÇ]*$");
+				return txt.matches("^[0-9A-ZĞÜŞİÖÇ]*$");
 			case "SadeceSayiKucukHarfBuyukHarf":
-				return txt.matches("^[0-9a-zığüşöçA-ZĞÜŞIÖÇ]*$");
+				return txt.matches("^[0-9a-zığüşöçA-ZĞÜŞİÖÇ]*$");
 
 			case "SadeceKucukHarfBosluklu":
 				return txt.matches("^[a-zığüşöç ]*$");
 			case "SadeceBuyukHarfBosluklu":
 				return txt.matches("^[A-ZĞÜŞIÖÇ ]*$");
 			case "SadeceKucukHarfBuyukHarfBosluklu":
-				return txt.matches("^[a-zığüşöçA-ZĞÜŞIÖÇ ]*$");
+				return txt.matches("^[a-zığüşöçA-ZĞÜŞİÖÇ ]*$");
 			case "SadeceKucukHarfBuyukHarfOzelKarakterBosluklu":
-				return txt.matches("^[a-zığüşöçA-ZĞÜŞIÖÇ_().,+!*/\\- ]*$");
+				return txt.matches("^[a-zığüşöçA-ZĞÜŞİÖÇ_().,+!*/\\- ]*$");
 			case "SadeceSayiBosluklu":
 				return txt.matches("^[0-9 ]*$");
 			case "SadeceSayiKucukHarfBosluklu":
 				return txt.matches("^[0-9a-zığüşöç ]*$");
 			case "SadeceSayiBuyukHarfBosluklu":
-				return txt.matches("^[0-9A-ZĞÜŞIÖÇ ]*$");
+				return txt.matches("^[0-9A-ZĞÜŞİÖÇ ]*$");
 			case "SadeceSayiKucukHarfBuyukHarfBosluklu":
-				return txt.matches("^[0-9a-zığüşöçA-ZĞÜŞIÖÇ ]*$");
+				return txt.matches("^[0-9a-zığüşöçA-ZĞÜŞİÖÇ ]*$");
 			case "SadeceSayiKucukHarfBuyukHarfOzelKarakterBosluklu":
-				return txt.matches("^[0-9a-zığüşöçA-ZĞÜŞIÖÇ_().,+!*/\\- ]*$");
+				return txt.matches("^[0-9a-zığüşöçA-ZĞÜŞİÖÇ_().,+!*/\\- ]*$");
 
 			case "SadeceKucukHarfTurkceKaraktersiz":
 				return txt.matches("^[a-z]*$");
@@ -3475,7 +3548,7 @@ public class AkorDefterimSys {
 				return txt.matches("^[0-9a-zA-Z_().,+!*/\\- ]*$");
 
 			case "Sifre":
-				return txt.matches("^(?=.*[0-9])(?=.*[a-zığüşöç])(?=.*[A-ZĞÜŞIÖÇ]).{1,}$");
+				return txt.matches("^(?=.*[0-9])(?=.*[a-zığüşöç])(?=.*[A-ZĞÜŞİÖÇ]).{1,}$");
 			case "CepTelefonu":
 				return txt.matches("^[0-9() ]*$");
 			case "EPosta":
@@ -3494,42 +3567,6 @@ public class AkorDefterimSys {
 
 	private boolean isNumeric(String string) {
 		return string.matches("^\\d+$");
-	}
-
-	public Spannable TiklanabilirAkorEtiketleyici(String Icerik, String AkorTag1, String AkorTag2, int YaziRengi) {
-		Spannable wordtoSpan = new SpannableString(Html.fromHtml(Icerik));
-
-		Icerik = Icerik.replace("&nbsp;", " ");
-		Icerik = Icerik.replace("<br />", "\n");
-		Icerik = Icerik.replace("&uuml;", "ü");
-		Icerik = Icerik.replace("&ouml;", "ö");
-		Icerik = Icerik.replace("&ccedil;", "ç");
-		Icerik = Icerik.replace("&Uuml;", "Ü");
-		Icerik = Icerik.replace("&Ouml;", "Ö");
-		Icerik = Icerik.replace("&Ccedil;", "Ç");
-		Icerik = Icerik.replace("<strong>", "");
-		Icerik = Icerik.replace("</strong>", "");
-
-		int tag1_koor, tag2_koor, x, y;
-
-		while (Icerik.contains(AkorTag1)) {
-			tag1_koor = Icerik.indexOf(AkorTag1);
-			tag2_koor = Icerik.indexOf(AkorTag2);
-
-			int AkorLen = tag2_koor - (tag1_koor + AkorTag1.length());
-
-			Icerik = Icerik.substring(0, tag1_koor) + Icerik.substring(tag1_koor + AkorTag1.length(), Icerik.length());
-			Icerik = Icerik.substring(0, Icerik.indexOf(AkorTag2)) + Icerik.substring(Icerik.indexOf(AkorTag2) + AkorTag2.length(), Icerik.length());
-
-			x = tag1_koor;
-			y = x + AkorLen;
-
-			wordtoSpan.setSpan(new TiklanabilirAkorEtiketleyici(activity, Icerik, YaziRengi, x, y), x, y, Spanned.SPAN_POINT_MARK);
-
-			if(!Icerik.contains(AkorTag1)) break;
-		}
-
-		return wordtoSpan;
 	}
 
 	public SpannableStringBuilder Transpoze(String TranspozeIslem, String Icerik) {
@@ -3794,193 +3831,6 @@ public class AkorDefterimSys {
 		return SBTranspozeEdilenIcerik;
 	}
 
-	public void AkorCetveli(final Activity activity, String SecilenAkor) {
-		final Typeface YaziFontu = FontGetir(activity, "anivers_regular");
-        LayoutInflater inflater = activity.getLayoutInflater();
-        View ViewDialogContent = inflater.inflate(R.layout.dialog_akor_gosterici, null);
-
-        final AlertDialog ADDialogAkorGosterici = CustomAlertDialog(activity, R.mipmap.ic_launcher, activity.getString(R.string.akor_cetveli), ViewDialogContent, activity.getString(R.string.kapat));
-        ADDialogAkorGosterici.getWindow().getAttributes().windowAnimations = R.style.DialogAnimation;
-
-		final LinearLayout Dialog_LLAkorCetveli = ViewDialogContent.findViewById(R.id.Dialog_LLAkorCetveli);
-
-		final ConstraintLayout Dialog_CLAkorCetveli = ViewDialogContent.findViewById(R.id.Dialog_CLAkorCetveli);
-		Dialog_CLAkorCetveli.getLayoutParams().height = ADDialogAkorGosterici.getWindow().getWindowManager().getDefaultDisplay().getHeight() - 750;
-
-		final Guideline v_guideline2 = ViewDialogContent.findViewById(R.id.v_guideline2);
-
-		TextView Dialog_txtTon = ViewDialogContent.findViewById(R.id.Dialog_txtTon);
-		Dialog_txtTon.setTypeface(YaziFontu, Typeface.BOLD);
-
-		final ListView Dialog_lstTonlar = ViewDialogContent.findViewById(R.id.Dialog_lstTonlar);
-
-		TextView Dialog_txtAkor = ViewDialogContent.findViewById(R.id.Dialog_txtAkor);
-		Dialog_txtAkor.setTypeface(YaziFontu, Typeface.BOLD);
-
-        final ListView Dialog_lstAkorlar = ViewDialogContent.findViewById(R.id.Dialog_lstAkorlar);
-
-		final ScrollView Dialog_SVGitarKlavye = ViewDialogContent.findViewById(R.id.Dialog_SVGitarKlavye);
-
-        final ImageView Dialog_ImgGitarKlavye = ViewDialogContent.findViewById(R.id.Dialog_ImgGitarKlavye);
-		
-		String SecilenTon;
-		final String[] SecilenAkorDizisi = {"0,0,0,0,0,0"};
-		Boolean AkorBulunduMu = false;
-		final List<SnfAkorlar> snfAkorlar = new ArrayList<>();
-		AdpTonlar AdpTonlar = null;
-		AdpAkorlar AdpAkorlar = null;
-		
-		if(!SecilenAkor.equals("")) {
-			if(SecilenAkor.length() < 2) SecilenTon = SecilenAkor;
-			else SecilenTon = SecilenAkor.substring(0,2).contains("#") ? SecilenAkor.substring(0,2) : SecilenAkor.substring(0,1);
-		} else {
-			SecilenTon = "";
-		}
-
-		try {
-			JSONArray JSONArrTonlar;
-			List<SnfTonlar> snfTonlar = new ArrayList<>();
-			SnfTonlar Tonlar;
-
-			for(int x = 0; x < 12; x++) {
-				JSONArrTonlar = new JSONArray(new JSONObject(new JSONObject(JSONTonAkorGetir(x)).getString("AkorCetveli")).getString("Tonlar"));
-
-				for(int i = 0; i < JSONArrTonlar.length(); i++) {
-					Tonlar = new SnfTonlar();
-					Tonlar.setTonAdi(new JSONObject(JSONArrTonlar.getString(i)).getString("TonAdi"));
-
-					if(SecilenTon.equals(new JSONObject(JSONArrTonlar.getString(i)).getString("TonAdi"))) Tonlar.setSecim(true);
-					else Tonlar.setSecim(false);
-
-					snfTonlar.add(Tonlar);
-				}
-			}
-
-			AdpTonlar = new AdpTonlar(activity, snfTonlar);
-			Dialog_lstTonlar.setAdapter(AdpTonlar);
-		} catch (JSONException e) {
-			e.printStackTrace();
-		}
-
-        try {
-            snfAkorlar.clear();
-            SnfAkorlar Akorlar;
-			Boolean IlkAkorSecildiMi = false;
-
-			JSONArray JSONArrTonlar;
-			JSONArray JSONArrAkorlar = null;
-
-			for(int x = 0; x < 12; x++) {
-				JSONArrTonlar = new JSONArray(new JSONObject(new JSONObject(JSONTonAkorGetir(x)).getString("AkorCetveli")).getString("Tonlar"));
-
-				for(int i = 0; i < JSONArrTonlar.length(); i++) {
-					if(new JSONObject(JSONArrTonlar.getString(i)).getString("TonAdi").equals(SecilenTon)) {
-						JSONArrAkorlar = new JSONArray(new JSONObject(JSONArrTonlar.getString(i)).getString("Akorlari"));
-						AkorBulunduMu = true;
-					}
-				}
-			}
-
-            for(int i = 0; i < JSONArrAkorlar.length(); i++) {
-                Akorlar = new SnfAkorlar();
-                Akorlar.setAkorAdi(new JSONObject(JSONArrAkorlar.getString(i)).getString("AkorAdi"));
-                Akorlar.setDizi(new JSONObject(JSONArrAkorlar.getString(i)).getString("Dizi"));
-
-				if(!SecilenAkor.equals("") && AkorBulunduMu) Akorlar.setSecimBG(true);
-				else Akorlar.setSecimBG(false);
-
-				if(SecilenAkor.equals(new JSONObject(JSONArrAkorlar.getString(i)).getString("AkorAdi"))) {
-					if(!IlkAkorSecildiMi) {
-						Akorlar.setSecimYazi(true);
-						IlkAkorSecildiMi = true;
-
-						SecilenAkorDizisi[0] = new JSONObject(JSONArrAkorlar.getString(i)).getString("Dizi");
-					} else Akorlar.setSecimYazi(false);
-				} else Akorlar.setSecimYazi(false);
-
-                snfAkorlar.add(Akorlar);
-            }
-
-            AdpAkorlar = new AdpAkorlar(activity, snfAkorlar);
-			Dialog_lstAkorlar.setAdapter(AdpAkorlar);
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-
-		Dialog_ImgGitarKlavye.setImageBitmap(GitarUzerindeAkorGetir(activity, ADDialogAkorGosterici, YaziFontu, SecilenAkorDizisi[0]));
-		Dialog_ImgGitarKlavye.setScaleType(ImageView.ScaleType.FIT_START);
-
-		final AdpTonlar AdpTonlar2 = AdpTonlar;
-		final AdpAkorlar[] AdpAkorlar2 = {AdpAkorlar};
-		Dialog_lstTonlar.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-			@Override
-			public void onItemClick(AdapterView<?> parent, View arg1, final int position, long arg3) {
-				AdpTonlar2.setSelectable(position);
-
-				try {
-					snfAkorlar.clear();
-					SnfAkorlar Akorlar;
-					Boolean IlkAkorSecildiMi = false;
-
-					JSONArray JSONArrAkorlar = new JSONArray(new JSONObject(new JSONArray(new JSONObject(new JSONObject(JSONTonAkorGetir(position)).getString("AkorCetveli")).getString("Tonlar")).getString(0)).getString("Akorlari"));
-
-					for(int i = 0; i < JSONArrAkorlar.length(); i++) {
-						Akorlar = new SnfAkorlar();
-						Akorlar.setAkorAdi(new JSONObject(JSONArrAkorlar.getString(i)).getString("AkorAdi"));
-						Akorlar.setDizi(new JSONObject(JSONArrAkorlar.getString(i)).getString("Dizi"));
-						Akorlar.setSecimBG(true);
-
-						if(!IlkAkorSecildiMi) {
-							Akorlar.setSecimYazi(true);
-							IlkAkorSecildiMi = true;
-
-							SecilenAkorDizisi[0] = new JSONObject(JSONArrAkorlar.getString(i)).getString("Dizi");
-						} else Akorlar.setSecimYazi(false);
-
-						snfAkorlar.add(Akorlar);
-					}
-
-					AdpAkorlar2[0] = new AdpAkorlar(activity, snfAkorlar);
-					Dialog_lstAkorlar.setAdapter(AdpAkorlar2[0]);
-
-					Dialog_ImgGitarKlavye.setImageBitmap(ImageScaleToFitWidth(GitarUzerindeAkorGetir(activity, ADDialogAkorGosterici, YaziFontu, SecilenAkorDizisi[0]), Dialog_LLAkorCetveli.getWidth()));
-					Dialog_ImgGitarKlavye.setScaleType(ImageView.ScaleType.FIT_START);
-				} catch (JSONException e) {
-					e.printStackTrace();
-				}
-			}
-		});
-
-		Dialog_lstAkorlar.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-			@Override
-			public void onItemClick(AdapterView<?> parent, View arg1, final int position, long arg3) {
-				AdpAkorlar2[0].setSelectableYazi(position);
-
-				String AkorDizi = snfAkorlar.get(position).getDizi();
-
-				Dialog_ImgGitarKlavye.setImageBitmap(ImageScaleToFitWidth(GitarUzerindeAkorGetir(activity, ADDialogAkorGosterici, YaziFontu, AkorDizi), Dialog_LLAkorCetveli.getWidth()));
-				Dialog_ImgGitarKlavye.setScaleType(ImageView.ScaleType.FIT_START);
-			}
-		});
-
-		for(int i = 0;i < snfAkorlar.size();i ++) {
-			if(snfAkorlar.get(i).getSecimYazi()) {
-				Dialog_lstAkorlar.setSelection(i);
-			}
-		}
-
-		ADDialogAkorGosterici.show();
-
-		ADDialogAkorGosterici.getButton(AlertDialog.BUTTON_NEGATIVE).setOnClickListener(new View.OnClickListener() {
-			@Override
-			public void onClick(View view) {
-				ADDialogAkorGosterici.dismiss();
-			}
-		});
-
-		if(!AkorBulunduMu) ToastMsj(activity, activity.getString(R.string.akor_bulunamadi), Toast.LENGTH_LONG);
-	}
-
 	public Boolean SecilenStringAkorMu(String SecilenString) {
 		Boolean AkorBulunduMu = false;
 
@@ -4085,11 +3935,171 @@ public class AkorDefterimSys {
 	}
 
 	@Contract(pure = true)
-	private String JSONTonAkorGetir(int i) {
+	public String JSONTonAkorGetir(int i) {
 		String JSONTonAkorData = null;
 
 		switch (i){
 			case 0:
+				JSONTonAkorData = "{\n" +
+						"\"AkorCetveli\": {\n" +
+						"\"Tonlar\": [\n" +
+						"{\"TonAdi\":\"Ab\", \"Akorlari\": [\n" +
+						"{\"AkorAdi\": \"Ab\", \"Dizi\": \"4,3,1,1,1,4\"},\n" +
+						"{\"AkorAdi\": \"Ab\", \"Dizi\": \"4,6,6,5,4,4\"},\n" +
+						"{\"AkorAdi\": \"Ab\", \"Dizi\": \"x,6,6,8,9,8\"},\n" +
+						"{\"AkorAdi\": \"Ab\", \"Dizi\": \"[8],11,10,8,9,8\"},\n" +
+						"{\"AkorAdi\": \"Abm\", \"Dizi\": \"x,x,1,4,4,4\"},\n" +
+						"{\"AkorAdi\": \"Abm\", \"Dizi\": \"4,6,6,4,4,4\"},\n" +
+						"{\"AkorAdi\": \"Abm\", \"Dizi\": \"x,x,9,8,9,7\"},\n" +
+						"{\"AkorAdi\": \"Abm\", \"Dizi\": \"[11],11,13,13,12,10\"},\n" +
+						"{\"AkorAdi\": \"Abdim\", \"Dizi\": \"x,x,0,1,0,1\"},\n" +
+						"{\"AkorAdi\": \"Abdim\", \"Dizi\": \"1,2,3,1,3,1\"},\n" +
+						"{\"AkorAdi\": \"Abdim\", \"Dizi\": \"x,x,3,4,3,4\"},\n" +
+						"{\"AkorAdi\": \"Abdim\", \"Dizi\": \"4,5,6,4,6,4\"},\n" +
+						"{\"AkorAdi\": \"Absus4\", \"Dizi\": \"x,x,1,1,2,4\"},\n" +
+						"{\"AkorAdi\": \"Absus4\", \"Dizi\": \"4,4,6,6,4,4\"},\n" +
+						"{\"AkorAdi\": \"Absus4\", \"Dizi\": \"x,6,6,8,9,9\"},\n" +
+						"{\"AkorAdi\": \"Absus4\", \"Dizi\": \"[11],11,13,13,14,11\"},\n" +
+						"{\"AkorAdi\": \"Ab7sus4\", \"Dizi\": \"x,x,1,1,2,2\"},\n" +
+						"{\"AkorAdi\": \"Ab7sus4\", \"Dizi\": \"4,6,4,6,4,4\"},\n" +
+						"{\"AkorAdi\": \"Ab7sus4\", \"Dizi\": \"x,11,11,11,9,9\"},\n" +
+						"{\"AkorAdi\": \"Ab7sus4\", \"Dizi\": \"[11],11,13,11,14,11\"},\n" +
+						"{\"AkorAdi\": \"Ab-5\", \"Dizi\": \"x,5,6,5,3,x\"},\n" +
+						"{\"AkorAdi\": \"Ab-5\", \"Dizi\": \"x,x,10,7,9,8\"},\n" +
+						"{\"AkorAdi\": \"Ab-5\", \"Dizi\": \"10,11,10,13,[13],x\"},\n" +
+						"{\"AkorAdi\": \"Ab-5\", \"Dizi\": \"x,11,12,13,13,x\"},\n" +
+						"{\"AkorAdi\": \"Ab+5\", \"Dizi\": \"x,x,2,1,1,0\"},\n" +
+						"{\"AkorAdi\": \"Ab+5\", \"Dizi\": \"x,x,2,1,1,4\"},\n" +
+						"{\"AkorAdi\": \"Ab+5\", \"Dizi\": \"x,7,6,5,5,x\"},\n" +
+						"{\"AkorAdi\": \"Ab+5\", \"Dizi\": \"x,x,10,9,9,8\"},\n" +
+						"{\"AkorAdi\": \"Ab6\", \"Dizi\": \"x,x,1,1,1,1\"},\n" +
+						"{\"AkorAdi\": \"Ab6\", \"Dizi\": \"x,6,6,5,6,x\"},\n" +
+						"{\"AkorAdi\": \"Ab6\", \"Dizi\": \"x,6,6,8,6,8\"},\n" +
+						"{\"AkorAdi\": \"Ab6\", \"Dizi\": \"[8],8,10,8,9,8\"},\n" +
+						"{\"AkorAdi\": \"Ab69\", \"Dizi\": \"4,3,3,3,4,4\"},\n" +
+						"{\"AkorAdi\": \"Ab69\", \"Dizi\": \"x,6,6,5,6,6\"},\n" +
+						"{\"AkorAdi\": \"Ab69\", \"Dizi\": \"x,11,10,10,11,11\"},\n" +
+						"{\"AkorAdi\": \"Ab7\", \"Dizi\": \"x,[3],1,1,1,2\"},\n" +
+						"{\"AkorAdi\": \"Ab7\", \"Dizi\": \"4,6,4,5,4,4\"},\n" +
+						"{\"AkorAdi\": \"Ab7\", \"Dizi\": \"x,6,6,8,7,8\"},\n" +
+						"{\"AkorAdi\": \"Ab7\", \"Dizi\": \"[11],11,13,11,13,11\"},\n" +
+						"{\"AkorAdi\": \"Ab7-5\", \"Dizi\": \"x,3,4,5,3,4\"},\n" +
+						"{\"AkorAdi\": \"Ab7-5\", \"Dizi\": \"x,x,6,7,7,8\"},\n" +
+						"{\"AkorAdi\": \"Ab7-5\", \"Dizi\": \"x,9,10,11,9,10\"},\n" +
+						"{\"AkorAdi\": \"Ab7-5\", \"Dizi\": \"x,11,12,11,13,14\"},\n" +
+						"{\"AkorAdi\": \"Ab7+5\", \"Dizi\": \"x,x,2,1,1,2\"},\n" +
+						"{\"AkorAdi\": \"Ab7+5\", \"Dizi\": \"x,x,4,5,5,4\"},\n" +
+						"{\"AkorAdi\": \"Ab7+5\", \"Dizi\": \"x,x,6,9,7,8\"},\n" +
+						"{\"AkorAdi\": \"Ab7+5\", \"Dizi\": \"x,x,10,11,9,12\"},\n" +
+						"{\"AkorAdi\": \"Ab9\", \"Dizi\": \"x,1,1,1,1,2\"},\n" +
+						"{\"AkorAdi\": \"Ab9\", \"Dizi\": \"4,6,4,5,4,6\"},\n" +
+						"{\"AkorAdi\": \"Ab9\", \"Dizi\": \"6,6,6,8,7,8\"},\n" +
+						"{\"AkorAdi\": \"Ab9\", \"Dizi\": \"[11],11,10,11,11,11\"},\n" +
+						"{\"AkorAdi\": \"Ab9-5\", \"Dizi\": \"x,1,0,1,1,2\"},\n" +
+						"{\"AkorAdi\": \"Ab9-5\", \"Dizi\": \"4,3,4,3,3,4\"},\n" +
+						"{\"AkorAdi\": \"Ab9-5\", \"Dizi\": \"x,5,6,5,7,6\"},\n" +
+						"{\"AkorAdi\": \"Ab9-5\", \"Dizi\": \"x,x,8,7,7,8\"},\n" +
+						"{\"AkorAdi\": \"Ab9+5\", \"Dizi\": \"2,1,2,1,1,2\"},\n" +
+						"{\"AkorAdi\": \"Ab9+5\", \"Dizi\": \"x,3,4,3,5,4\"},\n" +
+						"{\"AkorAdi\": \"Ab9+5\", \"Dizi\": \"[8],9,8,9,9,8\"},\n" +
+						"{\"AkorAdi\": \"Ab9+5\", \"Dizi\": \"x,11,10,11,11,12\"},\n" +
+						"{\"AkorAdi\": \"Ab7-9\", \"Dizi\": \"x,0,1,1,1,2\"},\n" +
+						"{\"AkorAdi\": \"Ab7-9\", \"Dizi\": \"4,6,4,5,4,5\"},\n" +
+						"{\"AkorAdi\": \"Ab7-9\", \"Dizi\": \"5,6,6,5,7,5\"},\n" +
+						"{\"AkorAdi\": \"Ab7-9\", \"Dizi\": \"x,11,10,11,10,11\"},\n" +
+						"{\"AkorAdi\": \"Ab7+9\", \"Dizi\": \"4,6,4,5,7,7\"},\n" +
+						"{\"AkorAdi\": \"Ab7+9\", \"Dizi\": \"x,6,6,5,7,7\"},\n" +
+						"{\"AkorAdi\": \"Ab7+9\", \"Dizi\": \"7,9,10,8,7,7\"},\n" +
+						"{\"AkorAdi\": \"Ab7+9\", \"Dizi\": \"x,11,10,11,12,x\"},\n" +
+						"{\"AkorAdi\": \"Ab11\", \"Dizi\": \"x,3,1,1,2,2\"},\n" +
+						"{\"AkorAdi\": \"Ab11\", \"Dizi\": \"[6],[6],6,6,7,8\"},\n" +
+						"{\"AkorAdi\": \"Ab11\", \"Dizi\": \"x,11,10,11,9,9\"},\n" +
+						"{\"AkorAdi\": \"Ab11\", \"Dizi\": \"x,11,11,11,13,11\"},\n" +
+						"{\"AkorAdi\": \"Ab+11\", \"Dizi\": \"x,1,0,1,1,2\"},\n" +
+						"{\"AkorAdi\": \"Ab+11\", \"Dizi\": \"4,3,4,3,3,4\"},\n" +
+						"{\"AkorAdi\": \"Ab+11\", \"Dizi\": \"6,6,6,7,7,8\"},\n" +
+						"{\"AkorAdi\": \"Ab+11\", \"Dizi\": \"x,11,10,11,11,10\"},\n" +
+						"{\"AkorAdi\": \"Ab13\", \"Dizi\": \"2,1,1,1,1,1\"},\n" +
+						"{\"AkorAdi\": \"Ab13\", \"Dizi\": \"4,6,4,5,6,4\"},\n" +
+						"{\"AkorAdi\": \"Ab13\", \"Dizi\": \"4,4,4,5,6,6\"},\n" +
+						"{\"AkorAdi\": \"Ab13\", \"Dizi\": \"x,9,10,10,9,x\"},\n" +
+						"{\"AkorAdi\": \"AbM7\", \"Dizi\": \"4,6,5,5,4,4\"},\n" +
+						"{\"AkorAdi\": \"AbM7\", \"Dizi\": \"x,[6],6,8,8,8\"},\n" +
+						"{\"AkorAdi\": \"AbM7\", \"Dizi\": \"8,10,10,8,9,8\"},\n" +
+						"{\"AkorAdi\": \"AbM7\", \"Dizi\": \"[11],11,13,12,13,11\"},\n" +
+						"{\"AkorAdi\": \"AbM7-5\", \"Dizi\": \"x,x,0,1,1,3\"},\n" +
+						"{\"AkorAdi\": \"AbM7-5\", \"Dizi\": \"4,5,5,5,x,x\"},\n" +
+						"{\"AkorAdi\": \"AbM7-5\", \"Dizi\": \"x,x,6,7,8,8\"},\n" +
+						"{\"AkorAdi\": \"AbM7-5\", \"Dizi\": \"x,11,12,12,13,0\"},\n" +
+						"{\"AkorAdi\": \"AbM7+5\", \"Dizi\": \"x,x,2,1,1,3\"},\n" +
+						"{\"AkorAdi\": \"AbM7+5\", \"Dizi\": \"x,7,6,5,8,8\"},\n" +
+						"{\"AkorAdi\": \"AbM7+5\", \"Dizi\": \"[8],11,10,9,8,8\"},\n" +
+						"{\"AkorAdi\": \"AbM7+5\", \"Dizi\": \"x,11,14,12,13,x\"},\n" +
+						"{\"AkorAdi\": \"AbM9\", \"Dizi\": \"x,1,1,1,1,3\"},\n" +
+						"{\"AkorAdi\": \"AbM9\", \"Dizi\": \"x,3,5,3,4,4\"},\n" +
+						"{\"AkorAdi\": \"AbM9\", \"Dizi\": \"x,x,5,5,4,6\"},\n" +
+						"{\"AkorAdi\": \"AbM9\", \"Dizi\": \"[11],11,10,12,11,x\"},\n" +
+						"{\"AkorAdi\": \"AbM11\", \"Dizi\": \"x,1,1,3,2,3\"},\n" +
+						"{\"AkorAdi\": \"AbM11\", \"Dizi\": \"4,4,5,5,4,6\"},\n" +
+						"{\"AkorAdi\": \"AbM11\", \"Dizi\": \"x,x,10,12,11,9\"},\n" +
+						"{\"AkorAdi\": \"AbM11\", \"Dizi\": \"[11],11,11,12,11,11\"},\n" +
+						"{\"AkorAdi\": \"AbM13\", \"Dizi\": \"4,3,3,3,4,3\"},\n" +
+						"{\"AkorAdi\": \"AbM13\", \"Dizi\": \"x,8,6,6,8,8\"},\n" +
+						"{\"AkorAdi\": \"AbM13\", \"Dizi\": \"x,11,10,10,8,[8]\"},\n" +
+						"{\"AkorAdi\": \"AbM13\", \"Dizi\": \"x,11,[11],12,13,13\"},\n" +
+						"{\"AkorAdi\": \"Abm6\", \"Dizi\": \"x,x,1,1,0,1\"},\n" +
+						"{\"AkorAdi\": \"Abm6\", \"Dizi\": \"x,x,3,4,4,4\"},\n" +
+						"{\"AkorAdi\": \"Abm6\", \"Dizi\": \"x,6,6,4,6,4\"},\n" +
+						"{\"AkorAdi\": \"Abm6\", \"Dizi\": \"x,[6],6,8,6,7\"},\n" +
+						"{\"AkorAdi\": \"Abm69\", \"Dizi\": \"x,2,3,3,4,4\"},\n" +
+						"{\"AkorAdi\": \"Abm69\", \"Dizi\": \"x,6,6,4,6,6\"},\n" +
+						"{\"AkorAdi\": \"Abm69\", \"Dizi\": \"7,6,6,8,6,6\"},\n" +
+						"{\"AkorAdi\": \"Abm69\", \"Dizi\": \"x,11,9,10,11,11\"},\n" +
+						"{\"AkorAdi\": \"Abm7\", \"Dizi\": \"x,x,1,1,0,2\"},\n" +
+						"{\"AkorAdi\": \"Abm7\", \"Dizi\": \"4,6,4,4,4,4\"},\n" +
+						"{\"AkorAdi\": \"Abm7\", \"Dizi\": \"x,6,6,8,7,7\"},\n" +
+						"{\"AkorAdi\": \"Abm7\", \"Dizi\": \"[11],11,13,11,12,11\"},\n" +
+						"{\"AkorAdi\": \"Abm7-5\", \"Dizi\": \"x,x,0,1,0,2\"},\n" +
+						"{\"AkorAdi\": \"Abm7-5\", \"Dizi\": \"2,2,4,4,3,4\"},\n" +
+						"{\"AkorAdi\": \"Abm7-5\", \"Dizi\": \"x,x,6,7,7,7\"},\n" +
+						"{\"AkorAdi\": \"Abm7-5\", \"Dizi\": \"x,11,12,11,12,x\"},\n" +
+						"{\"AkorAdi\": \"Abm9\", \"Dizi\": \"x,1,1,1,0,2\"},\n" +
+						"{\"AkorAdi\": \"Abm9\", \"Dizi\": \"4,6,4,4,4,6\"},\n" +
+						"{\"AkorAdi\": \"Abm9\", \"Dizi\": \"[7],9,8,8,9,7\"},\n" +
+						"{\"AkorAdi\": \"Abm9\", \"Dizi\": \"x,11,9,11,11,11\"},\n" +
+						"{\"AkorAdi\": \"Abm11\", \"Dizi\": \"4,2,4,3,2,2\"},\n" +
+						"{\"AkorAdi\": \"Abm11\", \"Dizi\": \"4,4,4,4,4,6\"},\n" +
+						"{\"AkorAdi\": \"Abm11\", \"Dizi\": \"7,6,6,6,7,6\"},\n" +
+						"{\"AkorAdi\": \"Abm11\", \"Dizi\": \"x,11,9,11,11,9\"},\n" +
+						"{\"AkorAdi\": \"AbmM7\", \"Dizi\": \"x,2,1,1,4,3\"},\n" +
+						"{\"AkorAdi\": \"AbmM7\", \"Dizi\": \"4,6,5,4,4,4\"},\n" +
+						"{\"AkorAdi\": \"AbmM7\", \"Dizi\": \"x,6,6,8,8,7\"},\n" +
+						"{\"AkorAdi\": \"AbmM7\", \"Dizi\": \"x,10,9,8,9,x\"},\n" +
+						"{\"AkorAdi\": \"AbmM7-5\", \"Dizi\": \"4,5,5,4,x,4\"},\n" +
+						"{\"AkorAdi\": \"AbmM7-5\", \"Dizi\": \"x,x,6,7,8,7\"},\n" +
+						"{\"AkorAdi\": \"AbmM7-5\", \"Dizi\": \"[10],11,12,12,12,x\"},\n" +
+						"{\"AkorAdi\": \"AbmM7-5\", \"Dizi\": \"x,11,12,12,12,x\"},\n" +
+						"{\"AkorAdi\": \"AbmM9\", \"Dizi\": \"x,2,x,3,4,3\"},\n" +
+						"{\"AkorAdi\": \"AbmM9\", \"Dizi\": \"4,6,5,4,4,6\"},\n" +
+						"{\"AkorAdi\": \"AbmM9\", \"Dizi\": \"6,6,6,8,8,7\"},\n" +
+						"{\"AkorAdi\": \"AbmM9\", \"Dizi\": \"11,14,13,12,11,11\"},\n" +
+						"{\"AkorAdi\": \"AbmM11\", \"Dizi\": \"4,4,5,4,4,6\"},\n" +
+						"{\"AkorAdi\": \"AbmM11\", \"Dizi\": \"6,6,6,6,8,7\"},\n" +
+						"{\"AkorAdi\": \"AbmM11\", \"Dizi\": \"x,11,9,12,11,9\"},\n" +
+						"{\"AkorAdi\": \"AbmM11\", \"Dizi\": \"11,13,11,12,12,11\"},\n" +
+						"{\"AkorAdi\": \"Abadd9\", \"Dizi\": \"x,x,6,5,4,6\"},\n" +
+						"{\"AkorAdi\": \"Abadd9\", \"Dizi\": \"x,11,10,8,11,8\"},\n" +
+						"{\"AkorAdi\": \"Abadd9\", \"Dizi\": \"x,11,13,13,11,11\"},\n" +
+						"{\"AkorAdi\": \"Abmadd9\", \"Dizi\": \"x,x,6,4,4,6\"},\n" +
+						"{\"AkorAdi\": \"Abmadd9\", \"Dizi\": \"x,x,9,8,9,6\"},\n" +
+						"{\"AkorAdi\": \"Abmadd9\", \"Dizi\": \"x,11,9,8,11,x\"},\n" +
+						"{\"AkorAdi\": \"Abmadd9\", \"Dizi\": \"x,14,13,13,11,x\"}\n" +
+						"]}\n" +
+						"]\n" +
+						"}\n" +
+						"}";
+				break;
+			case 1:
 				JSONTonAkorData = "{\n" +
 						"\"AkorCetveli\": {\n" +
 						"\"Tonlar\": [\n" +
@@ -4249,7 +4259,7 @@ public class AkorDefterimSys {
 						"}\n" +
 						"}";
 				break;
-			case 1:
+			case 2:
 				JSONTonAkorData = "{\n" +
 						"\"AkorCetveli\": {\n" +
 						"\"Tonlar\": [\n" +
@@ -4409,7 +4419,167 @@ public class AkorDefterimSys {
 						"}\n" +
 						"}";
 				break;
-			case 2:
+			case 3:
+				JSONTonAkorData = "{\n" +
+						"\"AkorCetveli\": {\n" +
+						"\"Tonlar\": [\n" +
+						"{\"TonAdi\":\"Bb\", \"Akorlari\": [\n" +
+						"{\"AkorAdi\": \"Bb\", \"Dizi\": \"x,1,3,3,3,1\"},\n" +
+						"{\"AkorAdi\": \"Bb\", \"Dizi\": \"x,x,3,3,3,6\"},\n" +
+						"{\"AkorAdi\": \"Bb\", \"Dizi\": \"6,8,8,7,6,6\"},\n" +
+						"{\"AkorAdi\": \"Bb\", \"Dizi\": \"x,8,8,10,11,10\"},\n" +
+						"{\"AkorAdi\": \"Bbm\", \"Dizi\": \"x,1,3,3,2,1\"},\n" +
+						"{\"AkorAdi\": \"Bbm\", \"Dizi\": \"x,x,3,6,6,6\"},\n" +
+						"{\"AkorAdi\": \"Bbm\", \"Dizi\": \"6,8,8,6,6,6\"},\n" +
+						"{\"AkorAdi\": \"Bbm\", \"Dizi\": \"x,x,11,10,11,9\"},\n" +
+						"{\"AkorAdi\": \"Bbdim\", \"Dizi\": \"x,1,2,0,2,0\"},\n" +
+						"{\"AkorAdi\": \"Bbdim\", \"Dizi\": \"x,x,2,3,2,3\"},\n" +
+						"{\"AkorAdi\": \"Bbdim\", \"Dizi\": \"6,7,8,6,8,6\"},\n" +
+						"{\"AkorAdi\": \"Bbdim\", \"Dizi\": \"9,10,11,9,11,9\"},\n" +
+						"{\"AkorAdi\": \"Bbsus4\", \"Dizi\": \"x,1,3,3,4,1\"},\n" +
+						"{\"AkorAdi\": \"Bbsus4\", \"Dizi\": \"x,x,3,3,4,6\"},\n" +
+						"{\"AkorAdi\": \"Bbsus4\", \"Dizi\": \"6,6,8,8,6,6\"},\n" +
+						"{\"AkorAdi\": \"Bbsus4\", \"Dizi\": \"x,8,8,10,11,11\"},\n" +
+						"{\"AkorAdi\": \"Bb7sus4\", \"Dizi\": \"x,1,3,1,4,1\"},\n" +
+						"{\"AkorAdi\": \"Bb7sus4\", \"Dizi\": \"x,x,3,3,4,4\"},\n" +
+						"{\"AkorAdi\": \"Bb7sus4\", \"Dizi\": \"6,8,6,8,6,6\"},\n" +
+						"{\"AkorAdi\": \"Bb7sus4\", \"Dizi\": \"x,13,13,13,11,11\"},\n" +
+						"{\"AkorAdi\": \"Bb-5\", \"Dizi\": \"x,1,2,3,3,0\"},\n" +
+						"{\"AkorAdi\": \"Bb-5\", \"Dizi\": \"x,5,2,3,5,x\"},\n" +
+						"{\"AkorAdi\": \"Bb-5\", \"Dizi\": \"x,7,8,7,5,x\"},\n" +
+						"{\"AkorAdi\": \"Bb-5\", \"Dizi\": \"x,x,12,9,11,10\"},\n" +
+						"{\"AkorAdi\": \"Bb+5\", \"Dizi\": \"x,x,4,3,3,2\"},\n" +
+						"{\"AkorAdi\": \"Bb+5\", \"Dizi\": \"x,5,4,3,3,x\"},\n" +
+						"{\"AkorAdi\": \"Bb+5\", \"Dizi\": \"x,x,8,7,7,6\"},\n" +
+						"{\"AkorAdi\": \"Bb+5\", \"Dizi\": \"x,x,8,7,7,10\"},\n" +
+						"{\"AkorAdi\": \"Bb6\", \"Dizi\": \"x,1,3,3,3,3\"},\n" +
+						"{\"AkorAdi\": \"Bb6\", \"Dizi\": \"3,5,3,3,6,3\"},\n" +
+						"{\"AkorAdi\": \"Bb6\", \"Dizi\": \"x,8,8,7,8,x\"},\n" +
+						"{\"AkorAdi\": \"Bb6\", \"Dizi\": \"10,10,12,10,11,10\"},\n" +
+						"{\"AkorAdi\": \"Bb69\", \"Dizi\": \"6,5,5,5,6,6\"},\n" +
+						"{\"AkorAdi\": \"Bb69\", \"Dizi\": \"x,8,8,7,8,8\"},\n" +
+						"{\"AkorAdi\": \"Bb69\", \"Dizi\": \"x,13,12,12,13,13\"},\n" +
+						"{\"AkorAdi\": \"Bb7\", \"Dizi\": \"x,1,3,1,3,1\"},\n" +
+						"{\"AkorAdi\": \"Bb7\", \"Dizi\": \"x,[5],3,3,3,4\"},\n" +
+						"{\"AkorAdi\": \"Bb7\", \"Dizi\": \"6,8,6,7,6,6\"},\n" +
+						"{\"AkorAdi\": \"Bb7\", \"Dizi\": \"x,8,8,10,9,10\"},\n" +
+						"{\"AkorAdi\": \"Bb7-5\", \"Dizi\": \"x,1,2,1,3,4\"},\n" +
+						"{\"AkorAdi\": \"Bb7-5\", \"Dizi\": \"x,5,6,7,5,6\"},\n" +
+						"{\"AkorAdi\": \"Bb7-5\", \"Dizi\": \"x,x,8,9,9,10\"},\n" +
+						"{\"AkorAdi\": \"Bb7-5\", \"Dizi\": \"x,11,12,13,11,12\"},\n" +
+						"{\"AkorAdi\": \"Bb7+5\", \"Dizi\": \"x,x,4,3,3,4\"},\n" +
+						"{\"AkorAdi\": \"Bb7+5\", \"Dizi\": \"x,x,6,7,7,6\"},\n" +
+						"{\"AkorAdi\": \"Bb7+5\", \"Dizi\": \"x,x,8,11,9,10\"},\n" +
+						"{\"AkorAdi\": \"Bb7+5\", \"Dizi\": \"x,x,12,13,11,14\"},\n" +
+						"{\"AkorAdi\": \"Bb9\", \"Dizi\": \"x,1,0,1,1,1\"},\n" +
+						"{\"AkorAdi\": \"Bb9\", \"Dizi\": \"x,3,3,3,3,4\"},\n" +
+						"{\"AkorAdi\": \"Bb9\", \"Dizi\": \"6,8,6,7,6,8\"},\n" +
+						"{\"AkorAdi\": \"Bb9\", \"Dizi\": \"8,8,8,10,9,10\"},\n" +
+						"{\"AkorAdi\": \"Bb9-5\", \"Dizi\": \"x,1,0,1,1,0\"},\n" +
+						"{\"AkorAdi\": \"Bb9-5\", \"Dizi\": \"x,3,2,3,3,4\"},\n" +
+						"{\"AkorAdi\": \"Bb9-5\", \"Dizi\": \"6,5,6,5,5,6\"},\n" +
+						"{\"AkorAdi\": \"Bb9-5\", \"Dizi\": \"x,7,8,7,9,8\"},\n" +
+						"{\"AkorAdi\": \"Bb9+5\", \"Dizi\": \"x,1,0,1,1,2\"},\n" +
+						"{\"AkorAdi\": \"Bb9+5\", \"Dizi\": \"4,3,4,3,3,4\"},\n" +
+						"{\"AkorAdi\": \"Bb9+5\", \"Dizi\": \"x,5,6,5,7,6\"},\n" +
+						"{\"AkorAdi\": \"Bb9+5\", \"Dizi\": \"[10],11,10,11,11,10\"},\n" +
+						"{\"AkorAdi\": \"Bb7-9\", \"Dizi\": \"x,1,0,1,0,1\"},\n" +
+						"{\"AkorAdi\": \"Bb7-9\", \"Dizi\": \"[1],2,3,1,3,1\"},\n" +
+						"{\"AkorAdi\": \"Bb7-9\", \"Dizi\": \"x,2,3,3,3,4\"},\n" +
+						"{\"AkorAdi\": \"Bb7-9\", \"Dizi\": \"6,8,6,7,6,7\"},\n" +
+						"{\"AkorAdi\": \"Bb7+9\", \"Dizi\": \"x,1,0,1,2,x\"},\n" +
+						"{\"AkorAdi\": \"Bb7+9\", \"Dizi\": \"6,8,6,7,9,9\"},\n" +
+						"{\"AkorAdi\": \"Bb7+9\", \"Dizi\": \"x,8,8,7,9,9\"},\n" +
+						"{\"AkorAdi\": \"Bb7+9\", \"Dizi\": \"9,11,12,10,9,9\"},\n" +
+						"{\"AkorAdi\": \"Bb11\", \"Dizi\": \"x,1,1,1,3,1\"},\n" +
+						"{\"AkorAdi\": \"Bb11\", \"Dizi\": \"x,5,3,3,4,4\"},\n" +
+						"{\"AkorAdi\": \"Bb11\", \"Dizi\": \"[8],[8],8,8,9,10\"},\n" +
+						"{\"AkorAdi\": \"Bb11\", \"Dizi\": \"x,13,12,13,11,11\"},\n" +
+						"{\"AkorAdi\": \"Bb+11\", \"Dizi\": \"x,3,2,3,3,4\"},\n" +
+						"{\"AkorAdi\": \"Bb+11\", \"Dizi\": \"6,5,6,5,5,6\"},\n" +
+						"{\"AkorAdi\": \"Bb+11\", \"Dizi\": \"8,8,8,9,9,10\"},\n" +
+						"{\"AkorAdi\": \"Bb+11\", \"Dizi\": \"x,13,12,13,13,12\"},\n" +
+						"{\"AkorAdi\": \"Bb13\", \"Dizi\": \"x,1,3,1,3,3\"},\n" +
+						"{\"AkorAdi\": \"Bb13\", \"Dizi\": \"6,8,6,7,8,6\"},\n" +
+						"{\"AkorAdi\": \"Bb13\", \"Dizi\": \"6,6,6,7,8,8\"},\n" +
+						"{\"AkorAdi\": \"Bb13\", \"Dizi\": \"x,11,12,12,11,x\"},\n" +
+						"{\"AkorAdi\": \"BbM7\", \"Dizi\": \"x,1,3,2,3,1\"},\n" +
+						"{\"AkorAdi\": \"BbM7\", \"Dizi\": \"x,x,3,3,3,5\"},\n" +
+						"{\"AkorAdi\": \"BbM7\", \"Dizi\": \"6,8,7,7,6,6\"},\n" +
+						"{\"AkorAdi\": \"BbM7\", \"Dizi\": \"x,[8],8,10,10,10\"},\n" +
+						"{\"AkorAdi\": \"BbM7-5\", \"Dizi\": \"x,1,2,2,3,x\"},\n" +
+						"{\"AkorAdi\": \"BbM7-5\", \"Dizi\": \"x,x,2,3,3,5\"},\n" +
+						"{\"AkorAdi\": \"BbM7-5\", \"Dizi\": \"6,7,7,7,x,x\"},\n" +
+						"{\"AkorAdi\": \"BbM7-5\", \"Dizi\": \"x,x,8,9,10,10\"},\n" +
+						"{\"AkorAdi\": \"BbM7+5\", \"Dizi\": \"x,1,0,2,3,2\"},\n" +
+						"{\"AkorAdi\": \"BbM7+5\", \"Dizi\": \"x,x,4,3,3,5\"},\n" +
+						"{\"AkorAdi\": \"BbM7+5\", \"Dizi\": \"x,9,8,7,10,10\"},\n" +
+						"{\"AkorAdi\": \"BbM7+5\", \"Dizi\": \"[10],13,12,11,10,10\"},\n" +
+						"{\"AkorAdi\": \"BbM9\", \"Dizi\": \"[1],1,0,2,1,x\"},\n" +
+						"{\"AkorAdi\": \"BbM9\", \"Dizi\": \"x,3,3,3,3,5\"},\n" +
+						"{\"AkorAdi\": \"BbM9\", \"Dizi\": \"x,5,7,5,6,6\"},\n" +
+						"{\"AkorAdi\": \"BbM9\", \"Dizi\": \"x,x,7,7,6,8\"},\n" +
+						"{\"AkorAdi\": \"BbM11\", \"Dizi\": \"x,1,1,2,1,1\"},\n" +
+						"{\"AkorAdi\": \"BbM11\", \"Dizi\": \"x,3,3,5,4,5\"},\n" +
+						"{\"AkorAdi\": \"BbM11\", \"Dizi\": \"6,6,7,7,6,8\"},\n" +
+						"{\"AkorAdi\": \"BbM11\", \"Dizi\": \"x,x,12,14,13,11\"},\n" +
+						"{\"AkorAdi\": \"BbM13\", \"Dizi\": \"x,1,[1],2,3,3\"},\n" +
+						"{\"AkorAdi\": \"BbM13\", \"Dizi\": \"6,5,5,5,6,5\"},\n" +
+						"{\"AkorAdi\": \"BbM13\", \"Dizi\": \"x,10,8,8,10,10\"},\n" +
+						"{\"AkorAdi\": \"BbM13\", \"Dizi\": \"x,13,12,12,10,[10]\"},\n" +
+						"{\"AkorAdi\": \"Bbm6\", \"Dizi\": \"x,x,3,3,2,3\"},\n" +
+						"{\"AkorAdi\": \"Bbm6\", \"Dizi\": \"x,4,5,3,6,3\"},\n" +
+						"{\"AkorAdi\": \"Bbm6\", \"Dizi\": \"x,x,5,6,6,6\"},\n" +
+						"{\"AkorAdi\": \"Bbm6\", \"Dizi\": \"x,8,8,6,8,6\"},\n" +
+						"{\"AkorAdi\": \"Bbm69\", \"Dizi\": \"x,4,5,5,6,6\"},\n" +
+						"{\"AkorAdi\": \"Bbm69\", \"Dizi\": \"x,8,8,6,8,8\"},\n" +
+						"{\"AkorAdi\": \"Bbm69\", \"Dizi\": \"9,8,8,10,8,8\"},\n" +
+						"{\"AkorAdi\": \"Bbm69\", \"Dizi\": \"x,13,11,12,13,13\"},\n" +
+						"{\"AkorAdi\": \"Bbm7\", \"Dizi\": \"x,1,3,1,2,1\"},\n" +
+						"{\"AkorAdi\": \"Bbm7\", \"Dizi\": \"x,x,3,3,2,4\"},\n" +
+						"{\"AkorAdi\": \"Bbm7\", \"Dizi\": \"6,8,6,6,6,6\"},\n" +
+						"{\"AkorAdi\": \"Bbm7\", \"Dizi\": \"x,8,8,10,9,9\"},\n" +
+						"{\"AkorAdi\": \"Bbm7-5\", \"Dizi\": \"x,1,2,1,2,x\"},\n" +
+						"{\"AkorAdi\": \"Bbm7-5\", \"Dizi\": \"x,x,2,3,2,4\"},\n" +
+						"{\"AkorAdi\": \"Bbm7-5\", \"Dizi\": \"4,4,6,6,5,6\"},\n" +
+						"{\"AkorAdi\": \"Bbm7-5\", \"Dizi\": \"x,x,8,9,9,9\"},\n" +
+						"{\"AkorAdi\": \"Bbm9\", \"Dizi\": \"x,3,3,3,2,4\"},\n" +
+						"{\"AkorAdi\": \"Bbm9\", \"Dizi\": \"6,8,6,6,6,8\"},\n" +
+						"{\"AkorAdi\": \"Bbm9\", \"Dizi\": \"[9],11,10,10,11,9\"},\n" +
+						"{\"AkorAdi\": \"Bbm9\", \"Dizi\": \"x,13,11,13,13,13\"},\n" +
+						"{\"AkorAdi\": \"Bbm11\", \"Dizi\": \"6,4,6,5,4,4\"},\n" +
+						"{\"AkorAdi\": \"Bbm11\", \"Dizi\": \"6,6,6,6,6,8\"},\n" +
+						"{\"AkorAdi\": \"Bbm11\", \"Dizi\": \"9,8,8,8,9,8\"},\n" +
+						"{\"AkorAdi\": \"Bbm11\", \"Dizi\": \"x,13,11,13,13,11\"},\n" +
+						"{\"AkorAdi\": \"BbmM7\", \"Dizi\": \"x,1,3,2,2,1\"},\n" +
+						"{\"AkorAdi\": \"BbmM7\", \"Dizi\": \"6,8,7,6,6,6\"},\n" +
+						"{\"AkorAdi\": \"BbmM7\", \"Dizi\": \"x,8,8,10,10,9\"},\n" +
+						"{\"AkorAdi\": \"BbmM7\", \"Dizi\": \"x,12,11,10,11,x\"},\n" +
+						"{\"AkorAdi\": \"BbmM7-5\", \"Dizi\": \"x,1,2,2,2,0\"},\n" +
+						"{\"AkorAdi\": \"BbmM7-5\", \"Dizi\": \"6,7,x,6,5,5\"},\n" +
+						"{\"AkorAdi\": \"BbmM7-5\", \"Dizi\": \"6,7,7,6,x,6\"},\n" +
+						"{\"AkorAdi\": \"BbmM7-5\", \"Dizi\": \"x,x,8,9,10,9\"},\n" +
+						"{\"AkorAdi\": \"BbmM9\", \"Dizi\": \"x,4,3,2,1,1\"},\n" +
+						"{\"AkorAdi\": \"BbmM9\", \"Dizi\": \"x,4,x,5,6,5\"},\n" +
+						"{\"AkorAdi\": \"BbmM9\", \"Dizi\": \"6,8,7,6,6,8\"},\n" +
+						"{\"AkorAdi\": \"BbmM9\", \"Dizi\": \"8,8,8,10,10,9\"},\n" +
+						"{\"AkorAdi\": \"BbmM11\", \"Dizi\": \"x,3,1,2,2,1\"},\n" +
+						"{\"AkorAdi\": \"BbmM11\", \"Dizi\": \"6,6,7,6,6,8\"},\n" +
+						"{\"AkorAdi\": \"BbmM11\", \"Dizi\": \"8,8,8,8,10,9\"},\n" +
+						"{\"AkorAdi\": \"BbmM11\", \"Dizi\": \"x,13,11,14,13,11\"},\n" +
+						"{\"AkorAdi\": \"Bbadd9\", \"Dizi\": \"x,1,3,3,1,1\"},\n" +
+						"{\"AkorAdi\": \"Bbadd9\", \"Dizi\": \"x,x,8,7,6,8\"},\n" +
+						"{\"AkorAdi\": \"Bbadd9\", \"Dizi\": \"x,13,12,10,13,10\"},\n" +
+						"{\"AkorAdi\": \"Bbmadd9\", \"Dizi\": \"x,4,3,3,1,x\"},\n" +
+						"{\"AkorAdi\": \"Bbmadd9\", \"Dizi\": \"x,x,8,6,6,8\"},\n" +
+						"{\"AkorAdi\": \"Bbmadd9\", \"Dizi\": \"x,x,11,10,11,8\"},\n" +
+						"{\"AkorAdi\": \"Bbmadd9\", \"Dizi\": \"x,13,11,10,13,x\"}\n" +
+						"]}\n" +
+						"]\n" +
+						"}\n" +
+						"}";
+				break;
+			case 4:
 				JSONTonAkorData = "{\n" +
 						"\"AkorCetveli\": {\n" +
 						"\"Tonlar\": [\n" +
@@ -4569,7 +4739,7 @@ public class AkorDefterimSys {
 						"}\n" +
 						"}";
 				break;
-			case 3:
+			case 5:
 				JSONTonAkorData = "{\n" +
 						"\"AkorCetveli\": {\n" +
 						"\"Tonlar\": [\n" +
@@ -4729,7 +4899,7 @@ public class AkorDefterimSys {
 						"}\n" +
 						"}";
 				break;
-			case 4:
+			case 6:
 				JSONTonAkorData = "{\n" +
 						"\"AkorCetveli\": {\n" +
 						"\"Tonlar\": [\n" +
@@ -4889,7 +5059,167 @@ public class AkorDefterimSys {
 						"}\n" +
 						"}";
 				break;
-			case 5:
+			case 7:
+				JSONTonAkorData = "{\n" +
+						"\"AkorCetveli\": {\n" +
+						"\"Tonlar\": [\n" +
+						"{\"TonAdi\":\"Db\", \"Akorlari\": [\n" +
+						"{\"AkorAdi\": \"Db\", \"Dizi\": \"[1],4,3,1,2,1\"},\n" +
+						"{\"AkorAdi\": \"Db\", \"Dizi\": \"[4],4,6,6,6,4\"},\n" +
+						"{\"AkorAdi\": \"Db\", \"Dizi\": \"x,8,6,6,6,9\"},\n" +
+						"{\"AkorAdi\": \"Db\", \"Dizi\": \"9,11,11,10,9,9\"},\n" +
+						"{\"AkorAdi\": \"Dbm\", \"Dizi\": \"x,x,2,1,2,0\"},\n" +
+						"{\"AkorAdi\": \"Dbm\", \"Dizi\": \"[4],4,6,6,5,4\"},\n" +
+						"{\"AkorAdi\": \"Dbm\", \"Dizi\": \"x,[7],6,9,9,9\"},\n" +
+						"{\"AkorAdi\": \"Dbm\", \"Dizi\": \"9,11,11,9,9,9\"},\n" +
+						"{\"AkorAdi\": \"Dbdim\", \"Dizi\": \"x,x,2,3,2,3\"},\n" +
+						"{\"AkorAdi\": \"Dbdim\", \"Dizi\": \"x,4,5,3,5,3\"},\n" +
+						"{\"AkorAdi\": \"Dbdim\", \"Dizi\": \"9,x,8,9,8,x\"},\n" +
+						"{\"AkorAdi\": \"Dbdim\", \"Dizi\": \"x,x,11,12,11,12\"},\n" +
+						"{\"AkorAdi\": \"Dbsus4\", \"Dizi\": \"x,x,x,1,2,2\"},\n" +
+						"{\"AkorAdi\": \"Dbsus4\", \"Dizi\": \"[4],4,6,6,7,4\"},\n" +
+						"{\"AkorAdi\": \"Dbsus4\", \"Dizi\": \"x,x,6,6,7,9\"},\n" +
+						"{\"AkorAdi\": \"Dbsus4\", \"Dizi\": \"9,9,11,11,9,9\"},\n" +
+						"{\"AkorAdi\": \"Db7sus4\", \"Dizi\": \"x,4,4,4,2,2\"},\n" +
+						"{\"AkorAdi\": \"Db7sus4\", \"Dizi\": \"[4],4,6,4,7,4\"},\n" +
+						"{\"AkorAdi\": \"Db7sus4\", \"Dizi\": \"x,x,6,6,7,7\"},\n" +
+						"{\"AkorAdi\": \"Db7sus4\", \"Dizi\": \"9,11,9,11,9,9\"},\n" +
+						"{\"AkorAdi\": \"Db-5\", \"Dizi\": \"x,x,3,0,2,1\"},\n" +
+						"{\"AkorAdi\": \"Db-5\", \"Dizi\": \"x,x,5,6,6,3\"},\n" +
+						"{\"AkorAdi\": \"Db-5\", \"Dizi\": \"3,4,3,6,[6],x\"},\n" +
+						"{\"AkorAdi\": \"Db-5\", \"Dizi\": \"x,4,5,6,6,x\"},\n" +
+						"{\"AkorAdi\": \"Db+5\", \"Dizi\": \"x,x,3,2,2,1\"},\n" +
+						"{\"AkorAdi\": \"Db+5\", \"Dizi\": \"x,4,3,2,2,x\"},\n" +
+						"{\"AkorAdi\": \"Db+5\", \"Dizi\": \"x,x,7,6,6,5\"},\n" +
+						"{\"AkorAdi\": \"Db+5\", \"Dizi\": \"x,8,7,6,6,x\"},\n" +
+						"{\"AkorAdi\": \"Db6\", \"Dizi\": \"1,1,3,1,2,1\"},\n" +
+						"{\"AkorAdi\": \"Db6\", \"Dizi\": \"x,4,3,3,x,4\"},\n" +
+						"{\"AkorAdi\": \"Db6\", \"Dizi\": \"6,8,6,6,9,6\"},\n" +
+						"{\"AkorAdi\": \"Db6\", \"Dizi\": \"x,11,11,10,11,x\"},\n" +
+						"{\"AkorAdi\": \"Db69\", \"Dizi\": \"x,4,3,3,4,4\"},\n" +
+						"{\"AkorAdi\": \"Db69\", \"Dizi\": \"9,8,8,8,9,9\"},\n" +
+						"{\"AkorAdi\": \"Db69\", \"Dizi\": \"x,11,11,10,11,11\"},\n" +
+						"{\"AkorAdi\": \"Db7\", \"Dizi\": \"x,4,3,4,2,x\"},\n" +
+						"{\"AkorAdi\": \"Db7\", \"Dizi\": \"[4],4,6,4,6,4\"},\n" +
+						"{\"AkorAdi\": \"Db7\", \"Dizi\": \"x,[8],6,6,6,7\"},\n" +
+						"{\"AkorAdi\": \"Db7\", \"Dizi\": \"9,11,9,10,9,9\"},\n" +
+						"{\"AkorAdi\": \"Db7-5\", \"Dizi\": \"x,x,3,4,2,3\"},\n" +
+						"{\"AkorAdi\": \"Db7-5\", \"Dizi\": \"x,4,5,4,6,7\"},\n" +
+						"{\"AkorAdi\": \"Db7-5\", \"Dizi\": \"x,x,5,6,6,7\"},\n" +
+						"{\"AkorAdi\": \"Db7-5\", \"Dizi\": \"x,8,9,10,8,9\"},\n" +
+						"{\"AkorAdi\": \"Db7+5\", \"Dizi\": \"x,x,3,4,2,5\"},\n" +
+						"{\"AkorAdi\": \"Db7+5\", \"Dizi\": \"x,4,7,4,6,5\"},\n" +
+						"{\"AkorAdi\": \"Db7+5\", \"Dizi\": \"x,x,7,6,6,7\"},\n" +
+						"{\"AkorAdi\": \"Db7+5\", \"Dizi\": \"9,[12],9,10,10,9\"},\n" +
+						"{\"AkorAdi\": \"Db9\", \"Dizi\": \"[4],4,3,4,4,4\"},\n" +
+						"{\"AkorAdi\": \"Db9\", \"Dizi\": \"x,6,6,6,6,7\"},\n" +
+						"{\"AkorAdi\": \"Db9\", \"Dizi\": \"9,11,9,10,9,11\"},\n" +
+						"{\"AkorAdi\": \"Db9\", \"Dizi\": \"11,11,11,13,12,13\"},\n" +
+						"{\"AkorAdi\": \"Db9-5\", \"Dizi\": \"x,x,1,0,0,1\"},\n" +
+						"{\"AkorAdi\": \"Db9-5\", \"Dizi\": \"x,4,3,4,4,3\"},\n" +
+						"{\"AkorAdi\": \"Db9-5\", \"Dizi\": \"x,6,5,4,6,x\"},\n" +
+						"{\"AkorAdi\": \"Db9-5\", \"Dizi\": \"x,8,9,8,8,11\"},\n" +
+						"{\"AkorAdi\": \"Db9+5\", \"Dizi\": \"[1],2,1,2,2,1\"},\n" +
+						"{\"AkorAdi\": \"Db9+5\", \"Dizi\": \"x,4,3,4,4,5\"},\n" +
+						"{\"AkorAdi\": \"Db9+5\", \"Dizi\": \"7,6,7,6,6,7\"},\n" +
+						"{\"AkorAdi\": \"Db9+5\", \"Dizi\": \"x,8,9,8,10,9\"},\n" +
+						"{\"AkorAdi\": \"Db7-9\", \"Dizi\": \"x,4,3,4,3,4\"},\n" +
+						"{\"AkorAdi\": \"Db7-9\", \"Dizi\": \"[4],5,6,4,6,4\"},\n" +
+						"{\"AkorAdi\": \"Db7-9\", \"Dizi\": \"7,8,9,7,9,7\"},\n" +
+						"{\"AkorAdi\": \"Db7-9\", \"Dizi\": \"x,x,9,10,9,10\"},\n" +
+						"{\"AkorAdi\": \"Db7+9\", \"Dizi\": \"x,4,3,4,5,x\"},\n" +
+						"{\"AkorAdi\": \"Db7+9\", \"Dizi\": \"x,7,6,6,6,7\"},\n" +
+						"{\"AkorAdi\": \"Db7+9\", \"Dizi\": \"x,8,9,9,9,9\"},\n" +
+						"{\"AkorAdi\": \"Db7+9\", \"Dizi\": \"9,11,9,10,9,12\"},\n" +
+						"{\"AkorAdi\": \"Db11\", \"Dizi\": \"x,4,3,4,2,2\"},\n" +
+						"{\"AkorAdi\": \"Db11\", \"Dizi\": \"x,4,4,4,6,4\"},\n" +
+						"{\"AkorAdi\": \"Db11\", \"Dizi\": \"x,8,6,6,7,7\"},\n" +
+						"{\"AkorAdi\": \"Db11\", \"Dizi\": \"11,11,11,11,12,13\"},\n" +
+						"{\"AkorAdi\": \"Db+11\", \"Dizi\": \"x,4,3,4,4,3\"},\n" +
+						"{\"AkorAdi\": \"Db+11\", \"Dizi\": \"x,6,5,6,6,7\"},\n" +
+						"{\"AkorAdi\": \"Db+11\", \"Dizi\": \"9,8,9,8,8,9\"},\n" +
+						"{\"AkorAdi\": \"Db+11\", \"Dizi\": \"11,11,11,12,12,13\"},\n" +
+						"{\"AkorAdi\": \"Db13\", \"Dizi\": \"x,2,3,3,2,x\"},\n" +
+						"{\"AkorAdi\": \"Db13\", \"Dizi\": \"[4],4,6,4,6,6\"},\n" +
+						"{\"AkorAdi\": \"Db13\", \"Dizi\": \"9,11,9,10,11,9\"},\n" +
+						"{\"AkorAdi\": \"Db13\", \"Dizi\": \"9,9,9,10,11,11\"},\n" +
+						"{\"AkorAdi\": \"DbM7\", \"Dizi\": \"1,3,3,1,2,1\"},\n" +
+						"{\"AkorAdi\": \"DbM7\", \"Dizi\": \"[4],4,6,5,6,4\"},\n" +
+						"{\"AkorAdi\": \"DbM7\", \"Dizi\": \"x,x,6,6,6,8\"},\n" +
+						"{\"AkorAdi\": \"DbM7\", \"Dizi\": \"x,11,11,13,13,13\"},\n" +
+						"{\"AkorAdi\": \"DbM7-5\", \"Dizi\": \"x,3,3,0,2,3\"},\n" +
+						"{\"AkorAdi\": \"DbM7-5\", \"Dizi\": \"x,4,5,5,6,x\"},\n" +
+						"{\"AkorAdi\": \"DbM7-5\", \"Dizi\": \"x,x,5,6,6,8\"},\n" +
+						"{\"AkorAdi\": \"DbM7-5\", \"Dizi\": \"x,x,11,12,13,13\"},\n" +
+						"{\"AkorAdi\": \"DbM7+5\", \"Dizi\": \"[1],4,3,2,1,1\"},\n" +
+						"{\"AkorAdi\": \"DbM7+5\", \"Dizi\": \"x,4,7,5,6,x\"},\n" +
+						"{\"AkorAdi\": \"DbM7+5\", \"Dizi\": \"x,x,7,6,6,8\"},\n" +
+						"{\"AkorAdi\": \"DbM7+5\", \"Dizi\": \"x,12,11,x,13,13\"},\n" +
+						"{\"AkorAdi\": \"DbM9\", \"Dizi\": \"x,4,1,1,1,1\"},\n" +
+						"{\"AkorAdi\": \"DbM9\", \"Dizi\": \"[4],4,3,5,4,x\"},\n" +
+						"{\"AkorAdi\": \"DbM9\", \"Dizi\": \"x,6,6,8,6,8\"},\n" +
+						"{\"AkorAdi\": \"DbM9\", \"Dizi\": \"x,x,10,10,9,11\"},\n" +
+						"{\"AkorAdi\": \"DbM11\", \"Dizi\": \"x,x,3,5,4,2\"},\n" +
+						"{\"AkorAdi\": \"DbM11\", \"Dizi\": \"[4],4,4,5,4,4\"},\n" +
+						"{\"AkorAdi\": \"DbM11\", \"Dizi\": \"x,6,6,8,7,8\"},\n" +
+						"{\"AkorAdi\": \"DbM11\", \"Dizi\": \"9,9,10,11,9,11\"},\n" +
+						"{\"AkorAdi\": \"DbM13\", \"Dizi\": \"x,4,1,3,1,1\"},\n" +
+						"{\"AkorAdi\": \"DbM13\", \"Dizi\": \"x,4,[4],5,6,6\"},\n" +
+						"{\"AkorAdi\": \"DbM13\", \"Dizi\": \"9,8,8,8,9,8\"},\n" +
+						"{\"AkorAdi\": \"DbM13\", \"Dizi\": \"x,13,11,11,13,13\"},\n" +
+						"{\"AkorAdi\": \"Dbm6\", \"Dizi\": \"x,4,2,3,2,4\"},\n" +
+						"{\"AkorAdi\": \"Dbm6\", \"Dizi\": \"x,x,6,6,5,6\"},\n" +
+						"{\"AkorAdi\": \"Dbm6\", \"Dizi\": \"x,x,8,9,9,9\"},\n" +
+						"{\"AkorAdi\": \"Dbm6\", \"Dizi\": \"9,11,11,9,11,9\"},\n" +
+						"{\"AkorAdi\": \"Dbm69\", \"Dizi\": \"x,4,2,3,4,4\"},\n" +
+						"{\"AkorAdi\": \"Dbm69\", \"Dizi\": \"x,7,8,8,9,9\"},\n" +
+						"{\"AkorAdi\": \"Dbm69\", \"Dizi\": \"x,11,11,9,11,11\"},\n" +
+						"{\"AkorAdi\": \"Dbm69\", \"Dizi\": \"12,11,11,13,11,11\"},\n" +
+						"{\"AkorAdi\": \"Dbm7\", \"Dizi\": \"[4],4,6,4,5,4\"},\n" +
+						"{\"AkorAdi\": \"Dbm7\", \"Dizi\": \"x,x,6,6,5,7\"},\n" +
+						"{\"AkorAdi\": \"Dbm7\", \"Dizi\": \"9,11,9,9,9,9\"},\n" +
+						"{\"AkorAdi\": \"Dbm7\", \"Dizi\": \"x,11,11,13,12,12\"},\n" +
+						"{\"AkorAdi\": \"Dbm7-5\", \"Dizi\": \"x,4,5,4,5,x\"},\n" +
+						"{\"AkorAdi\": \"Dbm7-5\", \"Dizi\": \"x,x,5,6,5,7\"},\n" +
+						"{\"AkorAdi\": \"Dbm7-5\", \"Dizi\": \"7,7,9,9,8,9\"},\n" +
+						"{\"AkorAdi\": \"Dbm7-5\", \"Dizi\": \"x,x,11,12,12,12\"},\n" +
+						"{\"AkorAdi\": \"Dbm9\", \"Dizi\": \"x,4,2,4,4,4\"},\n" +
+						"{\"AkorAdi\": \"Dbm9\", \"Dizi\": \"x,6,6,6,5,7\"},\n" +
+						"{\"AkorAdi\": \"Dbm9\", \"Dizi\": \"x,7,9,8,9,9\"},\n" +
+						"{\"AkorAdi\": \"Dbm9\", \"Dizi\": \"9,11,9,9,9,11\"},\n" +
+						"{\"AkorAdi\": \"Dbm11\", \"Dizi\": \"x,4,2,4,4,2\"},\n" +
+						"{\"AkorAdi\": \"Dbm11\", \"Dizi\": \"9,7,9,8,7,7\"},\n" +
+						"{\"AkorAdi\": \"Dbm11\", \"Dizi\": \"9,9,9,9,9,11\"},\n" +
+						"{\"AkorAdi\": \"Dbm11\", \"Dizi\": \"12,11,11,11,12,11\"},\n" +
+						"{\"AkorAdi\": \"DbmM7\", \"Dizi\": \"0,3,2,1,2,0\"},\n" +
+						"{\"AkorAdi\": \"DbmM7\", \"Dizi\": \"4,4,6,5,5,4\"},\n" +
+						"{\"AkorAdi\": \"DbmM7\", \"Dizi\": \"9,11,10,9,9,9\"},\n" +
+						"{\"AkorAdi\": \"DbmM7\", \"Dizi\": \"x,11,11,13,13,12\"},\n" +
+						"{\"AkorAdi\": \"DbmM7-5\", \"Dizi\": \"3,4,5,5,5,x\"},\n" +
+						"{\"AkorAdi\": \"DbmM7-5\", \"Dizi\": \"x,4,5,5,5,x\"},\n" +
+						"{\"AkorAdi\": \"DbmM7-5\", \"Dizi\": \"9,10,10,9,x,9\"},\n" +
+						"{\"AkorAdi\": \"DbmM7-5\", \"Dizi\": \"x,x,11,12,13,12\"},\n" +
+						"{\"AkorAdi\": \"DbmM9\", \"Dizi\": \"4,7,6,5,4,4\"},\n" +
+						"{\"AkorAdi\": \"DbmM9\", \"Dizi\": \"x,7,x,8,9,8\"},\n" +
+						"{\"AkorAdi\": \"DbmM9\", \"Dizi\": \"9,11,10,9,9,11\"},\n" +
+						"{\"AkorAdi\": \"DbmM9\", \"Dizi\": \"11,11,11,13,13,12\"},\n" +
+						"{\"AkorAdi\": \"DbmM11\", \"Dizi\": \"x,4,2,5,4,2\"},\n" +
+						"{\"AkorAdi\": \"DbmM11\", \"Dizi\": \"4,6,4,5,5,4\"},\n" +
+						"{\"AkorAdi\": \"DbmM11\", \"Dizi\": \"9,9,10,9,9,11\"},\n" +
+						"{\"AkorAdi\": \"DbmM11\", \"Dizi\": \"11,11,11,11,13,12\"},\n" +
+						"{\"AkorAdi\": \"Dbadd9\", \"Dizi\": \"x,4,3,1,4,1\"},\n" +
+						"{\"AkorAdi\": \"Dbadd9\", \"Dizi\": \"x,4,6,6,4,4\"},\n" +
+						"{\"AkorAdi\": \"Dbadd9\", \"Dizi\": \"x,x,11,10,9,11\"},\n" +
+						"{\"AkorAdi\": \"Dbmadd9\", \"Dizi\": \"x,4,2,1,4,x\"},\n" +
+						"{\"AkorAdi\": \"Dbmadd9\", \"Dizi\": \"x,7,6,6,4,x\"},\n" +
+						"{\"AkorAdi\": \"Dbmadd9\", \"Dizi\": \"x,x,11,9,9,11\"},\n" +
+						"{\"AkorAdi\": \"Dbmadd9\", \"Dizi\": \"x,x,14,13,14,11\"}\n" +
+						"]}\n" +
+						"]\n" +
+						"}\n" +
+						"}";
+				break;
+			case 8:
 				JSONTonAkorData = "{\n" +
 						"\"AkorCetveli\": {\n" +
 						"\"Tonlar\": [\n" +
@@ -5049,7 +5379,7 @@ public class AkorDefterimSys {
 						"}\n" +
 						"}";
 				break;
-			case 6:
+			case 9:
 				JSONTonAkorData = "{\n" +
 						"\"AkorCetveli\": {\n" +
 						"\"Tonlar\": [\n" +
@@ -5209,7 +5539,167 @@ public class AkorDefterimSys {
 						"}\n" +
 						"}";
 				break;
-			case 7:
+			case 10:
+				JSONTonAkorData = "{\n" +
+						"\"AkorCetveli\": {\n" +
+						"\"Tonlar\": [\n" +
+						"{\"TonAdi\":\"Eb\", \"Akorlari\": [\n" +
+						"{\"AkorAdi\":\"Eb\", \"Dizi\":\"x,x,1,3,4,3\"},\n" +
+						"{\"AkorAdi\":\"Eb\", \"Dizi\":\"[3],6,5,3,4,3\"},\n" +
+						"{\"AkorAdi\":\"Eb\", \"Dizi\":\"[6],6,8,8,8,6\"},\n" +
+						"{\"AkorAdi\":\"Eb\", \"Dizi\":\"x,x,8,8,8,11\"},\n" +
+						"{\"AkorAdi\":\"Ebm\", \"Dizi\":\"x,1,1,3,4,2\"},\n" +
+						"{\"AkorAdi\":\"Ebm\", \"Dizi\":\"x,x,4,3,4,2\"},\n" +
+						"{\"AkorAdi\":\"Ebm\", \"Dizi\":\"[6],6,8,8,7,6\"},\n" +
+						"{\"AkorAdi\":\"Ebm\", \"Dizi\":\"11,13,13,11,11,11\"},\n" +
+						"{\"AkorAdi\":\"Ebdim\", \"Dizi\":\"x,x,1,2,1,2\"},\n" +
+						"{\"AkorAdi\":\"Ebdim\", \"Dizi\":\"5,6,7,5,7,5\"},\n" +
+						"{\"AkorAdi\":\"Ebdim\", \"Dizi\":\"x,x,7,8,7,8\"},\n" +
+						"{\"AkorAdi\":\"Ebdim\", \"Dizi\":\"11,x,10,11,10,x\"},\n" +
+						"{\"AkorAdi\":\"Ebsus4\", \"Dizi\":\"x,1,1,3,4,4\"},\n" +
+						"{\"AkorAdi\":\"Ebsus4\", \"Dizi\":\"[6],6,8,8,9,6\"},\n" +
+						"{\"AkorAdi\":\"Ebsus4\", \"Dizi\":\"x,x,8,8,9,11\"},\n" +
+						"{\"AkorAdi\":\"Ebsus4\", \"Dizi\":\"11,11,13,13,11,11\"},\n" +
+						"{\"AkorAdi\":\"Eb7sus4\", \"Dizi\":\"x,6,6,6,4,4\"},\n" +
+						"{\"AkorAdi\":\"Eb7sus4\", \"Dizi\":\"[6],6,8,6,9,6\"},\n" +
+						"{\"AkorAdi\":\"Eb7sus4\", \"Dizi\":\"x,x,8,8,9,9\"},\n" +
+						"{\"AkorAdi\":\"Eb7sus4\", \"Dizi\":\"11,13,11,13,11,11\"},\n" +
+						"{\"AkorAdi\":\"Eb-5\", \"Dizi\":\"x,x,1,2,4,3\"},\n" +
+						"{\"AkorAdi\":\"Eb-5\", \"Dizi\":\"x,x,5,2,4,3\"},\n" +
+						"{\"AkorAdi\":\"Eb-5\", \"Dizi\":\"5,6,5,8,[8],x\"},\n" +
+						"{\"AkorAdi\":\"Eb-5\", \"Dizi\":\"x,6,7,8,8,x\"},\n" +
+						"{\"AkorAdi\":\"Eb+5\", \"Dizi\":\"x,x,5,4,4,3\"},\n" +
+						"{\"AkorAdi\":\"Eb+5\", \"Dizi\":\"x,6,5,4,4,x\"},\n" +
+						"{\"AkorAdi\":\"Eb+5\", \"Dizi\":\"x,x,9,8,8,7\"},\n" +
+						"{\"AkorAdi\":\"Eb+5\", \"Dizi\":\"x,10,9,8,8,x\"},\n" +
+						"{\"AkorAdi\":\"Eb6\", \"Dizi\":\"x,1,1,3,1,3\"},\n" +
+						"{\"AkorAdi\":\"Eb6\", \"Dizi\":\"x,3,5,3,4,3\"},\n" +
+						"{\"AkorAdi\":\"Eb6\", \"Dizi\":\"x,6,5,5,x,6\"},\n" +
+						"{\"AkorAdi\":\"Eb6\", \"Dizi\":\"8,10,8,8,11,8\"},\n" +
+						"{\"AkorAdi\":\"Eb69\", \"Dizi\":\"x,1,1,0,1,1\"},\n" +
+						"{\"AkorAdi\":\"Eb69\", \"Dizi\":\"x,6,5,5,6,6\"},\n" +
+						"{\"AkorAdi\":\"Eb69\", \"Dizi\":\"11,10,10,10,11,11\"},\n" +
+						"{\"AkorAdi\":\"Eb7\", \"Dizi\":\"x,1,1,3,2,3\"},\n" +
+						"{\"AkorAdi\":\"Eb7\", \"Dizi\":\"[6],6,8,6,8,6\"},\n" +
+						"{\"AkorAdi\":\"Eb7\", \"Dizi\":\"x,[10],8,8,8,9\"},\n" +
+						"{\"AkorAdi\":\"Eb7\", \"Dizi\":\"11,13,11,12,11,11\"},\n" +
+						"{\"AkorAdi\":\"Eb7-5\", \"Dizi\":\"x,0,1,2,2,3\"},\n" +
+						"{\"AkorAdi\":\"Eb7-5\", \"Dizi\":\"x,x,5,6,4,5\"},\n" +
+						"{\"AkorAdi\":\"Eb7-5\", \"Dizi\":\"x,6,7,6,8,9\"},\n" +
+						"{\"AkorAdi\":\"Eb7-5\", \"Dizi\":\"x,10,11,12,10,11\"},\n" +
+						"{\"AkorAdi\":\"Eb7+5\", \"Dizi\":\"x,2,1,0,2,3\"},\n" +
+						"{\"AkorAdi\":\"Eb7+5\", \"Dizi\":\"x,x,5,6,4,7\"},\n" +
+						"{\"AkorAdi\":\"Eb7+5\", \"Dizi\":\"x,6,9,6,8,7\"},\n" +
+						"{\"AkorAdi\":\"Eb7+5\", \"Dizi\":\"x,x,9,8,8,9\"},\n" +
+						"{\"AkorAdi\":\"Eb9\", \"Dizi\":\"1,1,1,3,2,3\"},\n" +
+						"{\"AkorAdi\":\"Eb9\", \"Dizi\":\"[6],6,5,6,6,6\"},\n" +
+						"{\"AkorAdi\":\"Eb9\", \"Dizi\":\"x,8,8,8,8,9\"},\n" +
+						"{\"AkorAdi\":\"Eb9\", \"Dizi\":\"11,13,11,12,11,13\"},\n" +
+						"{\"AkorAdi\":\"Eb9-5\", \"Dizi\":\"x,x,3,2,2,3\"},\n" +
+						"{\"AkorAdi\":\"Eb9-5\", \"Dizi\":\"x,6,5,6,6,5\"},\n" +
+						"{\"AkorAdi\":\"Eb9-5\", \"Dizi\":\"x,8,7,6,8,x\"},\n" +
+						"{\"AkorAdi\":\"Eb9-5\", \"Dizi\":\"x,10,11,10,10,13\"},\n" +
+						"{\"AkorAdi\":\"Eb9+5\", \"Dizi\":\"[3],4,3,4,4,3\"},\n" +
+						"{\"AkorAdi\":\"Eb9+5\", \"Dizi\":\"x,6,5,6,6,7\"},\n" +
+						"{\"AkorAdi\":\"Eb9+5\", \"Dizi\":\"9,8,9,8,8,9\"},\n" +
+						"{\"AkorAdi\":\"Eb9+5\", \"Dizi\":\"x,10,11,10,12,11\"},\n" +
+						"{\"AkorAdi\":\"Eb7-9\", \"Dizi\":\"0,1,1,0,2,0\"},\n" +
+						"{\"AkorAdi\":\"Eb7-9\", \"Dizi\":\"x,6,5,6,5,6\"},\n" +
+						"{\"AkorAdi\":\"Eb7-9\", \"Dizi\":\"[6],7,8,6,8,6\"},\n" +
+						"{\"AkorAdi\":\"Eb7-9\", \"Dizi\":\"9,10,11,9,11,9\"},\n" +
+						"{\"AkorAdi\":\"Eb7+9\", \"Dizi\":\"x,1,1,0,2,2\"},\n" +
+						"{\"AkorAdi\":\"Eb7+9\", \"Dizi\":\"2,4,5,3,2,2\"},\n" +
+						"{\"AkorAdi\":\"Eb7+9\", \"Dizi\":\"x,6,5,6,7,x\"},\n" +
+						"{\"AkorAdi\":\"Eb7+9\", \"Dizi\":\"x,9,8,8,8,9\"},\n" +
+						"{\"AkorAdi\":\"Eb11\", \"Dizi\":\"[1],[1],1,1,2,3\"},\n" +
+						"{\"AkorAdi\":\"Eb11\", \"Dizi\":\"x,6,5,6,4,4\"},\n" +
+						"{\"AkorAdi\":\"Eb11\", \"Dizi\":\"x,6,6,6,8,6\"},\n" +
+						"{\"AkorAdi\":\"Eb11\", \"Dizi\":\"x,10,8,8,9,9\"},\n" +
+						"{\"AkorAdi\":\"Eb+11\", \"Dizi\":\"1,1,1,2,2,3\"},\n" +
+						"{\"AkorAdi\":\"Eb+11\", \"Dizi\":\"x,6,5,6,6,5\"},\n" +
+						"{\"AkorAdi\":\"Eb+11\", \"Dizi\":\"x,8,7,8,8,9\"},\n" +
+						"{\"AkorAdi\":\"Eb+11\", \"Dizi\":\"11,10,11,10,10,11\"},\n" +
+						"{\"AkorAdi\":\"Eb13\", \"Dizi\":\"x,4,5,5,4,x\"},\n" +
+						"{\"AkorAdi\":\"Eb13\", \"Dizi\":\"[6],6,8,6,8,8\"},\n" +
+						"{\"AkorAdi\":\"Eb13\", \"Dizi\":\"11,13,11,12,13,11\"},\n" +
+						"{\"AkorAdi\":\"Eb13\", \"Dizi\":\"11,11,11,12,13,13\"},\n" +
+						"{\"AkorAdi\":\"EbM7\", \"Dizi\":\"x,[1],1,3,3,3\"},\n" +
+						"{\"AkorAdi\":\"EbM7\", \"Dizi\":\"3,5,5,3,4,3\"},\n" +
+						"{\"AkorAdi\":\"EbM7\", \"Dizi\":\"[6],6,8,7,8,6\"},\n" +
+						"{\"AkorAdi\":\"EbM7\", \"Dizi\":\"x,x,8,8,8,10\"},\n" +
+						"{\"AkorAdi\":\"EbM7-5\", \"Dizi\":\"x,x,1,2,3,3\"},\n" +
+						"{\"AkorAdi\":\"EbM7-5\", \"Dizi\":\"x,6,7,7,8,x\"},\n" +
+						"{\"AkorAdi\":\"EbM7-5\", \"Dizi\":\"x,x,7,8,8,10\"},\n" +
+						"{\"AkorAdi\":\"EbM7-5\", \"Dizi\":\"11,12,12,12,x,x\"},\n" +
+						"{\"AkorAdi\":\"EbM7+5\", \"Dizi\":\"x,2,1,0,3,3\"},\n" +
+						"{\"AkorAdi\":\"EbM7+5\", \"Dizi\":\"[3],6,5,4,3,3\"},\n" +
+						"{\"AkorAdi\":\"EbM7+5\", \"Dizi\":\"x,6,9,7,8,x\"},\n" +
+						"{\"AkorAdi\":\"EbM7+5\", \"Dizi\":\"x,x,9,8,8,10\"},\n" +
+						"{\"AkorAdi\":\"EbM9\", \"Dizi\":\"x,6,3,3,3,3\"},\n" +
+						"{\"AkorAdi\":\"EbM9\", \"Dizi\":\"[6],6,5,7,6,x\"},\n" +
+						"{\"AkorAdi\":\"EbM9\", \"Dizi\":\"x,8,8,10,8,10\"},\n" +
+						"{\"AkorAdi\":\"EbM9\", \"Dizi\":\"x,x,12,12,11,13\"},\n" +
+						"{\"AkorAdi\":\"EbM11\", \"Dizi\":\"x,x,5,7,6,4\"},\n" +
+						"{\"AkorAdi\":\"EbM11\", \"Dizi\":\"[6],6,6,7,6,6\"},\n" +
+						"{\"AkorAdi\":\"EbM11\", \"Dizi\":\"x,8,8,10,9,10\"},\n" +
+						"{\"AkorAdi\":\"EbM11\", \"Dizi\":\"11,11,12,13,11,13\"},\n" +
+						"{\"AkorAdi\":\"EbM13\", \"Dizi\":\"x,3,1,0,3,x\"},\n" +
+						"{\"AkorAdi\":\"EbM13\", \"Dizi\":\"x,6,5,5,3,[3]\"},\n" +
+						"{\"AkorAdi\":\"EbM13\", \"Dizi\":\"x,6,[6],7,8,8\"},\n" +
+						"{\"AkorAdi\":\"EbM13\", \"Dizi\":\"11,10,10,10,11,10\"},\n" +
+						"{\"AkorAdi\":\"Ebm6\", \"Dizi\":\"x,[1],1,3,1,2\"},\n" +
+						"{\"AkorAdi\":\"Ebm6\", \"Dizi\":\"x,6,4,5,4,6\"},\n" +
+						"{\"AkorAdi\":\"Ebm6\", \"Dizi\":\"x,x,8,8,7,8\"},\n" +
+						"{\"AkorAdi\":\"Ebm6\", \"Dizi\":\"x,x,10,11,11,11\"},\n" +
+						"{\"AkorAdi\":\"Ebm69\", \"Dizi\":\"2,1,1,3,1,1\"},\n" +
+						"{\"AkorAdi\":\"Ebm69\", \"Dizi\":\"x,6,4,5,6,6\"},\n" +
+						"{\"AkorAdi\":\"Ebm69\", \"Dizi\":\"x,9,10,10,11,11\"},\n" +
+						"{\"AkorAdi\":\"Ebm69\", \"Dizi\":\"x,13,13,11,13,13\"},\n" +
+						"{\"AkorAdi\":\"Ebm7\", \"Dizi\":\"x,1,1,3,2,2\"},\n" +
+						"{\"AkorAdi\":\"Ebm7\", \"Dizi\":\"[6],6,8,6,7,6\"},\n" +
+						"{\"AkorAdi\":\"Ebm7\", \"Dizi\":\"x,x,8,8,7,9\"},\n" +
+						"{\"AkorAdi\":\"Ebm7\", \"Dizi\":\"11,13,11,11,11,11\"},\n" +
+						"{\"AkorAdi\":\"Ebm7-5\", \"Dizi\":\"x,x,1,2,2,2\"},\n" +
+						"{\"AkorAdi\":\"Ebm7-5\", \"Dizi\":\"x,6,7,6,7,x\"},\n" +
+						"{\"AkorAdi\":\"Ebm7-5\", \"Dizi\":\"x,x,7,8,7,9\"},\n" +
+						"{\"AkorAdi\":\"Ebm7-5\", \"Dizi\":\"9,9,11,11,10,11\"},\n" +
+						"{\"AkorAdi\":\"Ebm9\", \"Dizi\":\"x,4,3,3,4,2\"},\n" +
+						"{\"AkorAdi\":\"Ebm9\", \"Dizi\":\"x,6,4,6,6,6\"},\n" +
+						"{\"AkorAdi\":\"Ebm9\", \"Dizi\":\"x,8,8,8,7,9\"},\n" +
+						"{\"AkorAdi\":\"Ebm9\", \"Dizi\":\"x,9,11,10,11,11\"},\n" +
+						"{\"AkorAdi\":\"Ebm11\", \"Dizi\":\"2,1,1,1,2,1\"},\n" +
+						"{\"AkorAdi\":\"Ebm11\", \"Dizi\":\"x,6,4,6,6,4\"},\n" +
+						"{\"AkorAdi\":\"Ebm11\", \"Dizi\":\"11,9,11,10,9,9\"},\n" +
+						"{\"AkorAdi\":\"Ebm11\", \"Dizi\":\"11,11,11,11,11,13\"},\n" +
+						"{\"AkorAdi\":\"EbmM7\", \"Dizi\":\"x,1,1,3,3,2\"},\n" +
+						"{\"AkorAdi\":\"EbmM7\", \"Dizi\":\"x,5,4,3,4,x\"},\n" +
+						"{\"AkorAdi\":\"EbmM7\", \"Dizi\":\"6,6,8,7,7,6\"},\n" +
+						"{\"AkorAdi\":\"EbmM7\", \"Dizi\":\"11,13,12,11,11,11\"},\n" +
+						"{\"AkorAdi\":\"EbmM7-5\", \"Dizi\":\"x,x,1,2,3,2\"},\n" +
+						"{\"AkorAdi\":\"EbmM7-5\", \"Dizi\":\"[5],6,7,7,7,x\"},\n" +
+						"{\"AkorAdi\":\"EbmM7-5\", \"Dizi\":\"x,6,7,7,7,x\"},\n" +
+						"{\"AkorAdi\":\"EbmM7-5\", \"Dizi\":\"11,12,12,11,x,11\"},\n" +
+						"{\"AkorAdi\":\"EbmM9\", \"Dizi\":\"1,1,1,3,3,2\"},\n" +
+						"{\"AkorAdi\":\"EbmM9\", \"Dizi\":\"6,9,8,7,6,6\"},\n" +
+						"{\"AkorAdi\":\"EbmM9\", \"Dizi\":\"x,9,x,10,11,10\"},\n" +
+						"{\"AkorAdi\":\"EbmM9\", \"Dizi\":\"11,13,12,11,11,13\"},\n" +
+						"{\"AkorAdi\":\"EbmM11\", \"Dizi\":\"1,1,1,1,3,2\"},\n" +
+						"{\"AkorAdi\":\"EbmM11\", \"Dizi\":\"x,6,4,7,6,4\"},\n" +
+						"{\"AkorAdi\":\"EbmM11\", \"Dizi\":\"6,8,6,7,7,6\"},\n" +
+						"{\"AkorAdi\":\"EbmM11\", \"Dizi\":\"11,11,12,11,11,13\"},\n" +
+						"{\"AkorAdi\":\"Ebadd9\", \"Dizi\":\"x,6,5,3,6,3\"},\n" +
+						"{\"AkorAdi\":\"Ebadd9\", \"Dizi\":\"x,6,8,8,6,6\"},\n" +
+						"{\"AkorAdi\":\"Ebadd9\", \"Dizi\":\"x,x,13,12,11,13\"},\n" +
+						"{\"AkorAdi\":\"Ebmadd9\", \"Dizi\":\"x,x,4,3,4,1\"},\n" +
+						"{\"AkorAdi\":\"Ebmadd9\", \"Dizi\":\"x,6,4,3,6,x\"},\n" +
+						"{\"AkorAdi\":\"Ebmadd9\", \"Dizi\":\"x,9,8,8,6,x\"},\n" +
+						"{\"AkorAdi\":\"Ebmadd9\", \"Dizi\":\"x,x,13,11,11,13\"}\n" +
+						"]}\n" +
+						"]\n" +
+						"}\n" +
+						"}";
+				break;
+			case 11:
 				JSONTonAkorData = "{\n" +
 						"\"AkorCetveli\": {\n" +
 						"\"Tonlar\": [\n" +
@@ -5369,7 +5859,7 @@ public class AkorDefterimSys {
 						"}\n" +
 						"}";
 				break;
-			case 8:
+			case 12:
 				JSONTonAkorData = "{\n" +
 						"\"AkorCetveli\": {\n" +
 						"\"Tonlar\": [\n" +
@@ -5529,7 +6019,7 @@ public class AkorDefterimSys {
 						"}\n" +
 						"}";
 				break;
-			case 9:
+			case 13:
 				JSONTonAkorData = "{\n" +
 						"\"AkorCetveli\": {\n" +
 						"\"Tonlar\": [\n" +
@@ -5689,7 +6179,167 @@ public class AkorDefterimSys {
 						"}\n" +
 						"}";
 				break;
-			case 10:
+			case 14:
+				JSONTonAkorData = "{\n" +
+						"\"AkorCetveli\": {\n" +
+						"\"Tonlar\": [\n" +
+						"{\"TonAdi\":\"Gb\", \"Akorlari\": [\n" +
+						"{\"AkorAdi\": \"Gb\", \"Dizi\": \"2,4,4,3,2,2\"},\n" +
+						"{\"AkorAdi\": \"Gb\", \"Dizi\": \"x,4,4,6,7,6\"},\n" +
+						"{\"AkorAdi\": \"Gb\", \"Dizi\": \"[6],9,8,6,7,6\"},\n" +
+						"{\"AkorAdi\": \"Gb\", \"Dizi\": \"[9],9,11,11,11,9\"},\n" +
+						"{\"AkorAdi\": \"Gbm\", \"Dizi\": \"2,4,4,2,2,2\"},\n" +
+						"{\"AkorAdi\": \"Gbm\", \"Dizi\": \"x,4,4,6,7,5\"},\n" +
+						"{\"AkorAdi\": \"Gbm\", \"Dizi\": \"x,x,7,6,7,5\"},\n" +
+						"{\"AkorAdi\": \"Gbm\", \"Dizi\": \"[9],9,11,11,10,9\"},\n" +
+						"{\"AkorAdi\": \"Gbdim\", \"Dizi\": \"x,x,1,2,1,2\"},\n" +
+						"{\"AkorAdi\": \"Gbdim\", \"Dizi\": \"2,3,4,2,4,2\"},\n" +
+						"{\"AkorAdi\": \"Gbdim\", \"Dizi\": \"x,x,4,5,4,5\"},\n" +
+						"{\"AkorAdi\": \"Gbdim\", \"Dizi\": \"8,9,10,8,10,8\"},\n" +
+						"{\"AkorAdi\": \"Gbsus4\", \"Dizi\": \"2,2,4,4,2,2\"},\n" +
+						"{\"AkorAdi\": \"Gbsus4\", \"Dizi\": \"x,4,4,6,7,7\"},\n" +
+						"{\"AkorAdi\": \"Gbsus4\", \"Dizi\": \"[9],9,11,11,12,9\"},\n" +
+						"{\"AkorAdi\": \"Gbsus4\", \"Dizi\": \"x,x,11,11,12,14\"},\n" +
+						"{\"AkorAdi\": \"Gb7sus4\", \"Dizi\": \"2,4,2,4,2,2\"},\n" +
+						"{\"AkorAdi\": \"Gb7sus4\", \"Dizi\": \"x,9,9,9,7,7\"},\n" +
+						"{\"AkorAdi\": \"Gb7sus4\", \"Dizi\": \"[9],9,11,9,12,9\"},\n" +
+						"{\"AkorAdi\": \"Gb7sus4\", \"Dizi\": \"x,x,11,11,12,12\"},\n" +
+						"{\"AkorAdi\": \"Gb-5\", \"Dizi\": \"x,x,4,3,1,2\"},\n" +
+						"{\"AkorAdi\": \"Gb-5\", \"Dizi\": \"x,x,8,5,7,6\"},\n" +
+						"{\"AkorAdi\": \"Gb-5\", \"Dizi\": \"8,9,8,11,[11],x\"},\n" +
+						"{\"AkorAdi\": \"Gb-5\", \"Dizi\": \"x,9,10,11,11,x\"},\n" +
+						"{\"AkorAdi\": \"Gb+5\", \"Dizi\": \"x,x,4,3,3,2\"},\n" +
+						"{\"AkorAdi\": \"Gb+5\", \"Dizi\": \"x,5,4,3,3,x\"},\n" +
+						"{\"AkorAdi\": \"Gb+5\", \"Dizi\": \"x,x,8,7,7,6\"},\n" +
+						"{\"AkorAdi\": \"Gb+5\", \"Dizi\": \"x,9,8,7,7,x\"},\n" +
+						"{\"AkorAdi\": \"Gb6\", \"Dizi\": \"x,4,4,3,4,x\"},\n" +
+						"{\"AkorAdi\": \"Gb6\", \"Dizi\": \"x,4,4,6,4,6\"},\n" +
+						"{\"AkorAdi\": \"Gb6\", \"Dizi\": \"6,6,8,6,7,6\"},\n" +
+						"{\"AkorAdi\": \"Gb6\", \"Dizi\": \"x,9,8,8,x,9\"},\n" +
+						"{\"AkorAdi\": \"Gb69\", \"Dizi\": \"2,1,1,1,2,2\"},\n" +
+						"{\"AkorAdi\": \"Gb69\", \"Dizi\": \"x,4,4,3,4,4\"},\n" +
+						"{\"AkorAdi\": \"Gb69\", \"Dizi\": \"x,9,8,8,9,9\"},\n" +
+						"{\"AkorAdi\": \"Gb7\", \"Dizi\": \"2,4,2,3,2,2\"},\n" +
+						"{\"AkorAdi\": \"Gb7\", \"Dizi\": \"x,4,4,6,5,6\"},\n" +
+						"{\"AkorAdi\": \"Gb7\", \"Dizi\": \"[9],9,11,9,11,9\"},\n" +
+						"{\"AkorAdi\": \"Gb7\", \"Dizi\": \"x,13,11,11,11,12\"},\n" +
+						"{\"AkorAdi\": \"Gb7-5\", \"Dizi\": \"0,1,2,3,1,2\"},\n" +
+						"{\"AkorAdi\": \"Gb7-5\", \"Dizi\": \"x,x,4,5,5,6\"},\n" +
+						"{\"AkorAdi\": \"Gb7-5\", \"Dizi\": \"x,7,8,9,7,8\"},\n" +
+						"{\"AkorAdi\": \"Gb7-5\", \"Dizi\": \"x,9,10,9,11,12\"},\n" +
+						"{\"AkorAdi\": \"Gb7+5\", \"Dizi\": \"x,x,2,3,3,2\"},\n" +
+						"{\"AkorAdi\": \"Gb7+5\", \"Dizi\": \"x,x,4,7,5,6\"},\n" +
+						"{\"AkorAdi\": \"Gb7+5\", \"Dizi\": \"x,x,8,9,7,10\"},\n" +
+						"{\"AkorAdi\": \"Gb7+5\", \"Dizi\": \"x,9,12,9,11,10\"},\n" +
+						"{\"AkorAdi\": \"Gb9\", \"Dizi\": \"2,4,2,3,2,4\"},\n" +
+						"{\"AkorAdi\": \"Gb9\", \"Dizi\": \"4,4,4,6,5,6\"},\n" +
+						"{\"AkorAdi\": \"Gb9\", \"Dizi\": \"[9],9,8,9,9,9\"},\n" +
+						"{\"AkorAdi\": \"Gb9\", \"Dizi\": \"x,11,11,11,11,12\"},\n" +
+						"{\"AkorAdi\": \"Gb9-5\", \"Dizi\": \"2,1,2,1,1,2\"},\n" +
+						"{\"AkorAdi\": \"Gb9-5\", \"Dizi\": \"x,3,4,3,5,4\"},\n" +
+						"{\"AkorAdi\": \"Gb9-5\", \"Dizi\": \"x,x,6,5,5,6\"},\n" +
+						"{\"AkorAdi\": \"Gb9-5\", \"Dizi\": \"x,9,8,9,9,8\"},\n" +
+						"{\"AkorAdi\": \"Gb9+5\", \"Dizi\": \"x,1,2,1,3,2\"},\n" +
+						"{\"AkorAdi\": \"Gb9+5\", \"Dizi\": \"[6],7,6,7,7,6\"},\n" +
+						"{\"AkorAdi\": \"Gb9+5\", \"Dizi\": \"x,9,8,9,9,10\"},\n" +
+						"{\"AkorAdi\": \"Gb9+5\", \"Dizi\": \"12,11,12,11,11,12\"},\n" +
+						"{\"AkorAdi\": \"Gb7-9\", \"Dizi\": \"2,4,2,3,2,3\"},\n" +
+						"{\"AkorAdi\": \"Gb7-9\", \"Dizi\": \"3,4,4,3,5,3\"},\n" +
+						"{\"AkorAdi\": \"Gb7-9\", \"Dizi\": \"x,9,8,9,8,9\"},\n" +
+						"{\"AkorAdi\": \"Gb7-9\", \"Dizi\": \"[9],10,11,9,11,9\"},\n" +
+						"{\"AkorAdi\": \"Gb7+9\", \"Dizi\": \"x,4,4,3,5,5\"},\n" +
+						"{\"AkorAdi\": \"Gb7+9\", \"Dizi\": \"5,7,8,6,5,5\"},\n" +
+						"{\"AkorAdi\": \"Gb7+9\", \"Dizi\": \"x,9,8,9,10,x\"},\n" +
+						"{\"AkorAdi\": \"Gb7+9\", \"Dizi\": \"x,12,11,11,11,12\"},\n" +
+						"{\"AkorAdi\": \"Gb11\", \"Dizi\": \"[4],[4],4,4,5,6\"},\n" +
+						"{\"AkorAdi\": \"Gb11\", \"Dizi\": \"x,9,8,9,7,7\"},\n" +
+						"{\"AkorAdi\": \"Gb11\", \"Dizi\": \"x,9,9,9,11,9\"},\n" +
+						"{\"AkorAdi\": \"Gb11\", \"Dizi\": \"x,13,11,11,12,12\"},\n" +
+						"{\"AkorAdi\": \"Gb+11\", \"Dizi\": \"2,1,2,1,1,2\"},\n" +
+						"{\"AkorAdi\": \"Gb+11\", \"Dizi\": \"4,4,4,5,5,6\"},\n" +
+						"{\"AkorAdi\": \"Gb+11\", \"Dizi\": \"x,9,8,9,9,8\"},\n" +
+						"{\"AkorAdi\": \"Gb+11\", \"Dizi\": \"x,11,10,11,11,12\"},\n" +
+						"{\"AkorAdi\": \"Gb13\", \"Dizi\": \"2,4,2,3,4,2\"},\n" +
+						"{\"AkorAdi\": \"Gb13\", \"Dizi\": \"2,2,2,3,4,4\"},\n" +
+						"{\"AkorAdi\": \"Gb13\", \"Dizi\": \"x,7,8,8,7,x\"},\n" +
+						"{\"AkorAdi\": \"Gb13\", \"Dizi\": \"[9],9,11,9,11,11\"},\n" +
+						"{\"AkorAdi\": \"GbM7\", \"Dizi\": \"2,4,3,3,2,2\"},\n" +
+						"{\"AkorAdi\": \"GbM7\", \"Dizi\": \"x,[4],4,6,6,6\"},\n" +
+						"{\"AkorAdi\": \"GbM7\", \"Dizi\": \"6,8,8,6,7,6\"},\n" +
+						"{\"AkorAdi\": \"GbM7\", \"Dizi\": \"[9],9,11,10,11,9\"},\n" +
+						"{\"AkorAdi\": \"GbM7-5\", \"Dizi\": \"2,3,3,3,x,x\"},\n" +
+						"{\"AkorAdi\": \"GbM7-5\", \"Dizi\": \"x,x,4,5,6,6\"},\n" +
+						"{\"AkorAdi\": \"GbM7-5\", \"Dizi\": \"x,9,10,10,11,x\"},\n" +
+						"{\"AkorAdi\": \"GbM7-5\", \"Dizi\": \"x,x,10,11,11,13\"},\n" +
+						"{\"AkorAdi\": \"GbM7+5\", \"Dizi\": \"x,5,4,3,6,6\"},\n" +
+						"{\"AkorAdi\": \"GbM7+5\", \"Dizi\": \"[6],9,8,7,6,6\"},\n" +
+						"{\"AkorAdi\": \"GbM7+5\", \"Dizi\": \"x,9,12,10,11,x\"},\n" +
+						"{\"AkorAdi\": \"GbM7+5\", \"Dizi\": \"x,x,12,11,11,13\"},\n" +
+						"{\"AkorAdi\": \"GbM9\", \"Dizi\": \"[1],1,3,1,2,2\"},\n" +
+						"{\"AkorAdi\": \"GbM9\", \"Dizi\": \"x,x,3,3,2,4\"},\n" +
+						"{\"AkorAdi\": \"GbM9\", \"Dizi\": \"[9],9,8,10,9,x\"},\n" +
+						"{\"AkorAdi\": \"GbM9\", \"Dizi\": \"x,11,11,13,11,13\"},\n" +
+						"{\"AkorAdi\": \"GbM11\", \"Dizi\": \"2,2,3,3,2,4\"},\n" +
+						"{\"AkorAdi\": \"GbM11\", \"Dizi\": \"x,x,8,10,9,7\"},\n" +
+						"{\"AkorAdi\": \"GbM11\", \"Dizi\": \"[9],9,9,10,9,9\"},\n" +
+						"{\"AkorAdi\": \"GbM11\", \"Dizi\": \"x,11,11,13,12,13\"},\n" +
+						"{\"AkorAdi\": \"GbM13\", \"Dizi\": \"2,1,1,1,2,1\"},\n" +
+						"{\"AkorAdi\": \"GbM13\", \"Dizi\": \"x,6,4,4,6,6\"},\n" +
+						"{\"AkorAdi\": \"GbM13\", \"Dizi\": \"x,9,8,8,6,[6]\"},\n" +
+						"{\"AkorAdi\": \"GbM13\", \"Dizi\": \"x,9,[9],10,11,11\"},\n" +
+						"{\"AkorAdi\": \"Gbm6\", \"Dizi\": \"x,x,1,2,2,2\"},\n" +
+						"{\"AkorAdi\": \"Gbm6\", \"Dizi\": \"x,[4],4,6,4,5\"},\n" +
+						"{\"AkorAdi\": \"Gbm6\", \"Dizi\": \"x,9,7,8,7,9\"},\n" +
+						"{\"AkorAdi\": \"Gbm6\", \"Dizi\": \"x,x,11,11,10,11\"},\n" +
+						"{\"AkorAdi\": \"Gbm69\", \"Dizi\": \"x,0,1,1,2,2\"},\n" +
+						"{\"AkorAdi\": \"Gbm69\", \"Dizi\": \"x,4,4,2,4,4\"},\n" +
+						"{\"AkorAdi\": \"Gbm69\", \"Dizi\": \"5,4,4,6,4,4\"},\n" +
+						"{\"AkorAdi\": \"Gbm69\", \"Dizi\": \"x,9,7,8,9,9\"},\n" +
+						"{\"AkorAdi\": \"Gbm7\", \"Dizi\": \"2,4,2,2,2,2\"},\n" +
+						"{\"AkorAdi\": \"Gbm7\", \"Dizi\": \"x,4,4,6,5,5\"},\n" +
+						"{\"AkorAdi\": \"Gbm7\", \"Dizi\": \"[9],9,11,9,10,9\"},\n" +
+						"{\"AkorAdi\": \"Gbm7\", \"Dizi\": \"x,x,11,11,10,12\"},\n" +
+						"{\"AkorAdi\": \"Gbm7-5\", \"Dizi\": \"2,0,2,2,1,0\"},\n" +
+						"{\"AkorAdi\": \"Gbm7-5\", \"Dizi\": \"x,x,4,5,5,5\"},\n" +
+						"{\"AkorAdi\": \"Gbm7-5\", \"Dizi\": \"x,9,10,9,10,x\"},\n" +
+						"{\"AkorAdi\": \"Gbm7-5\", \"Dizi\": \"x,x,10,11,10,12\"},\n" +
+						"{\"AkorAdi\": \"Gbm9\", \"Dizi\": \"2,4,2,2,2,4\"},\n" +
+						"{\"AkorAdi\": \"Gbm9\", \"Dizi\": \"x,7,6,6,7,5\"},\n" +
+						"{\"AkorAdi\": \"Gbm9\", \"Dizi\": \"x,9,7,9,9,9\"},\n" +
+						"{\"AkorAdi\": \"Gbm9\", \"Dizi\": \"x,11,11,11,10,12\"},\n" +
+						"{\"AkorAdi\": \"Gbm11\", \"Dizi\": \"2,0,2,1,0,0\"},\n" +
+						"{\"AkorAdi\": \"Gbm11\", \"Dizi\": \"2,2,2,2,2,4\"},\n" +
+						"{\"AkorAdi\": \"Gbm11\", \"Dizi\": \"5,4,4,4,5,4\"},\n" +
+						"{\"AkorAdi\": \"Gbm11\", \"Dizi\": \"x,9,7,9,9,7\"},\n" +
+						"{\"AkorAdi\": \"GbmM7\", \"Dizi\": \"2,4,3,2,2,2\"},\n" +
+						"{\"AkorAdi\": \"GbmM7\", \"Dizi\": \"x,4,4,6,6,5\"},\n" +
+						"{\"AkorAdi\": \"GbmM7\", \"Dizi\": \"x,8,7,6,7,x\"},\n" +
+						"{\"AkorAdi\": \"GbmM7\", \"Dizi\": \"9,9,11,10,10,9\"},\n" +
+						"{\"AkorAdi\": \"GbmM7-5\", \"Dizi\": \"2,3,3,2,x,2\"},\n" +
+						"{\"AkorAdi\": \"GbmM7-5\", \"Dizi\": \"x,x,4,5,6,5\"},\n" +
+						"{\"AkorAdi\": \"GbmM7-5\", \"Dizi\": \"[8],9,10,10,10,x\"},\n" +
+						"{\"AkorAdi\": \"GbmM7-5\", \"Dizi\": \"x,9,10,10,10,x\"},\n" +
+						"{\"AkorAdi\": \"GbmM9\", \"Dizi\": \"x,0,x,1,2,1\"},\n" +
+						"{\"AkorAdi\": \"GbmM9\", \"Dizi\": \"2,4,3,2,2,4\"},\n" +
+						"{\"AkorAdi\": \"GbmM9\", \"Dizi\": \"4,4,4,6,6,5\"},\n" +
+						"{\"AkorAdi\": \"GbmM9\", \"Dizi\": \"9,12,11,10,9,9\"},\n" +
+						"{\"AkorAdi\": \"GbmM11\", \"Dizi\": \"2,2,3,2,2,4\"},\n" +
+						"{\"AkorAdi\": \"GbmM11\", \"Dizi\": \"4,4,4,4,6,5\"},\n" +
+						"{\"AkorAdi\": \"GbmM11\", \"Dizi\": \"x,9,7,10,9,7\"},\n" +
+						"{\"AkorAdi\": \"GbmM11\", \"Dizi\": \"9,11,9,10,10,9\"},\n" +
+						"{\"AkorAdi\": \"Gbadd9\", \"Dizi\": \"x,x,4,3,2,4\"},\n" +
+						"{\"AkorAdi\": \"Gbadd9\", \"Dizi\": \"x,9,8,6,9,6\"},\n" +
+						"{\"AkorAdi\": \"Gbadd9\", \"Dizi\": \"x,9,11,11,9,9\"},\n" +
+						"{\"AkorAdi\": \"Gbmadd9\", \"Dizi\": \"x,x,4,2,2,4\"},\n" +
+						"{\"AkorAdi\": \"Gbmadd9\", \"Dizi\": \"x,x,7,6,7,4\"},\n" +
+						"{\"AkorAdi\": \"Gbmadd9\", \"Dizi\": \"x,9,7,6,9,x\"},\n" +
+						"{\"AkorAdi\": \"Gbmadd9\", \"Dizi\": \"x,12,11,11,9,x\"}\n" +
+						"]}\n" +
+						"]\n" +
+						"}\n" +
+						"}";
+				break;
+			case 15:
 				JSONTonAkorData = "{\n" +
 						"\"AkorCetveli\": {\n" +
 						"\"Tonlar\": [\n" +
@@ -5849,7 +6499,7 @@ public class AkorDefterimSys {
 						"}\n" +
 						"}";
 				break;
-			case 11:
+			case 16:
 				JSONTonAkorData = "{\n" +
 						"\"AkorCetveli\": {\n" +
 						"\"Tonlar\": [\n" +
@@ -6014,7 +6664,7 @@ public class AkorDefterimSys {
 		return JSONTonAkorData;
 	}
 
-	private Bitmap ImageScaleToFitWidth(Bitmap b, int width) {
+	public Bitmap ImageScaleToFitWidth(Bitmap b, int width) {
 		float factor = width / (float) b.getWidth();
 		return Bitmap.createScaledBitmap(b, width, (int) (b.getHeight() * factor), true);
 	}
@@ -6022,204 +6672,6 @@ public class AkorDefterimSys {
 	public Bitmap ImageScaleToFitHeight(Bitmap b, int height) {
 		float factor = height / (float) b.getHeight();
 		return Bitmap.createScaledBitmap(b, (int) (b.getWidth() * factor), height, true);
-	}
-
-	private Bitmap GitarUzerindeAkorGetir(Activity activity, AlertDialog ADDialogAkorGosterici, Typeface YaziFontu, String AkorDizi) {
-		/** Gitar Klavye Grafik Değişkenleri **/
-		int EkranWidth = activity.getWindowManager().getDefaultDisplay().getWidth();
-		//int EkranHeight = activity.getWindowManager().getDefaultDisplay().getHeight();
-		int DialogWidth = ADDialogAkorGosterici.getWindow().getWindowManager().getDefaultDisplay().getWidth();
-		int CetvelPadding = 100;
-		int BaslangicX, BaslangicY, BitisX, BitisY;
-
-		int BaslangicPerdesiKalinligi = 40;
-
-		int ToplamFredSayisi = 20;
-		int FredlerArasiMesafe = 250;
-		int FredKalinligi = 20;
-
-		int ToplamTelSayisi = 6;
-		int TellerArasiMesafe;
-		int[] TelKalinligi = {25,23,20,16,14,12};
-
-		int VidaBoyutu = 35;
-		int NotaBoyutu = 50;
-		int NotaBorderKalinligi = 10;
-		int[] VidaKoordinatlari = new int[18];
-		int[] NotaKoordinatlari = new int[12];
-
-		String[] DiziParcasi = AkorDizi.split(",");
-
-		Bitmap bitmap = Bitmap.createBitmap(EkranWidth, ToplamFredSayisi * FredlerArasiMesafe, Bitmap.Config.ARGB_8888);
-		Canvas canvas = new Canvas(bitmap);
-
-		Paint PaintBaslangicPerdesi = new Paint();
-		PaintBaslangicPerdesi.setColor(activity.getResources().getColor(R.color.GitarKlavyeBaslangicPerdesiRengi));
-		PaintBaslangicPerdesi.setStyle(Paint.Style.FILL);
-		PaintBaslangicPerdesi.setStrokeWidth(BaslangicPerdesiKalinligi);
-
-		Paint PaintPerde = new Paint();
-		PaintPerde.setColor(activity.getResources().getColor(R.color.GitarKlavyePerdeRengi));
-		PaintPerde.setStyle(Paint.Style.FILL);
-
-		Paint PaintFred = new Paint();
-		PaintFred.setColor(activity.getResources().getColor(R.color.GitarKlavyeFredRengi));
-		PaintFred.setStyle(Paint.Style.FILL);
-		PaintFred.setStrokeWidth(FredKalinligi);
-
-		Paint PaintVida = new Paint();
-		PaintVida.setColor(activity.getResources().getColor(R.color.GitarKlavyeVidaRengi));
-		PaintVida.setStyle(Paint.Style.FILL);
-
-		Paint PaintTel = new Paint();
-		PaintTel.setColor(activity.getResources().getColor(R.color.GitarKlavyeTelRengi));
-		PaintTel.setStyle(Paint.Style.FILL);
-
-		Paint PaintNota = new Paint();
-		PaintNota.setColor(activity.getResources().getColor(R.color.GitarKlavyeNotaRengi));
-		PaintNota.setStyle(Paint.Style.FILL);
-
-		Paint PaintNotaBorder = new Paint();
-		PaintNotaBorder.setColor(activity.getResources().getColor(R.color.GitarKlavyeNotaBorderRengi));
-		PaintNotaBorder.setStyle(Paint.Style.STROKE);
-		PaintNotaBorder.setStrokeWidth(NotaBorderKalinligi);
-
-		Paint PaintXNota = new Paint();
-		PaintXNota.setColor(activity.getResources().getColor(R.color.GitarKlavyeXNotaRengi));
-		PaintXNota.setTextSize(150);
-		PaintXNota.setTypeface(Typeface.create(YaziFontu, Typeface.BOLD));
-
-		BaslangicX = CetvelPadding;
-		BaslangicY = CetvelPadding;
-		BitisX = DialogWidth - BaslangicX;
-		BitisY = CetvelPadding;
-
-		for(int i = 0; i < ToplamFredSayisi; i++) {
-			/** Perdeleri çiziyoruz. Y parameresi */
-			if(i == 0) {
-				canvas.drawLine(BaslangicX - 60, BaslangicY, BitisX + 60, BitisY, PaintBaslangicPerdesi);
-				canvas.drawRect(BaslangicX - 60, BaslangicY + (BaslangicPerdesiKalinligi / 2), BitisX + 60, BaslangicY + (FredlerArasiMesafe - (FredKalinligi / 2)), PaintPerde);
-			} else {
-				canvas.drawLine(BaslangicX - 60, BaslangicY, BitisX + 60, BitisY, PaintFred);
-				canvas.drawRect(BaslangicX - 60, BaslangicY + (FredKalinligi / 2), BitisX + 60, BaslangicY + (FredlerArasiMesafe - (FredKalinligi / 2)), PaintPerde);
-			}
-
-			/** Vidaları çiziyoruz. Y parameresi */
-			if(i == 2) VidaKoordinatlari[1] = BaslangicY + (FredlerArasiMesafe / 2);
-			if(i == 4) VidaKoordinatlari[3] = BaslangicY + (FredlerArasiMesafe / 2);
-			if(i == 6) VidaKoordinatlari[5] = BaslangicY + (FredlerArasiMesafe / 2);
-			if(i == 8) VidaKoordinatlari[7] = BaslangicY + (FredlerArasiMesafe / 2);
-			if(i == 11) {
-				VidaKoordinatlari[9] = BaslangicY + (FredlerArasiMesafe / 2);
-				VidaKoordinatlari[11] = BaslangicY + (FredlerArasiMesafe / 2);
-			}
-			if(i == 14) VidaKoordinatlari[13] = BaslangicY + (FredlerArasiMesafe / 2);
-			if(i == 16) VidaKoordinatlari[15] = BaslangicY + (FredlerArasiMesafe / 2);
-			if(i == 18) VidaKoordinatlari[17] = BaslangicY + (FredlerArasiMesafe / 2);
-
-			/** Akordaki notaları yerlerine çiziyoruz. Y parameresi */
-			if(!AkorDizi.equals("0,0,0,0,0,0")) {
-				//if(DiziParcasi[0].equals(String.valueOf(i + 1))) NotaKoordinatlari[1] = BaslangicY + (FredlerArasiMesafe / 2);
-
-				if(isNumeric(DiziParcasi[0]) && DiziParcasi[0].equals(String.valueOf(i + 1))) NotaKoordinatlari[1] = BaslangicY + (FredlerArasiMesafe / 2);
-				else if(DiziParcasi[0].contains("[") && DiziParcasi[0].contains("]")) {
-					if(Integer.parseInt(DiziParcasi[0].substring(1, DiziParcasi[0].length() - 1)) == i + 1) NotaKoordinatlari[1] = BaslangicY + (FredlerArasiMesafe / 2);
-				}
-
-				if(isNumeric(DiziParcasi[1]) && DiziParcasi[1].equals(String.valueOf(i + 1))) NotaKoordinatlari[3] = BaslangicY + (FredlerArasiMesafe / 2);
-				else if(DiziParcasi[1].contains("[") && DiziParcasi[1].contains("]")) {
-					if(Integer.parseInt(DiziParcasi[1].substring(1, DiziParcasi[1].length() - 1)) == i + 1) NotaKoordinatlari[3] = BaslangicY + (FredlerArasiMesafe / 2);
-				}
-
-				if(isNumeric(DiziParcasi[2]) && DiziParcasi[2].equals(String.valueOf(i + 1))) NotaKoordinatlari[5] = BaslangicY + (FredlerArasiMesafe / 2);
-				else if(DiziParcasi[2].contains("[") && DiziParcasi[2].contains("]")) {
-					if(Integer.parseInt(DiziParcasi[2].substring(1, DiziParcasi[2].length() - 1)) == i + 1) NotaKoordinatlari[5] = BaslangicY + (FredlerArasiMesafe / 2);
-				}
-
-				if(isNumeric(DiziParcasi[3]) && DiziParcasi[3].equals(String.valueOf(i + 1))) NotaKoordinatlari[7] = BaslangicY + (FredlerArasiMesafe / 2);
-				else if(DiziParcasi[3].contains("[") && DiziParcasi[3].contains("]")) {
-					if(Integer.parseInt(DiziParcasi[3].substring(1, DiziParcasi[3].length() - 1)) == i + 1) NotaKoordinatlari[7] = BaslangicY + (FredlerArasiMesafe / 2);
-				}
-
-				if(isNumeric(DiziParcasi[4]) && DiziParcasi[4].equals(String.valueOf(i + 1))) NotaKoordinatlari[9] = BaslangicY + (FredlerArasiMesafe / 2);
-				else if(DiziParcasi[4].contains("[") && DiziParcasi[4].contains("]")) {
-					if(Integer.parseInt(DiziParcasi[4].substring(1, DiziParcasi[4].length() - 1)) == i + 1) NotaKoordinatlari[9] = BaslangicY + (FredlerArasiMesafe / 2);
-				}
-
-				if(isNumeric(DiziParcasi[5]) && DiziParcasi[5].equals(String.valueOf(i + 1))) NotaKoordinatlari[11] = BaslangicY + (FredlerArasiMesafe / 2);
-				else if(DiziParcasi[5].contains("[") && DiziParcasi[5].contains("]")) {
-					if(Integer.parseInt(DiziParcasi[5].substring(1, DiziParcasi[5].length() - 1)) == i + 1) NotaKoordinatlari[11] = BaslangicY + (FredlerArasiMesafe / 2);
-				}
-			}
-
-			BaslangicY = BaslangicY + FredlerArasiMesafe;
-			BitisY = BaslangicY;
-		}
-
-		BaslangicX = CetvelPadding;
-		BaslangicY = CetvelPadding;
-		BitisX = CetvelPadding;
-		BitisY = FredlerArasiMesafe * ToplamFredSayisi;
-		TellerArasiMesafe = ((DialogWidth - (BaslangicX * 2)) / (ToplamTelSayisi - 1));
-
-		for(int i = 0; i < ToplamTelSayisi; i++) {
-			PaintTel.setStrokeWidth(TelKalinligi[i]);
-			canvas.drawLine(BaslangicX, BaslangicY, BitisX, BitisY, PaintTel);
-
-			NotaKoordinatlari[(i * 2)] = BaslangicX;
-
-			/*if(DiziParcasi[0].equals("0")) NotaKoordinatlari[1] = BaslangicY / 2;
-			else if(DiziParcasi[0].equals("x")) NotaKoordinatlari[1] = BaslangicY;*/
-
-			if(DiziParcasi[i].equals("x")) NotaKoordinatlari[(i * 2) + 1] = BaslangicY;
-
-			if(i == 1) VidaKoordinatlari[8] = BaslangicX + (TellerArasiMesafe / 2);
-
-			if(i == 2) {
-				VidaKoordinatlari[0] = BaslangicX + (TellerArasiMesafe / 2);
-				VidaKoordinatlari[2] = BaslangicX + (TellerArasiMesafe / 2);
-				VidaKoordinatlari[4] = BaslangicX + (TellerArasiMesafe / 2);
-				VidaKoordinatlari[6] = BaslangicX + (TellerArasiMesafe / 2);
-				VidaKoordinatlari[12] = BaslangicX + (TellerArasiMesafe / 2);
-				VidaKoordinatlari[14] = BaslangicX + (TellerArasiMesafe / 2);
-				VidaKoordinatlari[16] = BaslangicX + (TellerArasiMesafe / 2);
-			}
-
-			if(i == 3) VidaKoordinatlari[10] = BaslangicX + (TellerArasiMesafe / 2);
-
-			BaslangicX = BaslangicX + TellerArasiMesafe;
-			BitisX = BaslangicX;
-		}
-
-		for(int i = 0; i < VidaKoordinatlari.length / 2; i++) {
-			canvas.drawCircle(VidaKoordinatlari[i*2], VidaKoordinatlari[(i*2) + 1], VidaBoyutu, PaintVida);
-		}
-
-		for(int i = 0; i < NotaKoordinatlari.length / 2; i++) {
-			if(NotaKoordinatlari[i*2] != 0 && NotaKoordinatlari[(i*2) + 1] != 0) {
-				if(DiziParcasi[i].equals("x"))
-					canvas.drawText("x", NotaKoordinatlari[i*2] - 40, NotaKoordinatlari[(i*2) + 1] + 45, PaintXNota);
-				else {
-					if(DiziParcasi[i].contains("[") && DiziParcasi[i].contains("]")) {
-						PaintNota.setColor(activity.getResources().getColor(R.color.GitarKlavyeAlternatifNotaRengi));
-						PaintNotaBorder.setColor(activity.getResources().getColor(R.color.GitarKlavyeAlternatifNotaBorderRengi));
-					} else {
-						PaintNota.setColor(activity.getResources().getColor(R.color.GitarKlavyeNotaRengi));
-						PaintNotaBorder.setColor(activity.getResources().getColor(R.color.GitarKlavyeNotaBorderRengi));
-					}
-
-					canvas.drawCircle(NotaKoordinatlari[i*2], NotaKoordinatlari[(i*2) + 1], NotaBoyutu, PaintNota);
-					canvas.drawCircle(NotaKoordinatlari[i*2], NotaKoordinatlari[(i*2) + 1], NotaBoyutu, PaintNotaBorder);
-
-					/*BitmapFactory.Options options = new BitmapFactory.Options();
-					options.inPreferredConfig = Bitmap.Config.ARGB_8888;
-					Bitmap background = BitmapFactory.decodeResource(activity.getResources(), R.drawable.ic_anasayfa_icon, options);
-					canvas.drawBitmap(background, NotaKoordinatlari[i*2] - 50, NotaKoordinatlari[(i*2) + 1] - 50, null);*/
-				}
-			}
-		}
-
-		return bitmap;
 	}
 
 	public String AndroidSurumBilgisi(int APILevel) {
@@ -6882,5 +7334,14 @@ public class AkorDefterimSys {
 				}
 			});
 		}
+	}
+
+	public String UzunYaziSonunaNoktaEkle(String Metin, int Uzunluk) {
+		String Sonuc;
+
+		if(Metin.length() >= Uzunluk) Sonuc = Metin.substring(0, Uzunluk) + "...";
+		else Sonuc = Metin;
+
+		return Sonuc;
 	}
 }

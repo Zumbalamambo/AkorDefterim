@@ -107,6 +107,7 @@ public class Hesabim extends AppCompatActivity implements Interface_AsyncRespons
 		super.onStart();
 
 		AkorDefterimSys.activity = activity;
+		AkorDefterimSys.SharePrefAyarlarınıUygula();
 
 		if(AkorDefterimSys.GirisYapildiMi()) {
 			if(!AkorDefterimSys.ProgressDialogisShowing(PDBilgilerAliniyor)) {

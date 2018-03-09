@@ -87,6 +87,8 @@ public class Ayarlar_Ekran_Isigi extends AppCompatActivity implements OnClickLis
 		super.onStart();
 
 		AkorDefterimSys.activity = activity;
+
+		AkorDefterimSys.SharePrefAyarlarınıUygula();
 	}
 
 	@Override

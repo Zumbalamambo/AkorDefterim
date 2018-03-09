@@ -6,6 +6,7 @@ import com.cnbcyln.app.akordefterim.Retrofit.Siniflar.SnfDuyurular;
 import com.cnbcyln.app.akordefterim.Retrofit.Siniflar.SnfHesapBilgiGetir;
 import com.cnbcyln.app.akordefterim.Retrofit.Siniflar.SnfHesapEkle;
 import com.cnbcyln.app.akordefterim.Retrofit.Siniflar.SnfHesapGirisYap;
+import com.cnbcyln.app.akordefterim.Retrofit.Siniflar.SnfIPAdres;
 import com.cnbcyln.app.akordefterim.Retrofit.Siniflar.SnfIslemSonuc;
 import com.cnbcyln.app.akordefterim.Retrofit.Siniflar.SnfKategoriListesiGetir;
 import com.cnbcyln.app.akordefterim.Retrofit.Siniflar.SnfSarkiGetir;
@@ -25,6 +26,9 @@ public interface RetrofitInterface {
        ***         GENEL İŞLEMLER         ***
        ***                                ***
        **************************************/
+
+    @GET("phpscriptleri/genel/ipadres.php")
+    Call<SnfIPAdres> IPAdresGetir();
 
     @GET("phpscriptleri/genel/tarihsaat.php")
     Call<SnfTarihSaat> TarihSaatGetir();
@@ -126,6 +130,10 @@ public interface RetrofitInterface {
        ***     GERİ BİLDİRİM İŞLEMLERİ    ***
        ***                                ***
        **************************************/
+
+    /*@GET("phpscriptleri/geribildirimislemleri/liste_getir.php")
+    Call<SnfGeriBildirimListesiGetir> GeriBildirimListesiGetir(@Query("EPosta") String mEPosta,
+                                                               @Query("ParolaSHA1") String mParolaSHA1);*/
 
     @GET("phpscriptleri/genel/geribildirim_ekle.php")
     Call<SnfIslemSonuc> GeriBildirimEkle(@Query("YenidenGeriBildirimGondermeSuresi") String mYenidenGeriBildirimGondermeSuresi,

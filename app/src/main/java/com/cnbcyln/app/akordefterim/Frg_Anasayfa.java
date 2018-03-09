@@ -92,6 +92,7 @@ public class Frg_Anasayfa extends Fragment implements SwipeRefreshLayout.OnRefre
 	public void onStart() {
 		super.onStart();
 		AkorDefterimSys.activity = activity;
+		AkorDefterimSys.SharePrefAyarlarınıUygula();
 	}
 
 	@Override

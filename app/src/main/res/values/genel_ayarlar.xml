@@ -24,6 +24,7 @@
     <integer name="YenidenGeriBildirimGondermeSuresi">5</integer> <!-- 5 Dakika -->
     <integer name="SarkiAdiKarakterSayisi_MIN">2</integer>
     <integer name="SarkiAdiKarakterSayisi_MAX">40</integer>
+    <integer name="HtmlAkorSemaBoyutu">4</integer>
 
     <!-- Sarki Icerik Değerleri -->
     <integer name="SarkiIcerikYaziBoyutu_MIN">40</integer>

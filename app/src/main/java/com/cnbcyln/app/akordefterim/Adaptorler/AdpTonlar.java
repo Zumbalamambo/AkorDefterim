@@ -73,7 +73,7 @@ public class AdpTonlar extends BaseAdapter {
 			holder.txtTonAdiAkorAdi.setTextColor(activity.getResources().getColor(R.color.Beyaz));
 		}
 		else {
-			holder.LLTonAdiAkorAdi.setBackgroundColor(activity.getResources().getColor(R.color.Gri));
+			holder.LLTonAdiAkorAdi.setBackgroundColor(activity.getResources().getColor(R.color.Beyaz));
 			holder.txtTonAdiAkorAdi.setTextColor(activity.getResources().getColor(R.color.KoyuYazi));
 		}
         

@@ -307,6 +307,7 @@ public class Profil_Duzenle extends AppCompatActivity implements Interface_Async
 		super.onStart();
 
 		AkorDefterimSys.activity = activity;
+		AkorDefterimSys.SharePrefAyarlarınıUygula();
 
 		if(AkorDefterimSys.prefAction.equals("IslemTamamlandi")) {
 			AkorDefterimSys.prefAction = "";

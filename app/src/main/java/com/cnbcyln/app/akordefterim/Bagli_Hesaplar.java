@@ -173,6 +173,8 @@ public class Bagli_Hesaplar extends AppCompatActivity implements Interface_Async
 
         AkorDefterimSys.activity = activity;
 
+        AkorDefterimSys.SharePrefAyarlarınıUygula();
+
         FirebaseToken = FirebaseInstanceId.getInstance().getToken();
         OSID = Settings.Secure.getString(getContentResolver(), Settings.Secure.ANDROID_ID);
         OSVersiyon = AkorDefterimSys.AndroidSurumBilgisi(Build.VERSION.SDK_INT);

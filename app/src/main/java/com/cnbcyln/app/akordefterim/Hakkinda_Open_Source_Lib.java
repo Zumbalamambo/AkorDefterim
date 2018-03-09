@@ -76,6 +76,7 @@ public class Hakkinda_Open_Source_Lib extends AppCompatActivity implements OnCli
 	protected void onStart() {
 		super.onStart();
 		AkorDefterimSys.activity = activity;
+		AkorDefterimSys.SharePrefAyarlarınıUygula();
 	}
 
 	@Override

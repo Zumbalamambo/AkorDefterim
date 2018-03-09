@@ -13,6 +13,7 @@
     <dimen name="transparan_panel_padding">10dp</dimen>
     <dimen name="profil_resim_width_height">120dp</dimen>
     <dimen name="profil_resim_border_width">2dp</dimen>
+    <dimen name="circle_imageview_border_width">2dp</dimen>
     <dimen name="sosyal_hesabim_logo_icon_width_height">40dp</dimen>
     <dimen name="sosyal_hesabim_logo_icon_border_width">2dp</dimen>
     <item name="visible" type="id"/>

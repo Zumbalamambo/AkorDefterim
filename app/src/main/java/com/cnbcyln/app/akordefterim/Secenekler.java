@@ -23,40 +23,40 @@ import com.cnbcyln.app.akordefterim.util.AkorDefterimSys;
 public class Secenekler extends AppCompatActivity implements OnClickListener {
 
     private Activity activity;
-	private AkorDefterimSys AkorDefterimSys;
-	SharedPreferences sharedPref;
-	SharedPreferences.Editor sharedPrefEditor;
-	Typeface YaziFontu;
+    private AkorDefterimSys AkorDefterimSys;
+    SharedPreferences sharedPref;
+    SharedPreferences.Editor sharedPrefEditor;
+    Typeface YaziFontu;
 
-	CoordinatorLayout coordinatorLayout;
-	ImageButton btnGeri;
-	Button btnEkranIsigi, btnRepertuvarIslemleri, btnEgitim, btnYardimMerkezi, btnSorunBildir, btnOyVer, btnGizlilikIlkesi, btnHizmetKosullari, btnAcikKaynakKutuphaneleri;
-	TextView lblBaslik, lblAyarlar, lblDestek, lblHakkinda;
+    CoordinatorLayout coordinatorLayout;
+    ImageButton btnGeri;
+    Button btnEkranIsigi, btnRepertuvarIslemleri, btnEgitim, btnYardimMerkezi, btnSorunBildir, btnOyVer, btnGizlilikIlkesi, btnHizmetKosullari, btnAcikKaynakKutuphaneleri;
+    TextView lblBaslik, lblAyarlar, lblDestek, lblHakkinda;
 
-	@Override
-	protected void onCreate(Bundle savedInstanceState) {
-		super.onCreate(savedInstanceState);
-		setContentView(R.layout.activity_secenekler);
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_secenekler);
 
         activity = this;
-		AkorDefterimSys = AkorDefterimSys.getInstance();
+        AkorDefterimSys = AkorDefterimSys.getInstance();
         AkorDefterimSys.activity = activity;
-		YaziFontu = AkorDefterimSys.FontGetir(activity, "anivers_regular"); // Genel yazı fontunu belirttik
+        YaziFontu = AkorDefterimSys.FontGetir(activity, "anivers_regular"); // Genel yazı fontunu belirttik
 
-		sharedPref = getSharedPreferences(AkorDefterimSys.PrefAdi, Context.MODE_PRIVATE);
+        sharedPref = getSharedPreferences(AkorDefterimSys.PrefAdi, Context.MODE_PRIVATE);
 
-		AkorDefterimSys.GenelAyarlar(); // Uygulama için genel ayarları uyguladık.
-		//AkorDefterimSys.TransparanNotifyBar(); // Notification Bar'ı transparan yapıyoruz.
-		//AkorDefterimSys.NotifyIkonParlakligi(); // Notification Bar'daki simgelerin parlaklığını aldık.
+        AkorDefterimSys.GenelAyarlar(); // Uygulama için genel ayarları uyguladık.
+        //AkorDefterimSys.TransparanNotifyBar(); // Notification Bar'ı transparan yapıyoruz.
+        //AkorDefterimSys.NotifyIkonParlakligi(); // Notification Bar'daki simgelerin parlaklığını aldık.
 
-		coordinatorLayout = findViewById(R.id.coordinatorLayout);
-		coordinatorLayout.setOnClickListener(this);
+        coordinatorLayout = findViewById(R.id.coordinatorLayout);
+        coordinatorLayout.setOnClickListener(this);
 
         btnGeri = findViewById(R.id.btnGeri);
         btnGeri.setOnClickListener(this);
 
-		lblBaslik = findViewById(R.id.lblBaslik);
-		lblBaslik.setTypeface(YaziFontu, Typeface.BOLD);
+        lblBaslik = findViewById(R.id.lblBaslik);
+        lblBaslik.setTypeface(YaziFontu, Typeface.BOLD);
 
         lblAyarlar = findViewById(R.id.lblAyarlar);
         lblAyarlar.setTypeface(YaziFontu, Typeface.BOLD);
@@ -109,20 +109,21 @@ public class Secenekler extends AppCompatActivity implements OnClickListener {
         btnAcikKaynakKutuphaneleri = findViewById(R.id.btnAcikKaynakKutuphaneleri);
         btnAcikKaynakKutuphaneleri.setTypeface(YaziFontu, Typeface.NORMAL);
         btnAcikKaynakKutuphaneleri.setOnClickListener(this);
-	}
+    }
 
     @Override
     protected void onStart() {
         super.onStart();
         AkorDefterimSys.activity = activity;
+        AkorDefterimSys.SharePrefAyarlarınıUygula();
     }
 
     @Override
-	public void onClick(View v) {
-		switch (v.getId()) {
-			case R.id.btnGeri:
-				AkorDefterimSys.EkranKapat();
-				break;
+    public void onClick(View v) {
+        switch (v.getId()) {
+            case R.id.btnGeri:
+                AkorDefterimSys.EkranKapat();
+                break;
             case R.id.btnEkranIsigi:
                 AkorDefterimSys.EkranGetir(new Intent(activity, Ayarlar_Ekran_Isigi.class), "Slide");
                 break;
@@ -157,13 +158,13 @@ public class Secenekler extends AppCompatActivity implements OnClickListener {
             case R.id.btnAcikKaynakKutuphaneleri:
                 AkorDefterimSys.EkranGetir(new Intent(activity, Hakkinda_Open_Source_Lib.class), "Slide");
                 break;
-		}
-	}
+        }
+    }
 
     @Override
     public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
         super.onCreateContextMenu(menu, v, menuInfo);
-        
+
         menu.add(0, 0, 0, getString(R.string.sorun_bildir));
         menu.add(0, 1, 0, getString(R.string.gorus_bildir));
     }

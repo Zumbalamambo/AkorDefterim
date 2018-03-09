@@ -232,6 +232,7 @@ public class Sarki_EkleDuzenle extends AppCompatActivity implements Interface_As
 		super.onStart();
 
 		AkorDefterimSys.activity = activity;
+		AkorDefterimSys.SharePrefAyarlarınıUygula();
 
 		if(AkorDefterimSys.prefAction.equals("Şarkı eklendi") ||
 				AkorDefterimSys.prefAction.equals("Şarkı düzenlendi") ||

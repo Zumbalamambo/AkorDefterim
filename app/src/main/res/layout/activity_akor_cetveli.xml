@@ -1,0 +1,141 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+	xmlns:app="http://schemas.android.com/apk/res-auto"
+	android:id="@+id/coordinatorLayout"
+	android:layout_width="match_parent"
+	android:layout_height="match_parent"
+	android:descendantFocusability="beforeDescendants"
+	android:focusableInTouchMode="true"
+	android:keepScreenOn="true"
+	android:background="@color/Beyaz">
+
+	<android.support.constraint.ConstraintLayout
+		android:layout_width="match_parent"
+		android:layout_height="match_parent">
+
+		<android.support.constraint.Guideline
+			android:id="@+id/h_guideline1"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:orientation="horizontal"
+			app:layout_constraintGuide_percent="0.085" />
+
+		<android.support.constraint.Guideline
+			android:id="@+id/v_guideline1"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:orientation="vertical"
+			app:layout_constraintGuide_percent="0.15" />
+
+		<android.support.constraint.Guideline
+			android:id="@+id/v_guideline2"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:orientation="vertical"
+			app:layout_constraintGuide_percent="0.40" />
+
+		<ImageButton
+			android:id="@+id/btnGeri"
+			android:layout_width="60dp"
+			android:layout_height="0dp"
+			android:background="@drawable/custom_button2"
+			app:layout_constraintBottom_toTopOf="@+id/h_view1"
+			app:layout_constraintStart_toStartOf="parent"
+			app:layout_constraintTop_toTopOf="parent"
+			app:srcCompat="@drawable/ic_arrow_back_siyah"
+			android:contentDescription="@string/imageDesc" />
+
+		<TextView
+			android:id="@+id/lblBaslik"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:layout_marginLeft="12dp"
+			android:layout_marginStart="12dp"
+			android:text="@string/akor_cetveli"
+			android:textColor="@color/KoyuYazi"
+			style="@style/TextAppearance.AppCompat.Medium.Inverse"
+			app:layout_constraintBottom_toTopOf="@+id/h_view1"
+			app:layout_constraintStart_toEndOf="@+id/btnGeri"
+			app:layout_constraintTop_toTopOf="parent" />
+
+		<View
+			android:id="@+id/h_view1"
+			android:layout_width="0dp"
+			android:layout_height="1dp"
+			android:background="@drawable/cizgi_ortagri"
+			app:layout_constraintTop_toTopOf="@+id/h_guideline1" />
+
+		<TextView
+			android:id="@+id/lblTon"
+			style="@style/TextAppearance.AppCompat.Small.Inverse"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:layout_marginTop="8dp"
+			android:text="@string/ton"
+			android:textColor="@color/KoyuYazi"
+			app:layout_constraintEnd_toStartOf="@+id/v_guideline1"
+			app:layout_constraintStart_toStartOf="parent"
+			app:layout_constraintTop_toBottomOf="@+id/h_view1" />
+
+		<ListView
+			android:id="@+id/lstTonlar"
+			android:layout_width="0dp"
+			android:layout_height="0dp"
+			android:layout_marginTop="8dp"
+			android:background="@color/transparent"
+			app:layout_constraintBottom_toBottomOf="parent"
+			app:layout_constraintEnd_toStartOf="@+id/v_guideline1"
+			app:layout_constraintStart_toStartOf="parent"
+			app:layout_constraintTop_toBottomOf="@+id/lblTon" />
+
+		<View
+			android:id="@+id/v_view1"
+			android:layout_width="1dp"
+			android:layout_height="0dp"
+			android:background="@drawable/cizgi_ortagri"
+			app:layout_constraintStart_toStartOf="@+id/v_guideline1"
+			app:layout_constraintTop_toBottomOf="@+id/h_view1"
+			app:layout_constraintBottom_toBottomOf="parent"/>
+
+		<TextView
+			android:id="@+id/lblAkor"
+			style="@style/TextAppearance.AppCompat.Small.Inverse"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:layout_marginTop="8dp"
+			android:text="@string/akor"
+			android:textColor="@color/KoyuYazi"
+			app:layout_constraintEnd_toStartOf="@+id/v_guideline2"
+			app:layout_constraintStart_toStartOf="@+id/v_guideline1"
+			app:layout_constraintTop_toBottomOf="@+id/h_view1" />
+
+		<ListView
+			android:id="@+id/lstAkorlar"
+			android:layout_width="0dp"
+			android:layout_height="0dp"
+			android:layout_marginTop="8dp"
+			android:background="@color/transparent"
+			app:layout_constraintBottom_toBottomOf="parent"
+			app:layout_constraintEnd_toStartOf="@+id/v_guideline2"
+			app:layout_constraintStart_toStartOf="@+id/v_guideline1"
+			app:layout_constraintTop_toBottomOf="@+id/lblAkor" />
+
+		<View
+			android:id="@+id/v_view2"
+			android:layout_width="1dp"
+			android:layout_height="0dp"
+			android:background="@drawable/cizgi_ortagri"
+			app:layout_constraintStart_toStartOf="@+id/v_guideline2"
+			app:layout_constraintTop_toBottomOf="@+id/h_view1"
+			app:layout_constraintBottom_toBottomOf="parent"/>
+
+		<WebView
+			android:id="@+id/WVGitarAkor"
+			android:layout_width="0dp"
+			android:layout_height="0dp"
+			app:layout_constraintBottom_toBottomOf="parent"
+			app:layout_constraintEnd_toEndOf="parent"
+			app:layout_constraintStart_toEndOf="@+id/v_view2"
+			app:layout_constraintTop_toBottomOf="@+id/h_view1" />
+	</android.support.constraint.ConstraintLayout>
+</android.support.design.widget.CoordinatorLayout>

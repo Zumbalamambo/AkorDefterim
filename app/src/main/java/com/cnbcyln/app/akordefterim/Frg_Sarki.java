@@ -53,6 +53,7 @@ public class Frg_Sarki extends Fragment implements OnClickListener {
 	ProgressDialog PDIslem;
 	public AlertDialog ADDialog;
 	SharedPreferences sharedPref;
+	Intent mIntent;
 
 	List<SnfListeler> SnfListeler;
 	List<SnfKategoriler> SnfKategoriler;
@@ -181,8 +182,11 @@ public class Frg_Sarki extends Fragment implements OnClickListener {
 		webview.getSettings().setDisplayZoomControls(false);
 		webview.addJavascriptInterface(new Object() {
 			@JavascriptInterface
-			public void performClick(String akor) {
-				AkorDefterimSys.AkorCetveli(activity, akor);
+			public void performClick(String SecilenAkor) {
+				mIntent = new Intent(activity, AkorCetveli.class);
+				mIntent.putExtra("SecilenAkor", SecilenAkor);
+
+				AkorDefterimSys.EkranGetir(mIntent, "Normal");
 			}
 		}, "AkorGosterici");
 
@@ -241,6 +245,7 @@ public class Frg_Sarki extends Fragment implements OnClickListener {
 		super.onStart();
 
 		AkorDefterimSys.activity = activity;
+		AkorDefterimSys.SharePrefAyarlarınıUygula();
 	}
 
 	@Override
@@ -320,7 +325,10 @@ public class Frg_Sarki extends Fragment implements OnClickListener {
 				webview.loadDataWithBaseURL(null, HTMLBaslangic + SecilenSarkiIcerikTemp + HTMLBitis, "text/html", "utf-8", null);
 				break;
 			case R.id.FABAkorCetveli:
-				AkorDefterimSys.AkorCetveli(activity, "A");
+				mIntent = new Intent(activity, AkorCetveli.class);
+				mIntent.putExtra("SecilenAkor", "A");
+
+				AkorDefterimSys.EkranGetir(mIntent, "Normal");
 				break;
 			case R.id.FABPaylas:
 				activity.openContextMenu(FABPaylas);

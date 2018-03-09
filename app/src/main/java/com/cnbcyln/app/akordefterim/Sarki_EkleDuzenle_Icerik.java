@@ -167,6 +167,7 @@ public class Sarki_EkleDuzenle_Icerik extends AppCompatActivity implements Inter
 	protected void onStart() {
 		super.onStart();
 		AkorDefterimSys.activity = activity;
+		AkorDefterimSys.SharePrefAyarlarınıUygula();
 	}
 
 	@Override

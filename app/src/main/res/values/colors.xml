@@ -8,6 +8,7 @@
     <color name="Siyah">#64000000</color>
     <color name="Yesil">#00e600</color>
     <color name="Yesil2">#31b131</color>
+    <color name="Yesil3">#288f28</color>
     <color name="KoyuMavi">#072d40</color>
     <color name="KoyuMavi2">#144259</color>
     <color name="AcikMavi">#51b3e4</color>
@@ -46,6 +47,7 @@
     <color name="windowBackground">#FFFFFF</color>
     <color name="navigationBarColor">#000000</color>
     <color name="RippleEffectColor">#072d40</color>
+    <color name="circle_imageview_border_color">#eaebeb</color>
     <color name="profil_resim_border_color">#eaebeb</color>
     <color name="sosyal_hesabim_logo_icon_border_color">#eaebeb</color>
     <color name="SnackBarBG">#081015</color>

@@ -211,6 +211,7 @@ public class Tarz_Yonetimi extends AppCompatActivity implements Interface_AsyncR
         super.onStart();
 
         AkorDefterimSys.activity = activity;
+        AkorDefterimSys.SharePrefAyarlarınıUygula();
 
         TarzGetir();
     }

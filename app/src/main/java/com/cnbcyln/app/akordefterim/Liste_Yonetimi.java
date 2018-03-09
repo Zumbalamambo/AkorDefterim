@@ -211,6 +211,7 @@ public class Liste_Yonetimi extends AppCompatActivity implements Interface_Async
         super.onStart();
 
         AkorDefterimSys.activity = activity;
+        AkorDefterimSys.SharePrefAyarlarınıUygula();
 
         ListeGetir();
     }

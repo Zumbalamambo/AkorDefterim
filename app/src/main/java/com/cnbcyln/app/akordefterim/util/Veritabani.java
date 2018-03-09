@@ -35,7 +35,7 @@ public class Veritabani extends SQLiteOpenHelper {
 	//private static File AnaKlasorDizini;
 	private static File YerelDBDizin;
 	//private static File YedekDBDizin;
-	private static int Surum = 2;
+	private static int Surum = 3;
 	//private boolean mNeedUpdate = false;
 	private SQLiteDatabase mDataBase;
 	Context context;
@@ -102,7 +102,7 @@ public class Veritabani extends SQLiteOpenHelper {
 		db.execSQL("CREATE TABLE tblListeler (id INTEGER PRIMARY KEY AUTOINCREMENT, ListeAdi TEXT);");
 		db.execSQL("CREATE TABLE tblKategoriler (id INTEGER PRIMARY KEY AUTOINCREMENT, KategoriAdi TEXT);");
 		db.execSQL("CREATE TABLE tblTarzlar (id INTEGER PRIMARY KEY AUTOINCREMENT, TarzAdi TEXT);");
-		db.execSQL("CREATE TABLE tblSarkilar (id INTEGER PRIMARY KEY AUTOINCREMENT, ListeID INTEGER, KategoriID INTEGER, TarzID INTEGER, SanatciAdi TEXT, SarkiAdi TEXT, Icerik TEXT, EklenmeTarihi DATETIME, DuzenlenmeTarihi DATETIME DEFAULT CURRENT_TIMESTAMP);");
+		db.execSQL("CREATE TABLE tblSarkilar (id INTEGER PRIMARY KEY AUTOINCREMENT, ListeID INTEGER, KategoriID INTEGER, TarzID INTEGER, SanatciAdi TEXT, SarkiAdi TEXT, Icerik TEXT, EklenmeTarihi DATETIME, DuzenlenmeTarihi DATETIME DEFAULT CURRENT_TIMESTAMP, Siralama INTEGER DEFAULT 0);");
 		db.execSQL("CREATE TABLE tblIstekler (id INTEGER PRIMARY KEY AUTOINCREMENT, SarkiID INTEGER, ClientID TEXT, ClientAdSoyad TEXT, ClientIP TEXT, ClientNot TEXT, IstekTarihi DATETIME);");
 	}
 
@@ -116,6 +116,8 @@ public class Veritabani extends SQLiteOpenHelper {
 		//onCreate(db);
 
 		//db.execSQL("CREATE TABLE tblIstekler (id INTEGER PRIMARY KEY AUTOINCREMENT, SarkiID INTEGER, ClientID TEXT, ClientAdSoyad TEXT, ClientIP TEXT, ClientNot TEXT, IstekTarihi DATETIME);");
+
+		db.execSQL("ALTER TABLE tblSarkilar ADD Siralama INTEGER DEFAULT 0;");
 	}
 
 	public void VeritabaniSifirla() {
@@ -961,6 +963,12 @@ public class Veritabani extends SQLiteOpenHelper {
 						(ListeID != 0 ? " ListeID = " + ListeID:"") +
 						(KategoriID != 0 ? " AND KategoriID = " + KategoriID:"") +
 						(TarzID != 0 ? " AND TarzID = " + TarzID:"") + " Order By id DESC";
+				break;
+			case 3:
+				Sorgu = "SELECT * FROM tblSarkilar WHERE" +
+						(ListeID != 0 ? " ListeID = " + ListeID:"") +
+						(KategoriID != 0 ? " AND KategoriID = " + KategoriID:"") +
+						(TarzID != 0 ? " AND TarzID = " + TarzID:"") + " Order By Siralama ASC";
 				break;
 		}
 

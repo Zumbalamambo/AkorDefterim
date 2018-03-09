@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
 	xmlns:app="http://schemas.android.com/apk/res-auto"
 	android:id="@+id/Dialog_LLAkorCetveli"
 	android:layout_width="match_parent"
@@ -9,7 +9,8 @@
 	<android.support.constraint.ConstraintLayout
 		android:id="@+id/Dialog_CLAkorCetveli"
 		android:layout_width="match_parent"
-		android:layout_height="match_parent">
+		android:layout_height="match_parent"
+		android:layout_above="@+id/btnDialogButton">
 
 		<android.support.constraint.Guideline
 			android:id="@+id/v_guideline1"
@@ -89,4 +90,16 @@
 				android:contentDescription="@string/imageDesc" />
 		</ScrollView>
 	</android.support.constraint.ConstraintLayout>
-</LinearLayout>
+
+	<Button
+		android:id="@+id/btnDialogButton"
+		style="@style/TextAppearance.AppCompat.Medium.Inverse"
+		android:layout_width="match_parent"
+		android:layout_height="wrap_content"
+		android:layout_alignParentBottom="true"
+		android:background="@drawable/custom_button2"
+		android:gravity="center"
+		android:text="@string/labeltire"
+		android:textAppearance="@style/TextAppearance.AppCompat"
+		android:textColor="@color/KoyuYazi" />
+</RelativeLayout>

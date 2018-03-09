@@ -169,6 +169,7 @@ public class Parola_Degistir extends AppCompatActivity implements Interface_Asyn
         super.onStart();
 
         AkorDefterimSys.activity = activity;
+        AkorDefterimSys.SharePrefAyarlarınıUygula();
 
         if(!AkorDefterimSys.GirisYapildiMi()) AkorDefterimSys.CikisYap();
     }

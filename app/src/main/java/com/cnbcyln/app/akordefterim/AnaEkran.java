@@ -392,6 +392,8 @@ public class AnaEkran extends AppCompatActivity implements Int_DataConn_AnaEkran
 
         AkorDefterimSys.activity = activity;
 
+        AkorDefterimSys.SharePrefAyarlarınıUygula();
+
         if(AkorDefterimSys.prefAction.equals("Şarkı eklendi")) {
             if(Fragment_SayfaAdi.equals("Frg_Sarki")) {
                 Frg_Sarki Frg_Sarki = (Frg_Sarki) activity.getFragmentManager().findFragmentByTag(Fragment_SayfaAdi);

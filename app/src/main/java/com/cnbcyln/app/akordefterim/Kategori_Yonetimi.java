@@ -211,6 +211,7 @@ public class Kategori_Yonetimi extends AppCompatActivity implements Interface_As
         super.onStart();
 
         AkorDefterimSys.activity = activity;
+        AkorDefterimSys.SharePrefAyarlarınıUygula();
 
         KategoriGetir();
     }

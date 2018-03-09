@@ -149,6 +149,7 @@ public class Frg_Istatistik extends Fragment implements OnChartValueSelectedList
 	public void onStart() {
 		super.onStart();
 		AkorDefterimSys.activity = activity;
+		AkorDefterimSys.SharePrefAyarlarınıUygula();
 	}
 
 	public void IstatistikGuncelle() {

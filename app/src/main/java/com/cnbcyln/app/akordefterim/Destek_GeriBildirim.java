@@ -192,6 +192,7 @@ public class Destek_GeriBildirim extends AppCompatActivity implements Interface_
     protected void onStart() {
         super.onStart();
         AkorDefterimSys.activity = activity;
+        AkorDefterimSys.SharePrefAyarlarınıUygula();
     }
 
     @Override
@@ -302,6 +303,12 @@ public class Destek_GeriBildirim extends AppCompatActivity implements Interface_
             JSONObject JSONSonuc = new JSONObject(sonuc);
 
             switch (JSONSonuc.getString("Islem")) {
+                case "IPAdresGetir":
+                    txtIcerik.setText(txtIcerik.getText().toString().trim());
+                    String Icerik = txtIcerik.getText().toString();
+
+                    AkorDefterimSys.GeriBildirimEkle(String.valueOf(YenidenGeriBildirimGondermeSuresi), sharedPref.getString("prefHesapID",""), BildirimTipi, Icerik, JSONSonuc.getString("IPAdres"), "GeriBildirimEkle");
+                    break;
                 case "GeriBildirimEkle":
                     if(JSONSonuc.getBoolean("Sonuc")) {
                         if(SecilenEkranGoruntusuFile1 != null) {
@@ -578,15 +585,12 @@ public class Destek_GeriBildirim extends AppCompatActivity implements Interface_
                 btnEkranGoruntusu3.setEnabled(false);
                 AkorDefterimSys.UnFocusEditText(txtIcerik);
 
-                NetInfo netInfo = new NetInfo(activity);
-                String IPAdres = netInfo.getIPAddress();
-
                 if(!AkorDefterimSys.ProgressDialogisShowing(PDIslem)) {
                     PDIslem = AkorDefterimSys.CustomProgressDialog(getString(R.string.islem_yapiliyor), false, AkorDefterimSys.ProgressBarTimeoutSuresi, "PDIslem_Timeout");
                     PDIslem.show();
                 }
 
-                AkorDefterimSys.GeriBildirimEkle(String.valueOf(YenidenGeriBildirimGondermeSuresi), sharedPref.getString("prefHesapID",""), BildirimTipi, Icerik, IPAdres, "GeriBildirimEkle");
+                AkorDefterimSys.IPAdresGetir(activity);
             }
         } else AkorDefterimSys.StandartSnackBarMsj(coordinatorLayout, getString(R.string.internet_baglantisi_saglanamadi));
     }
