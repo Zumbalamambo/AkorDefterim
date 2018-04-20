@@ -1,6 +1,7 @@
 apply plugin: 'com.android.application'
 apply plugin: 'kotlin-android-extensions'
 apply plugin: 'kotlin-android'
+apply plugin: 'io.fabric'
 
 android {
     signingConfigs {
@@ -15,10 +16,10 @@ android {
     buildToolsVersion '27.0.3'
     defaultConfig {
         applicationId "com.cnbcyln.app.akordefterim"
-        minSdkVersion 16
+        minSdkVersion 21
         targetSdkVersion 27
-        versionCode 58
-        versionName '1.5.8'
+        versionCode 65
+        versionName '1.6.5'
         // Enabling multidex support.
         multiDexEnabled true
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
@@ -53,8 +54,9 @@ android {
         exclude 'META-INF/notice.txt'
         exclude 'META-INF/ASL2.0'
     }
-
     useLibrary 'org.apache.http.legacy'
+    productFlavors {
+    }
 }
 
 repositories {
@@ -63,59 +65,74 @@ repositories {
     maven { url 'https://jitpack.io' }
     maven { url "https://dl.bintray.com/drummer-aidan/maven" }
     google()
+    maven { url "https://maven.google.com" }
 }
 
 dependencies {
-    compile fileTree(include: ['*.jar'], dir: 'libs')
-    androidTestCompile('com.android.support.test.espresso:espresso-core:2.2.2', {
+    implementation fileTree(include: ['*.jar'], dir: 'libs')
+    androidTestImplementation('com.android.support.test.espresso:espresso-core:2.2.2', {
         exclude group: 'com.android.support', module: 'support-annotations'
     })
-    compile 'com.android.support:support-v4:27.0.2'
-    compile 'com.android.support:design:27.0.2'
-    compile 'com.android.support:appcompat-v7:27.0.2'
-    compile 'com.android.support.constraint:constraint-layout:1.0.2'
-    compile 'com.android.support:recyclerview-v7:27.0.2'
-    compile 'com.android.support:cardview-v7:27.0.2'
-    testCompile 'junit:junit:4.12'
-    compile 'com.android.support:multidex:1.0.2'
-    //compile files('libs/mysql-connector-java-5.1.35-bin.jar')
-    compile files('libs/httpclient-4.3.6.jar')
-    compile files('libs/httpcore-4.3.3.jar')
-    compile files('libs/httpmime-4.3.6.jar')
-    //compile files('libs/StartAppInApp-3.5.4.jar')
-    compile 'com.google.android.gms:play-services:11.8.0'
-    compile 'com.google.firebase:firebase-core:11.8.0'
-    compile 'com.google.firebase:firebase-crash:11.8.0'
-    compile 'com.google.firebase:firebase-messaging:11.8.0'
-    compile 'com.google.firebase:firebase-config:11.8.0'
-    //compile 'com.google.android.gms:play-services-maps:9.2.0'
-    compile 'com.facebook.android:facebook-android-sdk:4.29.0'
-    //compile 'com.jeremyfeinstein.slidingmenu:library:1.3@aar'
-    compile 'com.jpardogo.materialtabstrip:library:1.1.1'
-    //compile 'com.github.shell-software:fab:1.1.2'
-    //compile 'org.apache.poi:poi:3.14'
-    //compile 'org.apache.poi:poi-scratchpad:3.14'
-    compile 'com.github.clans:fab:1.6.4'
-    compile 'org.eclipse.paho:org.eclipse.paho.client.mqttv3:1.1.0' // Mqtt servera bağlanmaya yarayan kütüphane
-    compile 'com.theartofdev.edmodo:android-image-cropper:2.3.1' // Resim kesmeye yarayan kütüphane
-    compile 'org.jsoup:jsoup:1.11.2' // HTML sayfalarından bilgi çeken kütüphane
-    compile 'com.google.code.gson:gson:2.8.1'
-    compile 'com.squareup.retrofit2:retrofit:2.3.0' // Dataların GET - POST işlemlerini yapan kütüphane
-    compile 'com.squareup.retrofit2:converter-gson:2.3.0'
-    //compile 'com.squareup.okhttp:okhttp:2.4.0' // Dataların GET - POST işlemlerini yapan kütüphane
-    compile 'com.github.PhilJay:MPAndroidChart:v3.0.2'
-    compile 'com.github.ybq:Android-SpinKit:1.1.0' // Loader Animasyon
-    compile 'com.github.iammehedi:passcodeview:1.03'
-    compile 'com.github.bumptech.glide:glide:3.7.0'
-    compile 'com.nostra13.universalimageloader:universal-image-loader:1.9.5'
-    compile 'org.apache.commons:commons-lang3:3.4' // Random sayı üretme
-    compile 'com.hbb20:ccp:2.1.1' // Ülke kodları kütüphanesi
-    compile 'com.xw.repo:bubbleseekbar:3.10' // Custom Seekbar
-    compile 'com.redmadrobot:inputmask:2.3.0' // Custom EditText Maskeleme Örn: +1 534 518 47 76
-    compile 'com.rengwuxian.materialedittext:library:2.1.4' // Custom EditText
-    compile project(':app:libraries:UndoRedo')
-    compile 'com.nineoldandroids:library:2.4.0'
-    //compile 'com.roughike:swipe-selector:1.0.6' // Swipe-Selector
+    implementation 'com.android.support:support-v4:27.1.1'
+    implementation 'com.android.support:design:27.1.1'
+    implementation 'com.android.support:appcompat-v7:27.1.1'
+    implementation 'com.android.support.constraint:constraint-layout:1.1.0'
+    implementation 'com.android.support:recyclerview-v7:27.1.1'
+    implementation 'com.android.support:cardview-v7:27.1.1'
+    testImplementation 'junit:junit:4.12'
+    implementation 'com.android.support:multidex:1.0.3'
+    //implementation files('libs/mysql-connector-java-5.1.35-bin.jar')
+    implementation files('libs/httpclient-4.3.6.jar')
+    implementation files('libs/httpcore-4.3.3.jar')
+    implementation files('libs/httpmime-4.3.6.jar')
+    //implementation files('libs/StartAppInApp-3.5.4.jar')
+    implementation 'com.google.android.gms:play-services-plus:15.0.0'
+    implementation 'com.google.android.gms:play-services-auth:15.0.0'
+    implementation 'com.google.android.gms:play-services-identity:15.0.0'
+    implementation 'com.google.android.gms:play-services-gcm:15.0.0'
+    implementation 'com.google.firebase:firebase-core:15.0.0'
+    implementation 'com.google.firebase:firebase-auth:15.0.0'
+    //implementation 'com.google.firebase:firebase-crash:12.0.1'
+    //implementation 'com.google.firebase:firebase-messaging:12.0.1'
+    //implementation 'com.google.firebase:firebase-config:12.0.1'
+    implementation 'com.crashlytics.sdk.android:crashlytics:2.9.1'
+    //implementation 'com.google.android.gms:play-services-maps:9.2.0'
+    implementation 'com.facebook.android:facebook-android-sdk:4.29.0'
+    //implementation 'com.jeremyfeinstein.slidingmenu:library:1.3@aar'
+    implementation 'com.jpardogo.materialtabstrip:library:1.1.1'
+    //implementation 'com.github.shell-software:fab:1.1.2'
+    //implementation 'org.apache.poi:poi:3.14'
+    //implementation 'org.apache.poi:poi-scratchpad:3.14'
+    implementation 'com.github.clans:fab:1.6.4'
+    implementation 'org.eclipse.paho:org.eclipse.paho.client.mqttv3:1.1.0'
+// Mqtt servera bağlanmaya yarayan kütüphane
+    implementation 'com.theartofdev.edmodo:android-image-cropper:2.3.1'
+// Resim kesmeye yarayan kütüphane
+    implementation 'org.jsoup:jsoup:1.11.2'// HTML sayfalarından bilgi çeken kütüphane
+    implementation 'com.google.code.gson:gson:2.8.1'
+    implementation 'com.squareup.retrofit2:retrofit:2.3.0'
+    // Dataların GET - POST işlemlerini yapan kütüphane
+    implementation 'com.squareup.retrofit2:converter-gson:2.3.0'
+    //implementation 'com.squareup.okhttp:okhttp:2.4.0' // Dataların GET - POST işlemlerini yapan kütüphane
+    //implementation 'com.github.PhilJay:MPAndroidChart:v3.0.2'
+    implementation 'com.github.ybq:Android-SpinKit:1.1.0'// Loader Animasyon
+    implementation 'com.github.iammehedi:passcodeview:1.03'
+    implementation 'com.github.bumptech.glide:glide:3.8.0'
+    implementation 'com.nostra13.universalimageloader:universal-image-loader:1.9.5'
+    implementation 'org.apache.commons:commons-lang3:3.4'// Random sayı üretme
+    implementation 'com.hbb20:ccp:2.1.1'// Ülke kodları kütüphanesi
+    implementation 'com.xw.repo:bubbleseekbar:3.10'// Custom Seekbar
+    implementation 'com.redmadrobot:inputmask:2.3.0'
+// Custom EditText Maskeleme Örn: +90 534 518 47 76
+    implementation 'com.rengwuxian.materialedittext:library:2.1.4'// Custom EditText
+    implementation project(':app:libraries:UndoRedo')
+    implementation 'com.nineoldandroids:library:2.4.0'
+    implementation 'com.synnapps:carouselview:0.1.4'
+    // Carousel View (Örn: Giriş ekranındaki otomatik kayan tanıtım mesajları)
+    implementation 'com.github.woxthebox:draglistview:1.5.2'
+    implementation 'com.mikepenz:iconics-core:3.0.3@aar'
+    implementation 'com.mikepenz:iconics-views:3.0.3@aar'
+    implementation 'com.mikepenz:community-material-typeface:+@aar'
 }
 
 apply plugin: 'com.google.gms.google-services'

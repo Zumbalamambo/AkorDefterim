@@ -2,27 +2,24 @@ package com.cnbcyln.app.akordefterim;
 
 import android.app.Activity;
 import android.app.AlertDialog;
-import android.app.Dialog;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Typeface;
 import android.os.Bundle;
+import android.support.constraint.ConstraintLayout;
 import android.support.design.widget.CoordinatorLayout;
+import android.support.v4.util.Pair;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.LinearLayoutManager;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.view.ContextMenu;
-import android.view.KeyEvent;
 import android.view.LayoutInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
@@ -32,9 +29,8 @@ import android.widget.TextView;
 import com.cnbcyln.app.akordefterim.Adaptorler.AdpKategori;
 import com.cnbcyln.app.akordefterim.Adaptorler.AdpListelemeTipi;
 import com.cnbcyln.app.akordefterim.Adaptorler.AdpListelerSPN;
-import com.cnbcyln.app.akordefterim.Adaptorler.AdpSarkiListesiLST2;
+import com.cnbcyln.app.akordefterim.Adaptorler.AdpSarkiListesiDragDropLST;
 import com.cnbcyln.app.akordefterim.Adaptorler.AdpTarz;
-import com.cnbcyln.app.akordefterim.FastScrollListview.FastScroller_Listview;
 import com.cnbcyln.app.akordefterim.Interface.Int_DataConn_SarkiYonetimi;
 import com.cnbcyln.app.akordefterim.Interface.Interface_AsyncResponse;
 import com.cnbcyln.app.akordefterim.Siniflar.SnfKategoriler;
@@ -43,8 +39,11 @@ import com.cnbcyln.app.akordefterim.Siniflar.SnfListeler;
 import com.cnbcyln.app.akordefterim.Siniflar.SnfSarkilar;
 import com.cnbcyln.app.akordefterim.Siniflar.SnfTarzlar;
 import com.cnbcyln.app.akordefterim.util.AkorDefterimSys;
+import com.cnbcyln.app.akordefterim.util.ClearableEditText;
 import com.cnbcyln.app.akordefterim.util.Veritabani;
 import com.github.clans.fab.FloatingActionButton;
+import com.woxthebox.draglistview.DragItem;
+import com.woxthebox.draglistview.DragListView;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -70,14 +69,15 @@ public class Sarki_Yonetimi extends AppCompatActivity implements Interface_Async
     InputMethodManager imm;
 
     CoordinatorLayout coordinatorLayout;
-    RelativeLayout RelativeLayout1, RLSarkiYonetimi_AnaPanel, RLSarkiYonetimi_AramaPanel, RLContent;
+    ConstraintLayout CLContainer;
+    RelativeLayout RLSarkiYonetimi_AnaPanel, RLSarkiYonetimi_AramaPanel, RLSarkiYonetimi_DuzenlePanel, RLContent;
     LinearLayout LLFiltreMenu;
-	ImageButton btnGeri_AnaPanel, btnFiltre_AnaPanel, btnAra_AnaPanel, btnGeri_AramaPanel;
+	ImageButton btnGeri_AnaPanel, btnFiltre_AnaPanel, btnAra_AnaPanel, btnMenu_AnaPanel, btnGeri_AramaPanel, btnGeri_DuzenlePanel, btnMenu_DuzenlePanel;
 	Button btnListele;
-	FastScroller_Listview lstSarkiYonetimi;
-	TextView lblBaslik_AnaPanel, lblOrtaMesaj, lblFiltre, lblListeler, lblKategoriler, lblTarzlar, lblListelemeTipi;
+    DragListView lstSarkiYonetimi;
+	TextView lblBaslik_AnaPanel, lblchkTumunuSec_DuzenlePanel, lblListeAdi, lblOrtaMesaj, lblFiltre, lblListeler, lblKategoriler, lblTarzlar, lblListelemeTipi;
 	Spinner spnListeler, spnKategoriler, spnTarzlar, spnListelemeTipi;
-    EditText txtAra_AramaPanel;
+    ClearableEditText txtAra_AramaPanel;
     FloatingActionButton FABSarkiEkle;
 
     private List<SnfSarkilar> snfSarkilar;
@@ -86,10 +86,10 @@ public class Sarki_Yonetimi extends AppCompatActivity implements Interface_Async
     private List<SnfKategoriler> snfKategoriler;
     private List<SnfTarzlar> snfTarzlar;
     private List<SnfListelemeTipi> snfListelemeTipi;
+    AdpSarkiListesiDragDropLST adpSarkiListesiDragDropLST;
 
-    int SecilenListeID = 0, SecilenKategoriID = 0, SecilenTarzID = 0, SecilenListelemeTipi = 0, SecilenSarkiID = 0;
-    String SecilenSanatciAdi = "", SecilenSarkiAdi = "";
-    Boolean FiltreMenuAcikMi = false;
+    int SecilenListeID = 0, SecilenKategoriID = 0, SecilenTarzID = 0, SecilenListelemeTipi = 0;
+    Boolean FiltreMenuAcikMi = false, DuzenlenebilirMi = false;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -113,8 +113,8 @@ public class Sarki_Yonetimi extends AppCompatActivity implements Interface_Async
 
         coordinatorLayout = activity.findViewById(R.id.coordinatorLayout);
 
-        RelativeLayout1 = findViewById(R.id.RelativeLayout1);
-        RelativeLayout1.setOnClickListener(this);
+        CLContainer = findViewById(R.id.CLContainer);
+        CLContainer.setOnClickListener(this);
 
         RLSarkiYonetimi_AnaPanel = findViewById(R.id.RLSarkiYonetimi_AnaPanel);
         RLSarkiYonetimi_AnaPanel.setVisibility(View.VISIBLE);
@@ -130,6 +130,9 @@ public class Sarki_Yonetimi extends AppCompatActivity implements Interface_Async
 
         btnAra_AnaPanel = findViewById(R.id.btnAra_AnaPanel);
         btnAra_AnaPanel.setOnClickListener(this);
+
+        btnMenu_AnaPanel = findViewById(R.id.btnMenu_AnaPanel);
+        btnMenu_AnaPanel.setOnClickListener(this);
 
         RLSarkiYonetimi_AramaPanel = findViewById(R.id.RLSarkiYonetimi_AramaPanel);
         RLSarkiYonetimi_AramaPanel.setVisibility(View.GONE);
@@ -182,11 +185,23 @@ public class Sarki_Yonetimi extends AppCompatActivity implements Interface_Async
                         lblOrtaMesaj.setVisibility(View.GONE);
                         lstSarkiYonetimi.setVisibility(View.VISIBLE);
 
-                        // Eğer kayıt sayısı 25'ten fazla ise FastScroll'u aktif et
-                        AdpSarkiListesiLST2 adpSarkiListesiLST2 = new AdpSarkiListesiLST2(activity, snfSarkilarTemp, snfSarkilarTemp.size() > 25, SecilenListelemeTipi);
+                        Collections.sort(snfSarkilarTemp, new SnfRepertuvarComparatorRepertuvar());
 
-                        lstSarkiYonetimi.setFastScrollEnabled(snfSarkilarTemp.size() > 10);
-                        lstSarkiYonetimi.setAdapter(adpSarkiListesiLST2);
+                        ArrayList<Pair<Long, String>> SarkiListesi = new ArrayList<>();
+
+                        for (int i = 0; i <= snfSarkilarTemp.size() - 1; i++) {
+                            SarkiListesi.add(new Pair<>((long) i, "{\"SarkiID\":" + snfSarkilarTemp.get(i).getId() + ",\"SanatciAdi\":\"" + snfSarkilarTemp.get(i).getSanatciAdi() + "\",\"SarkiAdi\":\"" + snfSarkilarTemp.get(i).getSarkiAdi() + "\"}"));
+                        }
+
+                        adpSarkiListesiDragDropLST = new AdpSarkiListesiDragDropLST(activity, snfSarkilarTemp, SarkiListesi, SecilenListelemeTipi, R.layout.explstsarkilistesi_item, R.id.ImgDragDropIcon, false);
+                        adpSarkiListesiDragDropLST.setDuzenlenebilirMi(DuzenlenebilirMi, RLSarkiYonetimi_AramaPanel.getVisibility() == View.VISIBLE);
+                        lstSarkiYonetimi.setAdapter(adpSarkiListesiDragDropLST, true);
+
+                        // Eğer kayıt sayısı 25'ten fazla ise FastScroll'u aktif et
+                        //AdpSarkiListesiLST2 adpSarkiListesiLST2 = new AdpSarkiListesiLST2(activity, snfSarkilarTemp, snfSarkilarTemp.size() > 25, SecilenListelemeTipi);
+
+                        //lstSarkiYonetimi.setFastScrollEnabled(snfSarkilarTemp.size() > 10);
+                        //lstSarkiYonetimi.setAdapter(adpSarkiListesiLST2);
                     }
                 }
             }
@@ -202,51 +217,52 @@ public class Sarki_Yonetimi extends AppCompatActivity implements Interface_Async
             }
         });
 
+        RLSarkiYonetimi_DuzenlePanel = findViewById(R.id.RLSarkiYonetimi_DuzenlePanel);
+        RLSarkiYonetimi_DuzenlePanel.setVisibility(View.GONE);
+
+        btnGeri_DuzenlePanel = findViewById(R.id.btnGeri_DuzenlePanel);
+        btnGeri_DuzenlePanel.setOnClickListener(this);
+
+        lblchkTumunuSec_DuzenlePanel = findViewById(R.id.lblchkTumunuSec_DuzenlePanel);
+        lblchkTumunuSec_DuzenlePanel.setTypeface(YaziFontu, Typeface.NORMAL);
+        lblchkTumunuSec_DuzenlePanel.setOnClickListener(this);
+
+        btnMenu_DuzenlePanel = findViewById(R.id.btnMenu_DuzenlePanel);
+        btnMenu_DuzenlePanel.setOnClickListener(this);
+
+        lblListeAdi = findViewById(R.id.lblListeAdi);
+        lblListeAdi.setTypeface(YaziFontu, Typeface.BOLD);
+
         RLContent = findViewById(R.id.RLContent);
         RLContent.setOnClickListener(this);
 
         lstSarkiYonetimi = findViewById(R.id.lstSarkiYonetimi);
-        lstSarkiYonetimi.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+        lstSarkiYonetimi.getRecyclerView().setVerticalScrollBarEnabled(true);
+        lstSarkiYonetimi.setLayoutManager(new LinearLayoutManager(activity));
+        lstSarkiYonetimi.setCanDragHorizontally(false);
+        lstSarkiYonetimi.setDragListListener(new DragListView.DragListListenerAdapter() {
             @Override
-            public void onItemClick(AdapterView<?> parent, View arg1, int position, long arg3) {
-                // Eğer sarki arama alanına yazı GİRİLMEMİŞSE "snfSarkilar" sıfından kayıt baz alarak içerik getirtiyoruz..
-                if (txtAra_AramaPanel.getText().length() == 0) {
-                    SecilenSarkiID = snfSarkilar.get(position).getId();
-                    SecilenSanatciAdi = snfSarkilar.get(position).getSanatciAdi();
-                    SecilenSarkiAdi = snfSarkilar.get(position).getSarkiAdi();
-                } else { // Eğer sarki arama alanına yazı GİRİLMİŞSE "snfSarkilarTemp" sıfından kayıt baz alarak içerik getirtiyoruz..
-                    SecilenSarkiID = snfSarkilarTemp.get(position).getId();
-                    SecilenSanatciAdi = snfSarkilarTemp.get(position).getSanatciAdi();
-                    SecilenSarkiAdi = snfSarkilarTemp.get(position).getSarkiAdi();
-                }
+            public void onItemDragStarted(int position) {
+                //AkorDefterimSys.ToastMsj(activity, "Start - position: " + position, Toast.LENGTH_SHORT);
+            }
 
-                AkorDefterimSys.KlavyeKapat();
-                FiltreMenuKapat();
-                openContextMenu(lstSarkiYonetimi);
+            @Override
+            public void onItemDragEnded(int fromPosition, int toPosition) {
+                if (fromPosition != toPosition) { // Tutulan kayıt sürüklenmiş ve aynı yerde değilse
+                    for(int i = 0; i <= lstSarkiYonetimi.getAdapter().getItemList().size() - 1; i++) {
+                        try {
+                            JSONObject JSONSonuc = new JSONObject(((Pair)lstSarkiYonetimi.getAdapter().getItemList().get(i)).second.toString());
+
+                            veritabani.SarkiSiraNoDegistir(JSONSonuc.getInt("SarkiID"), i);
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                    }
+
+                    SarkiListesiGetir();
+                }
             }
         });
-        lstSarkiYonetimi.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
-            @Override
-            public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
-                // Eğer sarki arama alanına yazı GİRİLMEMİŞSE "snfSarkilar" sıfından kayıt baz alarak içerik getirtiyoruz..
-                if (txtAra_AramaPanel.getText().length() == 0) {
-                    SecilenSarkiID = snfSarkilar.get(position).getId();
-                    SecilenSanatciAdi = snfSarkilar.get(position).getSanatciAdi();
-                    SecilenSarkiAdi = snfSarkilar.get(position).getSarkiAdi();
-                } else { // Eğer sarki arama alanına yazı GİRİLMİŞSE "snfSarkilarTemp" sıfından kayıt baz alarak içerik getirtiyoruz..
-                    SecilenSarkiID = snfSarkilarTemp.get(position).getId();
-                    SecilenSanatciAdi = snfSarkilarTemp.get(position).getSanatciAdi();
-                    SecilenSarkiAdi = snfSarkilarTemp.get(position).getSarkiAdi();
-                }
-
-                AkorDefterimSys.KlavyeKapat();
-                FiltreMenuKapat();
-                openContextMenu(lstSarkiYonetimi);
-
-                return true;
-            }
-        });
-        registerForContextMenu(lstSarkiYonetimi);
 
         lblOrtaMesaj = findViewById(R.id.lblOrtaMesaj);
         lblOrtaMesaj.setTypeface(YaziFontu, Typeface.NORMAL);
@@ -326,6 +342,29 @@ public class Sarki_Yonetimi extends AppCompatActivity implements Interface_Async
         btnListele.setOnClickListener(this);
 	}
 
+    private static class MyDragItem extends DragItem {
+        MyDragItem(Context context, int layoutId) {
+            super(context, layoutId);
+        }
+
+        @Override
+        public void onBindDragView(View clickedView, View dragView) {
+            CharSequence SanatciAdiSarkiAdi = ((TextView) clickedView.findViewById(R.id.lblSanatciSarkiAdi)).getText();
+            CharSequence Kategori1 = ((TextView) clickedView.findViewById(R.id.lblKategoriAdi1)).getText();
+            CharSequence Kategori2 = ((TextView) clickedView.findViewById(R.id.lblKategoriAdi2)).getText();
+            CharSequence Tarz1 = ((TextView) clickedView.findViewById(R.id.lblTarzAdi1)).getText();
+            CharSequence Tarz2 = ((TextView) clickedView.findViewById(R.id.lblTarzAdi2)).getText();
+
+            ((TextView) dragView.findViewById(R.id.lblSanatciSarkiAdi)).setText(SanatciAdiSarkiAdi);
+            ((TextView) dragView.findViewById(R.id.lblKategoriAdi1)).setText(Kategori1);
+            ((TextView) dragView.findViewById(R.id.lblKategoriAdi2)).setText(Kategori2);
+            ((TextView) dragView.findViewById(R.id.lblTarzAdi1)).setText(Tarz1);
+            ((TextView) dragView.findViewById(R.id.lblTarzAdi2)).setText(Tarz2);
+
+            dragView.findViewById(R.id.item_layout).setBackgroundColor(dragView.getResources().getColor(R.color.Siyah));
+        }
+    }
+
     @Override
     protected void onStart() {
         super.onStart();
@@ -386,7 +425,8 @@ public class Sarki_Yonetimi extends AppCompatActivity implements Interface_Async
 
     @Override
     public void onBackPressed() {
-        if (RLSarkiYonetimi_AramaPanel.getVisibility() == View.VISIBLE) AkorDefterimSys.AramaPanelKapat(RLSarkiYonetimi_AnaPanel.getId(),RLSarkiYonetimi_AramaPanel.getId(),txtAra_AramaPanel, imm);
+        if (RLSarkiYonetimi_DuzenlePanel.getVisibility() == View.VISIBLE) DuzenlemeyiKapat(RLSarkiYonetimi_AramaPanel.getVisibility() == View.VISIBLE);
+        else if (RLSarkiYonetimi_AramaPanel.getVisibility() == View.VISIBLE) AkorDefterimSys.AramaPanelKapat(RLSarkiYonetimi_AnaPanel.getId(),RLSarkiYonetimi_AramaPanel.getId(),txtAra_AramaPanel, imm);
         else if(FiltreMenuAcikMi) FiltreMenuKapat();
         else {
             AkorDefterimSys.KlavyeKapat();
@@ -399,7 +439,7 @@ public class Sarki_Yonetimi extends AppCompatActivity implements Interface_Async
     @Override
 	public void onClick(View v) {
 		switch (v.getId()) {
-            case R.id.RelativeLayout1:
+            case R.id.CLContainer:
                 FiltreMenuKapat();
                 break;
             case R.id.RLContent:
@@ -425,9 +465,21 @@ public class Sarki_Yonetimi extends AppCompatActivity implements Interface_Async
                 FiltreMenuKapat();
                 AkorDefterimSys.AramaPanelAc(RLSarkiYonetimi_AnaPanel.getId(),RLSarkiYonetimi_AramaPanel.getId(),txtAra_AramaPanel, imm);
                 break;
+            case R.id.btnMenu_AnaPanel:
+                AkorDefterimSys.showPopupMenu(activity, v, R.menu.sarki_yonetimi_menu);
+                break;
             case R.id.btnGeri_AramaPanel:
                 FiltreMenuKapat();
                 AkorDefterimSys.AramaPanelKapat(RLSarkiYonetimi_AnaPanel.getId(),RLSarkiYonetimi_AramaPanel.getId(),txtAra_AramaPanel, imm);
+                break;
+            case R.id.btnGeri_DuzenlePanel:
+                DuzenlemeyiKapat(RLSarkiYonetimi_AramaPanel.getVisibility() == View.VISIBLE);
+                break;
+            case R.id.lblchkTumunuSec_DuzenlePanel:
+                adpSarkiListesiDragDropLST.TumunuSecYadaSecme();
+                break;
+            case R.id.btnMenu_DuzenlePanel:
+                AkorDefterimSys.showPopupMenu(activity, v, R.menu.sarki_yonetimi_duzenle_menu);
                 break;
             case R.id.FABSarkiEkle:
                 FiltreMenuKapat();
@@ -446,78 +498,83 @@ public class Sarki_Yonetimi extends AppCompatActivity implements Interface_Async
 	}
 
     @Override
-    public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
-        super.onCreateContextMenu(menu, v, menuInfo);
-
-        switch (v.getId()) {
-            case R.id.lstSarkiYonetimi:
-                menu.setHeaderTitle(String.format("%s - %s", SecilenSanatciAdi, SecilenSarkiAdi));
-                menu.add(0, 0, 0, getString(R.string.sil));
-                menu.add(0, 1, 0, getString(R.string.duzenle));
-                break;
-        }
-    }
-
-    @Override
-    public boolean onContextItemSelected(MenuItem item) {
-        switch (item.getGroupId()) {
-            case 0: // ListView
-                switch (item.getItemId()) {
-                    case 0:
-                        if(!AkorDefterimSys.AlertDialogisShowing(ADDialog)) {
-                            ADDialog = AkorDefterimSys.H2ButtonCustomAlertDialog(activity,
-                                    getString(R.string.sil),
-                                    getString(R.string.sarki_sil_soru, SecilenSanatciAdi, SecilenSarkiAdi),
-                                    getString(R.string.evet),"ADDialog_SarkiSil",
-                                    getString(R.string.hayir),"ADDialog_Kapat");
-                            ADDialog.getWindow().getAttributes().windowAnimations = R.style.DialogAnimation;
-                            ADDialog.show();
-                        }
-                        break;
-                    case 1:
-                        AkorDefterimSys.AramaPanelKapat(RLSarkiYonetimi_AnaPanel.getId(),RLSarkiYonetimi_AramaPanel.getId(),txtAra_AramaPanel, imm);
-
-                        Intent mIntent = new Intent(activity, Sarki_EkleDuzenle.class);
-                        mIntent.putExtra("Islem", "SarkiDuzenle");
-                        mIntent.putExtra("SecilenSarkiID", SecilenSarkiID);
-                        mIntent.putExtra("SecilenSanatciAdi", SecilenSanatciAdi);
-                        mIntent.putExtra("SecilenSarkiAdi", SecilenSarkiAdi);
-                        mIntent.putExtra("SecilenSarkiIcerik", veritabani.SarkiIcerikGetir(SecilenSarkiID));
-
-                        AkorDefterimSys.EkranGetir(mIntent, "Slide");
-                        break;
-                    default:
-                        return false;
-                }
-
-                break;
-            default:
-                return false;
-        }
-
-        return true;
-    }
-
-    @Override
     public void AsyncTaskReturnValue(String sonuc) {
         try {
             JSONObject JSONSonuc = new JSONObject(sonuc);
 
             switch (JSONSonuc.getString("Islem")) {
+                case "PopupMenu":
+                    switch (JSONSonuc.getInt("ItemId")) {
+                        case R.id.btnDuzenle:
+                            DuzenlemeyiAc(RLSarkiYonetimi_AramaPanel.getVisibility() == View.VISIBLE);
+                            break;
+                        case R.id.btnSecilenleriSil:
+                            int ToplamSecilenSarkiSayisi = adpSarkiListesiDragDropLST.ToplamSecilenSarkiSayisiGetir();
+
+                            if(ToplamSecilenSarkiSayisi > 1) {
+                                if(!AkorDefterimSys.AlertDialogisShowing(ADDialog)) {
+                                    ADDialog = AkorDefterimSys.H2ButtonCustomAlertDialog(activity,
+                                            getString(R.string.sil),
+                                            getString(R.string.sarki_sil_soru2, String.valueOf(ToplamSecilenSarkiSayisi)),
+                                            getString(R.string.evet),"ADDialog_SarkiSil",
+                                            getString(R.string.hayir),"ADDialog_Kapat");
+                                    ADDialog.getWindow().getAttributes().windowAnimations = R.style.DialogAnimation;
+                                    ADDialog.show();
+                                }
+                            } else if(ToplamSecilenSarkiSayisi == 1) {
+                                if(!AkorDefterimSys.AlertDialogisShowing(ADDialog)) {
+                                    ADDialog = AkorDefterimSys.H2ButtonCustomAlertDialog(activity,
+                                            getString(R.string.sil),
+                                            getString(R.string.sarki_sil_soru, adpSarkiListesiDragDropLST.SecilenSanatciAdiGetir(), adpSarkiListesiDragDropLST.SecilenSarkiAdiGetir()),
+                                            getString(R.string.evet),"ADDialog_SarkiSil",
+                                            getString(R.string.hayir),"ADDialog_Kapat");
+                                    ADDialog.getWindow().getAttributes().windowAnimations = R.style.DialogAnimation;
+                                    ADDialog.show();
+                                }
+                            } else AkorDefterimSys.StandartSnackBarMsj(coordinatorLayout, getString(R.string.silmek_istediginiz_sarkilari_secin));
+
+                            break;
+                    }
+                    break;
                 case "ADDialog_SarkiSil":
+                    AkorDefterimSys.DismissAlertDialog(ADDialog);
+                    adpSarkiListesiDragDropLST.SecilenKayitlariSil();
+                    break;
+                case "SecilenKayitlarSilindi":
+                    DuzenlemeyiKapat(RLSarkiYonetimi_AramaPanel.getVisibility() == View.VISIBLE);
                     AkorDefterimSys.AramaPanelKapat(RLSarkiYonetimi_AnaPanel.getId(),RLSarkiYonetimi_AramaPanel.getId(),txtAra_AramaPanel, imm);
-
-                    if(veritabani.SarkiVarMiKontrol(SecilenSarkiID)) {
-                        if(veritabani.SarkiSil(SecilenSarkiID))
-                            AkorDefterimSys.StandartSnackBarMsj(coordinatorLayout, getString(R.string.sarki_silindi, SecilenSanatciAdi, SecilenSarkiAdi));
-                        else
-                            AkorDefterimSys.StandartSnackBarMsj(coordinatorLayout, getString(R.string.islem_yapilirken_bir_hata_olustu));
-                    } else
-                        AkorDefterimSys.StandartSnackBarMsj(coordinatorLayout, getString(R.string.sarki_bulunamadi, SecilenSanatciAdi, SecilenSarkiAdi));
-
-                    ADDialog.dismiss();
-
+                    AkorDefterimSys.StandartSnackBarMsj(coordinatorLayout, getString(R.string.sarki_silindi2));
                     SarkiListesiGetir();
+                    break;
+                case "TumunuSecGuncelle":
+                    switch (JSONSonuc.getString("Durum")) {
+                        case "Dolu":
+                            lblchkTumunuSec_DuzenlePanel.setText(getString(R.string.tumunu_sec_circle_checkbox_dolu));
+                            break;
+                        case "YariDolu":
+                            lblchkTumunuSec_DuzenlePanel.setText(getString(R.string.tumunu_sec_circle_checkbox_yaridolu));
+                            break;
+                        case "Boş":
+                            lblchkTumunuSec_DuzenlePanel.setText(getString(R.string.tumunu_sec_circle_checkbox_bos));
+                            break;
+                    }
+                    break;
+                case "DuzenlemeyiAc":
+                    DuzenlemeyiAc(RLSarkiYonetimi_AramaPanel.getVisibility() == View.VISIBLE);
+                    break;
+                case "SarkiDuzenleEkranGetir":
+                    AkorDefterimSys.AramaPanelKapat(RLSarkiYonetimi_AnaPanel.getId(),RLSarkiYonetimi_AramaPanel.getId(),txtAra_AramaPanel, imm);
+                    AkorDefterimSys.KlavyeKapat();
+                    FiltreMenuKapat();
+
+                    Intent mIntent = new Intent(activity, Sarki_EkleDuzenle.class);
+                    mIntent.putExtra("Islem", "SarkiDuzenle");
+                    mIntent.putExtra("SecilenSarkiID", JSONSonuc.getInt("SecilenSarkiID"));
+                    mIntent.putExtra("SecilenSanatciAdi", JSONSonuc.getString("SecilenSanatciAdi"));
+                    mIntent.putExtra("SecilenSarkiAdi", JSONSonuc.getString("SecilenSarkiAdi"));
+                    mIntent.putExtra("SecilenSarkiIcerik", veritabani.SarkiIcerikGetir(JSONSonuc.getInt("SecilenSarkiID")));
+
+                    AkorDefterimSys.EkranGetir(mIntent, "Slide");
                     break;
                 case "ADDialog_Kapat":
                     AkorDefterimSys.DismissAlertDialog(ADDialog);
@@ -550,9 +607,11 @@ public class Sarki_Yonetimi extends AppCompatActivity implements Interface_Async
     }
 
     private void spnListeGetir() {
-        snfListeler = veritabani.SnfListeGetir("Cevrimdisi", true);
+        snfListeler = veritabani.SnfListeGetir("Cevrimdisi", false);
         AdpListelerSPN AdpListelerSPN = new AdpListelerSPN(activity, snfListeler);
         spnListeler.setAdapter(AdpListelerSPN);
+
+        if(snfListeler.size() > 0) SecilenListeID = snfListeler.get(0).getId();
     }
 
     private void spnKategoriGetir() {
@@ -581,6 +640,8 @@ public class Sarki_Yonetimi extends AppCompatActivity implements Interface_Async
     }
 
     private void SarkiListesiGetir() {
+        lblListeAdi.setText(veritabani.ListeAdiGetir(SecilenListeID));
+
         if(snfSarkilar != null) snfSarkilar.clear();
         else snfSarkilar = new ArrayList<>();
 
@@ -591,6 +652,8 @@ public class Sarki_Yonetimi extends AppCompatActivity implements Interface_Async
             //btnFiltre_AnaPanel.setEnabled(false);
             btnAra_AnaPanel.setImageResource(R.drawable.ic_ara);
             btnAra_AnaPanel.setEnabled(false);
+            btnMenu_AnaPanel.setImageResource(R.drawable.dots_vertical);
+            btnMenu_AnaPanel.setEnabled(false);
             lblOrtaMesaj.setVisibility(View.VISIBLE);
             lblOrtaMesaj.setText(getString(R.string.liste_bos));
             lstSarkiYonetimi.setVisibility(View.GONE);
@@ -599,16 +662,22 @@ public class Sarki_Yonetimi extends AppCompatActivity implements Interface_Async
             //btnFiltre_AnaPanel.setEnabled(true);
             btnAra_AnaPanel.setImageResource(R.drawable.ic_ara_siyah);
             btnAra_AnaPanel.setEnabled(true);
+            btnMenu_AnaPanel.setImageResource(R.drawable.dots_vertical_siyah);
+            btnMenu_AnaPanel.setEnabled(true);
             lblOrtaMesaj.setVisibility(View.GONE);
             lstSarkiYonetimi.setVisibility(View.VISIBLE);
 
             Collections.sort(snfSarkilar, new SnfRepertuvarComparatorRepertuvar());
 
-            // Eğer kayıt sayısı 25'ten fazla ise FastScroll'u aktif et
-            AdpSarkiListesiLST2 adpSarkiListesiLST2 = new AdpSarkiListesiLST2(activity, snfSarkilar, snfSarkilar.size() > 25, SecilenListelemeTipi);
+            ArrayList<Pair<Long, String>> SarkiListesi = new ArrayList<>();
 
-            lstSarkiYonetimi.setFastScrollEnabled(snfSarkilar.size() > 10);
-            lstSarkiYonetimi.setAdapter(adpSarkiListesiLST2);
+            for (int i = 0; i <= snfSarkilar.size() - 1; i++) {
+                SarkiListesi.add(new Pair<>((long) i, "{\"SarkiID\":" + snfSarkilar.get(i).getId() + ",\"SanatciAdi\":\"" + snfSarkilar.get(i).getSanatciAdi() + "\",\"SarkiAdi\":\"" + snfSarkilar.get(i).getSarkiAdi() + "\"}"));
+            }
+
+            adpSarkiListesiDragDropLST = new AdpSarkiListesiDragDropLST(activity, snfSarkilar, SarkiListesi, SecilenListelemeTipi, R.layout.explstsarkilistesi_item, R.id.ImgDragDropIcon, false);
+            adpSarkiListesiDragDropLST.setDuzenlenebilirMi(DuzenlenebilirMi, RLSarkiYonetimi_AramaPanel.getVisibility() == View.VISIBLE);
+            lstSarkiYonetimi.setAdapter(adpSarkiListesiDragDropLST, true);
         }
     }
 
@@ -624,5 +693,23 @@ public class Sarki_Yonetimi extends AppCompatActivity implements Interface_Async
             AkorDefterimSys.CircularReveal(activity, R.id.RLContent, R.id.LLFiltreMenu, "Sol", "Alt", "Kapat");
             FiltreMenuAcikMi = false;
         }
+    }
+
+    private void DuzenlemeyiAc(boolean AramaPanelAcikMi) {
+        FABSarkiEkle.hide(true);
+        FiltreMenuKapat();
+        View[] GorunmeyecekOlanViewlar = {RLSarkiYonetimi_AnaPanel};
+        AkorDefterimSys.AnimasyonFadeIn(activity, RLSarkiYonetimi_DuzenlePanel, GorunmeyecekOlanViewlar);
+        DuzenlenebilirMi = true;
+        adpSarkiListesiDragDropLST.setDuzenlenebilirMi(DuzenlenebilirMi, AramaPanelAcikMi);
+    }
+
+    private void DuzenlemeyiKapat(boolean AramaPanelAcikMi) {
+        FABSarkiEkle.show(true);
+        View[] GorunecekOlanViewlar = {RLSarkiYonetimi_AnaPanel};
+        AkorDefterimSys.AnimasyonFadeOut(activity, RLSarkiYonetimi_DuzenlePanel, GorunecekOlanViewlar);
+        DuzenlenebilirMi = false;
+        adpSarkiListesiDragDropLST.setDuzenlenebilirMi(DuzenlenebilirMi, AramaPanelAcikMi);
+        adpSarkiListesiDragDropLST.TumSecimleriKaldir();
     }
 }

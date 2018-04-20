@@ -46,6 +46,8 @@ public class Ayarlar_Ekran_Isigi extends AppCompatActivity implements OnClickLis
 		//AkorDefterimSys.TransparanNotifyBar(); // Notification Bar'ı transparan yapıyoruz.
 		//AkorDefterimSys.NotifyIkonParlakligi(); // Notification Bar'daki simgelerin parlaklığını aldık.
 
+		AkorDefterimSys.SonYapilanIslemGuncelle("ekran_isigi_ekranina_giris_yapildi", "[]");
+
 		coordinatorLayout = findViewById(R.id.coordinatorLayout);
 		coordinatorLayout.setOnClickListener(this);
 
@@ -72,7 +74,7 @@ public class Ayarlar_Ekran_Isigi extends AppCompatActivity implements OnClickLis
 
 			@Override
 			public void getProgressOnActionUp(BubbleSeekBar bubbleSeekBar, int progress, float progressFloat) {
-
+				AkorDefterimSys.SonYapilanIslemGuncelle("ekran_isigi_ayarlandi", "[{\"Param\":\"" + String.valueOf(progress) + "\"}]");
 			}
 
 			@Override

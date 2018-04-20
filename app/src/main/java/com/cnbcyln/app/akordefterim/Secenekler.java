@@ -49,6 +49,8 @@ public class Secenekler extends AppCompatActivity implements OnClickListener {
         //AkorDefterimSys.TransparanNotifyBar(); // Notification Bar'ı transparan yapıyoruz.
         //AkorDefterimSys.NotifyIkonParlakligi(); // Notification Bar'daki simgelerin parlaklığını aldık.
 
+        AkorDefterimSys.SonYapilanIslemGuncelle("secenekler_ekranina_giris_yapildi", "[]");
+
         coordinatorLayout = findViewById(R.id.coordinatorLayout);
         coordinatorLayout.setOnClickListener(this);
 

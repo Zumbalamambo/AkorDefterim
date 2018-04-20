@@ -4,6 +4,7 @@ import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.annotation.SuppressLint;
 import android.app.Activity;
+import android.app.ActivityManager;
 import android.app.AlertDialog;
 import android.app.DatePickerDialog;
 import android.app.Dialog;
@@ -13,6 +14,7 @@ import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.app.ProgressDialog;
 import android.content.BroadcastReceiver;
+import android.content.ComponentName;
 import android.content.Context;
 import android.content.CursorLoader;
 import android.content.DialogInterface;
@@ -72,11 +74,13 @@ import android.view.Display;
 import android.view.Gravity;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
+import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewAnimationUtils;
 import android.view.Window;
 import android.view.WindowManager;
+import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputMethodManager;
@@ -90,7 +94,6 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.cnbcyln.app.akordefterim.AnaEkran;
 import com.cnbcyln.app.akordefterim.Interface.Int_DataConn_AnaEkran;
 import com.cnbcyln.app.akordefterim.Interface.Interface_AsyncResponse;
 import com.cnbcyln.app.akordefterim.R;
@@ -108,6 +111,7 @@ import com.cnbcyln.app.akordefterim.Retrofit.Siniflar.SnfKategoriListesiGetir;
 import com.cnbcyln.app.akordefterim.Retrofit.Siniflar.SnfSarkiGetir;
 import com.cnbcyln.app.akordefterim.Retrofit.Siniflar.SnfSarkiListesiGetir;
 import com.cnbcyln.app.akordefterim.Retrofit.Siniflar.SnfSistemDurum;
+import com.cnbcyln.app.akordefterim.Retrofit.Siniflar.SnfTanitimMesajlari;
 import com.cnbcyln.app.akordefterim.Retrofit.Siniflar.SnfTarihSaat;
 import com.cnbcyln.app.akordefterim.Retrofit.Siniflar.SnfTarzListesiGetir;
 import com.cnbcyln.app.akordefterim.Siniflar.SnfSarkilar;
@@ -139,6 +143,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.jsoup.Jsoup;
+import org.jsoup.nodes.Document;
 
 import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
@@ -191,6 +196,7 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
+import static android.content.Context.ACTIVITY_SERVICE;
 import static android.content.Context.MODE_PRIVATE;
 
 @SuppressWarnings("deprecation")
@@ -363,13 +369,37 @@ public class AkorDefterimSys {
 						break;
 					case "NotifyMesaj":
 						myIntent = new Intent(context, SplashEkran.class);
-						NotifyGoster(myIntent, JSONGelenVeri.getString("NotifyBaslik"), JSONGelenVeri.getString("NotifyIcerik"), JSONGelenVeri.getString("SubIcerik"), JSONGelenVeri.getInt("Number"), JSONGelenVeri.getString("TickerIcerik"), JSONGelenVeri.getString("BigNotifyBaslik"), JSONGelenVeri.getString("BigNotifyIcerik"), JSONGelenVeri.getString("BigSubIcerik"), JSONGelenVeri.getBoolean("Titresim"));
+						NotifyGoster(myIntent, activity.getResources().getInteger(R.integer.StandartNotifyID), JSONGelenVeri.getString("NotifyBaslik"), JSONGelenVeri.getString("NotifyIcerik"), JSONGelenVeri.getString("SubIcerik"), JSONGelenVeri.getInt("Number"), JSONGelenVeri.getString("TickerIcerik"), JSONGelenVeri.getString("BigNotifyBaslik"), JSONGelenVeri.getString("BigNotifyIcerik"), JSONGelenVeri.getString("BigSubIcerik"), JSONGelenVeri.getBoolean("Titresim"));
 
 						break;
 					case "CikisYap":
 						if(GirisYapildiMi()) {
-							myIntent = new Intent(activity, AnaEkran.class);
-							NotifyGoster(myIntent, activity.getString(R.string.uygulama_adi), activity.getString(R.string.farkli_bir_cihazdan_oturum_acildi), "", -1, activity.getString(R.string.farkli_bir_cihazdan_oturum_acildi), activity.getString(R.string.uygulama_adi), activity.getString(R.string.farkli_bir_cihazdan_oturum_acildi), "", true);
+							myIntent = new Intent(activity, SplashEkran.class);
+							NotifyGoster(myIntent, activity.getResources().getInteger(R.integer.StandartNotifyID), activity.getString(R.string.uygulama_adi), activity.getString(R.string.farkli_bir_cihazdan_oturum_acildi), "", -1, activity.getString(R.string.farkli_bir_cihazdan_oturum_acildi), activity.getString(R.string.uygulama_adi), activity.getString(R.string.farkli_bir_cihazdan_oturum_acildi), "", true);
+							CikisYap();
+						}
+						break;
+					case "HesapSilindi_CikisYap":
+						if(GirisYapildiMi()) {
+							@SuppressLint("SimpleDateFormat")
+							SimpleDateFormat SDF1 = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+							@SuppressLint("SimpleDateFormat")
+							SimpleDateFormat SDF2 = new SimpleDateFormat("dd MMMM yyyy - HH:mm:ss");
+
+							myIntent = new Intent(activity, SplashEkran.class);
+							NotifyGoster(myIntent, activity.getResources().getInteger(R.integer.StandartNotifyID), activity.getString(R.string.uygulama_adi), activity.getString(R.string.hesabiniz_silindi_cikis_yapildi, SDF2.format(SDF1.parse(JSONGelenVeri.getString("Tarih"))), activity.getString(R.string.uygulama_yapimci_eposta)), "", -1, activity.getString(R.string.hesabiniz_silindi_cikis_yapildi, SDF2.format(SDF1.parse(JSONGelenVeri.getString("Tarih"))), activity.getString(R.string.uygulama_yapimci_eposta)), activity.getString(R.string.uygulama_adi), activity.getString(R.string.hesabiniz_silindi_cikis_yapildi, SDF2.format(SDF1.parse(JSONGelenVeri.getString("Tarih"))), activity.getString(R.string.uygulama_yapimci_eposta)), "", true);
+							CikisYap();
+						}
+						break;
+					case "HesapBanlandi_CikisYap":
+						if(GirisYapildiMi()) {
+							@SuppressLint("SimpleDateFormat")
+							SimpleDateFormat SDF1 = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+							@SuppressLint("SimpleDateFormat")
+							SimpleDateFormat SDF2 = new SimpleDateFormat("dd MMMM yyyy - HH:mm:ss");
+
+							myIntent = new Intent(activity, SplashEkran.class);
+							NotifyGoster(myIntent, activity.getResources().getInteger(R.integer.StandartNotifyID), activity.getString(R.string.uygulama_adi), activity.getString(R.string.hesabiniz_bloke_edildi_cikis_yapildi, SDF2.format(SDF1.parse(JSONGelenVeri.getString("Tarih"))), activity.getString(R.string.uygulama_yapimci_eposta)), "", -1, activity.getString(R.string.hesabiniz_bloke_edildi_cikis_yapildi, SDF2.format(SDF1.parse(JSONGelenVeri.getString("Tarih"))), activity.getString(R.string.uygulama_yapimci_eposta)), activity.getString(R.string.uygulama_adi), activity.getString(R.string.hesabiniz_bloke_edildi_cikis_yapildi, SDF2.format(SDF1.parse(JSONGelenVeri.getString("Tarih"))), activity.getString(R.string.uygulama_yapimci_eposta)), "", true);
 							CikisYap();
 						}
 						break;
@@ -534,7 +564,7 @@ public class AkorDefterimSys {
 
                         break;*/
 				}
-			} catch (JSONException e) {
+			} catch (JSONException | ParseException e) {
 				e.printStackTrace();
 			}
 		}
@@ -669,6 +699,13 @@ public class AkorDefterimSys {
                 })
                 .inject();
 	}*/
+
+	public void SonYapilanIslemGuncelle(String CumleKodu, String Parametre) {
+		sharedPrefEditor = sharedPref.edit();
+		sharedPrefEditor.putString("prefSonYapilanIslem_CumleKodu", CumleKodu);
+		sharedPrefEditor.putString("prefSonYapilanIslem_Param", Parametre);
+		sharedPrefEditor.apply();
+	}
 
 	public void KlavyeKapat() {
 		InputMethodManager imm = (InputMethodManager) activity.getSystemService(Context.INPUT_METHOD_SERVICE); // İstenildiği zaman klavyeyi gizlemeye yarayan kod tanımlayıcısı
@@ -828,7 +865,14 @@ public class AkorDefterimSys {
 	}
 
 	public void CikisYap() {
+		Intent mIntentMqttService = new Intent(MqttService.class.getName());
+		mIntentMqttService.putExtra("JSONData", "{\"Islem\":\"UnSubscribe_HesapKanal\", \"HesapID\":\"" + sharedPref.getString("prefHesapID", "") + "\"}");
+		activity.sendBroadcast(mIntentMqttService);
+
 		HesapPrefSifirla();
+
+		//if(isServiceRunning(MqttService.class))
+		//activity.stopService(new Intent(activity, MqttService.class));
 
 		EkranGetir(new Intent(activity, SplashEkran.class), "Normal");
 		activity.finishAffinity();
@@ -1252,6 +1296,84 @@ public class AkorDefterimSys {
 		});
 
 		popup.show();
+	}
+
+	public void showPopupMenu(Activity activity, View view, int MenuRes) {
+		final Interface_AsyncResponse AsyncResponse;
+		if(activity != null) AsyncResponse = (Interface_AsyncResponse) activity;
+		else AsyncResponse = (Interface_AsyncResponse) this.activity;
+
+		PopupMenu popup = new PopupMenu(activity, view);
+		MenuInflater inflater = popup.getMenuInflater();
+		inflater.inflate(MenuRes, popup.getMenu());
+		popup.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+			@Override
+			public boolean onMenuItemClick(MenuItem item) {
+				AsyncResponse.AsyncTaskReturnValue("{\"Islem\":\"PopupMenu\", \"ItemId\":" + item.getItemId() + "}");
+				return true;
+			}
+		});
+		popup.show();
+	}
+
+	public void AnimasyonFadeIn(Activity activity, final View v, final View[] GorunmeyecekOlanViewlar) {
+		Animation anim = AnimationUtils.loadAnimation(activity, R.anim.anim_fadein);
+		anim.reset();
+
+		v.clearAnimation();
+		v.startAnimation(anim);
+
+		anim.setAnimationListener(new Animation.AnimationListener() {
+			@Override
+			public void onAnimationStart(Animation animation) {
+				v.setAlpha(1);
+				v.setVisibility(View.VISIBLE);
+			}
+
+			@Override
+			public void onAnimationEnd(Animation animation) {
+				if(GorunmeyecekOlanViewlar != null) {
+					for(int i = 0; i <= GorunmeyecekOlanViewlar.length - 1; i++) {
+						GorunmeyecekOlanViewlar[i].setVisibility(View.GONE);
+					}
+				}
+			}
+
+			@Override
+			public void onAnimationRepeat(Animation animation) {
+
+			}
+		});
+	}
+
+	public void AnimasyonFadeOut(Activity activity, final View v, final View[] GorunecekOlanViewlar) {
+		Animation anim = AnimationUtils.loadAnimation(activity, R.anim.anim_fadeout);
+		anim.reset();
+
+		v.clearAnimation();
+		v.startAnimation(anim);
+
+		anim.setAnimationListener(new Animation.AnimationListener() {
+			@Override
+			public void onAnimationStart(Animation animation) {
+				if(GorunecekOlanViewlar != null) {
+					for(int i = 0; i <= GorunecekOlanViewlar.length - 1; i++) {
+						GorunecekOlanViewlar[i].setVisibility(View.VISIBLE);
+					}
+				}
+			}
+
+			@Override
+			public void onAnimationEnd(Animation animation) {
+				v.setAlpha(0);
+				v.setVisibility(View.GONE);
+			}
+
+			@Override
+			public void onAnimationRepeat(Animation animation) {
+
+			}
+		});
 	}
 
 	@SuppressLint("InflateParams")
@@ -1985,7 +2107,7 @@ public class AkorDefterimSys {
 		return ADDialog;
 	}
 
-	public void NotifyGoster(Intent intent, String NotifyBaslik, String NotifyIcerik, String SubIcerik, int Number, String TickerIcerik, String BigNotifyBaslik, String BigNotifyIcerik, String BigSubIcerik, Boolean Titresim) {
+	public void NotifyGoster(Intent intent, int NotificationID, String NotifyBaslik, String NotifyIcerik, String SubIcerik, int Number, String TickerIcerik, String BigNotifyBaslik, String BigNotifyIcerik, String BigSubIcerik, Boolean Titresim) {
 		Uri defaultSoundUri;
 		PendingIntent pendingIntent;
 		Notification.Builder NotifyBuilder;
@@ -2033,7 +2155,19 @@ public class AkorDefterimSys {
 		/** Small Icon'u kaldırmaya yarayan fonksiyon **/
 
 		NotificationManager notificationManager = (NotificationManager)activity.getSystemService(Context.NOTIFICATION_SERVICE);
-		notificationManager.notify(1, notification);
+		notificationManager.notify(NotificationID, notification);
+	}
+
+	public boolean isNotificationVisible(int NotificationID, Intent mIntent) {
+		PendingIntent mBekleyenIntent;
+
+		if(activity != null) {
+			mBekleyenIntent = PendingIntent.getActivity(activity, NotificationID, mIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+			return mBekleyenIntent != null;
+		} else if(context != null) {
+			mBekleyenIntent = PendingIntent.getActivity(context, NotificationID, mIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+			return mBekleyenIntent != null;
+		} else return false;
 	}
 
 	public ProgressDialog CustomProgressDialog(String Mesaj, Boolean KapanabilirMi, int Timeout, final String TimeoutIslem) {
@@ -2699,14 +2833,14 @@ public class AkorDefterimSys {
 					SnfHesapGirisYap snfHesapGirisYap = response.body();
 
 					// getHata'nin false olması durumu hata yok demektir..
-					if(!snfHesapGirisYap.getHata()) AsyncResponse.AsyncTaskReturnValue("{\"Islem\":\"HesapGirisYap\", \"Sonuc\":" + snfHesapGirisYap.getSonuc() + ", \"HesapID\":\"" + snfHesapGirisYap.getHesapID() + "\", \"HesapFirebaseToken\":\"" + snfHesapGirisYap.getHesapFirebaseToken() + "\", \"HesapEPosta\":\"" + snfHesapGirisYap.getHesapEPosta() + "\", \"HesapDurum\":\"" + snfHesapGirisYap.getHesapDurum() + "\", \"HesapParolaSHA1\":\"" + snfHesapGirisYap.getHesapParolaSHA1() + "\", \"HesapDurumBilgi\":\"" + snfHesapGirisYap.getHesapDurumBilgi() + "\"}");
+					if(!snfHesapGirisYap.getHata()) AsyncResponse.AsyncTaskReturnValue("{\"Islem\":\"HesapGirisYap\", \"Sonuc\":" + snfHesapGirisYap.getSonuc() + ", \"HesapID\":\"" + snfHesapGirisYap.getHesapID() + "\", \"HesapFirebaseToken\":\"" + snfHesapGirisYap.getHesapFirebaseToken() + "\", \"HesapEPosta\":\"" + snfHesapGirisYap.getHesapEPosta() + "\", \"HesapParolaSHA1\":\"" + snfHesapGirisYap.getHesapParolaSHA1() + "\", \"HesapDurum\":\"" + snfHesapGirisYap.getHesapDurum() + "\", \"HesapDurumBilgi\":\"" + snfHesapGirisYap.getHesapDurumBilgi() + "\", \"HesapDurumTarihSaat\":\"" + snfHesapGirisYap.getHesapDurumTarihSaat() + "\"}");
 					else AsyncResponse.AsyncTaskReturnValue("{\"Islem\":\"HesapGirisYap\", \"Sonuc\":false}");
 				} else AsyncResponse.AsyncTaskReturnValue("{\"Islem\":\"HesapGirisYap\", \"Sonuc\":false}");
 			}
 
 			@Override
 			public void onFailure(Call<SnfHesapGirisYap> call, Throwable t) {
-				AsyncResponse.AsyncTaskReturnValue("{\"Islem\":\"Giris_Yap\", \"Sonuc\":false}");
+				AsyncResponse.AsyncTaskReturnValue("{\"Islem\":\"HesapGirisYap\", \"Sonuc\":false}");
 			}
 		});
 	}
@@ -2779,7 +2913,7 @@ public class AkorDefterimSys {
 		});
 	}
 
-	public void HesapTelefonGuncelle(String mHesapID, String mFirebaseToken, String mOSID, String mOSVersiyon, String mTelKodu, String mCepTelefon, String mUygulamaVersiyon, final String mIslem) {
+	/*public void HesapTelefonGuncelle(String mHesapID, String mFirebaseToken, String mOSID, String mOSVersiyon, String mTelKodu, String mCepTelefon, String mUygulamaVersiyon, final String mIslem) {
 		RetrofitInterface retrofitInterface = RetrofitServiceGenerator.createService(activity, RetrofitInterface.class);
 		final Interface_AsyncResponse AsyncResponse = (Interface_AsyncResponse) activity;
 
@@ -2802,7 +2936,7 @@ public class AkorDefterimSys {
 				AsyncResponse.AsyncTaskReturnValue("{\"Islem\":\"" + mIslem + "\", \"Sonuc\":false}");
 			}
 		});
-	}
+	}*/
 
 	public void GeriBildirimEkle(String mYenidenGeriBildirimGondermeSuresi, String mHesapID, String mBildirimTipi, String mIcerik, String mIPAdres, final String mIslem) {
 		RetrofitInterface retrofitInterface = RetrofitServiceGenerator.createService(activity, RetrofitInterface.class);
@@ -3054,6 +3188,33 @@ public class AkorDefterimSys {
 		});
 	}
 
+	public void TanitimMesajlariniGetir() {
+		RetrofitInterface retrofitInterface = RetrofitServiceGenerator.createService(activity, RetrofitInterface.class);
+		final Interface_AsyncResponse AsyncResponse;
+		if(activity != null) AsyncResponse = (Interface_AsyncResponse) activity;
+		else AsyncResponse = (Interface_AsyncResponse) this.activity;
+
+		Call<SnfTanitimMesajlari> snfTanitimMesajlariCall = retrofitInterface.TanitimMesajlariniGetir();
+		snfTanitimMesajlariCall.enqueue(new Callback<SnfTanitimMesajlari>() {
+			@Override
+			public void onResponse(Call<SnfTanitimMesajlari> call, Response<SnfTanitimMesajlari> response) {
+				if(response.isSuccessful()) {
+					SnfTanitimMesajlari snfTanitimMesajlari = response.body();
+
+					// getHata'nin false olması durumu hata yok demektir..
+					assert AsyncResponse != null;
+					assert snfTanitimMesajlari != null;
+					AsyncResponse.AsyncTaskReturnValue("{\"Islem\":\"TanitimMesajlariniGetir\", \"Sonuc\":true, \"MesajListesi\":" + snfTanitimMesajlari.getMesajListesi() + "}");
+				}
+			}
+
+			@Override
+			public void onFailure(Call<SnfTanitimMesajlari> call, Throwable t) {
+				AsyncResponse.AsyncTaskReturnValue("{\"Islem\":\"TanitimMesajlariniGetir\", \"Sonuc\":false}");
+			}
+		});
+	}
+
 	/*public void GeriBildirimListesiGetir(String EPosta, String ParolaSHA1) {
 		RetrofitInterface retrofitInterface = RetrofitServiceGenerator.createService(activity, RetrofitInterface.class);
 		final Interface_AsyncResponse AsyncResponse = (Interface_AsyncResponse) activity;
@@ -3105,45 +3266,96 @@ public class AkorDefterimSys {
 
 		@Override
 		protected String doInBackground(String... parametre) {
-			String YeniVersiyon = "";
+			Document doc = null;
+			String JSONYeniVersiyon = "";
+			String VersiyonCode = "";
+			String VersiyonAdi = "";
 
 			try {
-				YeniVersiyon = Jsoup.connect("https://play.google.com/store/apps/details?id=" + activity.getPackageName())
+				doc = Jsoup.connect("https://play.google.com/store/apps/details?id=" + activity.getPackageName())
+						.timeout(60*1000)
+						.userAgent("Mozilla/5.0 (Windows; U; WindowsNT 5.1; en-US; rv1.8.1.6) Gecko/20070725 Firefox/2.0.0.6")
+						.referrer("http://www.google.com")
+						.get();
+
+				VersiyonCode = doc.select("span.htlgb").get(3).text().trim().replace(".", "").replace(" ", "");
+				VersiyonAdi = doc.select("span.htlgb").get(3).text().trim().replace(" ", "");
+
+				if(StringUtils.isNumeric(VersiyonCode)) {
+					JSONYeniVersiyon = "{\"VersiyonCode\":" + Integer.parseInt(VersiyonCode) + ", \"VersiyonAdi\":\"" + VersiyonAdi + "\"}";
+				} else {
+					VersiyonCode = doc.select("span.htlgb").get(7).text().trim().replace(".", "").replace(" ", "");
+					VersiyonAdi = doc.select("span.htlgb").get(7).text().trim().replace(" ", "");
+
+					if(StringUtils.isNumeric(VersiyonCode)) {
+						JSONYeniVersiyon = "{\"VersiyonCode\":" + Integer.parseInt(VersiyonCode) + ", \"VersiyonAdi\":\"" + VersiyonAdi + "\"}";
+					}
+				}
+
+				if(VersiyonCode.equals("")) {
+					VersiyonCode = doc.select("div[itemprop=softwareVersion]").text().trim().replace(".", "").replace(" ", "");
+					VersiyonAdi = doc.select("div[itemprop=softwareVersion]").text().trim().replace(".", "").replace(" ", "");
+
+					JSONYeniVersiyon = "{\"VersiyonCode\":" + Integer.parseInt(VersiyonCode) + ", \"VersiyonAdi\":\"" + VersiyonAdi + "\"}";
+				}
+
+				/*YeniVersiyon = Jsoup.connect("https://play.google.com/store/apps/details?id=" + activity.getPackageName())
+						.timeout(60*1000)
+						.userAgent("Mozilla/5.0 (Windows; U; WindowsNT 5.1; en-US; rv1.8.1.6) Gecko/20070725 Firefox/2.0.0.6")
+						.referrer("http://www.google.com")
+						.get()
+						.select("span[class=\"htlgb\"]")
+						.eq(3).html();*/
+
+				/*YeniVersiyon = Jsoup.connect("https://play.google.com/store/apps/details?id=" + activity.getPackageName())
 						.timeout(60*1000)
 						.userAgent("Mozilla/5.0 (Windows; U; WindowsNT 5.1; en-US; rv1.8.1.6) Gecko/20070725 Firefox/2.0.0.6")
 						.referrer("http://www.google.com")
 						.get()
 						.select("div[itemprop=softwareVersion]")
 						.first()
-						.ownText();
+						.ownText();*/
 			} catch (Exception e) {
 				//e.printStackTrace();
 				Log.e("YeniGuncelleme Hatası", e.getMessage());
+
+				VersiyonCode = doc.select("div[itemprop=softwareVersion]").text().trim().replace(".", "").replace(" ", "");
+				VersiyonAdi = doc.select("div[itemprop=softwareVersion]").text().trim().replace(".", "").replace(" ", "");
+
+				JSONYeniVersiyon = "{\"VersiyonCode\":" + Integer.parseInt(VersiyonCode) + ", \"VersiyonAdi\":\"" + VersiyonAdi + "\"}";
 			}
 
-			return YeniVersiyon;
+			return JSONYeniVersiyon;
 		}
 
 		@Override
 		protected void onPostExecute(String Sonuc) {
-			int YeniVersiyonCode, GecerliVersiyonCode = 0;
-			String YeniVersiyonAdi, GecerliVersiyonAdi = null;
+			try {
+				int YeniVersiyonCode, GecerliVersiyonCode = 0;
+				String YeniVersiyonAdi, GecerliVersiyonAdi = null;
+				JSONObject JSONYeniVersiyon;
 
-			if(Sonuc != null && !Sonuc.equals("")) {
-				YeniVersiyonCode = Integer.parseInt(Sonuc.trim().replace(".", "").replace(" ", ""));
-				YeniVersiyonAdi = Sonuc.trim().replace(" ", "");
+				if(Sonuc.equals("Exception")) AsyncResponse.AsyncTaskReturnValue("{\"Islem\":\"Guncelleme\", \"Durum\":false}");
+				else if(!Sonuc.equals("")) {
+					JSONYeniVersiyon = new JSONObject(Sonuc);
 
-				try {
-					GecerliVersiyonCode = activity.getPackageManager().getPackageInfo(activity.getPackageName(), 0).versionCode + 100;
-					GecerliVersiyonAdi = activity.getPackageManager().getPackageInfo(activity.getPackageName(), 0).versionName;
-				} catch (PackageManager.NameNotFoundException e) {
-					e.printStackTrace();
+					YeniVersiyonCode = JSONYeniVersiyon.getInt("VersiyonCode");
+					YeniVersiyonAdi = JSONYeniVersiyon.getString("VersiyonAdi");
+
+					try {
+						GecerliVersiyonCode = activity.getPackageManager().getPackageInfo(activity.getPackageName(), 0).versionCode + 100;
+						GecerliVersiyonAdi = activity.getPackageManager().getPackageInfo(activity.getPackageName(), 0).versionName;
+					} catch (PackageManager.NameNotFoundException e) {
+						e.printStackTrace();
+					}
+
+					if(YeniVersiyonCode > GecerliVersiyonCode){
+						AsyncResponse.AsyncTaskReturnValue("{\"Islem\":\"Guncelleme\", \"Durum\":true, \"YeniVersiyonAdi\":\"" + YeniVersiyonAdi + "\", \"GecerliVersiyonAdi\":\"" + GecerliVersiyonAdi + "\"}");
+					} else
+						AsyncResponse.AsyncTaskReturnValue("{\"Islem\":\"Guncelleme\", \"Durum\":false}");
 				}
-
-				if(YeniVersiyonCode > GecerliVersiyonCode){
-					AsyncResponse.AsyncTaskReturnValue("{\"Islem\":\"Guncelleme\", \"Durum\":true, \"YeniVersiyonAdi\":\"" + YeniVersiyonAdi + "\", \"GecerliVersiyonAdi\":\"" + GecerliVersiyonAdi + "\"}");
-				} else
-					AsyncResponse.AsyncTaskReturnValue("{\"Islem\":\"Guncelleme\", \"Durum\":false}");
+			} catch (JSONException e) {
+				e.printStackTrace();
 			}
 		}
 
@@ -6985,7 +7197,7 @@ public class AkorDefterimSys {
 		return Icerik;
 	}
 
-	public void AramaPanelAc(int AnaPanelView, int AramaPanelView, EditText txtAra_AramaPanel, InputMethodManager imm) {
+	public void AramaPanelAc(int AnaPanelView, int AramaPanelView, ClearableEditText txtAra_AramaPanel, InputMethodManager imm) {
 		View AnaPanel = activity.findViewById(AnaPanelView);
 		View AramaPanel = activity.findViewById(AramaPanelView);
 
@@ -7343,5 +7555,81 @@ public class AkorDefterimSys {
 		else Sonuc = Metin;
 
 		return Sonuc;
+	}
+
+	public boolean isAppIsInBackground(Activity activity) {
+		boolean isInBackground = true;
+		ActivityManager am = (ActivityManager) activity.getSystemService(ACTIVITY_SERVICE);
+		if (Build.VERSION.SDK_INT > Build.VERSION_CODES.KITKAT_WATCH) {
+			List<ActivityManager.RunningAppProcessInfo> runningProcesses = am.getRunningAppProcesses();
+			for (ActivityManager.RunningAppProcessInfo processInfo : runningProcesses) {
+				if (processInfo.importance == ActivityManager.RunningAppProcessInfo.IMPORTANCE_FOREGROUND) {
+					for (String activeProcess : processInfo.pkgList) {
+						if (activeProcess.equals(activity.getPackageName())) {
+							isInBackground = false;
+						}
+					}
+				}
+			}
+		} else {
+			List<ActivityManager.RunningTaskInfo> taskInfo = am.getRunningTasks(1);
+			ComponentName componentInfo = taskInfo.get(0).topActivity;
+			if (componentInfo.getPackageName().equals(activity.getPackageName())) {
+				isInBackground = false;
+			}
+		}
+
+		return isInBackground;
+	}
+
+	public boolean isAppIsInBackground(Context context) {
+		boolean isInBackground = true;
+		ActivityManager am = (ActivityManager) context.getSystemService(ACTIVITY_SERVICE);
+		if (Build.VERSION.SDK_INT > Build.VERSION_CODES.KITKAT_WATCH) {
+			List<ActivityManager.RunningAppProcessInfo> runningProcesses = am.getRunningAppProcesses();
+			for (ActivityManager.RunningAppProcessInfo processInfo : runningProcesses) {
+				if (processInfo.importance == ActivityManager.RunningAppProcessInfo.IMPORTANCE_FOREGROUND) {
+					for (String activeProcess : processInfo.pkgList) {
+						if (activeProcess.equals(context.getPackageName())) {
+							isInBackground = false;
+						}
+					}
+				}
+			}
+		} else {
+			List<ActivityManager.RunningTaskInfo> taskInfo = am.getRunningTasks(1);
+			ComponentName componentInfo = taskInfo.get(0).topActivity;
+			if (componentInfo.getPackageName().equals(context.getPackageName())) {
+				isInBackground = false;
+			}
+		}
+
+		return isInBackground;
+	}
+
+	public boolean isServiceRunning(Class Servis) {
+		ActivityManager manager = (ActivityManager) activity.getSystemService(ACTIVITY_SERVICE);
+
+		for (ActivityManager.RunningServiceInfo service : manager.getRunningServices(Integer.MAX_VALUE)){
+			if(Servis.getName().equals(service.service.getClassName())) {
+				return true;
+			}
+		}
+
+		return false;
+	}
+
+	public boolean isAppRunning(final Context context, final String packageName) {
+		final ActivityManager activityManager = (ActivityManager) context.getSystemService(Context.ACTIVITY_SERVICE);
+		final List<ActivityManager.RunningAppProcessInfo> procInfos = activityManager.getRunningAppProcesses();
+		if (procInfos != null)
+		{
+			for (final ActivityManager.RunningAppProcessInfo processInfo : procInfos) {
+				if (processInfo.processName.equals(packageName)) {
+					return true;
+				}
+			}
+		}
+		return false;
 	}
 }

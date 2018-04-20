@@ -10,116 +10,216 @@
 	android:keepScreenOn="true"
 	android:background="@color/Beyaz">
 
-	<RelativeLayout
-		android:id="@+id/RelativeLayout1"
+	<android.support.constraint.ConstraintLayout
+		android:id="@+id/CLContainer"
 		android:layout_width="match_parent"
 		android:layout_height="match_parent">
 
-		<RelativeLayout
-			android:id="@+id/RLSarkiYonetimi_BosPanel"
-			android:layout_width="match_parent"
-			android:layout_height="?android:attr/actionBarSize"
-			android:background="@color/Beyaz">
-
-		</RelativeLayout>
-
-		<RelativeLayout
-			android:id="@+id/RLSarkiYonetimi_AnaPanel"
-			android:layout_width="match_parent"
-			android:layout_height="?android:attr/actionBarSize"
-			android:background="@color/Beyaz">
-
-			<ImageButton
-				android:id="@+id/btnGeri_AnaPanel"
-				android:layout_width="60dp"
-				android:layout_height="match_parent"
-				android:layout_centerVertical="true"
-				android:background="@drawable/custom_button2"
-				app:srcCompat="@drawable/ic_arrow_back_siyah"
-				android:contentDescription="@string/imageDesc" />
-
-			<TextView
-				android:id="@+id/lblBaslik_AnaPanel"
-				style="@style/TextAppearance.AppCompat.Medium.Inverse"
-				android:layout_width="wrap_content"
-				android:layout_height="wrap_content"
-				android:layout_marginLeft="8dp"
-				android:layout_centerVertical="true"
-				android:layout_toEndOf="@+id/btnGeri_AnaPanel"
-				android:layout_toRightOf="@+id/btnGeri_AnaPanel"
-				android:text="@string/sarki_yonetimi"
-				android:textColor="@color/KoyuYazi"
-				tools:ignore="RelativeOverlap" />
-
-			<ImageButton
-				android:id="@+id/btnFiltre_AnaPanel"
-				android:layout_width="60dp"
-				android:layout_height="match_parent"
-				android:layout_toLeftOf="@+id/btnAra_AnaPanel"
-				android:layout_toStartOf="@+id/btnAra_AnaPanel"
-				android:background="@drawable/custom_button2"
-				android:contentDescription="@string/imageDesc"
-				app:srcCompat="@drawable/ic_filter_siyah" />
-
-			<ImageButton
-				android:id="@+id/btnAra_AnaPanel"
-				android:layout_width="60dp"
-				android:layout_height="match_parent"
-				android:layout_alignParentRight="true"
-				android:background="@drawable/custom_button2"
-				android:contentDescription="@string/imageDesc"
-				app:srcCompat="@drawable/ic_ara_siyah" />
-		</RelativeLayout>
+		<android.support.constraint.Guideline
+			android:id="@+id/h_guideline_toolbar"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:orientation="horizontal"
+			app:layout_constraintGuide_percent="0.07" />
 
 		<RelativeLayout
-			android:id="@+id/RLSarkiYonetimi_AramaPanel"
-			android:layout_width="match_parent"
-			android:layout_height="?android:attr/actionBarSize"
+			android:id="@+id/RLToolBar"
+			android:layout_width="0dp"
+			android:layout_height="@dimen/toolbar_height"
 			android:background="@color/Beyaz"
-			android:visibility="gone">
+			app:layout_constraintEnd_toEndOf="parent"
+			app:layout_constraintStart_toStartOf="parent"
+			app:layout_constraintTop_toTopOf="parent">
 
-			<ImageButton
-				android:id="@+id/btnGeri_AramaPanel"
-				android:layout_width="60dp"
-				android:layout_height="match_parent"
-				android:layout_alignParentLeft="true"
-				android:background="@drawable/custom_button2"
-				android:contentDescription="@string/imageDesc"
-				app:srcCompat="@drawable/ic_arrow_back_siyah" />
-
-			<com.cnbcyln.app.akordefterim.util.ClearableEditText
-				android:id="@+id/txtAra_AramaPanel"
-				style="@style/TextAppearance.AppCompat.Small.Inverse"
+			<RelativeLayout
+				android:id="@+id/RLSarkiYonetimi_BosPanel"
 				android:layout_width="match_parent"
 				android:layout_height="match_parent"
-				android:layout_toEndOf="@+id/btnGeri_AramaPanel"
-				android:layout_toRightOf="@+id/btnGeri_AramaPanel"
-				android:hint="@string/sarki_sanatci_adi"
-				android:inputType="text"
-				android:textColor="@color/KoyuYazi"
-				android:textColorHint="@color/KoyuGri2" />
+				android:background="@color/Beyaz">
+
+			</RelativeLayout>
+
+			<RelativeLayout
+				android:id="@+id/RLSarkiYonetimi_AnaPanel"
+				android:layout_width="match_parent"
+				android:layout_height="match_parent"
+				android:background="@color/Beyaz">
+
+				<ImageButton
+					android:id="@+id/btnGeri_AnaPanel"
+					android:layout_width="45dp"
+					android:layout_height="match_parent"
+					android:layout_centerVertical="true"
+					android:background="@drawable/custom_button2"
+					app:srcCompat="@drawable/ic_arrow_back_siyah"
+					android:contentDescription="@string/imageDesc" />
+
+				<TextView
+					android:id="@+id/lblBaslik_AnaPanel"
+					style="@style/TextAppearance.AppCompat.Medium.Inverse"
+					android:layout_width="wrap_content"
+					android:layout_height="wrap_content"
+					android:layout_marginLeft="8dp"
+					android:layout_centerVertical="true"
+					android:layout_toEndOf="@+id/btnGeri_AnaPanel"
+					android:layout_toRightOf="@+id/btnGeri_AnaPanel"
+					android:text="@string/sarki_yonetimi"
+					android:textColor="@color/KoyuYazi"
+					tools:ignore="RelativeOverlap" />
+
+				<ImageButton
+					android:id="@+id/btnFiltre_AnaPanel"
+					android:layout_width="45dp"
+					android:layout_height="match_parent"
+					android:layout_toLeftOf="@+id/btnAra_AnaPanel"
+					android:layout_toStartOf="@+id/btnAra_AnaPanel"
+					android:background="@drawable/custom_button2"
+					android:contentDescription="@string/imageDesc"
+					app:srcCompat="@drawable/ic_filter_siyah" />
+
+				<ImageButton
+					android:id="@+id/btnAra_AnaPanel"
+					android:layout_width="45dp"
+					android:layout_height="match_parent"
+					android:layout_toLeftOf="@+id/btnMenu_AnaPanel"
+					android:layout_toStartOf="@+id/btnMenu_AnaPanel"
+					android:background="@drawable/custom_button2"
+					android:contentDescription="@string/imageDesc"
+					app:srcCompat="@drawable/ic_ara_siyah" />
+
+				<ImageButton
+					android:id="@+id/btnMenu_AnaPanel"
+					android:layout_width="45dp"
+					android:layout_height="match_parent"
+					android:layout_alignParentRight="true"
+					android:background="@drawable/custom_button2"
+					android:contentDescription="@string/imageDesc"
+					app:srcCompat="@drawable/dots_vertical_siyah" />
+			</RelativeLayout>
+
+			<RelativeLayout
+				android:id="@+id/RLSarkiYonetimi_AramaPanel"
+				android:layout_width="match_parent"
+				android:layout_height="match_parent"
+				android:background="@color/Beyaz"
+				android:visibility="gone">
+
+				<ImageButton
+					android:id="@+id/btnGeri_AramaPanel"
+					android:layout_width="45dp"
+					android:layout_height="match_parent"
+					android:background="@drawable/custom_button2"
+					android:contentDescription="@string/imageDesc"
+					app:srcCompat="@drawable/ic_arrow_back_siyah" />
+
+				<com.cnbcyln.app.akordefterim.util.ClearableEditText
+					android:id="@+id/txtAra_AramaPanel"
+					style="@style/TextAppearance.AppCompat.Small.Inverse"
+					android:layout_width="match_parent"
+					android:layout_height="match_parent"
+					android:layout_toEndOf="@+id/btnGeri_AramaPanel"
+					android:layout_toRightOf="@+id/btnGeri_AramaPanel"
+					android:hint="@string/sarki_sanatci_adi"
+					android:inputType="text"
+					android:textColor="@color/KoyuYazi"
+					android:textColorHint="@color/KoyuGri2" />
+			</RelativeLayout>
+
+			<RelativeLayout
+				android:id="@+id/RLSarkiYonetimi_DuzenlePanel"
+				android:layout_width="match_parent"
+				android:layout_height="match_parent"
+				android:background="@color/Beyaz">
+
+				<ImageButton
+					android:id="@+id/btnGeri_DuzenlePanel"
+					android:layout_width="45dp"
+					android:layout_height="match_parent"
+					android:background="@drawable/custom_button2"
+					android:contentDescription="@string/imageDesc"
+					app:srcCompat="@drawable/ic_arrow_back_siyah" />
+
+				<com.mikepenz.iconics.view.IconicsTextView
+					android:id="@+id/lblchkTumunuSec_DuzenlePanel"
+					style="@style/TextAppearance.AppCompat.Medium.Inverse"
+					android:layout_width="wrap_content"
+					android:layout_height="wrap_content"
+					android:layout_marginLeft="8dp"
+					android:layout_centerVertical="true"
+					android:layout_toEndOf="@+id/btnGeri_DuzenlePanel"
+					android:layout_toRightOf="@+id/btnGeri_DuzenlePanel"
+					android:text="@string/tumunu_sec_circle_checkbox_bos"
+					android:textColor="@color/KoyuYazi"
+					tools:ignore="RelativeOverlap" />
+
+				<ImageButton
+					android:id="@+id/btnMenu_DuzenlePanel"
+					android:layout_width="45dp"
+					android:layout_height="match_parent"
+					android:layout_alignParentRight="true"
+					android:background="@drawable/custom_button2"
+					android:contentDescription="@string/imageDesc"
+					app:srcCompat="@drawable/dots_vertical_siyah" />
+			</RelativeLayout>
 		</RelativeLayout>
 
 		<View
 			android:id="@+id/view1"
-			android:layout_width="match_parent"
+			android:layout_width="0dp"
 			android:layout_height="1dp"
-			android:layout_below="@+id/RLSarkiYonetimi_BosPanel"
+			app:layout_constraintTop_toBottomOf="@+id/RLToolBar"
+			android:background="@drawable/cizgi_ortagri" />
+
+		<LinearLayout
+			android:id="@+id/LLListeAdi"
+			android:layout_width="0dp"
+			android:layout_height="wrap_content"
+			android:gravity="center"
+			android:paddingBottom="5dp"
+			android:paddingLeft="8dp"
+			android:paddingRight="8dp"
+			android:paddingTop="5dp"
+			app:layout_constraintEnd_toEndOf="parent"
+			app:layout_constraintStart_toStartOf="parent"
+			app:layout_constraintTop_toBottomOf="@+id/view1">
+
+			<TextView
+				android:id="@+id/lblListeAdi"
+				style="@style/TextAppearance.AppCompat.Medium.Inverse"
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				android:text="@string/labeltire"
+				android:textColor="@color/KoyuYazi" />
+		</LinearLayout>
+
+		<View
+			android:id="@+id/view2"
+			android:layout_width="0dp"
+			android:layout_height="1dp"
+			app:layout_constraintTop_toBottomOf="@+id/LLListeAdi"
 			android:background="@drawable/cizgi_ortagri" />
 
 		<RelativeLayout
 			android:id="@+id/RLContent"
-			android:layout_width="match_parent"
-			android:layout_height="match_parent"
-			android:layout_below="@+id/view1"
-			android:background="@color/Beyaz">
+			android:layout_width="0dp"
+			android:layout_height="0dp"
+			android:background="@color/Beyaz"
+			app:layout_constraintTop_toBottomOf="@+id/view2"
+			app:layout_constraintBottom_toBottomOf="parent"
+			app:layout_constraintEnd_toEndOf="parent"
+			app:layout_constraintStart_toStartOf="parent">
 
-			<com.cnbcyln.app.akordefterim.FastScrollListview.FastScroller_Listview
+			<com.woxthebox.draglistview.DragListView
+				android:id="@+id/lstSarkiYonetimi"
+				android:layout_width="match_parent"
+				android:layout_height="match_parent" />
+
+			<!--<com.cnbcyln.app.akordefterim.FastScrollListview.FastScroller_Listview
 				android:id="@+id/lstSarkiYonetimi"
 				android:layout_width="match_parent"
 				android:layout_height="match_parent"
 				android:background="@color/Beyaz"
-				android:choiceMode="multipleChoice" />
+				android:choiceMode="multipleChoice" />-->
 
 			<TextView
 				android:id="@+id/lblOrtaMesaj"
@@ -144,13 +244,16 @@
 
 		<LinearLayout
 			android:id="@+id/LLFiltreMenu"
-			android:layout_width="match_parent"
+			android:layout_width="0dp"
 			android:layout_height="wrap_content"
-			android:layout_below="@+id/RLSarkiYonetimi_BosPanel"
 			android:background="@color/KoyuMavi2"
 			android:padding="20dp"
 			android:elevation="6dp"
 			android:orientation="vertical"
+			app:layout_constraintEnd_toEndOf="parent"
+			app:layout_constraintStart_toStartOf="parent"
+			app:layout_constraintTop_toBottomOf="@+id/view1"
+			android:visibility="gone"
 			tools:targetApi="lollipop">
 
 			<TextView
@@ -162,7 +265,7 @@
 				style="@style/TextAppearance.AppCompat.Medium.Inverse" />
 
 			<View
-				android:id="@+id/view2"
+				android:id="@+id/view3"
 				android:layout_width="match_parent"
 				android:layout_height="1dp"
 				android:background="@drawable/cizgi_ortagri" />
@@ -244,5 +347,5 @@
 				style="@style/TextAppearance.AppCompat.Small.Inverse" />
 
 		</LinearLayout>
-	</RelativeLayout>
+	</android.support.constraint.ConstraintLayout>
 </android.support.design.widget.CoordinatorLayout>

@@ -8,20 +8,30 @@
     android:keepScreenOn="true"
     android:background="@android:color/background_light">
 
-    <RelativeLayout
+    <android.support.constraint.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
+        <android.support.constraint.Guideline
+            android:id="@+id/h_guideline_toolbar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            app:layout_constraintGuide_percent="0.07" />
+
         <RelativeLayout
-            android:id="@+id/RLToolbar"
-            android:layout_width="match_parent"
-            android:layout_height="?android:attr/actionBarSize"
+            android:id="@+id/RLToolBar"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
             android:background="@color/colorPrimary"
-            android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar">
+            app:layout_constraintBottom_toBottomOf="@+id/h_guideline_toolbar"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
 
             <ImageButton
                 android:id="@+id/btnSolMenu"
-                android:layout_width="60dp"
+                android:layout_width="45dp"
                 android:layout_height="match_parent"
                 android:layout_centerVertical="true"
                 android:background="@drawable/transparan"
@@ -37,7 +47,6 @@
                 android:layout_toLeftOf="@+id/btnSagMenu"
                 android:layout_toRightOf="@+id/btnSolMenu"
                 android:layout_toStartOf="@+id/btnSagMenu"
-                android:background="@color/colorPrimary"
                 android:ellipsize="marquee"
                 android:marqueeRepeatLimit="marquee_forever"
                 android:requiresFadingEdge="horizontal"
@@ -63,7 +72,7 @@
 
             <ImageButton
                 android:id="@+id/btnSagMenu"
-                android:layout_width="60dp"
+                android:layout_width="45dp"
                 android:layout_height="match_parent"
                 android:layout_alignParentRight="true"
                 android:background="@drawable/transparan"
@@ -73,9 +82,12 @@
 
         <LinearLayout
             android:id="@+id/LLSayfa"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_below="@+id/RLToolbar"
-            android:orientation="vertical"/>
-    </RelativeLayout>
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:orientation="vertical"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/RLToolBar" />
+    </android.support.constraint.ConstraintLayout>
 </android.support.design.widget.CoordinatorLayout>

@@ -16,15 +16,25 @@
 		android:layout_width="match_parent"
 		android:layout_height="match_parent">
 
+		<android.support.constraint.Guideline
+			android:id="@+id/h_guideline_toolbar"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:orientation="horizontal"
+			app:layout_constraintGuide_percent="0.07" />
+
 		<RelativeLayout
 			android:id="@+id/RLToolBar"
-			android:layout_width="match_parent"
-			android:layout_height="?android:attr/actionBarSize"
-			android:background="@color/Beyaz">
+			android:layout_width="0dp"
+			android:layout_height="@dimen/toolbar_height"
+			android:background="@color/Beyaz"
+			app:layout_constraintEnd_toEndOf="parent"
+			app:layout_constraintStart_toStartOf="parent"
+			app:layout_constraintTop_toTopOf="parent">
 
 			<ImageButton
 				android:id="@+id/btnGeri"
-				android:layout_width="60dp"
+				android:layout_width="45dp"
 				android:layout_height="match_parent"
 				android:layout_centerVertical="true"
 				android:background="@drawable/custom_button2"
@@ -46,7 +56,7 @@
 
 			<ImageButton
 				android:id="@+id/btnKaydet"
-				android:layout_width="60dp"
+				android:layout_width="45dp"
 				android:layout_height="match_parent"
 				android:layout_centerVertical="true"
 				android:layout_alignParentEnd="true"

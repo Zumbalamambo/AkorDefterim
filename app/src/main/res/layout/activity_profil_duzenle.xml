@@ -30,28 +30,38 @@
 			android:orientation="vertical"
 			app:layout_constraintGuide_percent="0.95" />
 
+		<android.support.constraint.Guideline
+			android:id="@+id/h_guideline_toolbar"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:orientation="horizontal"
+			app:layout_constraintGuide_percent="0.07" />
+
 		<RelativeLayout
 			android:id="@+id/RLToolBar"
-			android:layout_width="match_parent"
-			android:layout_height="?android:attr/actionBarSize"
-			android:background="@color/Beyaz">
+			android:layout_width="0dp"
+			android:layout_height="@dimen/toolbar_height"
+			android:background="@color/Beyaz"
+			app:layout_constraintEnd_toEndOf="parent"
+			app:layout_constraintStart_toStartOf="parent"
+			app:layout_constraintTop_toTopOf="parent">
 
 			<ImageButton
 				android:id="@+id/btnGeri"
-				android:layout_width="60dp"
+				android:layout_width="45dp"
 				android:layout_height="match_parent"
 				android:layout_centerVertical="true"
 				android:background="@drawable/custom_button2"
-				app:srcCompat="@drawable/ic_close_siyah"
-				android:contentDescription="@string/imageDesc" />
+				android:contentDescription="@string/imageDesc"
+				app:srcCompat="@drawable/ic_close_siyah" />
 
 			<TextView
 				android:id="@+id/lblBaslik"
 				style="@style/TextAppearance.AppCompat.Medium.Inverse"
 				android:layout_width="wrap_content"
 				android:layout_height="wrap_content"
-				android:layout_marginLeft="8dp"
 				android:layout_centerVertical="true"
+				android:layout_marginLeft="8dp"
 				android:layout_toEndOf="@+id/btnGeri"
 				android:layout_toRightOf="@+id/btnGeri"
 				android:text="@string/profili_duzenle"
@@ -60,11 +70,11 @@
 
 			<ImageButton
 				android:id="@+id/btnKaydet"
-				android:layout_width="60dp"
+				android:layout_width="45dp"
 				android:layout_height="match_parent"
-				android:layout_centerVertical="true"
 				android:layout_alignParentEnd="true"
 				android:layout_alignParentRight="true"
+				android:layout_centerVertical="true"
 				android:background="@drawable/custom_button2"
 				android:contentDescription="@string/imageDesc"
 				app:srcCompat="@drawable/ic_check_mavi" />
@@ -106,13 +116,21 @@
 					android:orientation="vertical"
 					app:layout_constraintGuide_percent="0.95" />
 
+				<android.support.constraint.Guideline
+					android:id="@+id/h_guideline1"
+					android:layout_width="wrap_content"
+					android:layout_height="wrap_content"
+					android:orientation="horizontal"
+					app:layout_constraintGuide_percent="0.30" />
+
 				<android.support.constraint.ConstraintLayout
 					android:id="@+id/RLBuyukProfilResim"
 					android:layout_width="0dp"
-					android:layout_height="wrap_content"
+					android:layout_height="0dp"
 					app:layout_constraintEnd_toEndOf="parent"
 					app:layout_constraintStart_toStartOf="parent"
-					app:layout_constraintTop_toTopOf="parent">
+					app:layout_constraintTop_toTopOf="parent"
+					app:layout_constraintBottom_toBottomOf="@+id/h_guideline1">
 
 					<ImageView
 						android:id="@+id/ImgBuyukProfilResim"
@@ -144,48 +162,44 @@
 						android:layout_height="@dimen/profil_resim_width_height"
 						android:layout_centerHorizontal="true"
 						android:layout_centerVertical="true"
-						android:layout_marginTop="16dp"
+						android:layout_marginBottom="24dp"
+						android:layout_marginTop="8dp"
 						android:src="@drawable/bos_profil"
 						app:civ_border_color="@color/profil_resim_border_color"
 						app:civ_border_width="@dimen/profil_resim_border_width"
+						app:layout_constraintBottom_toBottomOf="parent"
 						app:layout_constraintEnd_toEndOf="parent"
 						app:layout_constraintStart_toStartOf="parent"
 						app:layout_constraintTop_toTopOf="parent" />
-
 
 					<TextView
 						android:id="@+id/lblFotografiDegistir"
 						android:layout_width="wrap_content"
 						android:layout_height="wrap_content"
 						android:layout_marginBottom="16dp"
-						android:layout_marginEnd="8dp"
-						android:layout_marginLeft="12dp"
-						android:layout_marginRight="8dp"
-						android:layout_marginStart="12dp"
-						android:layout_marginTop="16dp"
+						android:layout_marginTop="8dp"
 						android:text="@string/fotografi_degistir"
 						android:textColor="@color/KoyuYazi"
 						style="@style/TextAppearance.AppCompat.Medium.Inverse"
 						app:layout_constraintBottom_toBottomOf="parent"
-						app:layout_constraintEnd_toEndOf="@+id/LLBuyukProfilResim"
-						app:layout_constraintStart_toStartOf="@+id/LLBuyukProfilResim"
+						app:layout_constraintEnd_toEndOf="parent"
+						app:layout_constraintStart_toStartOf="parent"
 						app:layout_constraintTop_toBottomOf="@+id/CImgProfilResim" />
 
 					<TextView
 						android:id="@+id/lblFotografiDegistir2"
+						style="@style/TextAppearance.AppCompat.Medium.Inverse"
 						android:layout_width="wrap_content"
 						android:layout_height="wrap_content"
-						android:layout_marginBottom="16dp"
-						android:layout_marginEnd="8dp"
-						android:layout_marginStart="8dp"
-						android:layout_marginTop="16dp"
+						android:layout_marginBottom="3dp"
+						android:layout_marginEnd="3dp"
+						android:layout_marginRight="3dp"
 						android:text="@string/fotografi_degistir"
 						android:textColor="@color/AcikMavi"
-						style="@style/TextAppearance.AppCompat.Medium.Inverse"
-						app:layout_constraintBottom_toBottomOf="parent"
-						app:layout_constraintEnd_toEndOf="@+id/LLBuyukProfilResim"
-						app:layout_constraintStart_toStartOf="@+id/LLBuyukProfilResim"
-						app:layout_constraintTop_toBottomOf="@+id/CImgProfilResim" />
+						app:layout_constraintBottom_toBottomOf="@+id/lblFotografiDegistir"
+						app:layout_constraintEnd_toEndOf="@+id/lblFotografiDegistir"
+						app:layout_constraintStart_toStartOf="@+id/lblFotografiDegistir"
+						app:layout_constraintTop_toTopOf="@+id/lblFotografiDegistir" />
 				</android.support.constraint.ConstraintLayout>
 
 				<View

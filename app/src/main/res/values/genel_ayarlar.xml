@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="facebook_app_id">1136309509735788</string>
+    <string name="fb_login_protocol_scheme">fb1136309509735788</string>
     <string name="twitter_consumer_key" translatable="false">kDzgYWE9Ih07nd3w6dFUYg1mc</string>
     <string name="twitter_consumer_secret" translatable="false">BS5PM6K7WHxKUIU4IeCBeiLkvuXlALqQBtO7gCLtQeAMxgdknx</string>
 
@@ -17,7 +18,8 @@
     <integer name="ParolaKarakterSayisi_MAX">25</integer>
     <integer name="GeriBildirimKarakterSayisi_MIN">30</integer>
     <integer name="GeriBildirimKarakterSayisi_MAX">500</integer>
-    <integer name="AppServiceCalismaAraligi">300</integer> <!-- 300 Saniye = 5 dakika -->
+    <integer name="AppService_GuncellemeKontrolAraligi">300</integer> <!-- 300 Saniye = 5 dakika -->
+    <integer name="MqttBroker_BaglantiKontrolAraligi">5</integer> <!-- 300 Saniye = 5 dakika -->
     <integer name="ProfilResimYuklemeBoyutu">5</integer>
     <integer name="EPostaGondermeToplamSure">180</integer> <!-- 180 Saniye = 3 Dakika -->
     <integer name="SMSGondermeToplamSure">180</integer> <!-- 180 Saniye = 3 Dakika -->
@@ -25,6 +27,11 @@
     <integer name="SarkiAdiKarakterSayisi_MIN">2</integer>
     <integer name="SarkiAdiKarakterSayisi_MAX">40</integer>
     <integer name="HtmlAkorSemaBoyutu">4</integer>
+
+    <!-- Notification ID'leri -->
+    <integer name="StandartNotifyID">1</integer>
+    <integer name="GooglePlayGuncellemeID">2</integer>
+    <integer name="YeniSarkiNotifyID">3</integer>
 
     <!-- Sarki Icerik Değerleri -->
     <integer name="SarkiIcerikYaziBoyutu_MIN">40</integer>

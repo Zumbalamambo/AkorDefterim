@@ -2,6 +2,7 @@ package com.cnbcyln.app.akordefterim.Retrofit.Network;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
+import android.content.Context;
 
 import com.cnbcyln.app.akordefterim.util.AkorDefterimSys;
 import com.google.gson.Gson;
@@ -23,6 +24,16 @@ public class RetrofitServiceGenerator {
     public static <S> S createService(Activity activity, Class<S> serviceClass) {
         AkorDefterimSys = AkorDefterimSys.getInstance();
         AkorDefterimSys.activity = activity;
+        Gson gson = new GsonBuilder().setLenient().create();
+        RB = new Retrofit.Builder().baseUrl(AkorDefterimSys.CBCAPP_HttpsAdres + File.separator + AkorDefterimSys.AkorDefterimKlasorAdi + File.separator).addConverterFactory(GsonConverterFactory.create(gson));
+        RB.client(HttpClient.build());
+        retrofit = RB.build();
+        return retrofit.create(serviceClass);
+    }
+
+    public static <S> S createService(Context context, Class<S> serviceClass) {
+        AkorDefterimSys = AkorDefterimSys.getInstance();
+        AkorDefterimSys.context = context;
         Gson gson = new GsonBuilder().setLenient().create();
         RB = new Retrofit.Builder().baseUrl(AkorDefterimSys.CBCAPP_HttpsAdres + File.separator + AkorDefterimSys.AkorDefterimKlasorAdi + File.separator).addConverterFactory(GsonConverterFactory.create(gson));
         RB.client(HttpClient.build());

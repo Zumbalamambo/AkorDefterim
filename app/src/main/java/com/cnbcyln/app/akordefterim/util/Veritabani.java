@@ -117,7 +117,78 @@ public class Veritabani extends SQLiteOpenHelper {
 
 		//db.execSQL("CREATE TABLE tblIstekler (id INTEGER PRIMARY KEY AUTOINCREMENT, SarkiID INTEGER, ClientID TEXT, ClientAdSoyad TEXT, ClientIP TEXT, ClientNot TEXT, IstekTarihi DATETIME);");
 
-		db.execSQL("ALTER TABLE tblSarkilar ADD Siralama INTEGER DEFAULT 0;");
+		if(newVersion == 3) {
+			db.execSQL("ALTER TABLE tblSarkilar ADD Siralama INTEGER DEFAULT 0;");
+
+			TumSarkilariOtomatikSirala(db);
+		}
+	}
+
+	private void TumSarkilariOtomatikSirala(SQLiteDatabase db) {
+		List<SnfListeler> snfListeler = new ArrayList<>();
+		String Sorgu = "SELECT * FROM tblListeler";
+		SnfListeler Listeler;
+
+		try {
+			Cursor cursor = db.rawQuery(Sorgu, null);
+
+			if(cursor.getCount() > 0) {
+				while (cursor.moveToNext()) {
+					Listeler = new SnfListeler();
+					Listeler.setId(cursor.getInt(0));
+					Listeler.setListeAdi(cursor.getString(1));
+					snfListeler.add(Listeler);
+				}
+			} else {
+				Listeler = new SnfListeler();
+				Listeler.setId(0);
+				Listeler.setListeAdi("");
+				snfListeler.add(Listeler);
+			}
+		} catch (Exception e) {
+			System.out.println("Bir hata oluştu: " + e);
+		}
+
+
+
+
+
+
+		List<SnfSarkilar> snfSarkilar;
+
+		for(int i = 0; i <= snfListeler.size() - 1; i++) {
+			snfSarkilar = new ArrayList<>();
+
+			Sorgu = "SELECT * FROM tblSarkilar WHERE ListeID = " + snfListeler.get(i).getId() + " Order By id ASC";
+
+			Cursor cursor = db.rawQuery(Sorgu, null);
+
+			while (cursor.moveToNext()) {
+				SnfSarkilar Sarkilar = new SnfSarkilar();
+				Sarkilar.setId(cursor.getInt(0));
+				Sarkilar.setListeID(cursor.getInt(1));
+				Sarkilar.setKategoriID(cursor.getInt(2));
+				Sarkilar.setTarzID(cursor.getInt(3));
+				Sarkilar.setSanatciAdi(cursor.getString(4));
+				Sarkilar.setSarkiAdi(cursor.getString(5));
+				Sarkilar.setEklenmeTarihi(cursor.getString(7));
+				Sarkilar.setDuzenlenmeTarihi(cursor.getString(8));
+				snfSarkilar.add(Sarkilar);
+			}
+
+			for(int x = 0; x <= snfSarkilar.size() - 1; x++) {
+				ContentValues values = new ContentValues();
+
+				values.put("DuzenlenmeTarihi", new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date()));
+				values.put("Siralama", x);
+
+				try {
+					db.update("tblSarkilar", values, "id = ?", new String[]{String.valueOf(snfSarkilar.get(x).getId())});
+				} catch (Exception e) {
+					System.out.println("Bir hata oluştu: " + e);
+				}
+			}
+		}
 	}
 
 	public void VeritabaniSifirla() {
@@ -854,7 +925,7 @@ public class Veritabani extends SQLiteOpenHelper {
 
 	// ##### ŞARKILAR #####
 
-	public boolean SarkiEkle(int ListeID, int KategoriID, int TarzID, String SarkiAdi, String SanatciAdi, String Icerik) {
+	public boolean SarkiEkle(int ListeID, int KategoriID, int TarzID, String SarkiAdi, String SanatciAdi, String Icerik, int Siralama) {
 		SQLiteDatabase db = this.getWritableDatabase();
 		ContentValues values = new ContentValues();
 
@@ -867,6 +938,7 @@ public class Veritabani extends SQLiteOpenHelper {
 			values.put("Icerik", Icerik);
 			values.put("EklenmeTarihi", new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date()));
 			values.put("DuzenlenmeTarihi", new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date()));
+			values.put("Siralama", Siralama);
 
 			db.insert("tblSarkilar", null, values);
 		} catch (Exception e) {
@@ -940,6 +1012,45 @@ public class Veritabani extends SQLiteOpenHelper {
 		}
 	}
 
+	public int SarkiSonSiraNoGetir() {
+		SQLiteDatabase db = this.getWritableDatabase();
+		String Sorgu = "SELECT Siralama FROM tblSarkilar ORDER BY Siralama DESC LIMIT 0,1";
+
+		int SiraNo = -1;
+
+		try {
+			Cursor cursor = db.rawQuery(Sorgu, null);
+
+			while (cursor.moveToNext()) {
+				SiraNo = cursor.getInt(0);
+			}
+		} catch (Exception e) {
+			System.out.println("Bir hata oluştu: " + e);
+		} finally {
+			db.close();
+		}
+
+		return SiraNo;
+	}
+
+	public boolean SarkiSiraNoDegistir(int id, int Siralama) {
+		SQLiteDatabase db = this.getWritableDatabase();
+		ContentValues values = new ContentValues();
+
+		values.put("Siralama", Siralama);
+		values.put("DuzenlenmeTarihi", new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date()));
+
+		try {
+			db.update("tblSarkilar", values, "id = ?", new String[]{String.valueOf(id)});
+		} catch (Exception e) {
+			System.out.println("Bir hata oluştu: " + e);
+			return false;
+		} finally {
+			db.close();
+			return true;
+		}
+	}
+
 	public List<SnfSarkilar> SnfSarkiGetir(int ListeID, int KategoriID, int TarzID, int ListelemeTipi) {
 		List<SnfSarkilar> snfSarkilarListesi = new ArrayList<>();
 		SQLiteDatabase db = this.getWritableDatabase();
@@ -990,6 +1101,7 @@ public class Veritabani extends SQLiteOpenHelper {
 			Sarkilar.setSarkiAdi(cursor.getString(5));
 			Sarkilar.setEklenmeTarihi(cursor.getString(7));
 			Sarkilar.setDuzenlenmeTarihi(cursor.getString(8));
+			Sarkilar.setSiralama(cursor.getInt(9));
 			snfSarkilarListesi.add(Sarkilar);
 		}
 

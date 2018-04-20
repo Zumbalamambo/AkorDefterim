@@ -96,6 +96,7 @@ public class Repertuvar_Islemleri extends AppCompatActivity implements Interface
         btnGeri.setOnClickListener(this);
 
 		lblBaslik = findViewById(R.id.lblBaslik);
+		lblBaslik.setText(getString(R.string.repertuvar_islemleri));
 		lblBaslik.setTypeface(YaziFontu, Typeface.BOLD);
 
         lblRepertuvarIslemleriAciklama = findViewById(R.id.lblRepertuvarIslemleriAciklama);

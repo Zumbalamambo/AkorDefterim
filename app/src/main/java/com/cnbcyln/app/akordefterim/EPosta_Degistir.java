@@ -30,6 +30,9 @@ import com.cnbcyln.app.akordefterim.util.AkorDefterimSys;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+
 @SuppressWarnings({"deprecation", "ResultOfMethodCallIgnored", "ConstantConditions"})
 public class EPosta_Degistir extends AppCompatActivity implements Interface_AsyncResponse, OnClickListener {
 
@@ -68,6 +71,8 @@ public class EPosta_Degistir extends AppCompatActivity implements Interface_Asyn
 		//AkorDefterimSys.NotifyIkonParlakligi(); // Notification Bar'daki simgelerin parlaklığını aldık.
 
 		imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE); // İstenildiği zaman klavyeyi gizlemeye yarayan kod tanımlayıcısı
+
+		AkorDefterimSys.SonYapilanIslemGuncelle("eposta_degistir_ekranina_giris_yapildi", "[]");
 
 		coordinatorLayout = activity.findViewById(R.id.coordinatorLayout);
 		coordinatorLayout.setOnClickListener(this);
@@ -226,9 +231,14 @@ public class EPosta_Degistir extends AppCompatActivity implements Interface_Asyn
 						else { // Aynı ise
 							if(JSONSonuc.getString("HesapDurum").equals("Ban")) { // Eğer hesap banlanmışsa
 								if(!AkorDefterimSys.AlertDialogisShowing(ADDialog)) {
+									@SuppressLint("SimpleDateFormat")
+									SimpleDateFormat SDF1 = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+									@SuppressLint("SimpleDateFormat")
+									SimpleDateFormat SDF2 = new SimpleDateFormat("dd MMMM yyyy - HH:mm:ss");
+
 									ADDialog = AkorDefterimSys.CustomAlertDialog(activity,
 											getString(R.string.hesap_durumu),
-											getString(R.string.hesap_banlandi, JSONSonuc.getString("HesapDurumBilgi"), getString(R.string.uygulama_yapimci_site)),
+											getString(R.string.hesap_banlandi, SDF2.format(SDF1.parse(JSONSonuc.getString("HesapDurumTarihSaat"))), JSONSonuc.getString("HesapDurumBilgi"), getString(R.string.uygulama_yapimci_eposta)),
 											activity.getString(R.string.tamam),
 											"ADDialog_Kapat_CikisYap");
 									ADDialog.getWindow().getAttributes().windowAnimations = R.style.DialogAnimation;
@@ -273,6 +283,8 @@ public class EPosta_Degistir extends AppCompatActivity implements Interface_Asyn
 						mIntent.putExtra("DogrulamaKodu", String.valueOf(DogrulamaKodu));
 
 						AkorDefterimSys.EkranGetir(mIntent, "Slide");
+
+						AkorDefterimSys.SonYapilanIslemGuncelle("eposta_degistiriliyor", "[{\"Param\":\"" + txtEPosta.getText().toString().trim() + "\"}]");
 					} else AkorDefterimSys.StandartSnackBarMsj(coordinatorLayout, getString(R.string.islem_yapilirken_bir_hata_olustu));
 					break;
 				case "ZamanlayiciBaslat_EPostaKalanSure":
@@ -307,7 +319,7 @@ public class EPosta_Degistir extends AppCompatActivity implements Interface_Asyn
 					AkorDefterimSys.CikisYap();
 					break;
 			}
-		} catch (JSONException e) {
+		} catch (JSONException | ParseException e) {
 			e.printStackTrace();
 		}
 	}

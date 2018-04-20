@@ -25,7 +25,7 @@ import java.util.List;
 
 public class AdpSarkiListesiLST extends BaseAdapter implements SectionIndexer {
 	private com.cnbcyln.app.akordefterim.util.AkorDefterimSys AkorDefterimSys;
-	Typeface YaziFontu;
+	private Typeface YaziFontu;
 	private LayoutInflater inflater;
 	private StringBuilder mSections = new StringBuilder();
 	private List<SnfSarkilar> SnfSarkilar;

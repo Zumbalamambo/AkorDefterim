@@ -34,6 +34,8 @@ import com.redmadrobot.inputmask.MaskedTextChangedListener;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Locale;
 
 @SuppressWarnings({"deprecation", "ResultOfMethodCallIgnored", "ConstantConditions"})
@@ -76,6 +78,8 @@ public class CepTelefonu_Degistir extends AppCompatActivity implements Interface
 		//AkorDefterimSys.NotifyIkonParlakligi(); // Notification Bar'daki simgelerin parlaklığını aldık.
 
 		imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE); // İstenildiği zaman klavyeyi gizlemeye yarayan kod tanımlayıcısı
+
+		AkorDefterimSys.SonYapilanIslemGuncelle("cep_telefonu_degistir_ekranina_giris_yapti", "[]");
 
 		coordinatorLayout = activity.findViewById(R.id.coordinatorLayout);
 		coordinatorLayout.setOnClickListener(this);
@@ -289,16 +293,21 @@ public class CepTelefonu_Degistir extends AppCompatActivity implements Interface
 					if(JSONSonuc.getBoolean("Sonuc")) {
 						if(JSONSonuc.getString("HesapDurum").equals("Ban")) { // Eğer hesap banlanmışsa
 							if(!AkorDefterimSys.AlertDialogisShowing(ADDialog)) {
+								@SuppressLint("SimpleDateFormat")
+								SimpleDateFormat SDF1 = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+								@SuppressLint("SimpleDateFormat")
+								SimpleDateFormat SDF2 = new SimpleDateFormat("dd MMMM yyyy - HH:mm:ss");
+
 								ADDialog = AkorDefterimSys.CustomAlertDialog(activity,
 										getString(R.string.hesap_durumu),
-										getString(R.string.hesap_banlandi, JSONSonuc.getString("HesapDurumBilgi"), getString(R.string.uygulama_yapimci_site)),
+										getString(R.string.hesap_banlandi, SDF2.format(SDF1.parse(JSONSonuc.getString("HesapDurumTarihSaat"))), JSONSonuc.getString("HesapDurumBilgi"), getString(R.string.uygulama_yapimci_eposta)),
 										activity.getString(R.string.tamam),
 										"ADDialog_Kapat");
 								ADDialog.getWindow().getAttributes().windowAnimations = R.style.DialogAnimation;
 								ADDialog.show();
 							}
 						} else {
-							if(!JSONSonuc.getString("TelKodu").equals("")) CCPTelKodu.setCountryForPhoneCode(Integer.parseInt(JSONSonuc.getString("TelKodu")));
+							if(!JSONSonuc.getString("TelKodu").equals("") && !JSONSonuc.getString("TelKodu").equals("-")) CCPTelKodu.setCountryForPhoneCode(Integer.parseInt(JSONSonuc.getString("TelKodu")));
 							YazilanCepTelefonu = JSONSonuc.getString("CepTelefon");
 							txtCepTelefon.setText(YazilanCepTelefonu);
 						}
@@ -316,7 +325,7 @@ public class CepTelefonu_Degistir extends AppCompatActivity implements Interface
 
 					break;
 				case "HesapBilgiGetir_CepTelefon_Kontrol":
-					if(JSONSonuc.getBoolean("Sonuc")) { // Eğer yazılan e-posta adresi kayıtlı ise
+					if(JSONSonuc.getBoolean("Sonuc")) { // Eğer yazılan cep telefonu kayıtlı ise
 						// Bizim ID, kayıtlı olan cep telefonu sahibinin ID'si ile aynı DEĞİL ise
 						btnIptal.setEnabled(true);
 						btnKaydet.setEnabled(true);
@@ -327,9 +336,14 @@ public class CepTelefonu_Degistir extends AppCompatActivity implements Interface
 						else { // Aynı ise
 							if(JSONSonuc.getString("HesapDurum").equals("Ban")) { // Eğer hesap banlanmışsa
 								if(!AkorDefterimSys.AlertDialogisShowing(ADDialog)) {
+									@SuppressLint("SimpleDateFormat")
+									SimpleDateFormat SDF1 = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+									@SuppressLint("SimpleDateFormat")
+									SimpleDateFormat SDF2 = new SimpleDateFormat("dd MMMM yyyy - HH:mm:ss");
+
 									ADDialog = AkorDefterimSys.CustomAlertDialog(activity,
 											getString(R.string.hesap_durumu),
-											getString(R.string.hesap_banlandi, JSONSonuc.getString("HesapDurumBilgi"), getString(R.string.uygulama_yapimci_site)),
+											getString(R.string.hesap_banlandi, SDF2.format(SDF1.parse(JSONSonuc.getString("HesapDurumTarihSaat"))), JSONSonuc.getString("HesapDurumBilgi"), getString(R.string.uygulama_yapimci_eposta)),
 											activity.getString(R.string.tamam),
 											"ADDialog_Kapat");
 									ADDialog.getWindow().getAttributes().windowAnimations = R.style.DialogAnimation;
@@ -349,13 +363,19 @@ public class CepTelefonu_Degistir extends AppCompatActivity implements Interface
 								// 6 haneli onay kodu oluşturuldu
 								DogrulamaKodu = AkorDefterimSys.KodUret(6, true, false, false, false);
 
-								// Onay kodu belirtilen eposta adresine gönderiliyor
+								// Onay kodu belirtilen cep telefonuna gönderiliyor
 								AkorDefterimSys.SMSGonder(CCPTelKodu.getSelectedCountryCode(), YazilanCepTelefonu, getString(R.string.sms_dogrulama_kodu_icerik, DogrulamaKodu, getString(R.string.uygulama_adi)));
 							}
 						} else {
 							btnIptal.setEnabled(true);
 							btnKaydet.setEnabled(true);
 							AkorDefterimSys.DismissProgressDialog(PDIslem);
+
+							// 6 haneli onay kodu oluşturuldu
+							DogrulamaKodu = AkorDefterimSys.KodUret(6, true, false, false, false);
+
+							// Onay kodu belirtilen cep telefonuna gönderiliyor
+							AkorDefterimSys.SMSGonder(CCPTelKodu.getSelectedCountryCode(), YazilanCepTelefonu, getString(R.string.sms_dogrulama_kodu_icerik, DogrulamaKodu, getString(R.string.uygulama_adi)));
 						}
 					}
 
@@ -391,6 +411,8 @@ public class CepTelefonu_Degistir extends AppCompatActivity implements Interface
 						mIntent.putExtra("DogrulamaKodu", String.valueOf(DogrulamaKodu));
 
 						AkorDefterimSys.EkranGetir(mIntent, "Slide");
+
+						AkorDefterimSys.SonYapilanIslemGuncelle("cep_telefonunu_degistiriyor", "[{\"Param\":\"" + CCPTelKodu.getSelectedCountryCode() + "\"},{\"Param\":\"" + YazilanCepTelefonu + "\"}]");
 					} else AkorDefterimSys.StandartSnackBarMsj(coordinatorLayout, getString(R.string.islem_yapilirken_bir_hata_olustu));
 					break;
 				case "ZamanlayiciBaslat_SMSKalanSure":
@@ -428,7 +450,7 @@ public class CepTelefonu_Degistir extends AppCompatActivity implements Interface
 					AkorDefterimSys.CikisYap();
 					break;
 			}
-		} catch (JSONException e) {
+		} catch (JSONException | ParseException e) {
 			e.printStackTrace();
 		}
 	}

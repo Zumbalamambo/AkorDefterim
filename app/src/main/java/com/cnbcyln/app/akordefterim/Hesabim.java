@@ -1,5 +1,6 @@
 package com.cnbcyln.app.akordefterim;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
@@ -23,6 +24,9 @@ import com.cnbcyln.app.akordefterim.util.CircleImageView;
 
 import org.json.JSONException;
 import org.json.JSONObject;
+
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 
 @SuppressWarnings({"deprecation", "ResultOfMethodCallIgnored", "ConstantConditions"})
 public class Hesabim extends AppCompatActivity implements Interface_AsyncResponse, OnClickListener {
@@ -62,6 +66,8 @@ public class Hesabim extends AppCompatActivity implements Interface_AsyncRespons
 
 		Bundle mBundle = getIntent().getExtras();
 		EPosta = mBundle.getString("EPosta");
+
+		AkorDefterimSys.SonYapilanIslemGuncelle("hesabim_ekranina_giris_yapildi", "[]");
 
 		coordinatorLayout = activity.findViewById(R.id.coordinatorLayout);
 
@@ -179,9 +185,14 @@ public class Hesabim extends AppCompatActivity implements Interface_AsyncRespons
 					if(JSONSonuc.getBoolean("Sonuc")) {
 						if(JSONSonuc.getString("HesapDurum").equals("Ban")) { // Eğer hesap banlanmışsa
 							if(!AkorDefterimSys.AlertDialogisShowing(ADDialog)) {
+								@SuppressLint("SimpleDateFormat")
+								SimpleDateFormat SDF1 = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+								@SuppressLint("SimpleDateFormat")
+								SimpleDateFormat SDF2 = new SimpleDateFormat("dd MMMM yyyy - HH:mm:ss");
+
 								ADDialog = AkorDefterimSys.CustomAlertDialog(activity,
 										getString(R.string.hesap_durumu),
-										getString(R.string.hesap_banlandi, JSONSonuc.getString("HesapDurumBilgi"), getString(R.string.uygulama_yapimci_site)),
+										getString(R.string.hesap_banlandi, SDF2.format(SDF1.parse(JSONSonuc.getString("HesapDurumTarihSaat"))), JSONSonuc.getString("HesapDurumBilgi"), getString(R.string.uygulama_yapimci_eposta)),
 										activity.getString(R.string.tamam),
 										"ADDialog_Kapat_CikisYap");
 								ADDialog.getWindow().getAttributes().windowAnimations = R.style.DialogAnimation;
@@ -220,7 +231,7 @@ public class Hesabim extends AppCompatActivity implements Interface_AsyncRespons
 									getString(R.string.hesap_durumu),
 									getString(R.string.hesap_bilgileri_bulunamadi),
 									activity.getString(R.string.tamam),
-									"ADDialog_Kapat_CikisYap");
+									"ADDialog_Kapat_GeriGit");
 							ADDialog.getWindow().getAttributes().windowAnimations = R.style.DialogAnimation;
 							ADDialog.show();
 						}
@@ -230,6 +241,10 @@ public class Hesabim extends AppCompatActivity implements Interface_AsyncRespons
 				case "ADDialog_Kapat":
 					AkorDefterimSys.DismissAlertDialog(ADDialog);
 					break;
+				case "ADDialog_Kapat_GeriGit":
+					AkorDefterimSys.DismissAlertDialog(ADDialog);
+					finish();
+					break;
 				case "ADDialog_Kapat_CikisYap":
 					AkorDefterimSys.DismissAlertDialog(ADDialog);
 
@@ -237,9 +252,10 @@ public class Hesabim extends AppCompatActivity implements Interface_AsyncRespons
 					break;
 				case "PDBilgilerAliniyor_Timeout":
 					AkorDefterimSys.EkranKapat();
+					finish();
 					break;
 			}
-		} catch (JSONException e) {
+		} catch (JSONException | ParseException e) {
 			e.printStackTrace();
 		}
 	}

@@ -56,6 +56,8 @@ public class Frg_TabRepKontrol extends Fragment implements OnClickListener {
 	Button btnListele;
 	SpinKitView SKVKategoriler, SKVTarzlar;
 
+	int SecilenListeID = 0;
+
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 		return inflater.inflate(R.layout.tab_repkontrol, container, false);
@@ -84,7 +86,9 @@ public class Frg_TabRepKontrol extends Fragment implements OnClickListener {
 		spnListeler.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
 			@Override
 			public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-				int SecilenListeID = snfListeler.get(position).getId();
+				SecilenListeID = snfListeler.get(position).getId();
+
+				spnListelemeTipiGetir();
 
 				if(sharedPref.getString("prefOturumTipi", "Cevrimdisi").equals("Cevrimdisi")) {
 					snfKategoriler = veritabani.SnfKategoriGetir(true);
@@ -254,6 +258,8 @@ public class Frg_TabRepKontrol extends Fragment implements OnClickListener {
 			snfListelemeTipi.add(ListelemeTipi);
 		}
 
+		if(SecilenListeID == 0) snfListelemeTipi.remove(snfListelemeTipi.size() - 1);
+
 		AdpListelemeTipi AdpListelemeTipi = new AdpListelemeTipi(activity, snfListelemeTipi);
 		spnListelemeTipi.setAdapter(AdpListelemeTipi);
 	}
@@ -284,11 +290,13 @@ public class Frg_TabRepKontrol extends Fragment implements OnClickListener {
 							// AnaEkran üzerinden Progress Dialog'u açıyoruz ve "Liste indiriliyor. Lütfen bekleyiniz.." mesajını gösteriyoruz..
 							FragmentDataConn.AnaEkranProgressIslemDialogAc(getString(R.string.liste_indiriliyor_lutfen_bekleyiniz));
 							AkorDefterimSys.SarkiListesiGetir(veritabani, ListeID, KategoriID, TarzID, ListelemeTipi, "");
+							AkorDefterimSys.SonYapilanIslemGuncelle("online_repertuvar_listesi_listeleniyor", "[]");
 						} else FragmentDataConn.StandartSnackBarMsj(coordinatorLayout, getString(R.string.internet_baglantisi_saglanamadi));
 					} else {
 						// AnaEkran üzerinden Progress Dialog'u açıyoruz ve "Liste indiriliyor. Lütfen bekleyiniz.." mesajını gösteriyoruz..
 						FragmentDataConn.AnaEkranProgressIslemDialogAc(getString(R.string.liste_indiriliyor_lutfen_bekleyiniz));
 						AkorDefterimSys.SarkiListesiGetir(veritabani, ListeID, KategoriID, TarzID, ListelemeTipi, "");
+						AkorDefterimSys.SonYapilanIslemGuncelle("yerel_repertuvar_listesi_listeleniyor", "[]");
 					}
 				}
 

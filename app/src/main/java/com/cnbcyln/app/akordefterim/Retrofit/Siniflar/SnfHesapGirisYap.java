@@ -19,6 +19,8 @@ public class SnfHesapGirisYap extends SnfHata {
     private String HesapDurum;
     @SerializedName("HesapDurumBilgi")
     private String HesapDurumBilgi;
+    @SerializedName("HesapDurumTarihSaat")
+    private String HesapDurumTarihSaat;
 
     public Boolean getSonuc() {
         return Sonuc;
@@ -50,5 +52,9 @@ public class SnfHesapGirisYap extends SnfHata {
 
     public String getHesapDurumBilgi() {
         return HesapDurumBilgi;
+    }
+
+    public String getHesapDurumTarihSaat() {
+        return HesapDurumTarihSaat;
     }
 }

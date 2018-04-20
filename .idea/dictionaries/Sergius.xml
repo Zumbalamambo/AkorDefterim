@@ -54,8 +54,10 @@
       <w>cikis</w>
       <w>clearable</w>
       <w>cnbcyln</w>
+      <w>cumle</w>
       <w>degisikligi</w>
       <w>degistir</w>
+      <w>demektir</w>
       <w>devam</w>
       <w>değişken</w>
       <w>değişkenler</w>
@@ -97,6 +99,7 @@
       <w>gonderme</w>
       <w>gormeyecek</w>
       <w>gosterici</w>
+      <w>gosterim</w>
       <w>guncelleme</w>
       <w>guncelleniyor</w>
       <w>guvenligi</w>
@@ -167,11 +170,13 @@
       <w>mcurrent</w>
       <w>menü</w>
       <w>merkezi</w>
+      <w>mesajlari</w>
       <w>mevcut</w>
       <w>mqtt</w>
       <w>netten</w>
       <w>numarasi</w>
       <w>ogren</w>
+      <w>olması</w>
       <w>onay</w>
       <w>onaykodu</w>
       <w>orta</w>
@@ -214,6 +219,7 @@
       <w>sifirla</w>
       <w>sifrele</w>
       <w>sifremi</w>
+      <w>silindi</w>
       <w>sistemdurum</w>
       <w>siyah</w>
       <w>skor</w>
@@ -233,6 +239,7 @@
       <w>tamamlandi</w>
       <w>tamamlandı</w>
       <w>tamamlanmış</w>
+      <w>tanitim</w>
       <w>tanımlamalar</w>
       <w>tanımlamaları</w>
       <w>tarihi</w>
@@ -243,6 +250,7 @@
       <w>textis</w>
       <w>tiklanabilir</w>
       <w>tiklandi</w>
+      <w>tumunu</w>
       <w>turkce</w>
       <w>ulke</w>
       <w>unuttum</w>

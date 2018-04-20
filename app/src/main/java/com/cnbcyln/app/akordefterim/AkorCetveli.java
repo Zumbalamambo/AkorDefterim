@@ -67,6 +67,7 @@ public class AkorCetveli extends AppCompatActivity implements OnClickListener {
 		//AkorDefterimSys.NotifyIkonParlakligi(); // Notification Bar'daki simgelerin parlaklığını aldık.
 
         HtmlAkorSemaBoyutu = getResources().getInteger(R.integer.HtmlAkorSemaBoyutu);
+        AkorDefterimSys.SonYapilanIslemGuncelle("akorcetveli_ekranina_giris_yapildi", "[]");
 
 		coordinatorLayout = findViewById(R.id.coordinatorLayout);
 

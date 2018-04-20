@@ -198,32 +198,44 @@ public class Sarki_EkleDuzenle_Icerik extends AppCompatActivity implements Inter
 				break;
             case R.id.btnKaydet:
 				if(Islem.equals("SarkiEkle") || Islem.equals("YeniSarkiEkle")) {
-					if (veritabani.SarkiEkle(SecilenListeID, SecilenKategoriID, SecilenTarzID, SecilenSarkiAdi, SecilenSanatciAdi, AkorDefterimSys.AkorTagToHtml(AkorDefterimSys.KotuIcerikDuzenleme(txtSarkiIcerik)))) {
-						if(Islem.equals("YeniSarkiEkle") && KatkidaBulunuluyorMu) {
-							if(AkorDefterimSys.InternetErisimKontrolu()) {
-								AkorDefterimSys.SarkiGonder(SecilenSanatciAdi, SecilenSarkiAdi, AkorDefterimSys.AkorTagToHtml(AkorDefterimSys.KotuIcerikDuzenleme(txtSarkiIcerik)), sharedPref.getString("prefHesapID", ""));
-							} else {
-								if(!AkorDefterimSys.AlertDialogisShowing(ADDialog)) {
-									ADDialog = AkorDefterimSys.VButtonCustomAlertDialog(activity,
-											getString(R.string.sarki_yonetimi),
-											getString(R.string.sarki_gonder_internet_hata),
-											getString(R.string.yeniden_dene),
-											"ADDialog_YenidenDene",
-											getString(R.string.sarki_gondermeden_devam_et),
-											"ADDialog_Gondermeden_Devam_Et");
-									ADDialog.getWindow().getAttributes().windowAnimations = R.style.DialogAnimation;
-									ADDialog.show();
-								}
-							}
-						} else {
-							AkorDefterimSys.prefAction = "Şarkı eklendi";
-							AkorDefterimSys.prefEklenenDuzenlenenSanatciAdi = SecilenSanatciAdi;
-							AkorDefterimSys.prefEklenenDuzenlenenSarkiAdi = SecilenSarkiAdi;
-							AkorDefterimSys.prefEklenenDuzenlenenSarkiID = SecilenSarkiID;
-							AkorDefterimSys.KlavyeKapat();
-							finish();
+					if(txtSarkiIcerik.getText().length() == 0) {
+						if(!AkorDefterimSys.AlertDialogisShowing(ADDialog)) {
+							ADDialog = AkorDefterimSys.CustomAlertDialog(activity,
+									getString(R.string.sarki_yonetimi),
+									getString(R.string.sarki_icerik_alanini_bos_birakamazsiniz),
+									getString(R.string.tamam),
+									"ADDialog_Kapat");
+							ADDialog.getWindow().getAttributes().windowAnimations = R.style.DialogAnimation;
+							ADDialog.show();
 						}
-					} else AkorDefterimSys.ToastMsj(activity, getString(R.string.islem_yapilirken_bir_hata_olustu), Toast.LENGTH_SHORT);
+					} else {
+						if (veritabani.SarkiEkle(SecilenListeID, SecilenKategoriID, SecilenTarzID, SecilenSarkiAdi, SecilenSanatciAdi, AkorDefterimSys.AkorTagToHtml(AkorDefterimSys.KotuIcerikDuzenleme(txtSarkiIcerik)), veritabani.SarkiSonSiraNoGetir() + 1)) {
+							if(Islem.equals("YeniSarkiEkle") && KatkidaBulunuluyorMu) {
+								if(AkorDefterimSys.InternetErisimKontrolu()) {
+									AkorDefterimSys.SarkiGonder(SecilenSanatciAdi, SecilenSarkiAdi, AkorDefterimSys.AkorTagToHtml(AkorDefterimSys.KotuIcerikDuzenleme(txtSarkiIcerik)), sharedPref.getString("prefHesapID", ""));
+								} else {
+									if(!AkorDefterimSys.AlertDialogisShowing(ADDialog)) {
+										ADDialog = AkorDefterimSys.VButtonCustomAlertDialog(activity,
+												getString(R.string.sarki_yonetimi),
+												getString(R.string.sarki_gonder_internet_hata),
+												getString(R.string.yeniden_dene),
+												"ADDialog_YenidenDene",
+												getString(R.string.sarki_gondermeden_devam_et),
+												"ADDialog_Gondermeden_Devam_Et");
+										ADDialog.getWindow().getAttributes().windowAnimations = R.style.DialogAnimation;
+										ADDialog.show();
+									}
+								}
+							} else {
+								AkorDefterimSys.prefAction = "Şarkı eklendi";
+								AkorDefterimSys.prefEklenenDuzenlenenSanatciAdi = SecilenSanatciAdi;
+								AkorDefterimSys.prefEklenenDuzenlenenSarkiAdi = SecilenSarkiAdi;
+								AkorDefterimSys.prefEklenenDuzenlenenSarkiID = SecilenSarkiID;
+								AkorDefterimSys.KlavyeKapat();
+								finish();
+							}
+						} else AkorDefterimSys.ToastMsj(activity, getString(R.string.islem_yapilirken_bir_hata_olustu), Toast.LENGTH_SHORT);
+					}
 				} else if(Islem.equals("SarkiDuzenle")) {
 					if (veritabani.SarkiDuzenle(SecilenSarkiID, SecilenListeID, SecilenKategoriID, SecilenTarzID, SecilenSanatciAdi, SecilenSarkiAdi, AkorDefterimSys.AkorTagToHtml(AkorDefterimSys.KotuIcerikDuzenleme(txtSarkiIcerik)))) {
 						AkorDefterimSys.prefAction = "Şarkı düzenlendi";

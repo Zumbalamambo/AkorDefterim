@@ -15,16 +15,16 @@
       },
       "oauth_client": [
         {
+          "client_id": "114820829715-9vn0a2l3grt1tp04paa7vusa35fi04ge.apps.googleusercontent.com",
+          "client_type": 3
+        },
+        {
           "client_id": "114820829715-cell7d4fjt30auv35u6h7f8ie48idfpa.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
             "package_name": "com.cnbcyln.app.akordefterim",
-            "certificate_hash": "9BBF7C94E09000158BCC74DE76D383CF3CDF6C6B"
+            "certificate_hash": "9bbf7c94e09000158bcc74de76d383cf3cdf6c6b"
           }
-        },
-        {
-          "client_id": "114820829715-9vn0a2l3grt1tp04paa7vusa35fi04ge.apps.googleusercontent.com",
-          "client_type": 3
         },
         {
           "client_id": "114820829715-nrnrnvgqsh5vubtddsfs97slbc499ueu.apps.googleusercontent.com",

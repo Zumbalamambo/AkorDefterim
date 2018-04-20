@@ -238,6 +238,8 @@ public class Frg_Sarki extends Fragment implements OnClickListener {
 		webview.loadDataWithBaseURL(null, HTMLBaslangic + SecilenSarkiIcerikTemp + HTMLBitis, "text/html", "utf-8", null);
 
 		FABMenuGuncelle();
+
+		AkorDefterimSys.SonYapilanIslemGuncelle("xxx_isimli_sarki_acildi", "[{\"Param\":\"" + SecilenSanatciAdi + "\"},{\"Param\":\"" + SecilenSarkiAdi + "\"}]");
 	}
 
 	@Override
@@ -291,6 +293,8 @@ public class Frg_Sarki extends Fragment implements OnClickListener {
 					mIntent.putExtra("SecilenSarkiIcerik", SecilenSarkiIcerik);
 
 					AkorDefterimSys.EkranGetir(mIntent, "Slide");
+
+					AkorDefterimSys.SonYapilanIslemGuncelle("xxx_isimli_sarkiyi_repertuvarina_ekliyor", "[{\"Param\":\"" + SecilenSanatciAdi + "\"},{\"Param\":\"" + SecilenSarkiAdi + "\"}]");
 				} else if(FABSarkiEkleCikar.getLabelText().equals(getString(R.string.listemden_sil))) {
 					if(!AkorDefterimSys.AlertDialogisShowing(ADDialog)) {
 						ADDialog = AkorDefterimSys.H2ButtonCustomAlertDialog(activity,
@@ -303,6 +307,8 @@ public class Frg_Sarki extends Fragment implements OnClickListener {
 						ADDialog.getWindow().getAttributes().windowAnimations = R.style.DialogAnimation;
 						ADDialog.show();
 					}
+
+					AkorDefterimSys.SonYapilanIslemGuncelle("xxx_isimli_sarkiyi_repertuvarindan_siliyor", "[{\"Param\":\"" + SecilenSanatciAdi + "\"},{\"Param\":\"" + SecilenSarkiAdi + "\"}]");
 				}
 
 				break;
@@ -315,12 +321,16 @@ public class Frg_Sarki extends Fragment implements OnClickListener {
 				mIntent.putExtra("SecilenSarkiIcerik", veritabani.SarkiIcerikGetir(SecilenSarkiID));
 
 				AkorDefterimSys.EkranGetir(mIntent, "Slide");
+
+				AkorDefterimSys.SonYapilanIslemGuncelle("xxx_isimli_sarkiyi_repertuvarindan_duzenliyor", "[{\"Param\":\"" + SecilenSanatciAdi + "\"},{\"Param\":\"" + SecilenSarkiAdi + "\"}]");
 				break;
 			case R.id.FABTranspozeArti:
+				AkorDefterimSys.SonYapilanIslemGuncelle("xxx_isimli_sarki_transpoze_edildi", "[{\"Param\":\"" + SecilenSanatciAdi + "\"},{\"Param\":\"" + SecilenSarkiAdi + "\"},{\"Param\":\"+1\"}]");
 				SecilenSarkiIcerikTemp = AkorDefterimSys.Transpoze("+1", SecilenSarkiIcerikTemp).toString();
 				webview.loadDataWithBaseURL(null, HTMLBaslangic + SecilenSarkiIcerikTemp + HTMLBitis, "text/html", "utf-8", null);
 				break;
 			case R.id.FABTranspozeEksi:
+				AkorDefterimSys.SonYapilanIslemGuncelle("xxx_isimli_sarki_transpoze_edildi", "[{\"Param\":\"" + SecilenSanatciAdi + "\"},{\"Param\":\"" + SecilenSarkiAdi + "\"},{\"Param\":\"-1\"}]");
 				SecilenSarkiIcerikTemp = AkorDefterimSys.Transpoze("-1", SecilenSarkiIcerikTemp).toString();
 				webview.loadDataWithBaseURL(null, HTMLBaslangic + SecilenSarkiIcerikTemp + HTMLBitis, "text/html", "utf-8", null);
 				break;
@@ -475,6 +485,7 @@ public class Frg_Sarki extends Fragment implements OnClickListener {
 			}
 
 			FragmentDataConn.StandartSnackBarMsj("Sağ", getString(R.string.sarki_silindi, SecilenSarkiAdi, SecilenSanatciAdi));
+			AkorDefterimSys.SonYapilanIslemGuncelle("xxx_isimli_sarkiyi_repertuvarindan_sildi", "[{\"Param\":\"" + SecilenSanatciAdi + "\"},{\"Param\":\"" + SecilenSarkiAdi + "\"}]");
 		} else StandartSnackBarMsj(getString(R.string.islem_yapilirken_bir_hata_olustu));
 	}
 }

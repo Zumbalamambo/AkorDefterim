@@ -1,5 +1,6 @@
 package com.cnbcyln.app.akordefterim;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
@@ -31,6 +32,8 @@ import com.redmadrobot.inputmask.MaskedTextChangedListener;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Locale;
 
 @SuppressWarnings({"deprecation", "ResultOfMethodCallIgnored", "ConstantConditions"})
@@ -249,9 +252,14 @@ public class Hesabina_Eris_Sms_Gonder extends AppCompatActivity implements Inter
 							AkorDefterimSys.DismissProgressDialog(PDIslem);
 
 							if(!AkorDefterimSys.AlertDialogisShowing(ADDialog)) {
+								@SuppressLint("SimpleDateFormat")
+								SimpleDateFormat SDF1 = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+								@SuppressLint("SimpleDateFormat")
+								SimpleDateFormat SDF2 = new SimpleDateFormat("dd MMMM yyyy - HH:mm:ss");
+
 								ADDialog = AkorDefterimSys.CustomAlertDialog(activity,
 										getString(R.string.hesap_durumu),
-										getString(R.string.hesap_banlandi, JSONSonuc.getString("HesapDurumBilgi"), getString(R.string.uygulama_yapimci_site)),
+										getString(R.string.hesap_banlandi, SDF2.format(SDF1.parse(JSONSonuc.getString("HesapDurumTarihSaat"))), JSONSonuc.getString("HesapDurumBilgi"), getString(R.string.uygulama_yapimci_eposta)),
 										activity.getString(R.string.tamam),
 										"ADDialog_Kapat_GeriGit");
 								ADDialog.getWindow().getAttributes().windowAnimations = R.style.DialogAnimation;
@@ -335,7 +343,7 @@ public class Hesabina_Eris_Sms_Gonder extends AppCompatActivity implements Inter
 					finish();
 					break;
             }
-        } catch (JSONException e) {
+        } catch (JSONException | ParseException e) {
             e.printStackTrace();
         }
     }

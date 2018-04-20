@@ -45,6 +45,8 @@ import com.google.firebase.iid.FirebaseInstanceId;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Arrays;
 
 @SuppressWarnings("ALL")
@@ -86,6 +88,8 @@ public class Bagli_Hesaplar extends AppCompatActivity implements Interface_Async
 		//AkorDefterimSys.TransparanNotifyBar(); // Notification Bar'ı transparan yapıyoruz.
 		//AkorDefterimSys.NotifyIkonParlakligi(); // Notification Bar'daki simgelerin parlaklığını aldık.
 
+        AkorDefterimSys.SonYapilanIslemGuncelle("bagli_hesaplar_ekranina_giris_yapildi", "[]");
+
 		coordinatorLayout = findViewById(R.id.coordinatorLayout);
 		coordinatorLayout.setOnClickListener(this);
 
@@ -114,9 +118,12 @@ public class Bagli_Hesaplar extends AppCompatActivity implements Interface_Async
                         SFacebook.setEnabled(false);
                         SGoogle.setEnabled(false);
 
-                        if(isChecked)
+                        if(isChecked) {
+                            AkorDefterimSys.SonYapilanIslemGuncelle("facebook_hesabini_baglamaya_calisiyor", "[]");
                             LoginManager.getInstance().logInWithReadPermissions(activity, Arrays.asList("public_profile", "email"));
-                        else {
+                        } else {
+                            AkorDefterimSys.SonYapilanIslemGuncelle("facebook_hesabinin_baglantisini_kesmeye_calisiyor", "[]");
+
                             LoginManager.getInstance().logOut();
 
                             if(!AkorDefterimSys.ProgressDialogisShowing(PDIslem)) {
@@ -146,12 +153,15 @@ public class Bagli_Hesaplar extends AppCompatActivity implements Interface_Async
                         SGoogle.setEnabled(false);
 
                         if(isChecked) {
+                            AkorDefterimSys.SonYapilanIslemGuncelle("google_hesabini_baglamaya_calisiyor", "[]");
                             Intent signInIntent = mGoogleSignInClient.getSignInIntent();
                             startActivityForResult(signInIntent, AkorDefterimSys.RC_GOOGLE_LOGIN);
                         } else {
                             mGoogleSignInClient.signOut().addOnCompleteListener(new OnCompleteListener<Void>() {
                                 @Override
                                 public void onComplete(@NonNull Task<Void> task) {
+                                    AkorDefterimSys.SonYapilanIslemGuncelle("google_hesabinin_baglantisini_kesmeye_calisiyor", "[]");
+
                                     if(!AkorDefterimSys.ProgressDialogisShowing(PDIslem)) {
                                         PDIslem = AkorDefterimSys.CustomProgressDialog(getString(R.string.islem_yapiliyor), false, AkorDefterimSys.ProgressBarTimeoutSuresi, "PDIslem_Timeout");
                                         PDIslem.show();
@@ -278,9 +288,14 @@ public class Bagli_Hesaplar extends AppCompatActivity implements Interface_Async
                     if(JSONSonuc.getBoolean("Sonuc")) {
                         if(JSONSonuc.getString("HesapDurum").equals("Ban")) { // Eğer hesap banlanmışsa
                             if(!AkorDefterimSys.AlertDialogisShowing(ADDialog)) {
+                                @SuppressLint("SimpleDateFormat")
+                                SimpleDateFormat SDF1 = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+                                @SuppressLint("SimpleDateFormat")
+                                SimpleDateFormat SDF2 = new SimpleDateFormat("dd MMMM yyyy - HH:mm:ss");
+
                                 ADDialog = AkorDefterimSys.CustomAlertDialog(activity,
                                         getString(R.string.hesap_durumu),
-                                        getString(R.string.hesap_banlandi, JSONSonuc.getString("HesapDurumBilgi"), getString(R.string.uygulama_yapimci_site)),
+                                        getString(R.string.hesap_banlandi, SDF2.format(SDF1.parse(JSONSonuc.getString("HesapDurumTarihSaat"))), JSONSonuc.getString("HesapDurumBilgi"), getString(R.string.uygulama_yapimci_eposta)),
                                         getString(R.string.tamam),
                                         "ADDialog_Kapat_CikisYap");
                                 ADDialog.getWindow().getAttributes().windowAnimations = R.style.DialogAnimation;
@@ -349,7 +364,7 @@ public class Bagli_Hesaplar extends AppCompatActivity implements Interface_Async
                     AkorDefterimSys.DismissProgressDialog(PDIslem);
 
                     if(JSONSonuc.getBoolean("Sonuc")) {
-
+                        AkorDefterimSys.SonYapilanIslemGuncelle("islem_basarili", "[]");
                     } else {
                         if(!AkorDefterimSys.AlertDialogisShowing(ADDialog)) {
                             ADDialog = AkorDefterimSys.CustomAlertDialog(activity,
@@ -378,10 +393,10 @@ public class Bagli_Hesaplar extends AppCompatActivity implements Interface_Async
                     break;
 			}
 
-		} catch (JSONException e) {
+		} catch (JSONException | ParseException e) {
 			e.printStackTrace();
 		}
-	}
+    }
 
     private void GoogleAPIInit(Boolean GirisYapisinMi) {
         GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)

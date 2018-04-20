@@ -32,6 +32,7 @@ import android.widget.VideoView;
 
 import com.cnbcyln.app.akordefterim.Interface.Interface_AsyncResponse;
 import com.cnbcyln.app.akordefterim.util.AkorDefterimSys;
+import com.cnbcyln.app.akordefterim.util.MqttService;
 import com.facebook.CallbackManager;
 import com.facebook.FacebookCallback;
 import com.facebook.FacebookException;
@@ -47,10 +48,15 @@ import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.gms.common.api.ApiException;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.iid.FirebaseInstanceId;
+import com.synnapps.carouselview.CarouselView;
+import com.synnapps.carouselview.ViewListener;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Arrays;
 
 @SuppressWarnings("ALL")
@@ -66,12 +72,15 @@ public class Giris extends AppCompatActivity implements Interface_AsyncResponse 
 	VideoView VideoArkaplan;
 	ViewPager VPGirisEkranPager;
 	AlertDialog ADDialog_PlayGoogleServisi, ADDialog_InternetErisimSorunu, ADDialog_HesapDurumu;
+	Intent mIntentMqttService;
 
 	CoordinatorLayout coordinatorLayout;
 	RelativeLayout RLLoader;
+	CarouselView carouselView;
 
 	String FirebaseToken = "", OSID = "", OSVersiyon = "", UygulamaVersiyon = "";
 	boolean CikisIcinCiftTiklandiMi = false;
+	int SwipeIndexer = 0;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -87,6 +96,8 @@ public class Giris extends AppCompatActivity implements Interface_AsyncResponse 
 		YaziFontu = AkorDefterimSys.FontGetir(activity, "anivers_regular");
 
 		sharedPref = activity.getSharedPreferences(AkorDefterimSys.PrefAdi, Context.MODE_PRIVATE);
+
+		mIntentMqttService = new Intent(MqttService.class.getName());
 
 		AkorDefterimSys.GenelAyarlar(); // Uygulama için genel ayarları uyguladık.
 		AkorDefterimSys.TransparanNotifyBar(); // Notification Bar'ı transparan yapıyoruz.
@@ -259,16 +270,10 @@ public class Giris extends AppCompatActivity implements Interface_AsyncResponse 
 					lblVersiyon.setTypeface(YaziFontu, Typeface.NORMAL);
 					lblVersiyon.setText(AkorDefterimSys.UygulamaVersiyonuGetir());
 
-					/*SwipeSelector swipeSelector = (SwipeSelector) view.findViewById(R.id.swipeSelector);
-					swipeSelector.setItems(
-							// The first argument is the value for that item, and should in most cases be unique for the
-							// current SwipeSelector, just as you would assign values to radio buttons.
-							// You can use the value later on to check what the selected item was.
-							// The value can be any Object, here we're using ints.
-							new SwipeItem(0, "Slide one", "Description for slide one."),
-							new SwipeItem(1, "Slide two", "Description for slide two."),
-							new SwipeItem(2, "Slide three", "Description for slide three.")
-					);*/
+					carouselView = (CarouselView) view.findViewById(R.id.carouselView);
+
+					if(AkorDefterimSys.InternetErisimKontrolu()) AkorDefterimSys.TanitimMesajlariniGetir();
+					else CarouselViewListenerInit(getResources().getStringArray(R.array.OfflineTanitimMesajlari));
 
 					Button btnGirisYap = (Button) view.findViewById(R.id.btnGirisYap);
 					btnGirisYap.setTypeface(YaziFontu, Typeface.BOLD);
@@ -385,6 +390,35 @@ public class Giris extends AppCompatActivity implements Interface_AsyncResponse 
 			View view = (View) object;
 			container.removeView(view);
 		}
+	}
+
+	public void CarouselViewListenerInit(final String[] TanitimMesajlari) {
+		ViewListener CarouselViewListener = new ViewListener() {
+			@Override
+			public View setViewForPosition(int position) {
+				View ViewDialogCustom = getLayoutInflater().inflate(R.layout.tanitim_mesajlari_carousel_layout, null);
+
+				TextView lblBaslik = ViewDialogCustom.findViewById(R.id.lblBaslik);
+				lblBaslik.setTypeface(YaziFontu, Typeface.BOLD);
+
+				TextView lblIcerik = ViewDialogCustom.findViewById(R.id.lblIcerik);
+				lblIcerik.setTypeface(YaziFontu, Typeface.NORMAL);
+
+				try {
+					JSONObject JSONGelenVeri = new JSONObject(TanitimMesajlari[position]);
+
+					lblBaslik.setText(JSONGelenVeri.getString("Baslik"));
+					lblIcerik.setText(JSONGelenVeri.getString("Icerik"));
+				} catch (JSONException e) {
+					e.printStackTrace();
+				}
+
+				return ViewDialogCustom;
+			}
+		};
+
+		carouselView.setViewListener(CarouselViewListener);
+		carouselView.setPageCount(TanitimMesajlari.length);
 	}
 
 	/**private class KaydolViewPagerAdapter extends android.support.v4.view.PagerAdapter {
@@ -659,17 +693,29 @@ public class Giris extends AppCompatActivity implements Interface_AsyncResponse 
 
 						AkorDefterimSys.EkranGetir(mIntent, "Normal");
 
-						if(!JSONSonuc.getString("HesapFirebaseToken").equals(FirebaseToken))
-							AkorDefterimSys.FirebaseMesajGonder(activity, JSONSonuc.getString("HesapFirebaseToken"), "{\"Islem\":\"CikisYap\", \"HesapFirebaseToken\":\"" + JSONSonuc.getString("HesapFirebaseToken") + "\"}", "FirebaseMesajGonder_CikisYap");
+						mIntentMqttService.putExtra("JSONData", "{\"Islem\":\"Subscribe_HesapKanal\", \"HesapID\":\"" + JSONSonuc.getString("HesapID") + "\"}");
+						this.sendBroadcast(mIntentMqttService);
+
+						if(!JSONSonuc.getString("HesapFirebaseToken").equals(FirebaseToken)) {
+							mIntentMqttService.putExtra("JSONData", "{\"Islem\":\"CikisYap\", \"HesapID\":\"" + JSONSonuc.getString("HesapID") + "\", \"HesapFirebaseToken\":\"" + JSONSonuc.getString("HesapFirebaseToken") + "\"}");
+							this.sendBroadcast(mIntentMqttService);
+						}
+
+						//AkorDefterimSys.FirebaseMesajGonder(activity, JSONSonuc.getString("HesapFirebaseToken"), "{\"Islem\":\"CikisYap\", \"HesapFirebaseToken\":\"" + JSONSonuc.getString("HesapFirebaseToken") + "\"}", "FirebaseMesajGonder_CikisYap");
 
 						finishAffinity();
 					} else {
 						switch (JSONSonuc.getString("HesapDurum")) {
 							case "Ban":
 								if(!AkorDefterimSys.AlertDialogisShowing(ADDialog_HesapDurumu)) {
+									@SuppressLint("SimpleDateFormat")
+									SimpleDateFormat SDF1 = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+									@SuppressLint("SimpleDateFormat")
+									SimpleDateFormat SDF2 = new SimpleDateFormat("dd MMMM yyyy - HH:mm:ss");
+
 									ADDialog_HesapDurumu = AkorDefterimSys.CustomAlertDialog(activity,
 											getString(R.string.hesap_durumu),
-											getString(R.string.hesap_banlandi, JSONSonuc.getString("HesapDurumBilgi"), getString(R.string.uygulama_yapimci_site)),
+											getString(R.string.hesap_banlandi, SDF2.format(SDF1.parse(JSONSonuc.getString("HesapDurumTarihSaat"))), JSONSonuc.getString("HesapDurumBilgi"), getString(R.string.uygulama_yapimci_eposta)),
 											activity.getString(R.string.tamam),
 											"ADDialog_HesapDurumu_Tamam");
 									ADDialog_HesapDurumu.getWindow().getAttributes().windowAnimations = R.style.DialogAnimation;
@@ -681,6 +727,18 @@ public class Giris extends AppCompatActivity implements Interface_AsyncResponse 
 					}
 
 					break;
+				case "TanitimMesajlariniGetir":
+					if(JSONSonuc.getBoolean("Sonuc")) {
+						JSONArray JSONGelenVeriArr = new JSONArray(JSONSonuc.getString("MesajListesi"));
+						String[] TanitimMesajlari = new String[JSONGelenVeriArr.length()];
+
+						for (int i = 0; i < JSONGelenVeriArr.length(); i++)
+							TanitimMesajlari[i] = JSONGelenVeriArr.getString(i);
+
+						CarouselViewListenerInit(TanitimMesajlari);
+					} else CarouselViewListenerInit(getResources().getStringArray(R.array.OfflineTanitimMesajlari));
+
+					break;
 				case "ADDialog_HesapDurumu_Tamam":
 					AkorDefterimSys.DismissAlertDialog(ADDialog_HesapDurumu);
 					break;
@@ -689,7 +747,7 @@ public class Giris extends AppCompatActivity implements Interface_AsyncResponse 
 					break;
 			}
 
-		} catch (JSONException e) {
+		} catch (JSONException | ParseException e) {
 			e.printStackTrace();
 		}
 	}

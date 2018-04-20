@@ -33,46 +33,62 @@
 			android:layout_width="wrap_content"
 			android:layout_height="wrap_content"
 			android:orientation="horizontal"
-			app:layout_constraintGuide_percent="0.085" />
+			app:layout_constraintGuide_percent="0.35" />
 
-		<ImageButton
-			android:id="@+id/btnGeri"
-			android:layout_width="60dp"
-			android:layout_height="0dp"
-			android:background="@drawable/custom_button2"
-			app:layout_constraintBottom_toTopOf="@+id/view1"
-			app:layout_constraintStart_toStartOf="parent"
-			app:layout_constraintTop_toTopOf="parent"
-			app:srcCompat="@drawable/ic_arrow_back_siyah"
-			android:contentDescription="@string/imageDesc" />
-
-		<TextView
-			android:id="@+id/lblBaslik"
+		<android.support.constraint.Guideline
+			android:id="@+id/h_guideline_toolbar"
 			android:layout_width="wrap_content"
 			android:layout_height="wrap_content"
-			android:layout_marginLeft="12dp"
-			android:layout_marginStart="12dp"
-			android:text="@string/hesabim"
-			android:textColor="@color/KoyuYazi"
-			style="@style/TextAppearance.AppCompat.Medium.Inverse"
-			app:layout_constraintBottom_toTopOf="@+id/view1"
-			app:layout_constraintStart_toEndOf="@+id/btnGeri"
-			app:layout_constraintTop_toTopOf="parent" />
+			android:orientation="horizontal"
+			app:layout_constraintGuide_percent="0.07" />
+
+		<RelativeLayout
+			android:id="@+id/RLToolBar"
+			android:layout_width="0dp"
+			android:layout_height="@dimen/toolbar_height"
+			android:background="@color/Beyaz"
+			app:layout_constraintEnd_toEndOf="parent"
+			app:layout_constraintStart_toStartOf="parent"
+			app:layout_constraintTop_toTopOf="parent">
+
+			<ImageButton
+				android:id="@+id/btnGeri"
+				android:layout_width="45dp"
+				android:layout_height="match_parent"
+				android:layout_centerVertical="true"
+				android:background="@drawable/custom_button2"
+				app:srcCompat="@drawable/ic_arrow_back_siyah"
+				android:contentDescription="@string/imageDesc" />
+
+			<TextView
+				android:id="@+id/lblBaslik"
+				style="@style/TextAppearance.AppCompat.Medium.Inverse"
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				android:layout_marginLeft="8dp"
+				android:layout_centerVertical="true"
+				android:layout_toEndOf="@+id/btnGeri"
+				android:layout_toRightOf="@+id/btnGeri"
+				android:text="@string/hesabim"
+				android:textColor="@color/KoyuYazi"
+				tools:ignore="RelativeOverlap" />
+		</RelativeLayout>
 
 		<View
 			android:id="@+id/view1"
 			android:layout_width="0dp"
 			android:layout_height="1dp"
 			android:background="@drawable/cizgi_ortagri"
-			app:layout_constraintTop_toTopOf="@+id/h_guideline1" />
+			app:layout_constraintTop_toBottomOf="@+id/RLToolBar" />
 
 		<android.support.constraint.ConstraintLayout
 			android:id="@+id/RLBuyukProfilResim"
 			android:layout_width="0dp"
-			android:layout_height="wrap_content"
+			android:layout_height="0dp"
 			app:layout_constraintEnd_toEndOf="parent"
 			app:layout_constraintStart_toStartOf="parent"
-			app:layout_constraintTop_toBottomOf="@+id/view1">
+			app:layout_constraintTop_toBottomOf="@+id/view1"
+			app:layout_constraintBottom_toBottomOf="@+id/h_guideline1">
 
 			<ImageView
 				android:id="@+id/ImgBuyukProfilResim"
@@ -104,7 +120,9 @@
 				android:layout_height="@dimen/profil_resim_width_height"
 				android:layout_centerHorizontal="true"
 				android:layout_centerVertical="true"
-				android:layout_marginTop="16dp"
+				android:layout_marginBottom="24dp"
+				android:layout_marginTop="8dp"
+				app:layout_constraintBottom_toBottomOf="parent"
 				app:layout_constraintEnd_toEndOf="parent"
 				app:layout_constraintStart_toStartOf="parent"
 				app:layout_constraintTop_toTopOf="parent"
@@ -143,15 +161,15 @@
 
 			<TextView
 				android:id="@+id/lblAdSoyad"
+				style="@style/TextAppearance.AppCompat.Medium.Inverse"
 				android:layout_width="wrap_content"
 				android:layout_height="wrap_content"
 				android:layout_marginBottom="16dp"
 				android:layout_marginEnd="8dp"
 				android:layout_marginStart="8dp"
-				android:layout_marginTop="16dp"
+				android:layout_marginTop="8dp"
 				android:text="@string/labeltire"
 				android:textColor="@color/Beyaz"
-				style="@style/TextAppearance.AppCompat.Medium.Inverse"
 				app:layout_constraintBottom_toBottomOf="parent"
 				app:layout_constraintEnd_toEndOf="@+id/LLBuyukProfilResim"
 				app:layout_constraintStart_toStartOf="@+id/LLBuyukProfilResim"
@@ -296,6 +314,5 @@
 			app:layout_constraintEnd_toStartOf="@+id/v_guideline2"
 			app:layout_constraintStart_toStartOf="@+id/v_guideline1"
 			app:layout_constraintTop_toBottomOf="@+id/btnCikisYap" />
-
 	</android.support.constraint.ConstraintLayout>
 </android.support.design.widget.CoordinatorLayout>

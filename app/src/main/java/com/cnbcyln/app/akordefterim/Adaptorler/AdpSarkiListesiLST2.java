@@ -109,7 +109,7 @@ public class AdpSarkiListesiLST2 extends BaseAdapter implements SectionIndexer {
 
 	private class ViewHolder {
 		CheckBox ChkSarkiSec;
-		TextView lblSanatciSarkiAdi, lblListeAdi1, lblListeAdi2, lblKategoriAdi1, lblKategoriAdi2, lblTarzAdi1, lblTarzAdi2;
+		TextView lblSanatciSarkiAdi, lblKategoriAdi1, lblKategoriAdi2, lblTarzAdi1, lblTarzAdi2;
 	}
 
 	@SuppressLint("InflateParams")
@@ -130,8 +130,8 @@ public class AdpSarkiListesiLST2 extends BaseAdapter implements SectionIndexer {
 			});*/
 			//holder.ChkSarkiSec.setTag(snfSarkilar.get(position));
 			holder.lblSanatciSarkiAdi = satirView.findViewById(R.id.lblSanatciSarkiAdi);
-			holder.lblListeAdi1 = satirView.findViewById(R.id.lblListeAdi1);
-			holder.lblListeAdi2 = satirView.findViewById(R.id.lblListeAdi2);
+			//holder.lblListeAdi1 = satirView.findViewById(R.id.lblListeAdi1);
+			//holder.lblListeAdi2 = satirView.findViewById(R.id.lblListeAdi2);
 			holder.lblKategoriAdi1 = satirView.findViewById(R.id.lblKategoriAdi1);
 			holder.lblKategoriAdi2 = satirView.findViewById(R.id.lblKategoriAdi2);
 			holder.lblTarzAdi1 = satirView.findViewById(R.id.lblTarzAdi1);
@@ -163,15 +163,15 @@ public class AdpSarkiListesiLST2 extends BaseAdapter implements SectionIndexer {
 
 		holder.lblSanatciSarkiAdi.setTypeface(YaziFontu, Typeface.NORMAL);
 
-		String SecilenListeAdi = veritabani.ListeAdiGetir(snfSarkilar.get(position).getListeID());
+		//String SecilenListeAdi = veritabani.ListeAdiGetir(snfSarkilar.get(position).getListeID());
 		String SecilenKategoriAdi = veritabani.KategoriAdiGetir(snfSarkilar.get(position).getKategoriID());
 		String SecilenTarzAdi = veritabani.TarzAdiGetir(snfSarkilar.get(position).getTarzID());
 
-		holder.lblListeAdi1.setText(String.format("%s: ", activity.getString(R.string.liste)));
-		holder.lblListeAdi1.setTypeface(YaziFontu, Typeface.BOLD);
+		//holder.lblListeAdi1.setText(String.format("%s: ", activity.getString(R.string.liste)));
+		//holder.lblListeAdi1.setTypeface(YaziFontu, Typeface.BOLD);
 
-		holder.lblListeAdi2.setText(SecilenListeAdi);
-		holder.lblListeAdi2.setTypeface(YaziFontu, Typeface.NORMAL);
+		//holder.lblListeAdi2.setText(SecilenListeAdi);
+		//holder.lblListeAdi2.setTypeface(YaziFontu, Typeface.NORMAL);
 
 		holder.lblKategoriAdi1.setText(String.format("%s: ", activity.getString(R.string.kategori)));
 		holder.lblKategoriAdi1.setTypeface(YaziFontu, Typeface.BOLD);

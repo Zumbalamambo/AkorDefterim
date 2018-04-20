@@ -35,6 +35,9 @@ import com.google.firebase.iid.FirebaseInstanceId;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+
 @SuppressWarnings("ALL")
 public class Parola_Degistir extends AppCompatActivity implements Interface_AsyncResponse, OnClickListener {
 
@@ -77,6 +80,8 @@ public class Parola_Degistir extends AppCompatActivity implements Interface_Asyn
 
 		ParolaKarakterSayisiMIN = getResources().getInteger(R.integer.ParolaKarakterSayisi_MIN);
 		ParolaKarakterSayisiMAX = getResources().getInteger(R.integer.ParolaKarakterSayisi_MAX);
+
+        AkorDefterimSys.SonYapilanIslemGuncelle("parola_degistir_ekranina_giris_yapildi", "[]");
 
 		coordinatorLayout = activity.findViewById(R.id.coordinatorLayout);
 		coordinatorLayout.setOnClickListener(this);
@@ -216,9 +221,14 @@ public class Parola_Degistir extends AppCompatActivity implements Interface_Asyn
                     if(JSONSonuc.getBoolean("Sonuc")) {
                         if(JSONSonuc.getString("HesapDurum").equals("Ban")) { // Eğer hesap banlanmışsa
                             if(!AkorDefterimSys.AlertDialogisShowing(ADDialog)) {
+                                @SuppressLint("SimpleDateFormat")
+                                SimpleDateFormat SDF1 = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+                                @SuppressLint("SimpleDateFormat")
+                                SimpleDateFormat SDF2 = new SimpleDateFormat("dd MMMM yyyy - HH:mm:ss");
+
                                 ADDialog = AkorDefterimSys.CustomAlertDialog(activity,
                                         getString(R.string.hesap_durumu),
-                                        getString(R.string.hesap_banlandi, JSONSonuc.getString("HesapDurumBilgi"), getString(R.string.uygulama_yapimci_site)),
+                                        getString(R.string.hesap_banlandi, SDF2.format(SDF1.parse(JSONSonuc.getString("HesapDurumTarihSaat"))), JSONSonuc.getString("HesapDurumBilgi"), getString(R.string.uygulama_yapimci_eposta)),
                                         activity.getString(R.string.tamam),
                                         "ADDialog_Kapat_CikisYap");
                                 ADDialog.getWindow().getAttributes().windowAnimations = R.style.DialogAnimation;
@@ -274,6 +284,8 @@ public class Parola_Degistir extends AppCompatActivity implements Interface_Asyn
                             ADDialog.getWindow().getAttributes().windowAnimations = R.style.DialogAnimation;
                             ADDialog.show();
                         }
+
+                        AkorDefterimSys.SonYapilanIslemGuncelle("parola_degistirildi", "[]");
                     } else {
                         if(!AkorDefterimSys.AlertDialogisShowing(ADDialog)) {
                             ADDialog = AkorDefterimSys.CustomAlertDialog(activity,
@@ -302,7 +314,7 @@ public class Parola_Degistir extends AppCompatActivity implements Interface_Asyn
                     break;
 			}
 
-		} catch (JSONException e) {
+		} catch (JSONException | ParseException e) {
 			e.printStackTrace();
 		}
 	}

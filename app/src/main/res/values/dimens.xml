@@ -8,6 +8,7 @@
     <dimen name="yazi_boyutu16">16sp</dimen>
     <dimen name="yazi_boyutu14">14sp</dimen>
     <dimen name="yazi_boyutu12">12sp</dimen>
+    <dimen name="toolbar_height">50dp</dimen>
     <dimen name="button_yazi_boyutu16">16sp</dimen>
     <dimen name="transparan_panel_margin">10dp</dimen>
     <dimen name="transparan_panel_padding">10dp</dimen>

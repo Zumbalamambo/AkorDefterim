@@ -14,13 +14,14 @@ public class SnfSarkilar implements Serializable {
 	private String Icerik;
 	private String EklenmeTarihi;
 	private String DuzenlenmeTarihi;
-	private Boolean Secim;
+	private int Siralama;
+	private Boolean Secim = false;
 	
 	public SnfSarkilar() {
 		super();
 	}
 	
-	public SnfSarkilar(int id, String DepolamaAlani, int ListeID, int KategoriID, int TarzID, String SanatciAdi, String SarkiAdi, String Icerik, String EklenmeTarihi, String DuzenlenmeTarihi, Boolean Secim) {
+	public SnfSarkilar(int id, String DepolamaAlani, int ListeID, int KategoriID, int TarzID, String SanatciAdi, String SarkiAdi, String Icerik, String EklenmeTarihi, String DuzenlenmeTarihi, int Siralama, Boolean Secim) {
 		super();
 		this.id = id;
 		this.ListeID = ListeID;
@@ -31,6 +32,7 @@ public class SnfSarkilar implements Serializable {
 		this.Icerik = Icerik;
 		this.EklenmeTarihi = EklenmeTarihi;
 		this.DuzenlenmeTarihi = DuzenlenmeTarihi;
+		this.Siralama = Siralama;
 		this.Secim = Secim;
 	}
 	
@@ -104,6 +106,14 @@ public class SnfSarkilar implements Serializable {
 
 	public void setDuzenlenmeTarihi(String DuzenlenmeTarihi) {
 		this.DuzenlenmeTarihi = DuzenlenmeTarihi;
+	}
+
+	public int getSiralama() {
+		return Siralama;
+	}
+
+	public void setSiralama(int Siralama) {
+		this.Siralama = Siralama;
 	}
 
 	public Boolean getSecim() {

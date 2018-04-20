@@ -2,18 +2,16 @@ package com.cnbcyln.app.akordefterim;
 
 import android.app.Activity;
 import android.app.AlertDialog;
-import android.app.Dialog;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.SharedPreferences;
 import android.graphics.Typeface;
 import android.os.Bundle;
+import android.support.constraint.ConstraintLayout;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.ContextMenu;
-import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
@@ -21,7 +19,6 @@ import android.view.View.OnClickListener;
 import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
-import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -31,6 +28,7 @@ import com.cnbcyln.app.akordefterim.FastScrollListview.FastScroller_Listview;
 import com.cnbcyln.app.akordefterim.Interface.Interface_AsyncResponse;
 import com.cnbcyln.app.akordefterim.Siniflar.SnfListeler;
 import com.cnbcyln.app.akordefterim.util.AkorDefterimSys;
+import com.cnbcyln.app.akordefterim.util.ClearableEditText;
 import com.cnbcyln.app.akordefterim.util.Veritabani;
 import com.github.clans.fab.FloatingActionButton;
 
@@ -54,12 +52,12 @@ public class Liste_Yonetimi extends AppCompatActivity implements Interface_Async
     InputMethodManager imm;
 
 	CoordinatorLayout coordinatorLayout;
-    RelativeLayout RelativeLayout1;
+    ConstraintLayout CLContainer;
     RelativeLayout RLListeYonetimi_AnaPanel, RLListeYonetimi_AramaPanel;
 	ImageButton btnGeri_AnaPanel, btnAra_AnaPanel, btnGeri_AramaPanel;
 	FastScroller_Listview lstListeYonetimi;
 	TextView lblBaslik_AnaPanel, lblOrtaMesaj;
-    EditText txtAra_AramaPanel;
+    ClearableEditText txtAra_AramaPanel;
     FloatingActionButton FABListeEkle;
 
     private List<SnfListeler> snfListeler;
@@ -91,8 +89,8 @@ public class Liste_Yonetimi extends AppCompatActivity implements Interface_Async
 		coordinatorLayout = findViewById(R.id.coordinatorLayout);
 		coordinatorLayout.setOnClickListener(this);
 
-        RelativeLayout1 = findViewById(R.id.RelativeLayout1);
-        RelativeLayout1.setOnClickListener(this);
+        CLContainer = findViewById(R.id.CLContainer);
+        CLContainer.setOnClickListener(this);
 
         RLListeYonetimi_AnaPanel = findViewById(R.id.RLListeYonetimi_AnaPanel);
         RLListeYonetimi_AnaPanel.setVisibility(View.VISIBLE);
@@ -231,10 +229,10 @@ public class Liste_Yonetimi extends AppCompatActivity implements Interface_Async
 	public void onClick(View v) {
 		switch (v.getId()) {
             case R.id.coordinatorLayout:
-                AkorDefterimSys.UnFocusAll(null,RelativeLayout1,null,null,null);
+                AkorDefterimSys.UnFocusAll(null,null,null,null,CLContainer);
                 break;
             case R.id.ConstraintLayout1:
-                AkorDefterimSys.UnFocusAll(null,RelativeLayout1,null,null,null);
+                AkorDefterimSys.UnFocusAll(null,null,null,null,CLContainer);
                 break;
 			case R.id.btnGeri_AnaPanel:
 				AkorDefterimSys.EkranKapat();

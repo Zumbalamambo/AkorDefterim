@@ -62,6 +62,8 @@ public class Dogrulama_Kodu extends AppCompatActivity implements Interface_Async
 		//AkorDefterimSys.TransparanNotifyBar(); // Notification Bar'ı transparan yapıyoruz.
 		//AkorDefterimSys.NotifyIkonParlakligi(); // Notification Bar'daki simgelerin parlaklığını aldık.
 
+		AkorDefterimSys.SonYapilanIslemGuncelle("dogrulama_kodu_ekranina_giris_yapildi", "[]");
+
 		coordinatorLayout = activity.findViewById(R.id.coordinatorLayout);
 		coordinatorLayout.setOnClickListener(this);
 

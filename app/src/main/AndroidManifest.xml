@@ -3,26 +3,22 @@
     xmlns:tools="http://schemas.android.com/tools"
     package="com.cnbcyln.app.akordefterim" >
 
-    <uses-permission android:name="android.permission.INTERNET" />
-    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
-    <uses-permission android:name="android.permission.CHANGE_WIFI_STATE" />
-    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
-    <uses-permission android:name="android.permission.VIBRATE" />
-    <uses-permission android:name="android.permission.RECEIVE_SMS" />
-    <!--<uses-permission android:name="android.permission.READ_SMS" />
-    <uses-permission android:name="android.permission.SEND_SMS" />
-    <uses-permission android:name="android.permission.WRITE_SMS" />-->
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
-    <uses-permission android:name="android.permission.CAMERA" />
-    <!--<uses-permission android:name="com.android.vending.BILLING" />-->
-    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
-    <uses-permission android:name="com.google.android.c2dm.permission.RECEIVE" />
-    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
-    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
-    <uses-permission android:name="android.permission.USE_CREDENTIALS" />
-    <uses-permission android:name="android.permission.GET_ACCOUNTS" />
-    <uses-permission android:name="android.permission.WRITE_SETTINGS" />
-    <!--<uses-permission android:name="android.permission.SET_DEBUG_APP" />-->
+    <uses-permission android:name="android.permission.INTERNET" /> <!-- İnternet servislerini kullanabilmek için -->
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" /> <!-- Wifi var mı yok mu diye bakabilmek için -->
+    <uses-permission android:name="android.permission.CHANGE_WIFI_STATE" /> <!-- Wifi değiştiğini kontrol eder -->
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" /> <!-- İnternet var mı yok mu diye bakabilmek için -->
+    <uses-permission android:name="android.permission.VIBRATE" /> <!-- Titresim erişimi -->
+    <uses-permission android:name="android.permission.WAKE_LOCK" /> <!-- Cihazınız uyku modundayken uyanması gerekirse diye -->
+    <uses-permission android:name="android.permission.RECEIVE_SMS" /> <!-- SMS mesajlarını alabilir -->
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" /> <!-- SD kartlarına veya diğer depolama birimlerine veri kaydedebilir -->
+    <uses-permission android:name="android.permission.CAMERA" /> <!-- Kamera erişimi -->
+    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" /> <!-- Telefon açıldığında ön yükleme yapabilsin diye -->
+    <uses-permission android:name="com.google.android.c2dm.permission.RECEIVE" /> <!-- Google GMC Push Messaging kullanımı için -->
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" /> <!-- Hücresel veri ve Wi-Fi bağlantı noktaları kullanılarak yaklaşık olarak konumuza erişilebilir  -->
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" /> <!-- GPS verisi kullanılarak tam konumuzuna erişilebilir -->
+    <uses-permission android:name="android.permission.USE_CREDENTIALS" /> <!-- Google hesabıyle giriş yapabilmek için -->
+    <uses-permission android:name="android.permission.GET_ACCOUNTS" /> <!-- GCM için telefonunuzda google account olması gerek en az 1 tane. Google, Facebook hesaplarına erişim için -->
+    <uses-permission android:name="android.permission.WRITE_SETTINGS" tools:ignore="ProtectedPermissions" /> <!-- Telefon ayarlarına erişim -->
 
     <uses-feature android:name="android.hardware.camera" />
     <uses-feature android:name="android.hardware.camera.autofocus" />
@@ -316,9 +312,19 @@
             android:screenOrientation="portrait"
             tools:replace="android:theme"
             android:theme="@android:style/Theme.Translucent.NoTitleBar" />
+        <activity
+            android:name="com.facebook.CustomTabActivity"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+                <data android:scheme="@string/fb_login_protocol_scheme" />
+            </intent-filter>
+        </activity>
         <activity android:name="com.theartofdev.edmodo.cropper.CropImageActivity"
             android:theme="@style/Base.Theme.AppCompat"/>
-        <activity
+        <!--<activity
             android:name="com.startapp.android.publish.ads.list3d.List3DActivity"
             android:theme="@android:style/Theme" />
         <activity
@@ -328,18 +334,19 @@
         <activity
             android:name="com.startapp.android.publish.adsCommon.activities.FullScreenActivity"
             android:configChanges="orientation|keyboardHidden|screenSize"
-            android:theme="@android:style/Theme" />
+            android:theme="@android:style/Theme" />-->
 
         <service android:name=".util.AppService" android:exported="false" />
+        <service android:name=".util.AppRunningControl" android:stopWithTask="true" /> <!-- android:stopWithTask="true" => Uygulama kapandığında servisi sonlandırmak için kullanılır.. -->
         <service android:name=".util.MqttService" android:exported="false" />
-        <service android:name=".util.WebServerService" />
+        <!--<service android:name=".util.WebServerService" />-->
 
         <!-- [START firebase_service] -->
-        <service android:name=".util.MyFirebaseMessagingService" android:exported="false">
+        <!--<service android:name=".util.MyFirebaseMessagingService" android:exported="false">
             <intent-filter>
                 <action android:name="com.google.firebase.MESSAGING_EVENT"/>
             </intent-filter>
-        </service>
+        </service>-->
         <!-- [END firebase_service] -->
 
         <!-- [START firebase_iid_service] -->

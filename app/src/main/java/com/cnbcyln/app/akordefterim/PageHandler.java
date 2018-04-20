@@ -384,7 +384,7 @@ public class PageHandler implements HttpRequestHandler {
 											JSONWebGelenVeri.getInt("TarzID"),
 											JSONWebGelenVeri.getString("SarkiAdi"),
 											JSONWebGelenVeri.getString("SanatciAdi"),
-											JSONWebGelenVeri.getString("SarkiIcerik"))) {
+											JSONWebGelenVeri.getString("SarkiIcerik"), 0)) {
 
 										Intent_AnaEkran.putExtra("JSONData", "{\"Islem\":\"Frg_Istatistik_Guncelle\"}");
 										context.getApplicationContext().sendBroadcast(Intent_AnaEkran);

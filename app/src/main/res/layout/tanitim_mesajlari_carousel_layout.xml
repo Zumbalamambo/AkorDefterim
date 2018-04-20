@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:padding="10dp">
+    
+    <TextView
+        android:id="@+id/lblBaslik"
+        style="@style/TextAppearance.AppCompat.Large.Inverse"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="10dp"
+        android:layout_centerHorizontal="true"
+        android:text="@string/labeltire"
+        android:textColor="@color/Beyaz" />
+
+    <TextView
+        android:id="@+id/lblIcerik"
+        style="@style/TextAppearance.AppCompat.Small.Inverse"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="10dp"
+        android:layout_centerHorizontal="true"
+        android:layout_below="@+id/lblBaslik"
+        android:text="@string/labeltire"
+        android:textColor="@color/Beyaz" />
+</RelativeLayout>

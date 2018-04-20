@@ -9,9 +9,11 @@ import com.cnbcyln.app.akordefterim.Retrofit.Siniflar.SnfHesapGirisYap;
 import com.cnbcyln.app.akordefterim.Retrofit.Siniflar.SnfIPAdres;
 import com.cnbcyln.app.akordefterim.Retrofit.Siniflar.SnfIslemSonuc;
 import com.cnbcyln.app.akordefterim.Retrofit.Siniflar.SnfKategoriListesiGetir;
+import com.cnbcyln.app.akordefterim.Retrofit.Siniflar.SnfMqttBroker;
 import com.cnbcyln.app.akordefterim.Retrofit.Siniflar.SnfSarkiGetir;
 import com.cnbcyln.app.akordefterim.Retrofit.Siniflar.SnfSarkiListesiGetir;
 import com.cnbcyln.app.akordefterim.Retrofit.Siniflar.SnfSistemDurum;
+import com.cnbcyln.app.akordefterim.Retrofit.Siniflar.SnfTanitimMesajlari;
 import com.cnbcyln.app.akordefterim.Retrofit.Siniflar.SnfTarihSaat;
 import com.cnbcyln.app.akordefterim.Retrofit.Siniflar.SnfTarzListesiGetir;
 
@@ -53,6 +55,9 @@ public interface RetrofitInterface {
     @GET("phpscriptleri/genel/anasayfa.php")
     Call<SnfAnasayfaGetir> AnasayfaGetir();
 
+    @GET("phpscriptleri/genel/tanitim_mesajlarini_getir.php")
+    Call<SnfTanitimMesajlari> TanitimMesajlariniGetir();
+
     @GET("phpscriptleri/genel/dosya_bilgisi_getir.php")
     Call<SnfDosyaBilgisiGetir> DosyaBilgisiGetir(@Query("DosyaDizin") String mDosyaDizin,
                                                  @Query("DosyaAdi") String mDosyaAdi);
@@ -60,6 +65,9 @@ public interface RetrofitInterface {
     @GET("phpscriptleri/genel/firebase_mesaj_yolla.php")
     Call<SnfIslemSonuc> FirebaseMesajGonder(@Query("FirebaseToken") String mFirebaseToken,
                                             @Query("Icerik") String mIcerik);
+
+    @GET("phpscriptleri/genel/mqttbroker_bilgisi_getir.php")
+    Call<SnfMqttBroker> MqttBrokerBilgisiGetir();
 
     /* **************************************
        ***                                ***
@@ -116,14 +124,14 @@ public interface RetrofitInterface {
                                            @Query("CepTelefon") String mCepTelefon,
                                            @Query("UygulamaVersiyon") String mUygulamaVersiyon);
 
-    @GET("phpscriptleri/hesapislemleri/hesap_telefon_guncelle.php")
+    /*@GET("phpscriptleri/hesapislemleri/hesap_telefon_guncelle.php")
     Call<SnfIslemSonuc> HesapTelefonGuncelle(@Query("HesapID") String mHesapID,
                                            @Query("FirebaseToken") String mFirebaseToken,
                                            @Query("OSID") String mOSID,
                                            @Query("OSVersiyon") String mOSVersiyon,
                                            @Query("TelKodu") String mTelKodu,
                                            @Query("CepTelefon") String mCepTelefon,
-                                           @Query("UygulamaVersiyon") String mUygulamaVersiyon);
+                                           @Query("UygulamaVersiyon") String mUygulamaVersiyon);*/
 
     /* **************************************
        ***                                ***

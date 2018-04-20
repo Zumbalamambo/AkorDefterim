@@ -25,7 +25,7 @@ public class AdpKategori extends BaseAdapter {
 	public AdpKategori(Activity activity, List<SnfKategoriler> Kategoriler) {
 		inflater = (LayoutInflater) activity.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 		this.Kategoriler = Kategoriler;
-		AkorDefterimSys = AkorDefterimSys.getInstance();
+		AkorDefterimSys = com.cnbcyln.app.akordefterim.util.AkorDefterimSys.getInstance();
 		AkorDefterimSys.activity = activity;
 		YaziFontu = AkorDefterimSys.FontGetir(activity, "anivers_regular");
 	}
@@ -53,7 +53,7 @@ public class AdpKategori extends BaseAdapter {
 		
 		satirView = inflater.inflate(R.layout.spinner_satir, null);
 		
-		TextView lblspinner_satir = (TextView) satirView.findViewById(R.id.lblspinner_satir);
+		TextView lblspinner_satir = satirView.findViewById(R.id.lblspinner_satir);
 		lblspinner_satir.setTypeface(YaziFontu);
 		lblspinner_satir.setText(Kategori.getKategoriAdi());
 		
@@ -67,7 +67,7 @@ public class AdpKategori extends BaseAdapter {
 		
 		satirView = inflater.inflate(R.layout.spinner_dropdown_satir, null);
 		
-		TextView lblspinner_satir = (TextView) satirView.findViewById(R.id.lblspinner_satir);
+		TextView lblspinner_satir = satirView.findViewById(R.id.lblspinner_satir);
 		lblspinner_satir.setTypeface(YaziFontu);
 		lblspinner_satir.setText(Kategori.getKategoriAdi());
 		

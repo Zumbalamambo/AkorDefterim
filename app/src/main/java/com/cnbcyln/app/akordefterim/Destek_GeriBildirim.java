@@ -104,7 +104,9 @@ public class Destek_GeriBildirim extends AppCompatActivity implements Interface_
         Bundle mBundle = getIntent().getExtras();
         BildirimTipi = mBundle.getString("BildirimTipi");
 
-		coordinatorLayout = findViewById(R.id.coordinatorLayout);
+        AkorDefterimSys.SonYapilanIslemGuncelle("destek_geri_bildirim_ekranina_giris_yapildi", "[]");
+
+        coordinatorLayout = findViewById(R.id.coordinatorLayout);
 		coordinatorLayout.setOnClickListener(this);
 
         constraintLayout = findViewById(R.id.constraintLayout);
@@ -340,6 +342,8 @@ public class Destek_GeriBildirim extends AppCompatActivity implements Interface_
                                 ADDialog.getWindow().getAttributes().windowAnimations = R.style.DialogAnimation;
                                 ADDialog.show();
                             }
+
+                            AkorDefterimSys.SonYapilanIslemGuncelle("geri_bildirim_gonderdi", "[{\"Param\":\"" + BildirimTipi + "\"}]");
                         }
                     } else {
                         btnKapat.setEnabled(true);

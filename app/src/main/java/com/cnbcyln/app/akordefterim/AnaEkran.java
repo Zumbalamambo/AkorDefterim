@@ -32,6 +32,7 @@ import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -46,6 +47,8 @@ import com.cnbcyln.app.akordefterim.ResideMenu.ResideMenu;
 import com.cnbcyln.app.akordefterim.Siniflar.SnfSarkilar;
 import com.cnbcyln.app.akordefterim.util.AkorDefterimSys;
 import com.cnbcyln.app.akordefterim.util.AppService;
+import com.cnbcyln.app.akordefterim.util.ClearableEditText;
+import com.cnbcyln.app.akordefterim.util.MqttService;
 import com.cnbcyln.app.akordefterim.util.Veritabani;
 
 import org.json.JSONArray;
@@ -82,15 +85,17 @@ public class AnaEkran extends AppCompatActivity implements Int_DataConn_AnaEkran
     // AnaEkran Değişken Tanımlamaları
     ImageButton btnSolMenu, btnSagMenu;
     LinearLayout LLSayfa;
-    TextView lblSayfaBaslik, lblMenuSag_OrtaMesaj;
+    TextView lblSayfaBaslik;
     CoordinatorLayout AnaEkran_CoordinatorLayout;
     ResideMenu resideMenu;
 
     // Sliding Menü Sağ Değişkenler Tanımlamaları
     CoordinatorLayout coordinatorLayoutSag;
     RelativeLayout RLSarkiListesi_AnaPanel, RLSarkiListesi_AramaPanel;
+    TextView lblMenuSag_OrtaMesaj;
+    ImageView ImgMenuSag_OrtaMesaj_SolOk;
     ImageButton btnAra_AnaPanel, btnGeri_AramaPanel;
-    EditText txtAra_AramaPanel;
+    ClearableEditText txtAra_AramaPanel;
     FastScroller_Listview lstSarkiListesi;
 
     // Sliding Menü Sol Değişkenler Tanımlamaları
@@ -123,7 +128,10 @@ public class AnaEkran extends AppCompatActivity implements Int_DataConn_AnaEkran
         veritabani = new Veritabani(activity);
         YaziFontu = AkorDefterimSys.FontGetir(activity, "anivers_regular");
         sharedPref = activity.getSharedPreferences(AkorDefterimSys.PrefAdi, Context.MODE_PRIVATE);
-        startService(new Intent(getApplicationContext(), AppService.class));
+
+        sharedPrefEditor = sharedPref.edit();
+        sharedPrefEditor.putBoolean("prefAppRunning", true);
+        sharedPrefEditor.apply();
 
         imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE); // İstenildiği zaman klavyeyi gizlemeye yarayan kod tanımlayıcısı
 
@@ -212,11 +220,13 @@ public class AnaEkran extends AppCompatActivity implements Int_DataConn_AnaEkran
                         btnAra_AnaPanel.setEnabled(false);
                         lblMenuSag_OrtaMesaj.setVisibility(View.VISIBLE);
                         lblMenuSag_OrtaMesaj.setText(getString(R.string.liste_bos));
+                        ImgMenuSag_OrtaMesaj_SolOk.setVisibility(View.VISIBLE);
                         lstSarkiListesi.setVisibility(View.GONE);
                     } else {
                         btnAra_AnaPanel.setImageResource(R.drawable.ic_ara_siyah);
                         btnAra_AnaPanel.setEnabled(true);
                         lblMenuSag_OrtaMesaj.setVisibility(View.GONE);
+                        ImgMenuSag_OrtaMesaj_SolOk.setVisibility(View.GONE);
                         lstSarkiListesi.setVisibility(View.VISIBLE);
 
                         // Elde ettiğimiz snfSarkilar sıfındaki tüm kayıtları AdpSarkiListesiLST ile lstSarkiListesi isimli Listview'a set ediyoruz..
@@ -242,6 +252,8 @@ public class AnaEkran extends AppCompatActivity implements Int_DataConn_AnaEkran
 
         lblMenuSag_OrtaMesaj = ViewSlidingSagMenuContainer.findViewById(R.id.lblMenuSag_OrtaMesaj);
         lblMenuSag_OrtaMesaj.setTypeface(YaziFontu, Typeface.NORMAL);
+
+        ImgMenuSag_OrtaMesaj_SolOk = ViewSlidingSagMenuContainer.findViewById(R.id.ImgMenuSag_OrtaMesaj_SolOk);
 
         lstSarkiListesi = ViewSlidingSagMenuContainer.findViewById(R.id.lstSarkiListesi);
         lstSarkiListesi.setFastScrollEnabled(true);
@@ -702,11 +714,13 @@ public class AnaEkran extends AppCompatActivity implements Int_DataConn_AnaEkran
                             btnAra_AnaPanel.setEnabled(false);
                             lblMenuSag_OrtaMesaj.setVisibility(View.VISIBLE);
                             lblMenuSag_OrtaMesaj.setText(getString(R.string.liste_bos));
+                            ImgMenuSag_OrtaMesaj_SolOk.setVisibility(View.VISIBLE);
                             lstSarkiListesi.setVisibility(View.GONE);
                         } else {
                             btnAra_AnaPanel.setImageResource(R.drawable.ic_ara_siyah);
                             btnAra_AnaPanel.setEnabled(true);
                             lblMenuSag_OrtaMesaj.setVisibility(View.GONE);
+                            ImgMenuSag_OrtaMesaj_SolOk.setVisibility(View.GONE);
                             lstSarkiListesi.setVisibility(View.VISIBLE);
 
                             // Elde ettiğimiz snfSarkilar sıfındaki tüm kayıtları AdpSarkiListesiLST ile lstSarkiListesi isimli Listview'a set ediyoruz..

@@ -5,6 +5,7 @@ import android.app.Activity;
 import android.app.Fragment;
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.content.res.Configuration;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.constraint.ConstraintLayout;
@@ -59,12 +60,15 @@ public class Frg_Anasayfa extends Fragment implements SwipeRefreshLayout.OnRefre
 		activity = getActivity();
 		AkorDefterimSys = AkorDefterimSys.getInstance();
 		AkorDefterimSys.activity = activity;
+
 		Veritabani = new Veritabani(activity);
 		FragmentDataConn = (Int_DataConn_AnaEkran) activity;
 
 		sharedPref = activity.getSharedPreferences(AkorDefterimSys.PrefAdi, Context.MODE_PRIVATE);
 		
 		YaziFontu = AkorDefterimSys.FontGetir(activity, "anivers_regular");
+
+		AkorDefterimSys.SonYapilanIslemGuncelle("anasayfa_ekranina_giris_yapildi", "[]");
 
 		coordinatorLayout_Anasayfa = activity.findViewById(R.id.coordinatorLayout_Anasayfa);
 
@@ -81,11 +85,15 @@ public class Frg_Anasayfa extends Fragment implements SwipeRefreshLayout.OnRefre
 			}
 		});
 
-		RecyclerView.LayoutManager mGridLayoutManager = new GridLayoutManager(activity, 2);
+        // Alttaki fonksiyonla ekran boyutunu alıyoruz. Dönen değer direk 1-2-3 şeklinde geldiği için işimize yaradı.
+		// Direk spanCount değerine atadık..
+		int screenSize = getResources().getConfiguration().screenLayout & Configuration.SCREENLAYOUT_SIZE_MASK;
+
+		RecyclerView.LayoutManager mGridLayoutManager = new GridLayoutManager(activity, screenSize);
 
 		RVAnasayfa = activity.findViewById(R.id.RVAnasayfa);
 		RVAnasayfa.setLayoutManager(mGridLayoutManager);
-		RVAnasayfa.addItemDecoration(new GridSpacingItemDecoration(2, AkorDefterimSys.dpToPx(10), true));
+		RVAnasayfa.addItemDecoration(new GridSpacingItemDecoration(screenSize, AkorDefterimSys.dpToPx(10), true));
 	}
 
 	@Override
@@ -156,6 +164,8 @@ public class Frg_Anasayfa extends Fragment implements SwipeRefreshLayout.OnRefre
 
 				CLYenidenDene.setVisibility(View.GONE);
 				SRLAnasayfa.setVisibility(View.VISIBLE);
+
+				AkorDefterimSys.SonYapilanIslemGuncelle("sayfa_yenilendi", "[]");
 			} else {
 				CLYenidenDene.setVisibility(View.VISIBLE);
 				SRLAnasayfa.setVisibility(View.GONE);

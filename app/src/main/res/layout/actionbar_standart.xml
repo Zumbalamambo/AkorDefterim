@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/RLActionBar"
+    android:layout_width="match_parent"
+    android:layout_height="45dp"
+    android:background="@color/Beyaz">
+
+    <ImageButton
+        android:id="@+id/btnGeri"
+        android:layout_width="45dp"
+        android:layout_height="match_parent"
+        android:layout_centerVertical="true"
+        android:background="@drawable/custom_button2"
+        app:srcCompat="@drawable/ic_arrow_back_siyah"
+        android:contentDescription="@string/imageDesc" />
+
+    <TextView
+        android:id="@+id/lblBaslik"
+        style="@style/TextAppearance.AppCompat.Medium.Inverse"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="8dp"
+        android:layout_centerVertical="true"
+        android:layout_toEndOf="@+id/btnGeri"
+        android:layout_toRightOf="@+id/btnGeri"
+        android:text="@string/labeltire"
+        android:textColor="@color/KoyuYazi"
+        tools:ignore="RelativeOverlap" />
+</RelativeLayout>

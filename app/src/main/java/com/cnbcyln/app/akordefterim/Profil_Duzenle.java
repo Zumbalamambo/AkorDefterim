@@ -142,6 +142,8 @@ public class Profil_Duzenle extends AppCompatActivity implements Interface_Async
 
 		ProfilResimYuklemeBoyutu = getResources().getInteger(R.integer.ProfilResimYuklemeBoyutu);
 
+		AkorDefterimSys.SonYapilanIslemGuncelle("profil_duzenle_ekranina_giris_yapildi", "[]");
+
 		coordinatorLayout = activity.findViewById(R.id.coordinatorLayout);
 		coordinatorLayout.setOnClickListener(this);
 
@@ -601,9 +603,14 @@ public class Profil_Duzenle extends AppCompatActivity implements Interface_Async
 					if(JSONSonuc.getBoolean("Sonuc")) {
 						if(JSONSonuc.getString("HesapDurum").equals("Ban")) { // Eğer hesap banlanmışsa
 							if(!AkorDefterimSys.AlertDialogisShowing(ADDialog)) {
+								@SuppressLint("SimpleDateFormat")
+								SimpleDateFormat SDF1 = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+								@SuppressLint("SimpleDateFormat")
+								SimpleDateFormat SDF2 = new SimpleDateFormat("dd MMMM yyyy - HH:mm:ss");
+
 								ADDialog = AkorDefterimSys.CustomAlertDialog(activity,
 										getString(R.string.hesap_durumu),
-										getString(R.string.hesap_banlandi, JSONSonuc.getString("HesapDurumBilgi"), getString(R.string.uygulama_yapimci_site)),
+										getString(R.string.hesap_banlandi, SDF2.format(SDF1.parse(JSONSonuc.getString("HesapDurumTarihSaat"))), JSONSonuc.getString("HesapDurumBilgi"), getString(R.string.uygulama_yapimci_eposta)),
 										activity.getString(R.string.tamam),
 										"ADDialog_Kapat_CikisYap");
 								ADDialog.getWindow().getAttributes().windowAnimations = R.style.DialogAnimation;
@@ -651,7 +658,7 @@ public class Profil_Duzenle extends AppCompatActivity implements Interface_Async
 							if(JSONSonuc.getString("EPosta").equals("")) lblEPostaAdresi2.setText(String.format("%s%s%s", "(", getString(R.string.belirtilmemis), ")"));
 							else lblEPostaAdresi2.setText(JSONSonuc.getString("EPosta"));
 
-							if(JSONSonuc.getString("CepTelefon").equals("")) {
+							if(JSONSonuc.getString("CepTelefon").equals("") || JSONSonuc.getString("CepTelefon").equals("-")) {
 								lblTelefonNumarasi2.setText(String.format("%s%s%s", "(", getString(R.string.belirtilmemis), ")"));
 								btnTelefonNumarasiSil.setVisibility(View.GONE);
 							} else {
@@ -693,6 +700,8 @@ public class Profil_Duzenle extends AppCompatActivity implements Interface_Async
 							ADDialog.getWindow().getAttributes().windowAnimations = R.style.DialogAnimation;
 							ADDialog.show();
 						}
+
+						AkorDefterimSys.SonYapilanIslemGuncelle("profil_bilgileri_duzenlendi", "[]");
 					} else {
 						switch (JSONSonuc.getString("Aciklama")) {
 							case "Kullanıcı Adı başka birisine kayıtlı!":
@@ -758,7 +767,7 @@ public class Profil_Duzenle extends AppCompatActivity implements Interface_Async
 						PDBilgilerGuncelleniyor.show();
 					}
 
-					AkorDefterimSys.HesapTelefonGuncelle(sharedPref.getString("prefHesapID",""),  FirebaseToken, OSID, OSVersiyon,"", "", UygulamaVersiyon, "HesapTelefonGuncelle");
+					AkorDefterimSys.HesapBilgiGuncelle(sharedPref.getString("prefHesapID",""), "", "", FirebaseToken, OSID, OSVersiyon, "", "", "","", "", "", "", "-", "-", UygulamaVersiyon, "HesapBilgiGuncelle_Profil");
 					break;
 				case "HesapTelefonGuncelle":
 					AkorDefterimSys.DismissProgressDialog(PDBilgilerGuncelleniyor);
@@ -795,7 +804,7 @@ public class Profil_Duzenle extends AppCompatActivity implements Interface_Async
 					AkorDefterimSys.EkranKapat();
 					break;
 			}
-		} catch (JSONException e) {
+		} catch (JSONException | ParseException e) {
 			e.printStackTrace();
 		}
 	}
@@ -995,31 +1004,33 @@ public class Profil_Duzenle extends AppCompatActivity implements Interface_Async
 			else
 				txtILDogumTarih.setError(null);*/
 
-			if (TextUtils.isEmpty(KullaniciAdi)) {
-				txtILKullaniciAdi.setError(getString(R.string.hata_bos_alan));
-				txtKullaniciAdi.requestFocus();
-				txtKullaniciAdi.setSelection(txtKullaniciAdi.length());
-				imm.showSoftInput(txtKullaniciAdi, 0);
-			} else if (KullaniciAdi.length() < KullaniciAdiKarakterSayisiMIN) {
-				txtILKullaniciAdi.setError(getString(R.string.hata_en_az_karakter, String.valueOf(KullaniciAdiKarakterSayisiMIN)));
-				txtKullaniciAdi.requestFocus();
-				txtKullaniciAdi.setSelection(txtKullaniciAdi.length());
-				imm.showSoftInput(txtKullaniciAdi, 0);
-			} else if (KullaniciAdi.length() > KullaniciAdiKarakterSayisiMAX) {
-				txtILKullaniciAdi.setError(getString(R.string.hata_en_fazla_karakter, String.valueOf(KullaniciAdiKarakterSayisiMAX)));
-				txtKullaniciAdi.requestFocus();
-				txtKullaniciAdi.setSelection(txtKullaniciAdi.length());
-				imm.showSoftInput(txtKullaniciAdi, 0);
-			} else if(!AkorDefterimSys.isValid(KullaniciAdi, "KullaniciAdi")) {
-				txtILKullaniciAdi.setError(getString(R.string.hata_format_sadece_sayi_kucukharf));
-				txtKullaniciAdi.requestFocus();
-				txtKullaniciAdi.setSelection(txtKullaniciAdi.length());
-				imm.showSoftInput(txtKullaniciAdi, 0);
-			} else if(!StringUtils.isAlpha(KullaniciAdi.substring(0, KullaniciAdiBastakiHarfKarakterSayisi))) {
-				txtILKullaniciAdi.setError(getString(R.string.hata_format_bastaki_karakterler_harf_olmak_zorunda, String.valueOf(KullaniciAdiBastakiHarfKarakterSayisi)));
-				txtKullaniciAdi.requestFocus();
-				txtKullaniciAdi.setSelection(txtKullaniciAdi.length());
-				imm.showSoftInput(txtKullaniciAdi, 0);
+			if(!KayitliKullaniciAdi.isEmpty()) {
+				if (TextUtils.isEmpty(KullaniciAdi)) {
+					txtILKullaniciAdi.setError(getString(R.string.hata_bos_alan));
+					txtKullaniciAdi.requestFocus();
+					txtKullaniciAdi.setSelection(txtKullaniciAdi.length());
+					imm.showSoftInput(txtKullaniciAdi, 0);
+				} else if (KullaniciAdi.length() < KullaniciAdiKarakterSayisiMIN) {
+					txtILKullaniciAdi.setError(getString(R.string.hata_en_az_karakter, String.valueOf(KullaniciAdiKarakterSayisiMIN)));
+					txtKullaniciAdi.requestFocus();
+					txtKullaniciAdi.setSelection(txtKullaniciAdi.length());
+					imm.showSoftInput(txtKullaniciAdi, 0);
+				} else if (KullaniciAdi.length() > KullaniciAdiKarakterSayisiMAX) {
+					txtILKullaniciAdi.setError(getString(R.string.hata_en_fazla_karakter, String.valueOf(KullaniciAdiKarakterSayisiMAX)));
+					txtKullaniciAdi.requestFocus();
+					txtKullaniciAdi.setSelection(txtKullaniciAdi.length());
+					imm.showSoftInput(txtKullaniciAdi, 0);
+				} else if(!AkorDefterimSys.isValid(KullaniciAdi, "KullaniciAdi")) {
+					txtILKullaniciAdi.setError(getString(R.string.hata_format_sadece_sayi_kucukharf));
+					txtKullaniciAdi.requestFocus();
+					txtKullaniciAdi.setSelection(txtKullaniciAdi.length());
+					imm.showSoftInput(txtKullaniciAdi, 0);
+				} else if(!StringUtils.isAlpha(KullaniciAdi.substring(0, KullaniciAdiBastakiHarfKarakterSayisi))) {
+					txtILKullaniciAdi.setError(getString(R.string.hata_format_bastaki_karakterler_harf_olmak_zorunda, String.valueOf(KullaniciAdiBastakiHarfKarakterSayisi)));
+					txtKullaniciAdi.requestFocus();
+					txtKullaniciAdi.setSelection(txtKullaniciAdi.length());
+					imm.showSoftInput(txtKullaniciAdi, 0);
+				} else txtILKullaniciAdi.setError(null);
 			} else txtILKullaniciAdi.setError(null);
 
 			if(txtILAdSoyad.getError() == null/* && txtILDogumTarih.getError() == null*/ && txtILKullaniciAdi.getError() == null) {

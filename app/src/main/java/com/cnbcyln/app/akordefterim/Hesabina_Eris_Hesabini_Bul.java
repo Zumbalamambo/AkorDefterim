@@ -1,5 +1,6 @@
 package com.cnbcyln.app.akordefterim;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
@@ -30,6 +31,9 @@ import com.github.ybq.android.spinkit.SpinKitView;
 
 import org.json.JSONException;
 import org.json.JSONObject;
+
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 
 @SuppressWarnings({"deprecation", "ResultOfMethodCallIgnored", "ConstantConditions"})
 public class Hesabina_Eris_Hesabini_Bul extends AppCompatActivity implements Interface_AsyncResponse, OnClickListener {
@@ -171,9 +175,14 @@ public class Hesabina_Eris_Hesabini_Bul extends AppCompatActivity implements Int
 					if(JSONSonuc.getBoolean("Sonuc")) {
                         if(JSONSonuc.getString("HesapDurum").equals("Ban")) { // Eğer hesap banlanmışsa
 							if(!AkorDefterimSys.AlertDialogisShowing(ADDialog)) {
+								@SuppressLint("SimpleDateFormat")
+								SimpleDateFormat SDF1 = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+								@SuppressLint("SimpleDateFormat")
+								SimpleDateFormat SDF2 = new SimpleDateFormat("dd MMMM yyyy - HH:mm:ss");
+
 								ADDialog = AkorDefterimSys.CustomAlertDialog(activity,
 										getString(R.string.hesap_durumu),
-										getString(R.string.hesap_banlandi, JSONSonuc.getString("HesapDurumBilgi"), getString(R.string.uygulama_yapimci_site)),
+										getString(R.string.hesap_banlandi, SDF2.format(SDF1.parse(JSONSonuc.getString("HesapDurumTarihSaat"))), JSONSonuc.getString("HesapDurumBilgi"), getString(R.string.uygulama_yapimci_eposta)),
 										activity.getString(R.string.tamam),
 										"ADDialog_Kapat");
 								ADDialog.getWindow().getAttributes().windowAnimations = R.style.DialogAnimation;
@@ -204,7 +213,7 @@ public class Hesabina_Eris_Hesabini_Bul extends AppCompatActivity implements Int
 					AkorDefterimSys.DismissProgressDialog(PDIslem);
 					break;
             }
-        } catch (JSONException e) {
+        } catch (JSONException | ParseException e) {
             e.printStackTrace();
         }
     }

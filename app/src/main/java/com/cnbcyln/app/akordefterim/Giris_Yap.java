@@ -29,11 +29,15 @@ import android.widget.TextView;
 
 import com.cnbcyln.app.akordefterim.Interface.Interface_AsyncResponse;
 import com.cnbcyln.app.akordefterim.util.AkorDefterimSys;
+import com.cnbcyln.app.akordefterim.util.MqttService;
 import com.cnbcyln.app.akordefterim.util.Strings;
 import com.google.firebase.iid.FirebaseInstanceId;
 
 import org.json.JSONException;
 import org.json.JSONObject;
+
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 
 @SuppressWarnings({"deprecation", "ResultOfMethodCallIgnored", "ConstantConditions"})
 public class Giris_Yap extends AppCompatActivity implements Interface_AsyncResponse, OnClickListener {
@@ -45,6 +49,7 @@ public class Giris_Yap extends AppCompatActivity implements Interface_AsyncRespo
 	Typeface YaziFontu;
 	ProgressDialog PDGirisYap;
 	AlertDialog ADDialog_HesapDurumu;
+	Intent mIntentMqttService;
 
 	CoordinatorLayout coordinatorLayout;
 	ImageButton btnGeri;
@@ -66,6 +71,8 @@ public class Giris_Yap extends AppCompatActivity implements Interface_AsyncRespo
 		YaziFontu = AkorDefterimSys.FontGetir(activity, "anivers_regular"); // Genel yazı fontunu belirttik
 
         sharedPref = activity.getSharedPreferences(AkorDefterimSys.PrefAdi, Context.MODE_PRIVATE);
+
+		mIntentMqttService = new Intent(MqttService.class.getName());
 
 		AkorDefterimSys.GenelAyarlar(); // Uygulama için genel ayarları uyguladık.
 		//AkorDefterimSys.TransparanNotifyBar(); // Notification Bar'ı transparan yapıyoruz.
@@ -229,17 +236,29 @@ public class Giris_Yap extends AppCompatActivity implements Interface_AsyncRespo
 
 						AkorDefterimSys.EkranGetir(mIntent, "Normal");
 
-						if(!JSONSonuc.getString("HesapFirebaseToken").equals(FirebaseToken))
-							AkorDefterimSys.FirebaseMesajGonder(activity, JSONSonuc.getString("HesapFirebaseToken"), "{\"Islem\":\"CikisYap\", \"HesapFirebaseToken\":\"" + JSONSonuc.getString("HesapFirebaseToken") + "\"}", "FirebaseMesajGonder_CikisYap");
+						mIntentMqttService.putExtra("JSONData", "{\"Islem\":\"Subscribe_HesapKanal\", \"HesapID\":\"" + JSONSonuc.getString("HesapID") + "\"}");
+						this.sendBroadcast(mIntentMqttService);
+
+						if(!JSONSonuc.getString("HesapFirebaseToken").equals(FirebaseToken)) {
+							mIntentMqttService.putExtra("JSONData", "{\"Islem\":\"CikisYap\", \"HesapID\":\"" + JSONSonuc.getString("HesapID") + "\", \"HesapFirebaseToken\":\"" + JSONSonuc.getString("HesapFirebaseToken") + "\"}");
+							this.sendBroadcast(mIntentMqttService);
+						}
+
+						//AkorDefterimSys.FirebaseMesajGonder(activity, JSONSonuc.getString("HesapFirebaseToken"), "{\"Islem\":\"CikisYap\", \"HesapFirebaseToken\":\"" + JSONSonuc.getString("HesapFirebaseToken") + "\"}", "FirebaseMesajGonder_CikisYap");
 
 						finishAffinity();
 					} else {
 						switch (JSONSonuc.getString("HesapDurum")) {
 							case "Ban":
 								if(!AkorDefterimSys.AlertDialogisShowing(ADDialog_HesapDurumu)) {
+									@SuppressLint("SimpleDateFormat")
+									SimpleDateFormat SDF1 = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+									@SuppressLint("SimpleDateFormat")
+									SimpleDateFormat SDF2 = new SimpleDateFormat("dd MMMM yyyy - HH:mm:ss");
+
 									ADDialog_HesapDurumu = AkorDefterimSys.CustomAlertDialog(activity,
 											getString(R.string.hesap_durumu),
-											getString(R.string.hesap_banlandi, JSONSonuc.getString("HesapDurumBilgi"), getString(R.string.uygulama_yapimci_site)),
+											getString(R.string.hesap_banlandi, SDF2.format(SDF1.parse(JSONSonuc.getString("HesapDurumTarihSaat"))), JSONSonuc.getString("HesapDurumBilgi"), getString(R.string.uygulama_yapimci_eposta)),
 											activity.getString(R.string.tamam),
 											"ADDialog_HesapDurumu_Kapat");
 									ADDialog_HesapDurumu.getWindow().getAttributes().windowAnimations = R.style.DialogAnimation;
@@ -271,10 +290,10 @@ public class Giris_Yap extends AppCompatActivity implements Interface_AsyncRespo
 					break;
             }
 
-        } catch (JSONException e) {
+        } catch (JSONException | ParseException e) {
             e.printStackTrace();
         }
-    }
+	}
 
     private void Giris() {
 		if(AkorDefterimSys.InternetErisimKontrolu()) {
