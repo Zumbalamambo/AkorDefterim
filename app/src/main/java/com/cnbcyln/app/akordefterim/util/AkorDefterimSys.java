@@ -122,6 +122,7 @@ import com.facebook.share.widget.ShareDialog;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GooglePlayServicesUtil;
 import com.google.android.gms.plus.PlusShare;
+import com.google.android.youtube.player.YouTubePlayerView;
 import com.mhk.android.passcodeview.PasscodeView;
 import com.rengwuxian.materialedittext.MaterialEditText;
 import com.theartofdev.edmodo.cropper.CropImage;
@@ -171,6 +172,7 @@ import java.net.NetworkInterface;
 import java.net.SocketException;
 import java.net.URL;
 import java.net.URLConnection;
+import java.net.URLDecoder;
 import java.nio.charset.Charset;
 import java.security.cert.CertificateException;
 import java.security.cert.X509Certificate;
@@ -182,8 +184,11 @@ import java.util.Calendar;
 import java.util.Collections;
 import java.util.Date;
 import java.util.Enumeration;
+import java.util.LinkedHashMap;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Locale;
+import java.util.Map;
 import java.util.Timer;
 import java.util.TimerTask;
 import java.util.concurrent.TimeUnit;
@@ -208,7 +213,7 @@ public class AkorDefterimSys {
 	private SharedPreferences sharedPref;
 	private SharedPreferences.Editor sharedPrefEditor;
 	private SharedPreferences.OnSharedPreferenceChangeListener sharedPrefChanged;
-	private AlertDialog ADDialog, ADDialog_Yenilikler;
+	private AlertDialog ADDialog_Yenilikler, ADDialog_VideoKlip;
 
 	// PHP AYARLARI (MAİL VE SMS GÖNDERİMİ)
 	public String CBCAPP_HttpsAdres = "https://www.cbcapp.net";
@@ -234,6 +239,7 @@ public class AkorDefterimSys {
 	public String NormalTag2 = "]";
 	public String HtmlTag1_1 = "<span style=\"color: #ea494d;\" onclick=\"AkorGosterici.performClick('";
 	public String HtmlTag1_2 = "');\"><b>";
+
 	public String HtmlTag2 = "</b></span>";
 	public String AkorHtmlURLAssets = "file:///android_asset/akorhtml/index.html";
 
@@ -275,6 +281,7 @@ public class AkorDefterimSys {
 	public String prefAction = "";
 	public String prefEklenenDuzenlenenSarkiAdi = "";
 	public String prefEklenenDuzenlenenSanatciAdi = "";
+	public String prefEklenenDuzenlenenVideoURL = "";
 	public int prefEklenenDuzenlenenSarkiID = 0;
 
 	public AkorDefterimSys() {}
@@ -451,7 +458,7 @@ public class AkorDefterimSys {
                         AkorDefterimSys.NotifyGoster(myIntent, getString(R.string.uygulama_adi), MesajIcerik, "", -1, MesajIcerik, getString(R.string.uygulama_adi), MesajIcerik, "", true);
 
                         if (Fragment_SayfaAdi.equals("Frg_Anasayfa")) {
-                            Frg_Anasayfa Frg_Anasayfa = (Frg_Anasayfa) activity.getFragmentManager().findFragmentByTag(Fragment_SayfaAdi);
+                            Frg_Anasayfa Frg_Anasayfa = (Frg_Anasayfa) FM.findFragmentById(R.id.LLSayfa);
                             Frg_Anasayfa.SonEklenenSarkilar_ListeGuncelle();
                         }
 
@@ -473,7 +480,7 @@ public class AkorDefterimSys {
                         if (Fragment_SayfaTag.equals("Frg_istekyap")) {
                             SimpleDateFormat fmt = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 
-                            Frg_IstekYap Frg_IstekYap = (Frg_IstekYap) activity.getFragmentManager().findFragmentByTag(Fragment_SayfaTag);
+                            Frg_IstekYap Frg_IstekYap = (Frg_IstekYap) FM.findFragmentByTag(Fragment_SayfaTag);
                             Frg_IstekYap.SnfMuzisyenBilgisiEkleGuncelle(JSONWebGelenVeri.getInt("HesapID"), JSONWebGelenVeri.getString("Durum"), JSONWebGelenVeri.getString("MuzisyenAd"), JSONWebGelenVeri.getString("MuzisyenSoyad"), JSONWebGelenVeri.getDouble("Enlem"), JSONWebGelenVeri.getDouble("Boylam"), fmt.parse(JSONWebGelenVeri.getString("LokasyonTarihi")));
                         }
 
@@ -534,7 +541,7 @@ public class AkorDefterimSys {
                         break;
                     case "Frg_TabRepKontrol_Guncelle":
                         if (Fragment_SayfaAdi.equals("Frg_Istatistik")) {
-                            Frg_Istatistik Frg_Istatistik = (Frg_Istatistik) activity.getFragmentManager().findFragmentByTag(Fragment_SayfaAdi);
+                            Frg_Istatistik Frg_Istatistik = (Frg_Istatistik) FM.findFragmentById(R.id.LLSayfa);
                             Frg_Istatistik.IstatistikGuncelle();
                         }
 
@@ -544,7 +551,7 @@ public class AkorDefterimSys {
                         Frg_TabRepKontrol.spnListeGetir();
 
                         if (Fragment_SayfaAdi.equals("Frg_Sarki")) {
-                            Frg_Sarki Frg_Sarki = (Frg_Sarki) activity.getFragmentManager().findFragmentByTag(Fragment_SayfaAdi);
+                            Frg_Sarki Frg_Sarki = (Frg_Sarki) FM.findFragmentById(R.id.LLSayfa);
                             Frg_Sarki.SarkiEklemeDialogGuncelle();
                         }
 
@@ -558,7 +565,7 @@ public class AkorDefterimSys {
                         break;
                     case "Frg_Istatistik_Guncelle":
                         if (Fragment_SayfaAdi.equals("Frg_Istatistik")) {
-                            Frg_Istatistik Frg_Istatistik = (Frg_Istatistik) activity.getFragmentManager().findFragmentByTag(Fragment_SayfaAdi);
+                            Frg_Istatistik Frg_Istatistik = (Frg_Istatistik) FM.findFragmentById(R.id.LLSayfa);
                             Frg_Istatistik.IstatistikGuncelle();
                         }
 
@@ -2107,6 +2114,44 @@ public class AkorDefterimSys {
 		return ADDialog;
 	}
 
+	@SuppressLint("InflateParams")
+	public void VideoPlayerAlertDialog(String URL) {
+		final Interface_AsyncResponse AsyncResponse = (Interface_AsyncResponse) activity;
+		LayoutInflater inflater = activity.getLayoutInflater();
+		View ViewDialogCustom = inflater.inflate(R.layout.activity_youtube_video_player, null);
+		Typeface YaziFontu = FontGetir(activity, "anivers_regular");
+
+		YouTubePlayerView YTVideoPlayer = ViewDialogCustom.findViewById(R.id.YTVideoPlayer);
+
+		Button btnDialogButton = ViewDialogCustom.findViewById(R.id.btnDialogButton);
+		btnDialogButton.setTypeface(YaziFontu, Typeface.BOLD);
+		btnDialogButton.setText(activity.getString(R.string.kapat));
+		btnDialogButton.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				AsyncResponse.AsyncTaskReturnValue("{\"Islem\":\"ADDialog_VideoKlip_Kapat\"}");
+			}
+		});
+
+		ADDialog_VideoKlip = new AlertDialog.Builder(activity)
+				.setView(ViewDialogCustom)
+				.setCancelable(false)
+				.create();
+
+		ADDialog_VideoKlip.setOnKeyListener(new Dialog.OnKeyListener() {
+			@Override
+			public boolean onKey(DialogInterface arg0, int keyCode, KeyEvent event) {
+				if (keyCode == KeyEvent.KEYCODE_BACK) {
+					DismissAlertDialog(ADDialog_VideoKlip);
+				}
+				return true;
+			}
+		});
+
+		ADDialog_VideoKlip.getWindow().getAttributes().windowAnimations = R.style.DialogAnimation;
+		ADDialog_VideoKlip.show();
+	}
+
 	public void NotifyGoster(Intent intent, int NotificationID, String NotifyBaslik, String NotifyIcerik, String SubIcerik, int Number, String TickerIcerik, String BigNotifyBaslik, String BigNotifyIcerik, String BigSubIcerik, Boolean Titresim) {
 		Uri defaultSoundUri;
 		PendingIntent pendingIntent;
@@ -3042,6 +3087,7 @@ public class AkorDefterimSys {
 						JSONSarki.put("KategoriID", snfSarkilar.get(i).getKategoriID());
 						JSONSarki.put("SanatciAdi", snfSarkilar.get(i).getSanatciAdi());
 						JSONSarki.put("SarkiAdi", snfSarkilar.get(i).getSarkiAdi());
+						JSONSarki.put("VideoURL", snfSarkilar.get(i).getVideoURL());
 						JSONArrSarkilar.put(JSONSarki);
 					} catch (JSONException e) {
 						// TODO Auto-generated catch block
@@ -3054,7 +3100,7 @@ public class AkorDefterimSys {
 		}
 	}
 
-	public void SarkiGetir(Veritabani veritabani, final int mListeID, final int mSarkiID, final String mSanatciAdi, final String mSarkiAdi) {
+	public void SarkiGetir(Veritabani veritabani, final int mListeID, final int mSarkiID, final String mSanatciAdi, final String mSarkiAdi, final String mVideoURL) {
 		RetrofitInterface retrofitInterface = RetrofitServiceGenerator.createService(activity, RetrofitInterface.class);
 		final Interface_AsyncResponse AsyncResponse = (Interface_AsyncResponse) activity;
 
@@ -3068,7 +3114,7 @@ public class AkorDefterimSys {
 
 						// getHata'nin false olması durumu hata yok demektir..
 						if(!snfSarkiGetir.getHata())
-							AsyncResponse.AsyncTaskReturnValue("{\"Islem\":\"SarkiGetir\", \"Sonuc\":" + snfSarkiGetir.getSonuc() + ", \"SarkiID\":" + mSarkiID + ", \"ListeID\":" + mListeID + ", \"SanatciAdi\":\"" + mSanatciAdi + "\", \"SarkiAdi\":\"" + mSarkiAdi + "\", \"Icerik\":\"" + snfSarkiGetir.getIcerik().replace("\"","\\\"") + "\"}");
+							AsyncResponse.AsyncTaskReturnValue("{\"Islem\":\"SarkiGetir\", \"Sonuc\":" + snfSarkiGetir.getSonuc() + ", \"SarkiID\":" + mSarkiID + ", \"ListeID\":" + mListeID + ", \"SanatciAdi\":\"" + mSanatciAdi + "\", \"SarkiAdi\":\"" + mSarkiAdi + "\", \"Icerik\":\"" + snfSarkiGetir.getIcerik().replace("\"","\\\"") + "\", \"VideoURL\":\"" + mVideoURL + "\"}");
 						else AsyncResponse.AsyncTaskReturnValue("{\"Islem\":\"SarkiGetir\", \"Sonuc\":false}");
 					} else AsyncResponse.AsyncTaskReturnValue("{\"Islem\":\"SarkiGetir\", \"Sonuc\":false}");
 				}
@@ -3080,16 +3126,16 @@ public class AkorDefterimSys {
 			});
 		} else {
 			if (veritabani.SarkiVarMiKontrol(mSarkiID)) {
-				AsyncResponse.AsyncTaskReturnValue("{\"Islem\":\"SarkiGetir\", \"Sonuc\":true, \"SarkiID\":" + mSarkiID + ", \"ListeID\":" + mListeID + ", \"SanatciAdi\":\"" + mSanatciAdi + "\", \"SarkiAdi\":\"" + mSarkiAdi + "\", \"Icerik\":\"" + veritabani.SarkiIcerikGetir(mSarkiID).replace("\"","\\\"") + "\"}");
+				AsyncResponse.AsyncTaskReturnValue("{\"Islem\":\"SarkiGetir\", \"Sonuc\":true, \"SarkiID\":" + mSarkiID + ", \"ListeID\":" + mListeID + ", \"SanatciAdi\":\"" + mSanatciAdi + "\", \"SarkiAdi\":\"" + mSarkiAdi + "\", \"Icerik\":\"" + veritabani.SarkiIcerikGetir(mSarkiID).replace("\"","\\\"") + "\", \"VideoURL\":\"" + mVideoURL + "\"}");
 			} else AsyncResponse.AsyncTaskReturnValue("{\"Islem\":\"SarkiGetir\", \"Sonuc\":false}");
 		}
 	}
 
-	public void SarkiGonder(String mSanatciAdi, String mSarkiAdi, String mIcerik, String mEkleyenID) {
+	public void SarkiGonder(String mSanatciAdi, String mSarkiAdi, String mVideoURL, String mIcerik, String mEkleyenID) {
 		RetrofitInterface retrofitInterface = RetrofitServiceGenerator.createService(activity, RetrofitInterface.class);
 		final Interface_AsyncResponse AsyncResponse = (Interface_AsyncResponse) activity;
 
-		Call<SnfIslemSonuc> snfIslemSonucCall = retrofitInterface.SarkiGonder(mSanatciAdi, mSarkiAdi, mIcerik, mEkleyenID);
+		Call<SnfIslemSonuc> snfIslemSonucCall = retrofitInterface.SarkiGonder(mSanatciAdi, mSarkiAdi, mVideoURL, mIcerik, mEkleyenID);
 		snfIslemSonucCall.enqueue(new Callback<SnfIslemSonuc>() {
 			@Override
 			public void onResponse(Call<SnfIslemSonuc> call, Response<SnfIslemSonuc> response) {
@@ -3763,6 +3809,8 @@ public class AkorDefterimSys {
 				return txt.matches("^(?=.*[0-9])(?=.*[a-zığüşöç])(?=.*[A-ZĞÜŞİÖÇ]).{1,}$");
 			case "CepTelefonu":
 				return txt.matches("^[0-9() ]*$");
+			case "URL":
+				return txt.matches("^(https?|ftp|file)://[-a-zA-Z0-9+&@#/%?=~_|!:,.;]*[-a-zA-Z0-9+&@#/%=~_|]");
 			case "EPosta":
 				return android.util.Patterns.EMAIL_ADDRESS.matcher(txt).matches();
 			case "FakeEPosta":
@@ -7631,5 +7679,24 @@ public class AkorDefterimSys {
 			}
 		}
 		return false;
+	}
+
+	public Map<String, List<String>> splitQuery(URL url) throws UnsupportedEncodingException {
+		final Map<String, List<String>> query_pairs = new LinkedHashMap<>();
+		final String[] pairs = url.getQuery().split("&");
+
+		for (String pair : pairs) {
+			final int idx = pair.indexOf("=");
+			final String key = idx > 0 ? URLDecoder.decode(pair.substring(0, idx), "UTF-8") : pair;
+
+			if (!query_pairs.containsKey(key)) {
+				query_pairs.put(key, new LinkedList<String>());
+			}
+
+			final String value = idx > 0 && pair.length() > idx + 1 ? URLDecoder.decode(pair.substring(idx + 1), "UTF-8") : null;
+			query_pairs.get(key).add(value);
+		}
+
+		return query_pairs;
 	}
 }

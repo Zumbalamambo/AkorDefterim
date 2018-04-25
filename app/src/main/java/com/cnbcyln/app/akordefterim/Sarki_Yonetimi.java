@@ -160,6 +160,7 @@ public class Sarki_Yonetimi extends AppCompatActivity implements Interface_Async
                                 SarkilarTemp.setTarzID(snfSarkilar.get(i).getTarzID());
                                 SarkilarTemp.setSanatciAdi(snfSarkilar.get(i).getSanatciAdi());
                                 SarkilarTemp.setSarkiAdi(snfSarkilar.get(i).getSarkiAdi());
+                                SarkilarTemp.setVideoURL(snfSarkilar.get(i).getVideoURL());
                                 SarkilarTemp.setEklenmeTarihi(snfSarkilar.get(i).getEklenmeTarihi());
                                 SarkilarTemp.setDuzenlenmeTarihi(snfSarkilar.get(i).getDuzenlenmeTarihi());
                                 snfSarkilarTemp.add(SarkilarTemp);
@@ -167,9 +168,11 @@ public class Sarki_Yonetimi extends AppCompatActivity implements Interface_Async
                                 SnfSarkilar SarkilarTemp = new SnfSarkilar();
                                 SarkilarTemp.setId(snfSarkilar.get(i).getId());
                                 SarkilarTemp.setListeID(snfSarkilar.get(i).getListeID());
+                                SarkilarTemp.setKategoriID(snfSarkilar.get(i).getKategoriID());
                                 SarkilarTemp.setTarzID(snfSarkilar.get(i).getTarzID());
                                 SarkilarTemp.setSanatciAdi(snfSarkilar.get(i).getSanatciAdi());
                                 SarkilarTemp.setSarkiAdi(snfSarkilar.get(i).getSarkiAdi());
+                                SarkilarTemp.setVideoURL(snfSarkilar.get(i).getVideoURL());
                                 SarkilarTemp.setEklenmeTarihi(snfSarkilar.get(i).getEklenmeTarihi());
                                 SarkilarTemp.setDuzenlenmeTarihi(snfSarkilar.get(i).getDuzenlenmeTarihi());
                                 snfSarkilarTemp.add(SarkilarTemp);
@@ -490,6 +493,7 @@ public class Sarki_Yonetimi extends AppCompatActivity implements Interface_Async
                 mIntent.putExtra("SecilenSarkiID", 0);
                 mIntent.putExtra("SecilenSanatciAdi", "");
                 mIntent.putExtra("SecilenSarkiAdi", "");
+                mIntent.putExtra("SecilenSarkiVideoURL", "");
                 mIntent.putExtra("SecilenSarkiIcerik", "");
 
                 AkorDefterimSys.EkranGetir(mIntent, "Slide");
@@ -572,6 +576,7 @@ public class Sarki_Yonetimi extends AppCompatActivity implements Interface_Async
                     mIntent.putExtra("SecilenSarkiID", JSONSonuc.getInt("SecilenSarkiID"));
                     mIntent.putExtra("SecilenSanatciAdi", JSONSonuc.getString("SecilenSanatciAdi"));
                     mIntent.putExtra("SecilenSarkiAdi", JSONSonuc.getString("SecilenSarkiAdi"));
+                    mIntent.putExtra("SecilenSarkiVideoURL", JSONSonuc.getString("SecilenSarkiVideoURL"));
                     mIntent.putExtra("SecilenSarkiIcerik", veritabani.SarkiIcerikGetir(JSONSonuc.getInt("SecilenSarkiID")));
 
                     AkorDefterimSys.EkranGetir(mIntent, "Slide");
@@ -672,7 +677,7 @@ public class Sarki_Yonetimi extends AppCompatActivity implements Interface_Async
             ArrayList<Pair<Long, String>> SarkiListesi = new ArrayList<>();
 
             for (int i = 0; i <= snfSarkilar.size() - 1; i++) {
-                SarkiListesi.add(new Pair<>((long) i, "{\"SarkiID\":" + snfSarkilar.get(i).getId() + ",\"SanatciAdi\":\"" + snfSarkilar.get(i).getSanatciAdi() + "\",\"SarkiAdi\":\"" + snfSarkilar.get(i).getSarkiAdi() + "\"}"));
+                SarkiListesi.add(new Pair<>((long) i, "{\"SarkiID\":" + snfSarkilar.get(i).getId() + ",\"SanatciAdi\":\"" + snfSarkilar.get(i).getSanatciAdi() + "\",\"SarkiAdi\":\"" + snfSarkilar.get(i).getSarkiAdi() + "\",\"VideoURL\":\"" + snfSarkilar.get(i).getVideoURL() + "\"}"));
             }
 
             adpSarkiListesiDragDropLST = new AdpSarkiListesiDragDropLST(activity, snfSarkilar, SarkiListesi, SecilenListelemeTipi, R.layout.explstsarkilistesi_item, R.id.ImgDragDropIcon, false);

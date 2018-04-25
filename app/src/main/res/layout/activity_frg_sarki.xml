@@ -34,7 +34,7 @@
                 android:layout_height="wrap_content" />
 
             <com.github.clans.fab.FloatingActionButton
-                android:id="@+id/FABPaylas"
+                android:id="@+id/FABAkorGizleGoster"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content" />
 
@@ -49,12 +49,27 @@
                 android:layout_height="wrap_content" />
 
             <com.github.clans.fab.FloatingActionButton
+                android:id="@+id/FABPaylas"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+
+            <com.github.clans.fab.FloatingActionButton
+                android:id="@+id/FABVideoKlip"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+
+            <com.github.clans.fab.FloatingActionButton
                 android:id="@+id/FABSarkiEkleCikar"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content" />
 
             <com.github.clans.fab.FloatingActionButton
                 android:id="@+id/FABSarkiDuzenle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+
+            <com.github.clans.fab.FloatingActionButton
+                android:id="@+id/FABSorunBildir"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content" />
 

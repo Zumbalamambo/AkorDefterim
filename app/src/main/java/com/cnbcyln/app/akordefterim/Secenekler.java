@@ -179,15 +179,17 @@ public class Secenekler extends AppCompatActivity implements OnClickListener {
         switch (item.getItemId()) {
             case 0:
                 mIntent.putExtra("BildirimTipi", "Sorun");
+                mIntent.putExtra("GeriBildirimIcerik", "");
                 break;
             case 1:
                 mIntent.putExtra("BildirimTipi", "Görüş");
+                mIntent.putExtra("GeriBildirimIcerik", "");
                 break;
             default:
                 return false;
         }
 
-        AkorDefterimSys.EkranGetir(mIntent, "Slide");
+
 
         return true;
     }

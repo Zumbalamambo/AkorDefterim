@@ -1,7 +1,6 @@
 package com.cnbcyln.app.akordefterim.Adaptorler;
 
 import android.app.Activity;
-import android.content.Intent;
 import android.graphics.Typeface;
 import android.support.v4.util.Pair;
 import android.view.LayoutInflater;
@@ -10,11 +9,9 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.cnbcyln.app.akordefterim.Interface.Interface_AsyncResponse;
 import com.cnbcyln.app.akordefterim.R;
-import com.cnbcyln.app.akordefterim.Sarki_EkleDuzenle;
 import com.cnbcyln.app.akordefterim.Siniflar.SnfSarkilar;
 import com.cnbcyln.app.akordefterim.util.AkorDefterimSys;
 import com.cnbcyln.app.akordefterim.util.Veritabani;
@@ -74,6 +71,7 @@ public class AdpSarkiListesiDragDropLST extends DragItemAdapter<Pair<Long, Strin
         final int SarkiID = snfSarkilar.get(position).getId();
         final String SanatciAdi = snfSarkilar.get(position).getSanatciAdi();
         final String SarkiAdi = snfSarkilar.get(position).getSarkiAdi();
+        final String VideoURL = snfSarkilar.get(position).getVideoURL();
 
         if(isDuzenlenebilirMi())
             AkorDefterimSys.AnimasyonFadeIn(activity, holder.LLSecim, null);
@@ -121,7 +119,7 @@ public class AdpSarkiListesiDragDropLST extends DragItemAdapter<Pair<Long, Strin
                         AsyncResponse.AsyncTaskReturnValue("{\"Islem\":\"TumunuSecGuncelle\", \"Durum\":\"Boş\"}");
 
                     notifyDataSetChanged();
-                } else AsyncResponse.AsyncTaskReturnValue("{\"Islem\":\"SarkiDuzenleEkranGetir\", \"SecilenSarkiID\":" + SarkiID + ", \"SecilenSanatciAdi\":\"" + SanatciAdi + "\", \"SecilenSarkiAdi\":\"" + SarkiAdi + "\"}");
+                } else AsyncResponse.AsyncTaskReturnValue("{\"Islem\":\"SarkiDuzenleEkranGetir\", \"SecilenSarkiID\":" + SarkiID + ", \"SecilenSanatciAdi\":\"" + SanatciAdi + "\", \"SecilenSarkiAdi\":\"" + SarkiAdi + "\", \"SecilenSarkiVideoURL\":\"" + VideoURL + "\"}");
             }
         });
 

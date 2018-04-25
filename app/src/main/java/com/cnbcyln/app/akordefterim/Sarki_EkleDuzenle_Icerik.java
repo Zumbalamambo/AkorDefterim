@@ -55,8 +55,8 @@ public class Sarki_EkleDuzenle_Icerik extends AppCompatActivity implements Inter
 	//RTManager rtManager;
 	//RTEditText RTeditor;
 
-	int SecilenSarkiID, SecilenListeID, SecilenKategoriID, SecilenTarzID, EditTextCursorNoktasi = 0, StringUzunluk, Start, End;
-	String Islem, SecilenSanatciAdi, SecilenSarkiAdi, SecilenSarkiIcerik, IcerikHTML;
+	int SecilenSarkiID = 0, SecilenListeID = 0, SecilenKategoriID = 0, SecilenTarzID = 0, EditTextCursorNoktasi = 0, StringUzunluk = 0, Start = 0, End = 0;
+	String Islem = "", SecilenSanatciAdi = "", SecilenSarkiAdi = "", SecilenSarkiVideoURL = "", SecilenSarkiIcerik = "", IcerikHTML = "";
 	String HTMLBaslangic = "<html><head><style>html, body {top:0; bottom:0; left:0; right:0;}</style></head><body>";
 	String HTMLBitis = "</body></html>";
 	Boolean KatkidaBulunuluyorMu = false, IcerikDegistirildiMi = false;
@@ -83,6 +83,7 @@ public class Sarki_EkleDuzenle_Icerik extends AppCompatActivity implements Inter
 		SecilenSarkiID = mBundle.getInt("SecilenSarkiID");
 		SecilenSanatciAdi = mBundle.getString("SecilenSanatciAdi");
 		SecilenSarkiAdi = mBundle.getString("SecilenSarkiAdi");
+		SecilenSarkiVideoURL = mBundle.getString("SecilenSarkiVideoURL");
 		SecilenListeID = mBundle.getInt("SecilenListeID");
 		SecilenKategoriID = mBundle.getInt("SecilenKategoriID");
 		SecilenTarzID = mBundle.getInt("SecilenTarzID");
@@ -97,6 +98,15 @@ public class Sarki_EkleDuzenle_Icerik extends AppCompatActivity implements Inter
 
 		lblBaslik = findViewById(R.id.lblBaslik);
 		lblBaslik.setTypeface(YaziFontu, Typeface.BOLD);
+
+		switch (Islem) {
+			case "SarkiEkle":
+				lblBaslik.setText(getString(R.string.sarki_ekle));
+				break;
+			case "SarkiDuzenle":
+				lblBaslik.setText(getString(R.string.sarki_duzenle));
+				break;
+		}
 
         btnKaydet = findViewById(R.id.btnKaydet);
         btnKaydet.setOnClickListener(this);
@@ -209,10 +219,10 @@ public class Sarki_EkleDuzenle_Icerik extends AppCompatActivity implements Inter
 							ADDialog.show();
 						}
 					} else {
-						if (veritabani.SarkiEkle(SecilenListeID, SecilenKategoriID, SecilenTarzID, SecilenSarkiAdi, SecilenSanatciAdi, AkorDefterimSys.AkorTagToHtml(AkorDefterimSys.KotuIcerikDuzenleme(txtSarkiIcerik)), veritabani.SarkiSonSiraNoGetir() + 1)) {
+						if (veritabani.SarkiEkle(SecilenListeID, SecilenKategoriID, SecilenTarzID, SecilenSarkiAdi, SecilenSanatciAdi, AkorDefterimSys.AkorTagToHtml(AkorDefterimSys.KotuIcerikDuzenleme(txtSarkiIcerik)), veritabani.SarkiSonSiraNoGetir() + 1, SecilenSarkiVideoURL)) {
 							if(Islem.equals("YeniSarkiEkle") && KatkidaBulunuluyorMu) {
 								if(AkorDefterimSys.InternetErisimKontrolu()) {
-									AkorDefterimSys.SarkiGonder(SecilenSanatciAdi, SecilenSarkiAdi, AkorDefterimSys.AkorTagToHtml(AkorDefterimSys.KotuIcerikDuzenleme(txtSarkiIcerik)), sharedPref.getString("prefHesapID", ""));
+									AkorDefterimSys.SarkiGonder(SecilenSanatciAdi, SecilenSarkiAdi, SecilenSarkiVideoURL, AkorDefterimSys.AkorTagToHtml(AkorDefterimSys.KotuIcerikDuzenleme(txtSarkiIcerik)), sharedPref.getString("prefHesapID", ""));
 								} else {
 									if(!AkorDefterimSys.AlertDialogisShowing(ADDialog)) {
 										ADDialog = AkorDefterimSys.VButtonCustomAlertDialog(activity,
@@ -230,6 +240,7 @@ public class Sarki_EkleDuzenle_Icerik extends AppCompatActivity implements Inter
 								AkorDefterimSys.prefAction = "Şarkı eklendi";
 								AkorDefterimSys.prefEklenenDuzenlenenSanatciAdi = SecilenSanatciAdi;
 								AkorDefterimSys.prefEklenenDuzenlenenSarkiAdi = SecilenSarkiAdi;
+								AkorDefterimSys.prefEklenenDuzenlenenVideoURL = SecilenSarkiVideoURL;
 								AkorDefterimSys.prefEklenenDuzenlenenSarkiID = SecilenSarkiID;
 								AkorDefterimSys.KlavyeKapat();
 								finish();
@@ -237,10 +248,11 @@ public class Sarki_EkleDuzenle_Icerik extends AppCompatActivity implements Inter
 						} else AkorDefterimSys.ToastMsj(activity, getString(R.string.islem_yapilirken_bir_hata_olustu), Toast.LENGTH_SHORT);
 					}
 				} else if(Islem.equals("SarkiDuzenle")) {
-					if (veritabani.SarkiDuzenle(SecilenSarkiID, SecilenListeID, SecilenKategoriID, SecilenTarzID, SecilenSanatciAdi, SecilenSarkiAdi, AkorDefterimSys.AkorTagToHtml(AkorDefterimSys.KotuIcerikDuzenleme(txtSarkiIcerik)))) {
+					if (veritabani.SarkiDuzenle(SecilenSarkiID, SecilenListeID, SecilenKategoriID, SecilenTarzID, SecilenSanatciAdi, SecilenSarkiAdi, SecilenSarkiVideoURL, AkorDefterimSys.AkorTagToHtml(AkorDefterimSys.KotuIcerikDuzenleme(txtSarkiIcerik)))) {
 						AkorDefterimSys.prefAction = "Şarkı düzenlendi";
 						AkorDefterimSys.prefEklenenDuzenlenenSanatciAdi = SecilenSanatciAdi;
 						AkorDefterimSys.prefEklenenDuzenlenenSarkiAdi = SecilenSarkiAdi;
+						AkorDefterimSys.prefEklenenDuzenlenenVideoURL = SecilenSarkiVideoURL;
 						AkorDefterimSys.prefEklenenDuzenlenenSarkiID = SecilenSarkiID;
 						AkorDefterimSys.KlavyeKapat();
 						finish();
@@ -334,7 +346,7 @@ public class Sarki_EkleDuzenle_Icerik extends AppCompatActivity implements Inter
 					AkorDefterimSys.DismissAlertDialog(ADDialog);
 
 					if(AkorDefterimSys.InternetErisimKontrolu()) {
-						AkorDefterimSys.SarkiGonder(SecilenSanatciAdi, SecilenSarkiAdi, AkorDefterimSys.AkorTagToHtml(AkorDefterimSys.KotuIcerikDuzenleme(txtSarkiIcerik)), sharedPref.getString("prefHesapID", ""));
+						AkorDefterimSys.SarkiGonder(SecilenSanatciAdi, SecilenSarkiAdi, SecilenSarkiVideoURL, AkorDefterimSys.AkorTagToHtml(AkorDefterimSys.KotuIcerikDuzenleme(txtSarkiIcerik)), sharedPref.getString("prefHesapID", ""));
 					} else {
 						if(!AkorDefterimSys.AlertDialogisShowing(ADDialog)) {
 							ADDialog = AkorDefterimSys.VButtonCustomAlertDialog(activity,

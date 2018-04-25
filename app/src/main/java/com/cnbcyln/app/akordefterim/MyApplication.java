@@ -7,6 +7,7 @@ import android.support.multidex.MultiDex;
 
 import com.cnbcyln.app.akordefterim.util.AppRunningControl;
 import com.cnbcyln.app.akordefterim.util.MqttService;
+import com.mikepenz.iconics.Iconics;
 import com.nostra13.universalimageloader.cache.memory.impl.WeakMemoryCache;
 import com.nostra13.universalimageloader.core.DisplayImageOptions;
 import com.nostra13.universalimageloader.core.ImageLoader;

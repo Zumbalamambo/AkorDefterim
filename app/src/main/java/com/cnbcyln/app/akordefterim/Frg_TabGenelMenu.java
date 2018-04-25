@@ -37,6 +37,7 @@ public class Frg_TabGenelMenu extends Fragment implements Interface_AsyncRespons
 	private List<com.cnbcyln.app.akordefterim.Siniflar.SnfGenelMenu> SnfGenelMenu;
 	String Fragment_SayfaTag = "Frg_Anasayfa";
 	Int_DataConn_AnaEkran FragmentDataConn;
+	AdpGenelMenu AdpGenelMenu = null;
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -78,7 +79,8 @@ public class Frg_TabGenelMenu extends Fragment implements Interface_AsyncRespons
 			SnfGenelMenu.add(GenelMenu);
 		}
 
-		AdpGenelMenu AdpGenelMenu = new AdpGenelMenu(activity, SnfGenelMenu);
+		AdpGenelMenu = null;
+		AdpGenelMenu = new AdpGenelMenu(activity, SnfGenelMenu);
 		lstGenelMenu.setAdapter(AdpGenelMenu);
 		lstGenelMenu.setOnItemClickListener(new OnItemClickListener() {
 			@Override

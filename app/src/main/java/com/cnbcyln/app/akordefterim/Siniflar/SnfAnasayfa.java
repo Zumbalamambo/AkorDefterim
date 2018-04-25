@@ -8,6 +8,7 @@ public class SnfAnasayfa implements Serializable {
 	private int SanatciID;
 	private Boolean SanatciResimVarMi;
 	private String SanatciAdi;
+	private String SonEklenenSarkiVideoURL;
 	private int SonEklenenSarkiID;
 	private String SonEklenenSarkiAdi;
 	private int ToplamSarki;
@@ -16,11 +17,12 @@ public class SnfAnasayfa implements Serializable {
 		super();
 	}
 
-	public SnfAnasayfa(int SanatciID, Boolean SanatciResimVarMi, String SanatciAdi, int SonEklenenSarkiID, String SonEklenenSarkiAdi, int ToplamSarki) {
+	public SnfAnasayfa(int SanatciID, Boolean SanatciResimVarMi, String SanatciAdi, String SonEklenenSarkiVideoURL, int SonEklenenSarkiID, String SonEklenenSarkiAdi, int ToplamSarki) {
 		super();
 		this.SanatciID = SanatciID;
 		this.SanatciResimVarMi = SanatciResimVarMi;
 		this.SanatciAdi = SanatciAdi;
+		this.SonEklenenSarkiVideoURL = SonEklenenSarkiVideoURL;
 		this.SonEklenenSarkiID = SonEklenenSarkiID;
 		this.SonEklenenSarkiAdi = SonEklenenSarkiAdi;
 		this.ToplamSarki = ToplamSarki;
@@ -48,6 +50,14 @@ public class SnfAnasayfa implements Serializable {
 
 	public void setSanatciAdi(String SanatciAdi) {
 		this.SanatciAdi = SanatciAdi;
+	}
+
+	public String getSonEklenenSarkiVideoURL() {
+		return SonEklenenSarkiVideoURL;
+	}
+
+	public void setSonEklenenSarkiVideoURL(String SonEklenenSarkiVideoURL) {
+		this.SonEklenenSarkiVideoURL = SonEklenenSarkiVideoURL;
 	}
 
 	public int getSonEklenenSarkiID() {

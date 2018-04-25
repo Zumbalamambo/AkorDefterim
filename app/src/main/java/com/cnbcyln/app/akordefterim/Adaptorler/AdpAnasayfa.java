@@ -19,11 +19,14 @@ import com.cnbcyln.app.akordefterim.Interface.Int_DataConn_AnaEkran;
 import com.cnbcyln.app.akordefterim.R;
 import com.cnbcyln.app.akordefterim.Siniflar.SnfAnasayfa;
 import com.cnbcyln.app.akordefterim.util.AkorDefterimSys;
+import com.mikepenz.iconics.view.IconicsTextView;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.display.FadeInBitmapDisplayer;
 import com.nostra13.universalimageloader.core.listener.ImageLoadingListener;
 import com.nostra13.universalimageloader.core.listener.SimpleImageLoadingListener;
 
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
@@ -36,6 +39,8 @@ public class AdpAnasayfa extends RecyclerView.Adapter<AdpAnasayfa.ViewHolder> {
 	private Typeface YaziFontu;
 	//private CustomItemClickListener listener;
 	private ImageLoadingListener animateFirstListener = new AnimateFirstDisplayListener();
+
+	private String SonEklenenSarkiVideoURL = "";
 
 	public AdpAnasayfa(Activity activity, List<SnfAnasayfa> snfAnasayfa) {
 		this.activity = activity;
@@ -58,7 +63,7 @@ public class AdpAnasayfa extends RecyclerView.Adapter<AdpAnasayfa.ViewHolder> {
 		ConstraintLayout CLSonEklenenSarki;
 		ImageView ImgSanatciResim;
 		TextView lblSanatciAdi;
-		TextView lblSonEklenenSarkiAdi;
+        IconicsTextView lblSonEklenenSarkiAdi;
 		TextView lblToplamSarki;
 		ImageView ImgMenu;
 
@@ -94,7 +99,7 @@ public class AdpAnasayfa extends RecyclerView.Adapter<AdpAnasayfa.ViewHolder> {
 		holder.CLSonEklenenSarki.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				showPopupMenu(v, snfAnasayfa.get(position).getSanatciID(), snfAnasayfa.get(position).getSanatciAdi(), snfAnasayfa.get(position).getSonEklenenSarkiID(), snfAnasayfa.get(position).getSonEklenenSarkiAdi());
+				showPopupMenu(v, snfAnasayfa.get(position).getSanatciID(), snfAnasayfa.get(position).getSanatciAdi(), snfAnasayfa.get(position).getSonEklenenSarkiVideoURL(), snfAnasayfa.get(position).getSonEklenenSarkiID(), snfAnasayfa.get(position).getSonEklenenSarkiAdi());
 			}
 		});
 
@@ -108,7 +113,33 @@ public class AdpAnasayfa extends RecyclerView.Adapter<AdpAnasayfa.ViewHolder> {
 		holder.lblSanatciAdi.setText(snfAnasayfa.get(position).getSanatciAdi());
 		holder.lblSanatciAdi.setTypeface(YaziFontu, Typeface.BOLD);
 
-		holder.lblSonEklenenSarkiAdi.setText(snfAnasayfa.get(position).getSonEklenenSarkiAdi());
+        SonEklenenSarkiVideoURL = snfAnasayfa.get(position).getSonEklenenSarkiVideoURL();
+
+        if(SonEklenenSarkiVideoURL.equals("") || SonEklenenSarkiVideoURL.equals("-"))
+            holder.lblSonEklenenSarkiAdi.setText(String.format("%s%s", snfAnasayfa.get(position).getSonEklenenSarkiAdi(), ""));
+        else {
+            try {
+                URL VideoURL = new URL(SonEklenenSarkiVideoURL);
+
+                if(VideoURL.getHost().equals("youtube.com") || VideoURL.getHost().equals("www.youtube.com") || VideoURL.getHost().equals("m.youtube.com")) {
+                    try {
+                        List<String> URLQueryList = AkorDefterimSys.splitQuery(VideoURL).get("v");
+
+                        if(URLQueryList != null && URLQueryList.size() > 0)
+                            holder.lblSonEklenenSarkiAdi.setText(String.format("%s%s", snfAnasayfa.get(position).getSonEklenenSarkiAdi(), " {gmi-youtube-play}"));
+                        else
+                            holder.lblSonEklenenSarkiAdi.setText(String.format("%s%s", snfAnasayfa.get(position).getSonEklenenSarkiAdi(), ""));
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                        holder.lblSonEklenenSarkiAdi.setText(String.format("%s%s", snfAnasayfa.get(position).getSonEklenenSarkiAdi(), ""));
+                    }
+                } else holder.lblSonEklenenSarkiAdi.setText(String.format("%s%s", snfAnasayfa.get(position).getSonEklenenSarkiAdi(), " {gmi-videocam}"));
+            } catch (MalformedURLException e) {
+                e.printStackTrace();
+                holder.lblSonEklenenSarkiAdi.setText(String.format("%s%s", snfAnasayfa.get(position).getSonEklenenSarkiAdi(), ""));
+            }
+        }
+
 		holder.lblSonEklenenSarkiAdi.setTypeface(YaziFontu, Typeface.NORMAL);
 
 		holder.lblToplamSarki.setText(String.format("%s %s %s", activity.getString(R.string.toplam), String.valueOf(snfAnasayfa.get(position).getToplamSarki()), activity.getString(R.string.sarki)));
@@ -117,7 +148,7 @@ public class AdpAnasayfa extends RecyclerView.Adapter<AdpAnasayfa.ViewHolder> {
 		holder.ImgMenu.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				showPopupMenu(v, snfAnasayfa.get(position).getSanatciID(), snfAnasayfa.get(position).getSanatciAdi(), snfAnasayfa.get(position).getSonEklenenSarkiID(), snfAnasayfa.get(position).getSonEklenenSarkiAdi());
+				showPopupMenu(v, snfAnasayfa.get(position).getSanatciID(), snfAnasayfa.get(position).getSanatciAdi(), snfAnasayfa.get(position).getSonEklenenSarkiVideoURL(), snfAnasayfa.get(position).getSonEklenenSarkiID(), snfAnasayfa.get(position).getSonEklenenSarkiAdi());
 			}
 		});
 	}
@@ -147,24 +178,26 @@ public class AdpAnasayfa extends RecyclerView.Adapter<AdpAnasayfa.ViewHolder> {
 		}
 	}
 
-	private void showPopupMenu(View view, int SanatciID, String SanatciAdi, int SonEklenenSarkiID, String SonEklenenSarkiAdi) {
+	private void showPopupMenu(View view, int SanatciID, String SanatciAdi, String SonEklenenSarkiVideoURL, int SonEklenenSarkiID, String SonEklenenSarkiAdi) {
 		// inflate menu
 		PopupMenu popup = new PopupMenu(activity, view);
 		MenuInflater inflater = popup.getMenuInflater();
 		inflater.inflate(R.menu.anasayfa_sanatci, popup.getMenu());
-		popup.setOnMenuItemClickListener(new MyMenuItemClickListener(SanatciID, SanatciAdi, SonEklenenSarkiID, SonEklenenSarkiAdi));
+		popup.setOnMenuItemClickListener(new MyMenuItemClickListener(SanatciID, SanatciAdi, SonEklenenSarkiVideoURL, SonEklenenSarkiID, SonEklenenSarkiAdi));
 		popup.show();
 	}
 
 	class MyMenuItemClickListener implements PopupMenu.OnMenuItemClickListener {
 		int SanatciID;
 		String SanatciAdi;
+		String SonEklenenSarkiVideoURL;
 		int SonEklenenSarkiID;
 		String SonEklenenSarkiAdi;
 
-		MyMenuItemClickListener(int SanatciID, String SanatciAdi, int SonEklenenSarkiID, String SonEklenenSarkiAdi) {
+		MyMenuItemClickListener(int SanatciID, String SanatciAdi, String SonEklenenSarkiVideoURL, int SonEklenenSarkiID, String SonEklenenSarkiAdi) {
 			this.SanatciID = SanatciID;
 			this.SanatciAdi = SanatciAdi;
+			this.SonEklenenSarkiVideoURL = SonEklenenSarkiVideoURL;
 			this.SonEklenenSarkiID = SonEklenenSarkiID;
 			this.SonEklenenSarkiAdi = SonEklenenSarkiAdi;
 		}
@@ -175,7 +208,7 @@ public class AdpAnasayfa extends RecyclerView.Adapter<AdpAnasayfa.ViewHolder> {
 				case R.id.action_son_eklenen_sarkiyi_ac:
 					if(AkorDefterimSys.InternetErisimKontrolu()) {
 						FragmentDataConn.AnaEkranProgressIslemDialogAc(activity.getString(R.string.icerik_indiriliyor_lutfen_bekleyiniz));
-						AkorDefterimSys.SarkiGetir(null, 0, SonEklenenSarkiID, SanatciAdi, SonEklenenSarkiAdi);
+						AkorDefterimSys.SarkiGetir(null, 0, SonEklenenSarkiID, SanatciAdi, SonEklenenSarkiAdi, SonEklenenSarkiVideoURL);
 					} else FragmentDataConn.StandartSnackBarMsj(activity.getString(R.string.internet_baglantisi_saglanamadi));
 					return true;
 				case R.id.action_sanatciya_ait_sarki_listesini_getir:

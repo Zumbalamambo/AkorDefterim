@@ -9,6 +9,8 @@ public class SnfSarkiGetir extends SnfHata {
     private String Aciklama;
     @SerializedName("Icerik")
     private String Icerik;
+    @SerializedName("VideoURL")
+    private String VideoURL;
 
     public Boolean getSonuc() {
         return Sonuc;
@@ -20,5 +22,9 @@ public class SnfSarkiGetir extends SnfHata {
 
     public String getIcerik() {
         return Icerik;
+    }
+
+    public String getVideoURL() {
+        return VideoURL;
     }
 }

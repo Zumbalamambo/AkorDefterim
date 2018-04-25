@@ -306,6 +306,15 @@
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>
+        <activity android:name=".YoutubeVideoPlayer" >
+            <intent-filter>
+                <action android:name="android.intent.action.VIDEOKLIP"
+                    android:screenOrientation="portrait"
+                    android:theme="@android:style/Theme.Dialog" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
         <activity android:name="com.facebook.FacebookActivity"
             android:configChanges="keyboard|keyboardHidden|screenLayout|screenSize|orientation"
             android:label="@string/uygulama_adi"

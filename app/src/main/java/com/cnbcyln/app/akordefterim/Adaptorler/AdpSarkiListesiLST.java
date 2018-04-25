@@ -4,23 +4,21 @@ import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
 import android.graphics.Typeface;
-import android.os.Build;
-import android.support.annotation.RequiresApi;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.CheckBox;
 import android.widget.SectionIndexer;
-import android.widget.TextView;
 
 import com.cnbcyln.app.akordefterim.Interface.Int_DataConn_AnaEkran;
 import com.cnbcyln.app.akordefterim.R;
 import com.cnbcyln.app.akordefterim.Siniflar.SnfSarkilar;
-import com.cnbcyln.app.akordefterim.util.AkorDefterimSys;
 import com.cnbcyln.app.akordefterim.util.StringMatcher;
-import com.cnbcyln.app.akordefterim.util.Veritabani;
+import com.mikepenz.iconics.view.IconicsTextView;
 
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.List;
 
 public class AdpSarkiListesiLST extends BaseAdapter implements SectionIndexer {
@@ -107,7 +105,7 @@ public class AdpSarkiListesiLST extends BaseAdapter implements SectionIndexer {
 	}
 
 	private class ViewHolder {
-		TextView lblSanatciSarkiadi;
+		IconicsTextView lblSanatciSarkiadi;
 		CheckBox ChkSarkiSec;
 	}
 
@@ -142,15 +140,89 @@ public class AdpSarkiListesiLST extends BaseAdapter implements SectionIndexer {
 		else
 			holder.ChkSarkiSec.setChecked(SnfSarkilar.get(position).getSecim());
 
+		String SecilenSarkiVideoURL = SnfSarkilar.get(position).getVideoURL();
+
 		switch (ListelemeTipi) {
 			case 0:
-				holder.lblSanatciSarkiadi.setText(String.format("%s%s%s", SnfSarkilar.get(position).getSanatciAdi(), " - ", SnfSarkilar.get(position).getSarkiAdi()));
+				if(SecilenSarkiVideoURL == null || SecilenSarkiVideoURL.equals("") || SecilenSarkiVideoURL.equals("-"))
+					holder.lblSanatciSarkiadi.setText(String.format("%s%s%s%s", SnfSarkilar.get(position).getSanatciAdi(), " - ", SnfSarkilar.get(position).getSarkiAdi(), ""));
+				else {
+					try {
+						URL VideoURL = new URL(SecilenSarkiVideoURL);
+
+						if(VideoURL.getHost().equals("youtube.com") || VideoURL.getHost().equals("www.youtube.com") || VideoURL.getHost().equals("m.youtube.com")) {
+							try {
+								List<String> URLQueryList = AkorDefterimSys.splitQuery(VideoURL).get("v");
+
+								if(URLQueryList != null && URLQueryList.size() > 0)
+									holder.lblSanatciSarkiadi.setText(String.format("%s%s%s%s", SnfSarkilar.get(position).getSanatciAdi(), " - ", SnfSarkilar.get(position).getSarkiAdi(), " {gmi-youtube-play}"));
+								else
+									holder.lblSanatciSarkiadi.setText(String.format("%s%s%s%s", SnfSarkilar.get(position).getSanatciAdi(), " - ", SnfSarkilar.get(position).getSarkiAdi(), ""));
+							} catch (Exception e) {
+								e.printStackTrace();
+								holder.lblSanatciSarkiadi.setText(String.format("%s%s%s%s", SnfSarkilar.get(position).getSanatciAdi(), " - ", SnfSarkilar.get(position).getSarkiAdi(), ""));
+							}
+						} else holder.lblSanatciSarkiadi.setText(String.format("%s%s%s%s", SnfSarkilar.get(position).getSanatciAdi(), " - ", SnfSarkilar.get(position).getSarkiAdi(), " {gmi-videocam}"));
+					} catch (MalformedURLException e) {
+						e.printStackTrace();
+						holder.lblSanatciSarkiadi.setText(String.format("%s%s%s%s", SnfSarkilar.get(position).getSanatciAdi(), " - ", SnfSarkilar.get(position).getSarkiAdi(), ""));
+					}
+				}
+
 				break;
 			case 1:
-				holder.lblSanatciSarkiadi.setText(String.format("%s%s%s", SnfSarkilar.get(position).getSarkiAdi(), " - ", SnfSarkilar.get(position).getSanatciAdi()));
+				if(SecilenSarkiVideoURL.equals("") || SecilenSarkiVideoURL.equals("-"))
+					holder.lblSanatciSarkiadi.setText(String.format("%s%s%s%s", SnfSarkilar.get(position).getSarkiAdi(), " - ", SnfSarkilar.get(position).getSanatciAdi(), ""));
+				else {
+					try {
+						URL VideoURL = new URL(SecilenSarkiVideoURL);
+
+						if(VideoURL.getHost().equals("youtube.com") || VideoURL.getHost().equals("www.youtube.com") || VideoURL.getHost().equals("m.youtube.com")) {
+							try {
+								List<String> URLQueryList = AkorDefterimSys.splitQuery(VideoURL).get("v");
+
+								if(URLQueryList != null && URLQueryList.size() > 0)
+									holder.lblSanatciSarkiadi.setText(String.format("%s%s%s%s", SnfSarkilar.get(position).getSarkiAdi(), " - ", SnfSarkilar.get(position).getSanatciAdi(), " {gmi-youtube-play}"));
+								else
+									holder.lblSanatciSarkiadi.setText(String.format("%s%s%s%s", SnfSarkilar.get(position).getSarkiAdi(), " - ", SnfSarkilar.get(position).getSanatciAdi(), ""));
+							} catch (Exception e) {
+								e.printStackTrace();
+								holder.lblSanatciSarkiadi.setText(String.format("%s%s%s%s", SnfSarkilar.get(position).getSarkiAdi(), " - ", SnfSarkilar.get(position).getSanatciAdi(), ""));
+							}
+						} else holder.lblSanatciSarkiadi.setText(String.format("%s%s%s%s", SnfSarkilar.get(position).getSarkiAdi(), " - ", SnfSarkilar.get(position).getSanatciAdi(), " {gmi-videocam}"));
+					} catch (MalformedURLException e) {
+						e.printStackTrace();
+						holder.lblSanatciSarkiadi.setText(String.format("%s%s%s%s", SnfSarkilar.get(position).getSarkiAdi(), " - ", SnfSarkilar.get(position).getSanatciAdi(), ""));
+					}
+				}
+
 				break;
 			default:
-				holder.lblSanatciSarkiadi.setText(String.format("%s%s%s", SnfSarkilar.get(position).getSanatciAdi(), " - ", SnfSarkilar.get(position).getSarkiAdi()));
+				if(SecilenSarkiVideoURL.equals("") || SecilenSarkiVideoURL.equals("-"))
+					holder.lblSanatciSarkiadi.setText(String.format("%s%s%s%s", SnfSarkilar.get(position).getSanatciAdi(), " - ", SnfSarkilar.get(position).getSarkiAdi(), ""));
+				else {
+					try {
+						URL VideoURL = new URL(SecilenSarkiVideoURL);
+
+						if(VideoURL.getHost().equals("youtube.com") || VideoURL.getHost().equals("www.youtube.com") || VideoURL.getHost().equals("m.youtube.com")) {
+							try {
+								List<String> URLQueryList = AkorDefterimSys.splitQuery(VideoURL).get("v");
+
+								if(URLQueryList != null && URLQueryList.size() > 0)
+									holder.lblSanatciSarkiadi.setText(String.format("%s%s%s%s", SnfSarkilar.get(position).getSanatciAdi(), " - ", SnfSarkilar.get(position).getSarkiAdi(), " {gmi-youtube-play}"));
+								else
+									holder.lblSanatciSarkiadi.setText(String.format("%s%s%s%s", SnfSarkilar.get(position).getSanatciAdi(), " - ", SnfSarkilar.get(position).getSarkiAdi(), ""));
+							} catch (Exception e) {
+								e.printStackTrace();
+								holder.lblSanatciSarkiadi.setText(String.format("%s%s%s%s", SnfSarkilar.get(position).getSanatciAdi(), " - ", SnfSarkilar.get(position).getSarkiAdi(), ""));
+							}
+						} else holder.lblSanatciSarkiadi.setText(String.format("%s%s%s%s", SnfSarkilar.get(position).getSanatciAdi(), " - ", SnfSarkilar.get(position).getSarkiAdi(), " {gmi-videocam}"));
+					} catch (MalformedURLException e) {
+						e.printStackTrace();
+						holder.lblSanatciSarkiadi.setText(String.format("%s%s%s%s", SnfSarkilar.get(position).getSanatciAdi(), " - ", SnfSarkilar.get(position).getSarkiAdi(), ""));
+					}
+				}
+
 				break;
 		}
 

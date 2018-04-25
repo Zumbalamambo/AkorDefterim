@@ -12,6 +12,7 @@ public class SnfSarkilar implements Serializable {
 	private String SanatciAdi;
 	private String SarkiAdi;
 	private String Icerik;
+	private String VideoURL;
 	private String EklenmeTarihi;
 	private String DuzenlenmeTarihi;
 	private int Siralama;
@@ -21,7 +22,7 @@ public class SnfSarkilar implements Serializable {
 		super();
 	}
 	
-	public SnfSarkilar(int id, String DepolamaAlani, int ListeID, int KategoriID, int TarzID, String SanatciAdi, String SarkiAdi, String Icerik, String EklenmeTarihi, String DuzenlenmeTarihi, int Siralama, Boolean Secim) {
+	public SnfSarkilar(int id, String DepolamaAlani, int ListeID, int KategoriID, int TarzID, String SanatciAdi, String SarkiAdi, String Icerik, String VideoURL, String EklenmeTarihi, String DuzenlenmeTarihi, int Siralama, Boolean Secim) {
 		super();
 		this.id = id;
 		this.ListeID = ListeID;
@@ -30,6 +31,7 @@ public class SnfSarkilar implements Serializable {
 		this.SanatciAdi = SanatciAdi;
 		this.SarkiAdi = SarkiAdi;
 		this.Icerik = Icerik;
+		this.VideoURL = VideoURL;
 		this.EklenmeTarihi = EklenmeTarihi;
 		this.DuzenlenmeTarihi = DuzenlenmeTarihi;
 		this.Siralama = Siralama;
@@ -90,6 +92,14 @@ public class SnfSarkilar implements Serializable {
 
 	public void setIcerik(String Icerik) {
 		this.Icerik = Icerik;
+	}
+
+	public String getVideoURL() {
+		return VideoURL;
+	}
+
+	public void setVideoURL(String VideoURL) {
+		this.VideoURL = VideoURL;
 	}
 
 	public String getEklenmeTarihi() {

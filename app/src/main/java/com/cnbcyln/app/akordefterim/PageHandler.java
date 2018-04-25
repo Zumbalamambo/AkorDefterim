@@ -384,7 +384,8 @@ public class PageHandler implements HttpRequestHandler {
 											JSONWebGelenVeri.getInt("TarzID"),
 											JSONWebGelenVeri.getString("SarkiAdi"),
 											JSONWebGelenVeri.getString("SanatciAdi"),
-											JSONWebGelenVeri.getString("SarkiIcerik"), 0)) {
+											JSONWebGelenVeri.getString("SarkiIcerik"), 0,
+											JSONWebGelenVeri.getString("VideoURL"))) {
 
 										Intent_AnaEkran.putExtra("JSONData", "{\"Islem\":\"Frg_Istatistik_Guncelle\"}");
 										context.getApplicationContext().sendBroadcast(Intent_AnaEkran);
@@ -409,6 +410,7 @@ public class PageHandler implements HttpRequestHandler {
 											JSONWebGelenVeri.getInt("TarzID"),
 											JSONWebGelenVeri.getString("SanatciAdi"),
 											JSONWebGelenVeri.getString("SarkiAdi"),
+											JSONWebGelenVeri.getString("VideoURL"),
 											JSONWebGelenVeri.getString("SarkiIcerik"))) {
 
 										Intent_AnaEkran.putExtra("JSONData", "{\"Islem\":\"Frg_Istatistik_Guncelle\"}");

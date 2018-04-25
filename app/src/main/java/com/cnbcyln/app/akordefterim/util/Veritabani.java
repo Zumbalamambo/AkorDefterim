@@ -1,9 +1,6 @@
 package com.cnbcyln.app.akordefterim.util;
 
 import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
-import java.nio.channels.FileChannel;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -35,7 +32,7 @@ public class Veritabani extends SQLiteOpenHelper {
 	//private static File AnaKlasorDizini;
 	private static File YerelDBDizin;
 	//private static File YedekDBDizin;
-	private static int Surum = 3;
+	private static int Surum = 4;
 	//private boolean mNeedUpdate = false;
 	private SQLiteDatabase mDataBase;
 	Context context;
@@ -102,7 +99,7 @@ public class Veritabani extends SQLiteOpenHelper {
 		db.execSQL("CREATE TABLE tblListeler (id INTEGER PRIMARY KEY AUTOINCREMENT, ListeAdi TEXT);");
 		db.execSQL("CREATE TABLE tblKategoriler (id INTEGER PRIMARY KEY AUTOINCREMENT, KategoriAdi TEXT);");
 		db.execSQL("CREATE TABLE tblTarzlar (id INTEGER PRIMARY KEY AUTOINCREMENT, TarzAdi TEXT);");
-		db.execSQL("CREATE TABLE tblSarkilar (id INTEGER PRIMARY KEY AUTOINCREMENT, ListeID INTEGER, KategoriID INTEGER, TarzID INTEGER, SanatciAdi TEXT, SarkiAdi TEXT, Icerik TEXT, EklenmeTarihi DATETIME, DuzenlenmeTarihi DATETIME DEFAULT CURRENT_TIMESTAMP, Siralama INTEGER DEFAULT 0);");
+		db.execSQL("CREATE TABLE tblSarkilar (id INTEGER PRIMARY KEY AUTOINCREMENT, ListeID INTEGER, KategoriID INTEGER, TarzID INTEGER, SanatciAdi TEXT, SarkiAdi TEXT, Icerik TEXT, EklenmeTarihi DATETIME, DuzenlenmeTarihi DATETIME DEFAULT CURRENT_TIMESTAMP, Siralama INTEGER DEFAULT 0, VideoURL TEXT);");
 		db.execSQL("CREATE TABLE tblIstekler (id INTEGER PRIMARY KEY AUTOINCREMENT, SarkiID INTEGER, ClientID TEXT, ClientAdSoyad TEXT, ClientIP TEXT, ClientNot TEXT, IstekTarihi DATETIME);");
 	}
 
@@ -117,10 +114,14 @@ public class Veritabani extends SQLiteOpenHelper {
 
 		//db.execSQL("CREATE TABLE tblIstekler (id INTEGER PRIMARY KEY AUTOINCREMENT, SarkiID INTEGER, ClientID TEXT, ClientAdSoyad TEXT, ClientIP TEXT, ClientNot TEXT, IstekTarihi DATETIME);");
 
-		if(newVersion == 3) {
+		if(oldVersion > 1 && newVersion < 4) {
 			db.execSQL("ALTER TABLE tblSarkilar ADD Siralama INTEGER DEFAULT 0;");
 
 			TumSarkilariOtomatikSirala(db);
+		}
+
+		if(oldVersion > 2 && newVersion == 4) {
+			db.execSQL("ALTER TABLE tblSarkilar ADD VideoURL TEXT;");
 		}
 	}
 
@@ -925,7 +926,7 @@ public class Veritabani extends SQLiteOpenHelper {
 
 	// ##### ŞARKILAR #####
 
-	public boolean SarkiEkle(int ListeID, int KategoriID, int TarzID, String SarkiAdi, String SanatciAdi, String Icerik, int Siralama) {
+	public boolean SarkiEkle(int ListeID, int KategoriID, int TarzID, String SarkiAdi, String SanatciAdi, String Icerik, int Siralama, String VideoURL) {
 		SQLiteDatabase db = this.getWritableDatabase();
 		ContentValues values = new ContentValues();
 
@@ -934,11 +935,12 @@ public class Veritabani extends SQLiteOpenHelper {
 			values.put("KategoriID", KategoriID);
 			values.put("TarzID", TarzID);
 			values.put("SanatciAdi", SanatciAdi);
-			values.put("SarkiAdi", SarkiAdi);
+			values.put("VideoURL", VideoURL);
 			values.put("Icerik", Icerik);
 			values.put("EklenmeTarihi", new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date()));
 			values.put("DuzenlenmeTarihi", new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date()));
 			values.put("Siralama", Siralama);
+			values.put("SarkiAdi", SarkiAdi);
 
 			db.insert("tblSarkilar", null, values);
 		} catch (Exception e) {
@@ -989,7 +991,7 @@ public class Veritabani extends SQLiteOpenHelper {
 		}
 	}
 
-	public boolean SarkiDuzenle(int id, int ListeID, int KategoriID, int TarzID, String SanatciAdi, String SarkiAdi, String Icerik) {
+	public boolean SarkiDuzenle(int id, int ListeID, int KategoriID, int TarzID, String SanatciAdi, String SarkiAdi, String VideoURL, String Icerik) {
 		SQLiteDatabase db = this.getWritableDatabase();
 		ContentValues values = new ContentValues();
 
@@ -998,6 +1000,7 @@ public class Veritabani extends SQLiteOpenHelper {
 		values.put("TarzID", TarzID);
 		values.put("SanatciAdi", SanatciAdi);
 		values.put("SarkiAdi", SarkiAdi);
+		values.put("VideoURL", VideoURL);
 		values.put("Icerik", Icerik);
 		values.put("DuzenlenmeTarihi", new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date()));
 
@@ -1102,6 +1105,7 @@ public class Veritabani extends SQLiteOpenHelper {
 			Sarkilar.setEklenmeTarihi(cursor.getString(7));
 			Sarkilar.setDuzenlenmeTarihi(cursor.getString(8));
 			Sarkilar.setSiralama(cursor.getInt(9));
+			Sarkilar.setVideoURL(cursor.getString(10));
 			snfSarkilarListesi.add(Sarkilar);
 		}
 

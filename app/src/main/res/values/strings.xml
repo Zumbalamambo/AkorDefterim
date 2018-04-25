@@ -10,9 +10,10 @@
     <string name="uygulama_copyright">%s - Copyright © 2016</string> <!-- %s = Uygulama Adı -->
     <!-- <string name="uygulama_telif_hakki_yazisi">Bu uygulama %s tarafından yazılmıştır. Tüm hakları saklıdır.</string> --> <!-- %s = Uygulama Yapımcı Adı -->
     <string name="uygulama_telif_hakki_yazisi">Tüm hakları saklıdır..</string> <!-- %s = Uygulama Yapımcı Adı -->
-    <string name="yenilikler_icerik">
+    <string name="yenilikler_icerik" tools:ignore="Typos">
         Yeni neler yaptık?&lt;br&gt;&lt;br&gt;
-        &lt;b&gt;(Yeni Sürüm %s)&lt;/b&gt;&lt;br&gt;* Genel yazılımsal hatalar giderildi.&lt;br&gt;* Görsel düzenlemeler yapıldı.&lt;br&gt;&lt;br&gt;
+        &lt;b&gt;(Yeni Sürüm %s)&lt;/b&gt;&lt;br&gt;* Artık uygulama üzerinden video bağlantı link\'i belirlenmiş olan şarkıların kliplerini izleyebileceksiniz. Dilerseniz kendi repertuvarınıza şarkı eklerken Youtube vs. gibi sitelerden bağlantı linki ekleyerek içeriğinizi zenginleştirebilirsiniz.&lt;br&gt;* Genel yazılımsal hatalar giderildi.&lt;br&gt;* Görsel düzenlemeler yapıldı.&lt;br&gt;&lt;br&gt;
+        (Eski Sürüm 1.6.5)&lt;/b&gt;&lt;br&gt;* Genel yazılımsal hatalar giderildi.&lt;br&gt;* Görsel düzenlemeler yapıldı.&lt;br&gt;&lt;br&gt;
         (Eski Sürüm 1.6.4)&lt;/b&gt;&lt;br&gt;* Genel yazılımsal hatalar giderildi.&lt;br&gt;* Görsel düzenlemeler yapıldı.&lt;br&gt;&lt;br&gt;
         (Eski Sürüm 1.6.3)&lt;/b&gt;&lt;br&gt;* Genel yazılımsal hatalar giderildi.&lt;br&gt;* Görsel düzenlemeler yapıldı.&lt;br&gt;&lt;br&gt;
         (Eski Sürüm 1.6.2)&lt;/b&gt;&lt;br&gt;* Genel yazılımsal hatalar giderildi.&lt;br&gt;* Görsel düzenlemeler yapıldı.&lt;br&gt;&lt;br&gt;
@@ -40,7 +41,11 @@
     <string name="reddet">Reddet</string>
     <string name="ara">Ara</string>
     <string name="sanatci_adi">Sanatçı adı</string>
+    <string name="sanatci_adi_yildiz">Sanatçı adı *</string>
     <string name="sarki_adi">Şarkı adı</string>
+    <string name="sarki_adi_yildiz">Şarkı adı *</string>
+    <string name="video_url">Video URL</string>
+    <string name="video_url_opsiyonel">Video URL (Opsiyonel)</string>
     <string name="sarki_sanatci_adi">Sanatçı ya da şarkı adı</string>
     <string name="yeniden_dene">Yeniden dene</string>
     <string name="yeniden_gonder">Yeniden gönder</string>
@@ -71,6 +76,7 @@
     <string name="gec">Geç</string>
     <string name="basla">Başla</string>
     <string name="paylas">Paylaş</string>
+    <string name="video_klip">Video Klip</string>
     <string name="dusuk">Düşük</string>
     <string name="orta">Orta</string>
     <string name="yuksek">Yüksek</string>
@@ -159,6 +165,8 @@
     <string name="duyuru">Duyuru</string>
     <string name="reklam">Reklam</string>
     <string name="profil_resmi">Profil Resmi</string>
+    <string name="akor_gizle">Akor Gizle</string>
+    <string name="akor_goster">Akor Göster</string>
 
     <!-- Dialog Mesajlar -->
     <string name="cikis_yap_uyari">Hesabından çıkış yapmak istiyor musun?</string>
@@ -402,6 +410,7 @@
     <string name="konu">Konu</string>
     <string name="sorun_bildir">Sorun Bildir</string>
     <string name="sorun_bildir_aciklama">Lütfen öncelikle &lt;b&gt;%1$s&lt;/b&gt; Yardım Merkezimizi ziyaret et. Eğer sorun çözülemediyse sadece &lt;b&gt;%2$s&lt;/b&gt; ve özellikleri hakkında oluşan yazılımsal ya da görsel hataları bildir.&lt;br&gt;&lt;br&gt;&lt;b&gt;Not: &lt;b&gt;%3$s&lt;/b&gt; dakika aralıkla geri bildirim gönderebilirsin..&lt;/b&gt;</string>
+    <string name="sarki_sorun_bildir_aciklama">Lütfen öncelikle &lt;b&gt;%1$s&lt;/b&gt; Yardım Merkezimizi ziyaret et. Eğer sorun çözülemediyse sadece &lt;b&gt;%2$s&lt;/b&gt; genel repertuvarında bulunan hataları bildir.&lt;br&gt;&lt;br&gt;&lt;b&gt;Not: &lt;b&gt;%3$s&lt;/b&gt; dakika aralıkla geri bildirim gönderebilirsin..&lt;/b&gt;</string>
     <string name="ne_oldugunu_kisaca_acikla">Ne olduğunu kısaca açıkla</string>
     <string name="gorus_bildir">Görüş Bildir</string>
     <string name="gorus_bildir_aciklama">Lütfen sadece &lt;b&gt;%1$s&lt;/b&gt; ve özellikleri hakkında öneri ve görüşlerini bildir.&lt;br&gt;&lt;br&gt;&lt;b&gt;Not: &lt;b&gt;%2$s&lt;/b&gt; dakika aralıkla geri bildirim gönderebilirsin..&lt;/b&gt;</string>
@@ -418,6 +427,7 @@
     <string name="egitim">Eğitim</string>
     <string name="egitime_katilmak_istermisin">Eğitimini tamamlamamışsın. Katılmak ister misin?</string>
     <string name="sarki_ekle">Şarkı Ekle</string>
+    <string name="sarki_duzenle">Şarkı Ekle</string>
     <string name="sarkiyi_public_paylas">Katkıda bulunmak ister misin? Bu içeriği bizlere gönder. Gönderdiğin içerik onay verildiğinde genel repertuvar listesinde görüntülenecek.&lt;br&gt;&lt;br&gt;&lt;b&gt;Önemli: İçerikte akor ya da tab varsa şarkının tonu orjinal olmalıdır. Bu işlem internet bağlantısı gerektirir..&lt;/b&gt;</string>
     <string name="liste_adi">Liste Adı</string>
     <string name="kategori_adi">Kategori Adı</string>
@@ -446,6 +456,10 @@
     <string name="cevap_bekliyor">Cevap Bekliyor</string>
     <string name="tamamlanmis">Tamamlanmış</string>
 
+    <string name="sarki_sorun_bildirim_icerik1">%1$s - %2$s isimli şarkının akorları hatalı.\n\nHatalı olduğu bölüm:\n\n.....</string>
+    <string name="sarki_sorun_bildirim_icerik2">%1$s - %2$s isimli şarkının sözleri hatalı.\n\nHatalı olduğu bölüm:\n\n.....</string>
+    <string name="sarki_sorun_bildirim_icerik3">%1$s - %2$s isimli şarkının video bağlantısı hatalı.</string>
+
     <!-- EditText Hint'ler -->
     <string name="sanatci_adina_gore_ara">Ara (Sanatçı adına göre)</string>
     <string name="sarki_adina_gore_ara">Ara (Şarkı adına göre)</string>
@@ -470,6 +484,7 @@
     <string name="hata_format_sadece_sayi_kucukharf_buyukharf_bosluklu">Yalnızca sayı, küçük ve büyük harf kullanabilirsin.</string>
     <string name="hata_format_sadece_sayi_kucukharf_buyukharf_ozel_karakter_bosluklu">Yalnızca sayı, küçük, büyük harf ve (_().,+!*/-) özel karakterlerini kullanabilirsin.</string>
     <string name="hata_format_bastaki_karakterler_harf_olmak_zorunda">Baştaki %s karakter harf olmak zorunda.</string>
+    <string name="hata_format_url">Lütfen geçerli bir URL adresi gir.</string>
     <string name="hata_format_eposta">Lütfen geçerli bir E-Posta adresi gir.</string>
     <string name="hata_hesap_durum">&lt;b&gt;%1$s&lt;/b&gt;&lt;br&gt;E-Posta adresine kayıtlı hesap&lt;b&gt;%2$s&lt;/b&gt; mevcut.&lt;br&gt;&lt;br&gt;Giriş yap ya da farklı bir E-Posta adresi dene.</string>
     <string name="hata_hesap_durum2">&lt;b&gt;%s&lt;/b&gt;&lt;br&gt;E-Posta adresine kayıtlı hesap mevcut.&lt;br&gt;&lt;br&gt;Giriş yap ya da farklı bir E-Posta adresi dene.</string>
@@ -477,6 +492,8 @@
 
     <string name="txtemail_hata1">E-Posta alanını boş bırakamazsın.</string>
     <string name="txtemail_hata2">Lütfen geçerli bir E-Posta adresi gir.</string>
+
+    <string name="hata_youtube_link_format">Hatalı Youtube link formatı</string>
 
     <string name="txtmevcutparola_hata1">Mevcut parola yanlış girildi. Lütfen tekrar gir.</string>
     <string name="txtmevcutparola_hata2">Mevcut parola alanını boş bırakamazsın.</string>
@@ -676,6 +693,12 @@
     <string-array name="SarkiPaylasContextMenu">
         <item>Google\'da Paylaş</item>
         <item>Facebook\'ta Paylaş</item>
+    </string-array>
+
+    <string-array name="SarkiSorunBildirContextMenu">
+        <item>Hatalı Akor Bildirimi</item>
+        <item>Hatalı Söz Bildirimi</item>
+        <item>Hatalı Video Bağlantı Bildirimi</item>
     </string-array>
 
     <string-array name="OfflineTanitimMesajlari">

@@ -173,6 +173,7 @@ public interface RetrofitInterface {
     @GET("phpscriptleri/repertuvarislemleri/sarki_gonder.php")
     Call<SnfIslemSonuc> SarkiGonder(@Query("SanatciAdi") String mSanatciAdi,
                                     @Query("SarkiAdi") String mSarkiAdi,
+                                    @Query("VideoURL") String mVideoURL,
                                     @Query("Icerik") String mIcerik,
                                     @Query("EkleyenID") String mEkleyenID);
 }

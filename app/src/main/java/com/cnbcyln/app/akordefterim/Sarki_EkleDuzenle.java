@@ -40,6 +40,8 @@ import com.cnbcyln.app.akordefterim.util.Veritabani;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.List;
 
 @SuppressWarnings("ALL")
@@ -58,8 +60,8 @@ public class Sarki_EkleDuzenle extends AppCompatActivity implements Interface_As
 
 	CoordinatorLayout coordinatorLayout;
 	ConstraintLayout ConstraintLayout2;
-	TextInputLayout txtILSanatciAdi, txtILSarkiAdi;
-	EditText txtSanatciAdi, txtSarkiAdi;
+	TextInputLayout txtILSanatciAdi, txtILSarkiAdi, txtILVideoURL;
+	EditText txtSanatciAdi, txtSarkiAdi, txtVideoURL;
 	ImageButton btnGeri, btnListeEkle, btnListeDuzenle, btnListeSil, btnKategoriEkle, btnKategoriDuzenle, btnKategoriSil, btnTarzEkle, btnTarzDuzenle, btnTarzSil;
 	Button btnIleri;
 	TextView lblBaslik, lblListeler, lblKategoriler, lblTarzlar;
@@ -67,7 +69,7 @@ public class Sarki_EkleDuzenle extends AppCompatActivity implements Interface_As
 	CheckBox ChkIcerikGonder;
 
 	int SecilenSarkiID = 0, SecilenListeID = 0, SecilenKategoriID = 0, SecilenTarzID = 0, AdSoyadKarakterSayisi_MIN = 0, AdSoyadKarakterSayisi_MAX = 0, SarkiAdiKarakterSayisi_MIN = 0, SarkiAdiKarakterSayisi_MAX = 0;
-	String Islem = "", SecilenSanatciAdi = "", SecilenSarkiAdi = "", SecilenListeAdi = "", SecilenKategoriAdi = "", SecilenTarzAdi = "", SecilenSarkiIcerik = "";
+	String Islem = "", SecilenSanatciAdi = "", SecilenSarkiAdi = "", SecilenListeAdi = "", SecilenKategoriAdi = "", SecilenTarzAdi = "", SecilenSarkiIcerik = "", SecilenSarkiVideoURL = "";
 
 	private SnfSarkilar snfSarkilar;
 	private List<SnfListeler> snfListeler;
@@ -99,6 +101,14 @@ public class Sarki_EkleDuzenle extends AppCompatActivity implements Interface_As
 		SarkiAdiKarakterSayisi_MIN = getResources().getInteger(R.integer.SarkiAdiKarakterSayisi_MIN);
 		SarkiAdiKarakterSayisi_MAX = getResources().getInteger(R.integer.SarkiAdiKarakterSayisi_MAX);
 
+		Bundle mBundle = getIntent().getExtras();
+		Islem = mBundle.getString("Islem");
+		SecilenSarkiID = mBundle.getInt("SecilenSarkiID");
+		SecilenSanatciAdi = mBundle.getString("SecilenSanatciAdi");
+		SecilenSarkiAdi = mBundle.getString("SecilenSarkiAdi");
+		SecilenSarkiVideoURL = mBundle.getString("SecilenSarkiVideoURL");
+		SecilenSarkiIcerik = mBundle.getString("SecilenSarkiIcerik");
+
 		coordinatorLayout = findViewById(R.id.coordinatorLayout);
 		coordinatorLayout.setOnClickListener(this);
 
@@ -107,6 +117,15 @@ public class Sarki_EkleDuzenle extends AppCompatActivity implements Interface_As
 
 		lblBaslik = findViewById(R.id.lblBaslik);
 		lblBaslik.setTypeface(YaziFontu, Typeface.BOLD);
+
+		switch (Islem) {
+			case "SarkiEkle":
+				lblBaslik.setText(getString(R.string.sarki_ekle));
+				break;
+			case "SarkiDuzenle":
+				lblBaslik.setText(getString(R.string.sarki_duzenle));
+				break;
+		}
 
 		ConstraintLayout2 = findViewById(R.id.ConstraintLayout2);
 		ConstraintLayout2.setOnClickListener(this);
@@ -122,6 +141,12 @@ public class Sarki_EkleDuzenle extends AppCompatActivity implements Interface_As
 
 		txtSarkiAdi = findViewById(R.id.txtSarkiAdi);
 		txtSarkiAdi.setTypeface(YaziFontu, Typeface.NORMAL);
+
+		txtILVideoURL = findViewById(R.id.txtILVideoURL);
+		txtILVideoURL.setTypeface(YaziFontu);
+
+		txtVideoURL = findViewById(R.id.txtVideoURL);
+		txtVideoURL.setTypeface(YaziFontu, Typeface.NORMAL);
 
 		lblListeler = findViewById(R.id.lblListeler);
 		lblListeler.setTypeface(YaziFontu, Typeface.BOLD);
@@ -200,24 +225,19 @@ public class Sarki_EkleDuzenle extends AppCompatActivity implements Interface_As
 
 		ChkIcerikGonder = findViewById(R.id.ChkIcerikGonder);
 		ChkIcerikGonder.setTypeface(YaziFontu);
-		ChkIcerikGonder.setVisibility(View.GONE);
+
+		if(Islem.equals("YeniSarkiEkle") && AkorDefterimSys.GirisYapildiMi()) ChkIcerikGonder.setVisibility(View.VISIBLE);
+		else ChkIcerikGonder.setVisibility(View.GONE);
+
 		AkorDefterimSys.setTextViewHTML(ChkIcerikGonder);
 
 		btnIleri = findViewById(R.id.btnIleri);
 		btnIleri.setTypeface(YaziFontu, Typeface.NORMAL);
 		btnIleri.setOnClickListener(this);
 
-		Bundle mBundle = getIntent().getExtras();
-		Islem = mBundle.getString("Islem");
-		SecilenSarkiID = mBundle.getInt("SecilenSarkiID");
-		SecilenSanatciAdi = mBundle.getString("SecilenSanatciAdi");
-		SecilenSarkiAdi = mBundle.getString("SecilenSarkiAdi");
-		SecilenSarkiIcerik = mBundle.getString("SecilenSarkiIcerik");
-
-		if(Islem.equals("YeniSarkiEkle") && AkorDefterimSys.GirisYapildiMi()) ChkIcerikGonder.setVisibility(View.VISIBLE);
-
 		txtSanatciAdi.setText(SecilenSanatciAdi);
 		txtSarkiAdi.setText(SecilenSarkiAdi);
+		txtVideoURL.setText(SecilenSarkiVideoURL);
 
 		snfSarkilar = veritabani.SnfSarkiGetir(SecilenSarkiID);
 
@@ -643,7 +663,10 @@ public class Sarki_EkleDuzenle extends AppCompatActivity implements Interface_As
 		txtSarkiAdi.setText(txtSarkiAdi.getText().toString().trim());
 		SecilenSarkiAdi = txtSarkiAdi.getText().toString().trim();
 
-		if (TextUtils.isEmpty(SecilenSanatciAdi))
+		txtVideoURL.setText(txtVideoURL.getText().toString().trim());
+		SecilenSarkiVideoURL = txtVideoURL.getText().toString().trim();
+
+		if(TextUtils.isEmpty(SecilenSanatciAdi))
 			AkorDefterimSys.txtInputHataMesajiGoster(imm, txtILSanatciAdi, txtSanatciAdi, getString(R.string.hata_bos_alan));
 		else if (!AkorDefterimSys.isValid(SecilenSanatciAdi, "SadeceSayiKucukHarfBuyukHarfOzelKarakterBosluklu"))
 			AkorDefterimSys.txtInputHataMesajiGoster(imm, txtILSanatciAdi, txtSanatciAdi, getString(R.string.hata_format_sadece_sayi_kucukharf_buyukharf_ozel_karakter_bosluklu));
@@ -653,7 +676,7 @@ public class Sarki_EkleDuzenle extends AppCompatActivity implements Interface_As
 			AkorDefterimSys.txtInputHataMesajiGoster(imm, txtILSanatciAdi, txtSanatciAdi, getString(R.string.hata_en_fazla_karakter, String.valueOf(AdSoyadKarakterSayisi_MAX)));
 		else txtILSanatciAdi.setError(null);
 
-		if (TextUtils.isEmpty(SecilenSarkiAdi))
+		if(TextUtils.isEmpty(SecilenSarkiAdi))
 			AkorDefterimSys.txtInputHataMesajiGoster(imm, txtILSarkiAdi, txtSarkiAdi, getString(R.string.hata_bos_alan));
 		else if (!AkorDefterimSys.isValid(SecilenSarkiAdi, "SadeceSayiKucukHarfBuyukHarfOzelKarakterBosluklu"))
 			AkorDefterimSys.txtInputHataMesajiGoster(imm, txtILSarkiAdi, txtSarkiAdi, getString(R.string.hata_format_sadece_sayi_kucukharf_buyukharf_ozel_karakter_bosluklu));
@@ -663,10 +686,37 @@ public class Sarki_EkleDuzenle extends AppCompatActivity implements Interface_As
 			AkorDefterimSys.txtInputHataMesajiGoster(imm, txtILSarkiAdi, txtSarkiAdi, getString(R.string.hata_en_fazla_karakter, String.valueOf(SarkiAdiKarakterSayisi_MAX)));
 		else txtILSarkiAdi.setError(null);
 
-		if(txtILSanatciAdi.getError() == null && txtILSarkiAdi.getError() == null) {
-			if(SecilenListeAdi.equals("")) AkorDefterimSys.StandartSnackBarMsj(coordinatorLayout, getString(R.string.liste_bulunamadi));
-			else if(SecilenKategoriAdi.equals("")) AkorDefterimSys.StandartSnackBarMsj(coordinatorLayout, getString(R.string.kategori_bulunamadi));
-			else if(SecilenTarzAdi.equals("")) AkorDefterimSys.StandartSnackBarMsj(coordinatorLayout, getString(R.string.tarz_bulunamadi));
+		if(!TextUtils.isEmpty(SecilenSarkiVideoURL)) {
+			try {
+				if(!AkorDefterimSys.isValid(SecilenSarkiVideoURL, "URL")) {
+					AkorDefterimSys.txtInputHataMesajiGoster(imm, txtILVideoURL, txtVideoURL, getString(R.string.hata_format_url));
+				} else {
+					URL VideoURL = new URL(SecilenSarkiVideoURL);
+
+					if(VideoURL.getHost().equals("youtube.com")) {
+						try {
+							List<String> URLQueryList = AkorDefterimSys.splitQuery(new URL(txtVideoURL.getText().toString())).get("v");
+
+							if(URLQueryList != null && URLQueryList.size() > 0) txtILVideoURL.setError(null);
+							else AkorDefterimSys.txtInputHataMesajiGoster(imm, txtILVideoURL, txtVideoURL, getString(R.string.hata_youtube_link_format));
+						} catch (Exception e) {
+							e.printStackTrace();
+							AkorDefterimSys.txtInputHataMesajiGoster(imm, txtILVideoURL, txtVideoURL, getString(R.string.hata_youtube_link_format));
+						}
+					} else txtILVideoURL.setError(null);
+				}
+			} catch (MalformedURLException e) {
+				e.printStackTrace();
+			}
+		} else SecilenSarkiVideoURL = "-";
+
+		if(txtILSanatciAdi.getError() == null && txtILSarkiAdi.getError() == null && txtILVideoURL.getError() == null) {
+			if(SecilenListeAdi.equals(""))
+				AkorDefterimSys.StandartSnackBarMsj(coordinatorLayout, getString(R.string.liste_bulunamadi));
+			else if(SecilenKategoriAdi.equals(""))
+				AkorDefterimSys.StandartSnackBarMsj(coordinatorLayout, getString(R.string.kategori_bulunamadi));
+			else if(SecilenTarzAdi.equals(""))
+				AkorDefterimSys.StandartSnackBarMsj(coordinatorLayout, getString(R.string.tarz_bulunamadi));
 			else {
 				AkorDefterimSys.UnFocusAll(null, null, null, null, ConstraintLayout2);
 
@@ -675,6 +725,7 @@ public class Sarki_EkleDuzenle extends AppCompatActivity implements Interface_As
 				mIntent.putExtra("SecilenSarkiID", SecilenSarkiID);
 				mIntent.putExtra("SecilenSanatciAdi", SecilenSanatciAdi);
 				mIntent.putExtra("SecilenSarkiAdi", SecilenSarkiAdi);
+				mIntent.putExtra("SecilenSarkiVideoURL", SecilenSarkiVideoURL);
 				mIntent.putExtra("SecilenListeID", SecilenListeID);
 				mIntent.putExtra("SecilenKategoriID", SecilenKategoriID);
 				mIntent.putExtra("SecilenTarzID", SecilenTarzID);

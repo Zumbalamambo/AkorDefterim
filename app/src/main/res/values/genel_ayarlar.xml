@@ -3,6 +3,7 @@
     <string name="facebook_app_id">1136309509735788</string>
     <string name="fb_login_protocol_scheme">fb1136309509735788</string>
     <string name="twitter_consumer_key" translatable="false">kDzgYWE9Ih07nd3w6dFUYg1mc</string>
+    <!--<string name="google_api_key" translatable="false">AIzaSyDK1iRYN4MdxqiLpvpeXTN0ZOMF0l6qDiU</string>-->
     <string name="twitter_consumer_secret" translatable="false">BS5PM6K7WHxKUIU4IeCBeiLkvuXlALqQBtO7gCLtQeAMxgdknx</string>
 
     <integer name="AdKarakterSayisi_MIN">3</integer>

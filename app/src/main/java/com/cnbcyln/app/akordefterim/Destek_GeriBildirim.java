@@ -71,7 +71,7 @@ public class Destek_GeriBildirim extends AppCompatActivity implements Interface_
 	LinearLayout LLEkranGoruntusu;
 	View view2;
 
-	String BildirimTipi;
+	String BildirimTipi, GeriBildirimIcerik;
     private static final int DOSYAOKUMAYAZMA_IZIN = 1;
     private static final int RESIMSEC = 2;
     private static final int RESIMKES_EKRANGORUNTUSU_1 = 3;
@@ -103,6 +103,7 @@ public class Destek_GeriBildirim extends AppCompatActivity implements Interface_
 
         Bundle mBundle = getIntent().getExtras();
         BildirimTipi = mBundle.getString("BildirimTipi");
+        GeriBildirimIcerik = mBundle.getString("GeriBildirimIcerik");
 
         AkorDefterimSys.SonYapilanIslemGuncelle("destek_geri_bildirim_ekranina_giris_yapildi", "[]");
 
@@ -180,6 +181,21 @@ public class Destek_GeriBildirim extends AppCompatActivity implements Interface_
                 AkorDefterimSys.setTextViewHTML(lblGeriBildirimAciklama);
 
                 txtIcerik.setHint(getString(R.string.gorusleriniz_bizim_icin_onemli));
+                lblEkranGoruntusu.setVisibility(View.GONE);
+                LLEkranGoruntusu.setVisibility(View.GONE);
+                view2.setVisibility(View.GONE);
+                btnEkranGoruntusu1.setVisibility(View.GONE);
+                btnEkranGoruntusu2.setVisibility(View.GONE);
+                btnEkranGoruntusu3.setVisibility(View.GONE);
+                break;
+            case "SarkiIcerik":
+                lblBaslik.setText(getString(R.string.sorun_bildir));
+
+                lblGeriBildirimAciklama.setText(getString(R.string.sarki_sorun_bildir_aciklama, getString(R.string.uygulama_adi), getString(R.string.uygulama_adi), YenidenGeriBildirimGondermeSuresi));
+                AkorDefterimSys.setTextViewHTML(lblGeriBildirimAciklama);
+
+                txtIcerik.setHint(getString(R.string.ne_oldugunu_kisaca_acikla));
+                txtIcerik.setText(GeriBildirimIcerik);
                 lblEkranGoruntusu.setVisibility(View.GONE);
                 LLEkranGoruntusu.setVisibility(View.GONE);
                 view2.setVisibility(View.GONE);

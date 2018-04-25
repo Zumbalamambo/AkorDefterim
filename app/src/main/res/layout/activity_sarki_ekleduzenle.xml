@@ -108,7 +108,7 @@
 						style="@style/TextAppearance.AppCompat.Small.Inverse"
 						android:layout_width="match_parent"
 						android:layout_height="match_parent"
-						android:hint="@string/sanatci_adi"
+						android:hint="@string/sanatci_adi_yildiz"
 						android:importantForAutofill="noExcludeDescendants"
 						android:inputType="text"
 						android:textColor="@color/KoyuYazi"
@@ -132,11 +132,35 @@
 						style="@style/TextAppearance.AppCompat.Small.Inverse"
 						android:layout_width="match_parent"
 						android:layout_height="match_parent"
-						android:hint="@string/sarki_adi"
+						android:hint="@string/sarki_adi_yildiz"
 						android:importantForAutofill="noExcludeDescendants"
 						android:inputType="text"
 						android:textColor="@color/KoyuYazi"
 						tools:ignore="UnusedAttribute" />
+				</android.support.design.widget.TextInputLayout>
+
+				<android.support.design.widget.TextInputLayout
+					android:id="@+id/txtILVideoURL"
+					android:layout_width="0dp"
+					android:layout_height="wrap_content"
+					android:layout_marginEnd="4dp"
+					android:layout_marginStart="4dp"
+					android:layout_marginTop="8dp"
+					android:textColorHint="@color/KoyuGri"
+					app:layout_constraintEnd_toStartOf="@+id/v_guideline2"
+					app:layout_constraintStart_toStartOf="@+id/v_guideline1"
+					app:layout_constraintTop_toBottomOf="@+id/txtILSarkiAdi">
+
+					<EditText
+						android:id="@+id/txtVideoURL"
+						style="@style/TextAppearance.AppCompat.Small.Inverse"
+						android:layout_width="match_parent"
+						android:layout_height="match_parent"
+						android:hint="@string/video_url_opsiyonel"
+						android:importantForAutofill="noExcludeDescendants"
+						android:inputType="text"
+						android:textColor="@color/KoyuYazi"
+						tools:ignore="TextFields,UnusedAttribute" />
 				</android.support.design.widget.TextInputLayout>
 
 				<TextView
@@ -151,7 +175,7 @@
 					style="@style/TextAppearance.AppCompat.Small.Inverse"
 					app:layout_constraintEnd_toStartOf="@+id/v_guideline2"
 					app:layout_constraintStart_toStartOf="@+id/v_guideline1"
-					app:layout_constraintTop_toBottomOf="@+id/txtILSarkiAdi" />
+					app:layout_constraintTop_toBottomOf="@+id/txtILVideoURL" />
 
 				<Spinner
 					android:id="@+id/spnListeler"

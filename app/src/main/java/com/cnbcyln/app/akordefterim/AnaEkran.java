@@ -5,6 +5,7 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.app.Fragment;
+import android.app.FragmentManager;
 import android.app.FragmentTransaction;
 import android.app.ProgressDialog;
 import android.content.Context;
@@ -30,7 +31,6 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.CheckBox;
-import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -46,9 +46,7 @@ import com.cnbcyln.app.akordefterim.Interface.Interface_AsyncResponse;
 import com.cnbcyln.app.akordefterim.ResideMenu.ResideMenu;
 import com.cnbcyln.app.akordefterim.Siniflar.SnfSarkilar;
 import com.cnbcyln.app.akordefterim.util.AkorDefterimSys;
-import com.cnbcyln.app.akordefterim.util.AppService;
 import com.cnbcyln.app.akordefterim.util.ClearableEditText;
-import com.cnbcyln.app.akordefterim.util.MqttService;
 import com.cnbcyln.app.akordefterim.util.Veritabani;
 
 import org.json.JSONArray;
@@ -71,6 +69,7 @@ public class AnaEkran extends AppCompatActivity implements Int_DataConn_AnaEkran
 	private AkorDefterimSys AkorDefterimSys;
 	private Veritabani veritabani;
     FragmentTransaction FT;
+    FragmentManager FM;
     Fragment Fragment_Sayfa;
 	SharedPreferences sharedPref;
 	SharedPreferences.Editor sharedPrefEditor;
@@ -104,7 +103,7 @@ public class AnaEkran extends AppCompatActivity implements Int_DataConn_AnaEkran
     PagerAdapter PagerAdapter;
     PagerSlidingTabStrip PSTTabs;
 
-	String UygulamaVersiyon, Fragment_SayfaAdi;
+	String UygulamaVersiyon = "", Fragment_SayfaAdi = "";
     boolean CikisIcinCiftTiklandiMi = false;
     int SecilenListeID = 0, SecilenKategoriID = 0, SecilenTarzID = 0, SecilenListelemeTipi = 0;
 
@@ -128,6 +127,8 @@ public class AnaEkran extends AppCompatActivity implements Int_DataConn_AnaEkran
         veritabani = new Veritabani(activity);
         YaziFontu = AkorDefterimSys.FontGetir(activity, "anivers_regular");
         sharedPref = activity.getSharedPreferences(AkorDefterimSys.PrefAdi, Context.MODE_PRIVATE);
+
+        FM = getFragmentManager();
 
         sharedPrefEditor = sharedPref.edit();
         sharedPrefEditor.putBoolean("prefAppRunning", true);
@@ -201,6 +202,7 @@ public class AnaEkran extends AppCompatActivity implements Int_DataConn_AnaEkran
                                 SarkilarTemp.setKategoriID(snfSarkilar.get(i).getKategoriID());
                                 SarkilarTemp.setSanatciAdi(snfSarkilar.get(i).getSanatciAdi());
                                 SarkilarTemp.setSarkiAdi(snfSarkilar.get(i).getSarkiAdi());
+                                SarkilarTemp.setVideoURL(snfSarkilar.get(i).getVideoURL());
                                 snfSarkilarTemp.add(SarkilarTemp);
                             } else if (snfSarkilar.get(i).getSarkiAdi().toLowerCase().contains(txtAra_AramaPanel.getText().toString().toLowerCase())) {
                                 SnfSarkilar SarkilarTemp = new SnfSarkilar();
@@ -210,6 +212,7 @@ public class AnaEkran extends AppCompatActivity implements Int_DataConn_AnaEkran
                                 SarkilarTemp.setKategoriID(snfSarkilar.get(i).getKategoriID());
                                 SarkilarTemp.setSanatciAdi(snfSarkilar.get(i).getSanatciAdi());
                                 SarkilarTemp.setSarkiAdi(snfSarkilar.get(i).getSarkiAdi());
+                                SarkilarTemp.setVideoURL(snfSarkilar.get(i).getVideoURL());
                                 snfSarkilarTemp.add(SarkilarTemp);
                             }
                         }
@@ -265,21 +268,21 @@ public class AnaEkran extends AppCompatActivity implements Int_DataConn_AnaEkran
                 if(SecilenListeID == 0) {
                     if(AkorDefterimSys.InternetErisimKontrolu()) {
                         AnaEkranProgressIslemDialogAc(getString(R.string.icerik_indiriliyor_lutfen_bekleyiniz));
-                        AkorDefterimSys.SarkiGetir(veritabani, SecilenListeID, snfSarkilar.get(position).getId(), snfSarkilar.get(position).getSanatciAdi(), snfSarkilar.get(position).getSarkiAdi());
+                        AkorDefterimSys.SarkiGetir(veritabani, SecilenListeID, snfSarkilar.get(position).getId(), snfSarkilar.get(position).getSanatciAdi(), snfSarkilar.get(position).getSarkiAdi(), snfSarkilar.get(position).getVideoURL());
                     } else AkorDefterimSys.StandartSnackBarMsj(coordinatorLayoutSag, getString(R.string.internet_baglantisi_saglanamadi));
                 } else {
                     AnaEkranProgressIslemDialogAc(getString(R.string.icerik_indiriliyor_lutfen_bekleyiniz));
-                    AkorDefterimSys.SarkiGetir(veritabani, SecilenListeID, snfSarkilar.get(position).getId(), snfSarkilar.get(position).getSanatciAdi(), snfSarkilar.get(position).getSarkiAdi());
+                    AkorDefterimSys.SarkiGetir(veritabani, SecilenListeID, snfSarkilar.get(position).getId(), snfSarkilar.get(position).getSanatciAdi(), snfSarkilar.get(position).getSarkiAdi(), snfSarkilar.get(position).getVideoURL());
                 }
             } else { // Eğer listeden şarkı arama alanına yazı GİRİLMİŞSE "snfSarkilarTemp" sıfından kayıt baz alarak içerik getirtiyoruz..
                 if(SecilenListeID == 0) {
                     if(AkorDefterimSys.InternetErisimKontrolu()) {
                         AnaEkranProgressIslemDialogAc(getString(R.string.icerik_indiriliyor_lutfen_bekleyiniz));
-                        AkorDefterimSys.SarkiGetir(veritabani, SecilenListeID, snfSarkilarTemp.get(position).getId(), snfSarkilarTemp.get(position).getSanatciAdi(), snfSarkilarTemp.get(position).getSarkiAdi());
+                        AkorDefterimSys.SarkiGetir(veritabani, SecilenListeID, snfSarkilarTemp.get(position).getId(), snfSarkilarTemp.get(position).getSanatciAdi(), snfSarkilarTemp.get(position).getSarkiAdi(), snfSarkilarTemp.get(position).getVideoURL());
                     } else AkorDefterimSys.StandartSnackBarMsj(coordinatorLayoutSag, getString(R.string.internet_baglantisi_saglanamadi));
                 } else {
                     AnaEkranProgressIslemDialogAc(getString(R.string.icerik_indiriliyor_lutfen_bekleyiniz));
-                    AkorDefterimSys.SarkiGetir(veritabani, SecilenListeID, snfSarkilarTemp.get(position).getId(), snfSarkilarTemp.get(position).getSanatciAdi(), snfSarkilarTemp.get(position).getSarkiAdi());
+                    AkorDefterimSys.SarkiGetir(veritabani, SecilenListeID, snfSarkilarTemp.get(position).getId(), snfSarkilarTemp.get(position).getSanatciAdi(), snfSarkilarTemp.get(position).getSarkiAdi(), snfSarkilarTemp.get(position).getVideoURL());
                 }
             }
 
@@ -360,7 +363,7 @@ public class AnaEkran extends AppCompatActivity implements Int_DataConn_AnaEkran
 
         switch (extras.getString("Islem")) {
             case "SarkiGetir":
-                AkorDefterimSys.SarkiGetir(veritabani, 0, extras.getInt("SarkiID"), extras.getString("SanatciAdi"), extras.getString("SarkiAdi"));
+                AkorDefterimSys.SarkiGetir(veritabani, 0, extras.getInt("SarkiID"), extras.getString("SanatciAdi"), extras.getString("SarkiAdi"), extras.getString("VideoURL"));
                 break;
             default:
                 FragmentSayfaGetir("anasayfa");
@@ -408,17 +411,18 @@ public class AnaEkran extends AppCompatActivity implements Int_DataConn_AnaEkran
 
         if(AkorDefterimSys.prefAction.equals("Şarkı eklendi")) {
             if(Fragment_SayfaAdi.equals("Frg_Sarki")) {
-                Frg_Sarki Frg_Sarki = (Frg_Sarki) activity.getFragmentManager().findFragmentByTag(Fragment_SayfaAdi);
+                Frg_Sarki Frg_Sarki = (Frg_Sarki) FM.findFragmentById(R.id.LLSayfa);
                 Frg_Sarki.StandartSnackBarMsj(getString(R.string.sarki_eklendi, AkorDefterimSys.prefEklenenDuzenlenenSanatciAdi, AkorDefterimSys.prefEklenenDuzenlenenSarkiAdi));
             }
 
             AkorDefterimSys.prefAction = "";
             AkorDefterimSys.prefEklenenDuzenlenenSanatciAdi = "";
             AkorDefterimSys.prefEklenenDuzenlenenSarkiAdi = "";
+            AkorDefterimSys.prefEklenenDuzenlenenVideoURL = "";
             AkorDefterimSys.prefEklenenDuzenlenenSarkiID = 0;
         } else if(AkorDefterimSys.prefAction.equals("Şarkı düzenlendi")) {
             SarkiListesiGetir();
-            AkorDefterimSys.SarkiGetir(veritabani, SecilenListeID, AkorDefterimSys.prefEklenenDuzenlenenSarkiID, AkorDefterimSys.prefEklenenDuzenlenenSanatciAdi, AkorDefterimSys.prefEklenenDuzenlenenSarkiAdi);
+            AkorDefterimSys.SarkiGetir(veritabani, SecilenListeID, AkorDefterimSys.prefEklenenDuzenlenenSarkiID, AkorDefterimSys.prefEklenenDuzenlenenSanatciAdi, AkorDefterimSys.prefEklenenDuzenlenenSarkiAdi, AkorDefterimSys.prefEklenenDuzenlenenVideoURL);
 
             // Şarkı düzenlendiyse düzenlenen şarkıyı yeniden çağırıyoruz. Çağırma işleminde olduğu için SnackBar Mesaj gösteremiyorduk.
             // Bu sebeple şarkıyı çağırdıktan 1 saniye sonra SnackBar Mesajı göstermesini istedik.
@@ -484,8 +488,8 @@ public class AnaEkran extends AppCompatActivity implements Int_DataConn_AnaEkran
     public void FragmentSayfaGetir(String SayfaAdi) {
         switch (SayfaAdi) {
             case "anasayfa": // Anasayfa
-                //noinspection ObjectEqualsNull
-                if(Fragment_SayfaAdi != "Frg_Anasayfa") {
+
+                if(Fragment_SayfaAdi.isEmpty() && Fragment_Sayfa == null) {
                     Fragment_Sayfa = new Frg_Anasayfa();// Fragment sayfa belirle
                     Fragment_SayfaAdi = "Frg_Anasayfa";
 
@@ -494,17 +498,23 @@ public class AnaEkran extends AppCompatActivity implements Int_DataConn_AnaEkran
                     else if(sharedPref.getString("prefOturumTipi", "Cevrimdisi").equals("Cevrimdisi"))
                         lblSayfaBaslik.setText(String.format("%s%s%s (%s)", getString(R.string.anasayfa), " - ", getString(R.string.son_eklenen_sarkilar), getString(R.string.cevrimdisi)));
 
-                    if(FT == null && Fragment_Sayfa == null)
-                        FT.add(R.id.LLSayfa, Fragment_Sayfa, Fragment_SayfaAdi); // FT.add(<Hangi layout içinde çağırılacaksa id'si>, <Çağırılan Fragment>, <Çağırılan Fragment Takma Adı>);
-                    else {
-                        assert FT != null;
-                        FT.remove(Fragment_Sayfa); // Geçerli fragment'i sil
-                        FT = activity.getFragmentManager().beginTransaction(); // Fragment methodunu kullanmak için sabit nesne
-                        FT.replace(R.id.LLSayfa, Fragment_Sayfa, Fragment_SayfaAdi); // FT.add(<Hangi layout içinde çağırılacaksa id'si>, <Çağırılan Fragment>, <Çağırılan Fragment Takma Adı>);
-                    }
-
-                    FT.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
+                    FT = FM.beginTransaction(); // Fragment methodunu kullanmak için sabit nesne
+                    FT.add(R.id.LLSayfa, Fragment_Sayfa);
                     FT.commit();// Çağırma işlemini yaptırıyoruz..
+                } else if(Fragment_SayfaAdi != "Frg_Anasayfa") {
+                    Fragment_Sayfa = new Frg_Anasayfa();// Fragment sayfa belirle
+                    Fragment_SayfaAdi = "Frg_Anasayfa";
+
+                    if(sharedPref.getString("prefOturumTipi", "Cevrimdisi").equals("Cevrimici"))
+                        lblSayfaBaslik.setText(String.format("%s%s%s (%s)", getString(R.string.anasayfa), " - ", getString(R.string.son_eklenen_sarkilar), getString(R.string.cevrimici)));
+                    else if(sharedPref.getString("prefOturumTipi", "Cevrimdisi").equals("Cevrimdisi"))
+                        lblSayfaBaslik.setText(String.format("%s%s%s (%s)", getString(R.string.anasayfa), " - ", getString(R.string.son_eklenen_sarkilar), getString(R.string.cevrimdisi)));
+
+                    FT = FM.beginTransaction(); // Fragment methodunu kullanmak için sabit nesne
+
+                    FT.replace(R.id.LLSayfa, Fragment_Sayfa);
+                    FT.addToBackStack(null);
+                    FT.commit();
                 }
 
                 break;
@@ -519,6 +529,17 @@ public class AnaEkran extends AppCompatActivity implements Int_DataConn_AnaEkran
                 AkorDefterimSys.CikisYap();
 
                 break;
+            case "bossayfa": // Boş Sayfa
+                Fragment_Sayfa = new Frg_BosSayfa();// Fragment sayfa belirle
+                Fragment_SayfaAdi = "Frg_BosSayfa";
+
+                FT = FM.beginTransaction(); // Fragment methodunu kullanmak için sabit nesne
+
+                FT.replace(R.id.LLSayfa, Fragment_Sayfa);
+                FT.addToBackStack(null);
+                FT.commit();
+
+                break;
             /*case "istekyap": // İstek Yap
                 if (AkorDefterimSys.InternetErisimKontrolu()) { //İnternet kontrolü yap
                     FT.remove(Fragment_Sayfa); // Geçerli fragment'i sil
@@ -530,7 +551,7 @@ public class AnaEkran extends AppCompatActivity implements Int_DataConn_AnaEkran
                     btnTranspozeEksi.setVisibility(View.GONE);
                     btnStar.setVisibility(View.GONE);
 
-                    FT = activity.getFragmentManager().beginTransaction(); // Fragment methodunu kullanmak için sabit nesne
+                    FT = FM.beginTransaction(); // Fragment methodunu kullanmak için sabit nesne
                     FT.replace(R.id.LLSayfa, Fragment_Sayfa, Fragment_SayfaTag); // FT.add(<Hangi layout içinde çağırılacaksa id'si>, <Çağırılan Fragment>, <Çağırılan Fragment Takma Adı>);
                     FT.commit();// Çağırma işlemini yaptırıyoruz..
                 } else
@@ -657,7 +678,7 @@ public class AnaEkran extends AppCompatActivity implements Int_DataConn_AnaEkran
                     break;
                 case "AnasayfaGetir":
                     if(Fragment_SayfaAdi.equals("Frg_Anasayfa")) {
-                        Frg_Anasayfa Frg_Anasayfa = (Frg_Anasayfa) activity.getFragmentManager().findFragmentByTag(Fragment_SayfaAdi);
+                        Frg_Anasayfa Frg_Anasayfa = (Frg_Anasayfa) FM.findFragmentById(R.id.LLSayfa);
 
                         if(Frg_Anasayfa != null) {
                             if(JSONSonuc.getBoolean("Sonuc")) Frg_Anasayfa.AnasayfaDoldur(JSONSonuc.getString("SarkiListesi"));
@@ -703,6 +724,7 @@ public class AnaEkran extends AppCompatActivity implements Int_DataConn_AnaEkran
                             Sarki.setTarzID(JSONGelenVeri.getInt("TarzID"));
                             Sarki.setSanatciAdi(JSONGelenVeri.getString("SanatciAdi"));
                             Sarki.setSarkiAdi(JSONGelenVeri.getString("SarkiAdi"));
+                            Sarki.setVideoURL(JSONGelenVeri.getString("VideoURL"));
                             snfSarkilar.add(Sarki);
                         }
 
@@ -753,53 +775,44 @@ public class AnaEkran extends AppCompatActivity implements Int_DataConn_AnaEkran
                     AnaEkranProgressIslemDialogKapat();
 
                     if(JSONSonuc.getBoolean("Sonuc")) {
-                        if(FT == null && Fragment_Sayfa == null) {
-                            // Fragment oluşturuyoruz ve ilk hangi fragment çağırılacaksa onu çağırıyoruz..
-                            FT = getFragmentManager().beginTransaction(); // Fragment methodunu kullanmak için sabit nesne
+                        lblSayfaBaslik.setText(String.format("%s%s%s", JSONSonuc.getString("SanatciAdi"), " - ", JSONSonuc.getString("SarkiAdi")));
 
-                            Fragment_Sayfa = new Frg_Sarki();// Fragment sayfa belirle
-                            Fragment_SayfaAdi = "Frg_Sarki";
-                            lblSayfaBaslik.setText(String.format("%s%s%s", JSONSonuc.getString("SanatciAdi"), " - ", JSONSonuc.getString("SarkiAdi")));
+                        // Burada önce boş fragment ve 300ms sonra ardından sarkı fragment'i çağırdık.
+                        // Çünkü aynı fragment tekrar açılırken anlamsız bir hata oluyor. Boş fragment geliyor. Grafikler bozuluyor vs.
+                        // Bu yöntemle sorun düzeldi..
+                        FragmentSayfaGetir("bossayfa");
 
-                            Bundle bundle = new Bundle();
-                            bundle.putInt("SecilenSarkiID", JSONSonuc.getInt("SarkiID"));
-                            bundle.putInt("SecilenListeID", JSONSonuc.getInt("ListeID"));
-                            bundle.putString("SecilenSanatciAdi", JSONSonuc.getString("SanatciAdi"));
-                            bundle.putString("SecilenSarkiAdi", JSONSonuc.getString("SarkiAdi"));
-                            bundle.putString("SecilenSarkiIcerik", JSONSonuc.getString("Icerik"));
+                        new Handler().postDelayed(new Runnable() {
+                            @Override
+                            public void run() {
+                                try {
+                                    Fragment_Sayfa = new Frg_Sarki();// Fragment sayfa belirle
+                                    Fragment_SayfaAdi = "Frg_Sarki";
 
-                            Fragment_Sayfa.setArguments(bundle);
+                                    Bundle bundle = new Bundle();
+                                    bundle.putInt("SecilenSarkiID", JSONSonuc.getInt("SarkiID"));
+                                    bundle.putInt("SecilenListeID", JSONSonuc.getInt("ListeID"));
+                                    bundle.putString("SecilenSanatciAdi", JSONSonuc.getString("SanatciAdi"));
+                                    bundle.putString("SecilenSarkiAdi", JSONSonuc.getString("SarkiAdi"));
+                                    bundle.putString("SecilenSarkiIcerik", JSONSonuc.getString("Icerik"));
+                                    bundle.putString("SecilenSarkiVideoURL", JSONSonuc.getString("VideoURL"));
 
-                            FT.add(R.id.LLSayfa, Fragment_Sayfa, Fragment_SayfaAdi); // FT.add(<Hangi layout içinde çağırılacaksa id'si>, <Çağırılan Fragment>, <Çağırılan Fragment Takma Adı>);
-                            FT.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
-                            FT.commit();// Çağırma işlemini yaptırıyoruz..
-                        } else {
-                            assert FT != null;
-                            FT.remove(Fragment_Sayfa); // Geçerli fragment'i sil
+                                    Fragment_Sayfa.setArguments(bundle);
 
-                            Fragment_Sayfa = new Frg_Sarki();// Fragment sayfa belirle
-                            Fragment_SayfaAdi = "Frg_Sarki";
-                            lblSayfaBaslik.setText(String.format("%s%s%s", JSONSonuc.getString("SanatciAdi"), " - ", JSONSonuc.getString("SarkiAdi")));
-
-                            Bundle bundle = new Bundle();
-                            bundle.putInt("SecilenSarkiID", JSONSonuc.getInt("SarkiID"));
-                            bundle.putInt("SecilenListeID", JSONSonuc.getInt("ListeID"));
-                            bundle.putString("SecilenSanatciAdi", JSONSonuc.getString("SanatciAdi"));
-                            bundle.putString("SecilenSarkiAdi", JSONSonuc.getString("SarkiAdi"));
-                            bundle.putString("SecilenSarkiIcerik", JSONSonuc.getString("Icerik"));
-
-                            Fragment_Sayfa.setArguments(bundle);
-
-                            FT = activity.getFragmentManager().beginTransaction(); // Fragment methodunu kullanmak için sabit nesne
-                            FT.replace(R.id.LLSayfa, Fragment_Sayfa, Fragment_SayfaAdi); // FT.add(<Hangi layout içinde çağırılacaksa id'si>, <Çağırılan Fragment>, <Çağırılan Fragment Takma Adı>);
-                            FT.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
-                            FT.commit();// Çağırma işlemini yaptırıyoruz..
-                        }
+                                    FT = FM.beginTransaction();
+                                    FT.replace(R.id.LLSayfa, Fragment_Sayfa);
+                                    FT.addToBackStack(null);
+                                    FT.commit();
+                                } catch (JSONException e) {
+                                    e.printStackTrace();
+                                }
+                            }
+                        }, 300);
                     } else AkorDefterimSys.StandartSnackBarMsj(AnaEkran_CoordinatorLayout, getString(R.string.secilen_sarki_bulunamadi));
                     break;
                 case "Sarki_Duzenlendi_SnackBarMsj_Goster":
                     if(Fragment_SayfaAdi.equals("Frg_Sarki")) {
-                        Frg_Sarki Frg_Sarki = (Frg_Sarki) activity.getFragmentManager().findFragmentByTag(Fragment_SayfaAdi);
+                        Frg_Sarki Frg_Sarki = (Frg_Sarki) FM.findFragmentById(R.id.LLSayfa);
                         Frg_Sarki.StandartSnackBarMsj(getString(R.string.sarki_duzenlendi, AkorDefterimSys.prefEklenenDuzenlenenSanatciAdi, AkorDefterimSys.prefEklenenDuzenlenenSarkiAdi));
                     }
 
@@ -810,7 +823,7 @@ public class AnaEkran extends AppCompatActivity implements Int_DataConn_AnaEkran
                     break;
                 case "Frg_Sarki_ADDialog_SarkiSil_Evet":
                     if(Fragment_SayfaAdi.equals("Frg_Sarki")) {
-                        Frg_Sarki Frg_Sarki = (Frg_Sarki) activity.getFragmentManager().findFragmentByTag(Fragment_SayfaAdi);
+                        Frg_Sarki Frg_Sarki = (Frg_Sarki) FM.findFragmentById(R.id.LLSayfa);
                         Frg_Sarki.SarkiSil();
                         AkorDefterimSys.DismissAlertDialog(Frg_Sarki.ADDialog);
                     }
@@ -818,7 +831,7 @@ public class AnaEkran extends AppCompatActivity implements Int_DataConn_AnaEkran
                     break;
                 case "Frg_Sarki_ADDialog_SarkiSil_Hayir":
                     if(Fragment_SayfaAdi.equals("Frg_Sarki")) {
-                        Frg_Sarki Frg_Sarki = (Frg_Sarki) activity.getFragmentManager().findFragmentByTag(Fragment_SayfaAdi);
+                        Frg_Sarki Frg_Sarki = (Frg_Sarki) FM.findFragmentById(R.id.LLSayfa);
                         AkorDefterimSys.DismissAlertDialog(Frg_Sarki.ADDialog);
                     }
 

@@ -17,7 +17,6 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.LinearLayout;
 
 import com.cnbcyln.app.akordefterim.Adaptorler.AdpAnasayfa;
 import com.cnbcyln.app.akordefterim.Interface.Int_DataConn_AnaEkran;
@@ -150,6 +149,7 @@ public class Frg_Anasayfa extends Fragment implements SwipeRefreshLayout.OnRefre
 					mSnfAnasayfa.setSanatciID(JSONGelenVeri.getInt("SanatciID"));
 					mSnfAnasayfa.setSanatciResimVarMi(JSONGelenVeri.getBoolean("SanatciResimVarMi"));
 					mSnfAnasayfa.setSanatciAdi(JSONGelenVeri.getString("SanatciAdi"));
+					mSnfAnasayfa.setSonEklenenSarkiVideoURL(JSONGelenVeri.getString("SonEklenenSarkiVideoURL"));
 					mSnfAnasayfa.setSonEklenenSarkiID(JSONGelenVeri.getInt("SonEklenenSarkiID"));
 					mSnfAnasayfa.setSonEklenenSarkiAdi(JSONGelenVeri.getString("SonEklenenSarkiAdi"));
 					mSnfAnasayfa.setToplamSarki(JSONGelenVeri.getInt("ToplamSarki"));
